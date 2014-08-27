@@ -1,4 +1,4 @@
-oew.github.io
+owickstrom.github.io
 =============
 
 Source for my GitHub user site.
