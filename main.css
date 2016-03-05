@@ -1,35 +1,19 @@
 html {
-    font-family: 'Cardo', serif;
-}
-
-body {
-    text-align: center;
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: #fafafa;
-    color: #444;
-}
-
-a {
-    color: #C93DAD;
-}
-a:hover {
-    color: #B13298;
+    font-family: monospace;
+    line-height: 1.5;
+    background-color: #eee;
+    color: #555;
+    font-weight: 300;
+    font-size: 20px;
+    letter-spacing: .01em;
 }
 
 h1 {
-    font-size: 300%;
+  line-height: 1.2;
 }
 
-p {
-    font-size: 125%;
+body {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1em;
 }
-p:before {
-    display: block;
-    width: 25%;
-    margin: 1em auto;
-
-    content: ' ';
-    border-top: 1px solid #eee;
-}
-
