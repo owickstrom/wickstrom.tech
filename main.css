@@ -1,19 +1,31 @@
 html {
     font-family: monospace;
+    font-size: 22px;
     line-height: 1.5;
     background-color: #eee;
     color: #555;
-    font-weight: 300;
-    font-size: 20px;
     letter-spacing: .01em;
 }
 
+body {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1em;
+}
+
 h1 {
+  font-size: 175%;
   line-height: 1.2;
 }
 
-body {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 1em;
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 19px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 16px;
+  }
 }
