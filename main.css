@@ -1,10 +1,9 @@
 html {
-    font-family: monospace;
-    font-size: 22px;
-    line-height: 1.5;
+    font-family: 'Courier', monospace;
+    font-size: 20px;
+    line-height: 1.4;
     background-color: #eee;
     color: #555;
-    letter-spacing: .01em;
 }
 
 body {
@@ -13,9 +12,21 @@ body {
     padding: 1em;
 }
 
+h1, h2, h3, h4 {
+  color: #222;
+  line-height: 1.1;
+}
+
 h1 {
-  font-size: 175%;
-  line-height: 1.2;
+  font-size: 200%;
+}
+
+h2 {
+  font-size: 150%;
+}
+
+p, ul, ol {
+  margin-bottom: 1.5em;
 }
 
 @media screen and (max-width: 600px) {
