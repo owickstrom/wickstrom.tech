@@ -1,6 +1,6 @@
 html {
-    font: 22px/1.5 'Baskerville', serif;
-    color: #444;
+    font: 16px/1.5 'Baskerville', serif;
+    color: #555;
 }
 
 body {
@@ -9,14 +9,15 @@ body {
     padding: 1em;
 }
 
-h1 {
-}
-
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Futura', 'Helvetica', sans-serif;
   font-weight: 800;
-  color: #e81c4f;
   line-height: 1.1;
+}
+
+h1,
+h2 {
+  color: #e81c4f;
 }
 
 p, ul, ol {
@@ -32,14 +33,16 @@ a:active {
   text-decoration: none;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (min-width: 800px) {
   html {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 
-@media screen and (max-width: 400px) {
-  html {
-    font-size: 14px;
-  }
+.events {
+  padding: 0 0 0 1.5em;
+}
+
+.events li {
+  margin: 0 0 .5em;
 }
