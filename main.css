@@ -1,42 +1,45 @@
 html {
-    font-family: 'Courier', monospace;
-    font-size: 20px;
-    line-height: 1.4;
-    background-color: #eee;
-    color: #555;
+    font: 22px/1.5 'Baskerville', serif;
+    color: #444;
 }
 
 body {
-    max-width: 700px;
+    max-width: 40em;
     margin: 0 auto;
     padding: 1em;
 }
 
-h1, h2, h3, h4 {
-  color: #222;
-  line-height: 1.1;
-}
-
 h1 {
-  font-size: 200%;
 }
 
-h2 {
-  font-size: 150%;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Futura', 'Helvetica', sans-serif;
+  font-weight: 800;
+  color: #e81c4f;
+  line-height: 1.1;
 }
 
 p, ul, ol {
   margin-bottom: 1.5em;
 }
 
+a {
+  color: inherit;
+}
+a:hover,
+a:active {
+  color: #333;
+  text-decoration: none;
+}
+
 @media screen and (max-width: 600px) {
   html {
-    font-size: 19px;
+    font-size: 18px;
   }
 }
 
 @media screen and (max-width: 400px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
