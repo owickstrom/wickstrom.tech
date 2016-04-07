@@ -1,5 +1,5 @@
 html {
-    font: 16px/1.5 'Baskerville', serif;
+    font: 18px/1.5 'Baskerville', serif;
     color: #555;
 }
 
@@ -10,8 +10,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Futura', 'Helvetica', sans-serif;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.1;
 }
 
@@ -24,18 +23,24 @@ p, ul, ol {
   margin-bottom: 1.5em;
 }
 
-a {
-  color: inherit;
+a:link {
+  color: #1d79de;
+  text-decoration: none;
 }
 a:hover,
 a:active {
-  color: #333;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 850px) {
   html {
-    font-size: 20px;
+    font-size: 21px;
+  }
+}
+
+@media screen and (min-width: 1050px) {
+  html {
+    font-size: 24px;
   }
 }
 
