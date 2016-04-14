@@ -1,8 +1,9 @@
 ---
 layout: post
 title:  "So it begins..."
-date:   2016-04-14 10:34:15 +0200
-categories: blogging
+date:   2016-04-14 12:00
+categories: General
+tags: ["meta"]
 ---
 
 Yep. I'm starting a programming blog.
