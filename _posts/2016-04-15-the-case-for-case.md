@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Case for Case"
-date:   2016-04-14 16:24
+date:   2016-04-14 16:24 +0200
 categories: Programming
 tags: ["haskell", "functional"]
 ---
