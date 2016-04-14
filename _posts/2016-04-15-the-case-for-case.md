@@ -50,4 +50,6 @@ greet = \case
   Nothing            -> "People of the Earth!"
 {% endhighlight %}
 
-That's it. Happy pattern matching!
+If you want to find out more about syntax extensions you should check out the
+[GHC users guide](https://downloads.haskell.org/~ghc/7.8.4/docs/html/users_guide/syntax-extns.html).
+Thanks for reading. Happy pattern matching!
