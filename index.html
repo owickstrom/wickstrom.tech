@@ -2,43 +2,47 @@
 layout: default
 ---
 
-<div class="home">
+<div class="page-content">
+  <div class="wrapper">
+    <div class="home">
 
-  <h1 class="index-heading">{{ site.title }}</h1>
+      <h1 class="index-heading">{{ site.title }}</h1>
 
-  <div class="about-me">
-    <p>
-    My name is Oskar Wickström and this is where I write about functional
-    programming, open source software and my main project <a
-      href="http://oden-lang.org">The Oden Programming
-    Language</a>.
-    </p>
+      <div class="about-me">
+        <p>
+        My name is Oskar Wickström and this is where I write about functional
+        programming, open source software and my main project <a
+          href="http://oden-lang.org">The Oden Programming
+        Language</a>.
+        </p>
 
-    <p>
-    You can find me at
-    <a href="https://twitter.com/owickstrom">Twitter</a> and
-    <a href="https://github.com/owickstrom">GitHub</a>.
-    </p>
+        <p>
+        You can find me at
+        <a href="https://twitter.com/owickstrom">Twitter</a> and
+        <a href="https://github.com/owickstrom">GitHub</a>.
+        </p>
 
-    <p>
-    Another big part of my life is music. You can listen to some of my stuff at <a
-    href="https://soundcloud.com/oskar-wickstrom">SoundCloud</a> and <a
-    href="https://www.youtube.com/channel/UC1edduMaIVhvx8Y3btQcQuw">YouTube</a>.
-    </p>
+        <p>
+        Another big part of my life is music. You can listen to some of my stuff at <a
+        href="https://soundcloud.com/oskar-wickstrom">SoundCloud</a> and <a
+        href="https://www.youtube.com/channel/UC1edduMaIVhvx8Y3btQcQuw">YouTube</a>.
+        </p>
+      </div>
+
+      <h2>Blog Posts</h2>
+
+      <ul class="post-list">
+        {% for post in site.posts %}
+          <li>
+            <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+
+            <h2>
+              <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            </h2>
+          </li>
+        {% endfor %}
+      </ul>
+
+    </div>
   </div>
-
-  <h2>Blog Posts</h2>
-
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
-
 </div>
