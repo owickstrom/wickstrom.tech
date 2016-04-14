@@ -1,58 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="initial-scale=1.0,width=device-width">
-        <title>@owickstrom</title>
-        <link rel="stylesheet" href="main.css">
-    </head>
-    <body>
-        <h1>@owickstrom</h1>
-        <p>Hi! My name is Oskar Wickström.</p>
+---
+layout: default
+---
 
-        <p>
-        I&#39;m into music, programming and open source software. My current
-        programming project is <a href="http://oden-lang.org">The Oden
-        Programming Language</a>.
-        </p>
+<div class="home">
 
-        <p>
-        Check out my
-        <a href="https://twitter.com/owickstrom">Twitter</a> and
-        <a href="https://github.com/owickstrom">GitHub</a>.
-        Listen at <a href="https://soundcloud.com/oskar-wickstrom">SoundCloud</a>
-        and <a href="https://www.youtube.com/channel/UC1edduMaIVhvx8Y3btQcQuw">YouTube</a>.
-        </p>
+  <h1 class="index-heading">{{ site.title }}</h1>
 
-        <h2>Talks &amp; Shows</h2>
+  <div class="about-me">
+    <p>
+    My name is Oskar Wickström and this is where I write about functional
+    programming, open source software and my main project <a
+      href="http://oden-lang.org">The Oden Programming
+    Language</a>.
+    </p>
 
-        <p>All kinds of public stuff I have planned.</p>
+    <p>
+    You can find me at
+    <a href="https://twitter.com/owickstrom">Twitter</a> and
+    <a href="https://github.com/owickstrom">GitHub</a>.
+    </p>
 
-        <ul class="events">
-          <li>
-              <time datetime="2016-04-13">April 13, 2016</time> at Foo Café
-              &mdash;
-            <a href="http://www.foocafe.org/event/designing-and-building-the-oden-programming-language">
-              Designing and Building the Oden Programming Language
-            </a>
-          </li>
-          <li>
-            <time datetime="2016-06-11">June 11, 2016</time> at
-            <a href="http://www.makemusiksthlm.org/#makemusiksthlm">Make Music STHLM</a>
-            &mdash;
-            Live with <a href="http://johannajingnert.se/">Johanna Jingnert Band</a>
-          </li>
-        </ul>
+    <p>
+    Another big part of my life is music. You can listen to some of my stuff at <a
+    href="https://soundcloud.com/oskar-wickstrom">SoundCloud</a> and <a
+    href="https://www.youtube.com/channel/UC1edduMaIVhvx8Y3btQcQuw">YouTube</a>.
+    </p>
+  </div>
 
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <h2>Blog Posts</h2>
 
-                    ga('create', 'UA-42197774-2', 'owickstrom.github.io');
-                    ga('send', 'pageview');
+  <ul class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
 
-        </script>
-    </body>
-</html>
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
+
+</div>
