@@ -108,6 +108,7 @@
   font-size: 42px;
   letter-spacing: -1px;
   line-height: 1;
+  margin-bottom: $spacing-unit / 4;
 
   @include media-query($on-laptop) {
     font-size: 36px;
