@@ -6,8 +6,8 @@
 
 
 // Our variables
-$base-font-family: "Computer Modern Serif", "Baskerville", serif;
-$monospace-font-family: "Computer Modern Typewriter", "Courier", monospace;
+$base-font-family: "Computer Modern Serif", "CMU Serif", "Baskerville", serif;
+$monospace-font-family: "Computer Modern Typewriter", "CMU Typewriter Text", "Courier", monospace;
 $base-font-size:   18px;
 $base-font-weight: 400;
 $small-font-size:  90%;
@@ -49,6 +49,5 @@ $on-laptop:        800px;
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
         "base",
-        "layout",
-        "syntax-highlighting"
+        "layout"
 ;

@@ -1,0 +1,17 @@
+<script>
+function loadCssAsync(path) {
+  function cb() {
+    var l = document.createElement('link'); l.rel = 'stylesheet';
+    l.href = path;
+    var h = document.getElementsByTagName('head')[0]; h.appendChild(l, h);
+  };
+  var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+  webkitRequestAnimationFrame || msRequestAnimationFrame;
+  if (raf) raf(cb);
+  else window.addEventListener('load', cb);
+};
+
+loadCssAsync('{{ site.baseurl }}/css/syntax-highlighting.css');
+loadCssAsync('{{ site.baseurl }}/fonts/computer-modern/Serif/cmun-serif.css');
+loadCssAsync('{{ site.baseurl }}/fonts/computer-modern/Typewriter/cmun-typewriter.css');
+</script>
