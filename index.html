@@ -14,16 +14,13 @@ layout: default
         programming, open source software and my main project <a
           href="http://oden-lang.org">The Oden Programming
         Language</a>.
-        </p>
-
-        <p>
         You can find me at
         <a href="https://twitter.com/owickstrom">Twitter</a> and
         <a href="https://github.com/owickstrom">GitHub</a>.
         </p>
 
         <p>
-        Another big part of my life is music. You can listen to some of my stuff at <a
+        Another big part of my life is music. I post some of my stuff at <a
         href="https://soundcloud.com/oskar-wickstrom">SoundCloud</a> and <a
         href="https://www.youtube.com/channel/UC1edduMaIVhvx8Y3btQcQuw">YouTube</a>.
         </p>
@@ -35,10 +32,7 @@ layout: default
         {% for post in site.posts %}
           <li>
             <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-
-            <h2>
-              <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-            </h2>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
           </li>
         {% endfor %}
       </ul>

@@ -35,7 +35,6 @@
 
 #post-comments-link {
   display: block;
-  text-align: center;
   font-style: italic;
 }
 
@@ -76,7 +75,7 @@
   list-style: none;
 
   > li {
-    margin-bottom: $spacing-unit;
+    margin-bottom: $spacing-unit / 2;
   }
 }
 .about-me {
@@ -94,7 +93,7 @@
 
 .post-link {
   display: block;
-  font-size: 24px;
+  font-size: 100%;
 }
 
 
