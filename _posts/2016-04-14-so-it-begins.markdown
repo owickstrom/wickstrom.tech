@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "So it begins..."
+title:  "So It Begins"
 date:   2016-04-14 12:00 +0200
 categories: General
 tags: ["meta"]

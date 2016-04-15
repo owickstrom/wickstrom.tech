@@ -6,7 +6,10 @@ layout: default
   <div class="wrapper">
     <div class="home">
 
-      <h1 class="index-heading">{{ site.title }}</h1>
+      <header class="page-header">
+        <h1 class="page-title" itemprop="name headline">{{ site.title }}</h1>
+        <p class="post-meta">Sharing some thoughts, reflections and lessons learned.</p>
+      </header>
 
       <div class="about-me">
         <p>
@@ -25,8 +28,6 @@ layout: default
         href="https://www.youtube.com/channel/UC1edduMaIVhvx8Y3btQcQuw">YouTube</a>.
         </p>
       </div>
-
-      <h2>Blog Posts</h2>
 
       <ul class="post-list">
         {% for post in site.posts %}

@@ -2,14 +2,10 @@
  * Site header
  */
 .site-header {
-  border-bottom: 1px solid $grey-color-light;
 }
 
 .site-title {
-  display: block;
   font-size: 100%;
-  padding: $spacing-unit/2 0;
-  margin-bottom: 0;
 
   &,
   &:visited {
@@ -54,25 +50,43 @@
  * Site footer
  */
 .site-footer {
-  border-top: 1px solid $grey-color-light;
   padding: $spacing-unit 0;
   font-size: 16px;
+  text-align: center;
+}
+
+.site-footer .copyright {
+  color: $grey-color;
+  font-size: $small-font-size;
 }
 
 /**
  * Page content
  */
 .page-content {
-  padding: $spacing-unit 0;
+  padding: $spacing-unit*2 0;
 }
 
-.page-heading {
-  font-size: 20px;
+.page-header {
+  margin-bottom: $spacing-unit * 2;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 42px;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: $spacing-unit / 4;
+
+  @include media-query($on-laptop) {
+    font-size: 36px;
+  }
 }
 
 .post-list {
-  margin-left: 0;
+  margin: $spacing-unit*2 0 0;
   list-style: none;
+  text-align: center;
 
   > li {
     margin-bottom: $spacing-unit / 2;
@@ -91,29 +105,19 @@
   color: $grey-color;
 }
 
+.page-header .post-meta {
+  font-size: $base-font-size;
+}
+
 .post-link {
   display: block;
-  font-size: 100%;
+  font-size: 150%;
 }
 
 
 /**
  * Posts
  */
-.post-header {
-  margin-bottom: $spacing-unit;
-}
-
-.post-title {
-  font-size: 42px;
-  letter-spacing: -1px;
-  line-height: 1;
-  margin-bottom: $spacing-unit / 4;
-
-  @include media-query($on-laptop) {
-    font-size: 36px;
-  }
-}
 
 .post-content {
   margin-bottom: $spacing-unit;
