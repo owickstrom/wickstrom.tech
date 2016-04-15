@@ -3,15 +3,11 @@
  */
 .site-header {
   border-bottom: 1px solid $grey-color-light;
-  min-height: 56px;
-
-  // Positioning context for the mobile navigation icon
-  position: relative;
 }
 
 .site-title {
   display: block;
-  font-size: 120%;
+  font-size: 100%;
   padding: $spacing-unit/2 0;
   margin-bottom: 0;
 
@@ -25,7 +21,6 @@
 
   .page-link {
     color: $text-color;
-    line-height: $base-line-height;
 
     // Gaps between nav items, but not on the last one
     &:not(:last-child) {

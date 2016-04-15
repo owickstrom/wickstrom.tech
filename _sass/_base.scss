@@ -146,32 +146,24 @@ strong {
  */
 pre,
 code {
-  font-family: "Courier", monospace;
-  font-size: 17px;
+  font-family: $monospace-font-family;
+  line-height: 1.5;
 }
 
 pre {
   padding: $spacing-unit;
   overflow-x: auto;
-
-  > code {
-    padding-right: 0;
-    padding-left: 0;
-  }
+  font-size: 18px;
 }
 @include media-query($on-laptop) {
   pre {
     padding: $spacing-unit 0;
-  }
-  code {
     font-size: 15px;
   }
 }
 @include media-query($on-palm) {
   pre {
     padding: $spacing-unit 0;
-  }
-  code {
     font-size: 13px;
   }
 }
