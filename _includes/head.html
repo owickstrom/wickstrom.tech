@@ -6,6 +6,7 @@
   <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
+  <link rel="icon" type="image/png" href="{{ "/logo.png" | prepend: site.baseurl }}">
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
   <link rel="stylesheet" href="{{ "/fonts/computer-modern/Serif/cmun-serif.css" | prepend: site.baseurl }}">
   <link rel="stylesheet" href="{{ "/fonts/computer-modern/Typewriter/cmun-typewriter.css" | prepend: site.baseurl }}">
