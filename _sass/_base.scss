@@ -27,7 +27,7 @@ body {
 
 @include media-query($on-laptop) {
   body {
-    font-size: 18px;
+    font-size: 17px;
   }
 }
 
@@ -153,18 +153,16 @@ code {
 pre {
   padding: ($spacing-unit / 2);
   overflow-x: auto;
-  font-size: 18px;
+  font-size: $small-font-size;
 }
 @include media-query($on-laptop) {
   pre {
     padding: $spacing-unit 0;
-    font-size: 15px;
   }
 }
 @include media-query($on-palm) {
   pre {
     padding: $spacing-unit 0;
-    font-size: 13px;
   }
 }
 
