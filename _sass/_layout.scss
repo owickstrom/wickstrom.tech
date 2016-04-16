@@ -32,6 +32,7 @@
 #post-comments-link {
   display: block;
   font-style: italic;
+  text-align: center;
 }
 
 #post-comments-link.hidden,
@@ -120,7 +121,7 @@
  */
 
 .post-content {
-  margin-bottom: $spacing-unit;
+  margin-bottom: 2em;
 
   h2 {
     font-size: 32px;
