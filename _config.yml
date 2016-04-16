@@ -8,9 +8,8 @@
 # Site settings
 title: "Oskar Wickström's Programming Blog"
 email: oskar.wickstrom@gmail.com
-description: > # this means to ignore newlines until "baseurl:"
-  My name is Oskar and I'm into music, programming and open source software. My
-  current programming project is The Oden Programming Language.
+description: >
+  Sharing thoughts, reflections and lessons learned.
 baseurl: ""
 url: "https://owickstrom.github.io"
 twitter_username: owickstrom
