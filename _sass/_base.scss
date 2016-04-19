@@ -41,7 +41,6 @@ body {
 /**
  * Set `margin-bottom` to maintain vertical rhythm
  */
-h1, h2, h3, h4, h5, h6,
 p, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
@@ -93,6 +92,7 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
+  margin-bottom: $spacing-unit/2;
   font-weight: $base-font-weight;
 }
 

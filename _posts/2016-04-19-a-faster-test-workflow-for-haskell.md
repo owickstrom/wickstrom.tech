@@ -10,7 +10,10 @@ The amount of tests in Oden has been increasing steadily since the beginning of
 this compiler iteration. I like to have tests run automatically when both
 library and test source code changes, so I have previously used *nodemon*
 to watch for file changes and execute `cabal test` or the like. It was starting
-to get a bit slow so decided to search for a new setup.
+to get a bit slow so decided to search for a new setup. This post explains
+how it works.
+
+## Sendings Keys
 
 As I already use *tmux* for all work I figured I could use that together with
 GHCi somehow.  Tmux has a command called `send-keys` that lets you
@@ -56,6 +59,8 @@ repl spec` as well as another window running `nodemon`. When Haskell source
 files in `src` and `test` change the GHCi REPL in the first window gets the
 `:r` command executed, which reloads all modules, followed by the invocation of
 `main` which runs the tests again.
+
+## Summary
 
 With this I have hundreds of tests run automatically in about a second, which
 I think is fine for Haskell. My previous setup had a latency at about 4
