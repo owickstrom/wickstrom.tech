@@ -13,14 +13,14 @@ to watch for file changes and execute `cabal test` or the like. It was starting
 to get a bit slow so decided to search for a new setup.
 
 As I already use *tmux* for all work I figured I could use that together with
-GHCi somehow.  Tmux has a command called `send-keys` that, unsurpringsly, lets
-you programmatically send keys as though they were typed in at the target pane.
+GHCi somehow.  Tmux has a command called `send-keys` that lets you
+programmatically send keys as though they were typed in at the target pane.
 
 {% highlight bash %}
 tmux send-keys -t "mysession:0.1" "echo hello, world" Enter
 {% endhighlight %}
 
-This sends `echo hello, world` followed by a linebreak to the pane with index
+This sends `echo hello, world` followed by a line break to the pane with index
 1, in the window with index 0, in the session called *mysession*. The `-t`
 switch handles convenient tokens such as `last` and `left` so you don't have to
 figure out indices. See the [tmux man
