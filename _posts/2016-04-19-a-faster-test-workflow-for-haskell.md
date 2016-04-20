@@ -42,7 +42,7 @@ windows:
       root: ~/Projects/oden-lang/oden
       panes:
         - vim
-        - cabal repl spec
+        - cabal exec ghci -- -isrc -itest
   - test-watch:
       root: ~/Projects/oden-lang/oden
       panes:
@@ -59,6 +59,11 @@ repl spec` as well as another window running `nodemon`. When Haskell source
 files in `src` and `test` change the GHCi REPL in the first window gets the
 `:r` command executed, which reloads all modules, followed by the invocation of
 `main` which runs the tests again.
+
+The reason I use `cabal exec -- -isrc -itest` is to have both targets loaded
+as interpreted sources in GHCi. When you run `cabal repl <target>` only that
+target's sources can be reloaded. I want to reload changed source files both in
+the library and in the test targets.
 
 ## Summary
 
