@@ -30,8 +30,8 @@ with shipping options, customer bonus points, country tax regulations, mixed
 with all kinds of non-business concerns like logging, constructing and
 destructuring of values and closing resources. There's small attempts at
 abstraction in there, with private class methods small chunks of the work, but
-it's still a big [*complected*][complected] mess of different capabilities and
-technical necessities. If you've been in the *"bread and butter"* side of
+it's still a big [complected][complected] mess of different capabilities and
+technical necessities. If you've been in the "bread and butter" side of
 systems development, I bet you've seen something like this before, both in back
 and front end applications.
 
