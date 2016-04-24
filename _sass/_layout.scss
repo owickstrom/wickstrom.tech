@@ -125,23 +125,15 @@
 
   h2 {
     margin-top: $spacing-unit;
-    font-size: 28px;
-
-    @include media-query($on-laptop) {
-      font-size: 28px;
-    }
+    font-size: 160%;
   }
 
   h3 {
-    font-size: 26px;
-
-    @include media-query($on-laptop) {
-      font-size: 22px;
-    }
+    font-size: 120%;
   }
 
   h4 {
-    font-size: 20px;
+    font-size: 100%;
 
     @include media-query($on-laptop) {
       font-size: 18px;
