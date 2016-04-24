@@ -13,7 +13,9 @@ the next big Javascript framework, etc. The list goes on and on.
 
 In this post I offer my rather technical viewpoint on the subject - what
 programming languages and tools can do to help us evolve software in a reliable
-way, avoiding status quo or costly rewrites.
+way, avoiding status quo or costly rewrites. I discuss dynamic and static
+typing in different languages and how Haskell enables me to do large
+changes to the Oden compiler without introducing programming errors.
 
 ## Scenario: Changing Business Needs
 
@@ -53,8 +55,10 @@ It's just not about the lines of code and complexity. As a project evolve
 developers usually come and go. People quit their jobs or start working in
 other departments or roles, and new people join. And if the project grows it
 it might get more developers working in parallel in the same code. Even if you
-had the guts to make a big change to the massive class, you would spend weeks
-with merge conflicts and thus a greater risk of errors.
+had the guts to make a big change to the massive class, you could spend weeks
+with merge conflicts and thus have an even greater risk of errors. Also, as the
+fragmentation of developers increase the individual developer might now feel
+responsible for taking greater action.
 
 When we continually opt for the change of least risk the situation does not
 improve. We are often pushed by deadlines or sprints, limiting our time to add,
@@ -64,8 +68,7 @@ you might be told.
 
 One of way of dealing with these issues is to have a dedicated time slot for
 quality improvements. While this is probably better than doing nothing at all,
-I think working proactively with quality rather than retroactively is the way
-to go.
+working proactively with quality rather than retroactively is the way to go.
 
 ## Tools that Reduce Fear
 
