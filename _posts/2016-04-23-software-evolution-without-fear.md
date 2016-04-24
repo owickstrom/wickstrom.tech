@@ -11,7 +11,7 @@ programs to evolve; changing business needs, bug fixes, shifting technical
 requirements, performance, staff changes, quality improvements, the release of
 the next big Javascript framework, etc. The list goes on and on.
 
-In this post I offer my rather technical viewpoint on the subject - what
+In this post I offer my rather technical viewpoint on the subject &mdash; what
 programming languages and tools can do to help us evolve software in a reliable
 way, avoiding status quo or costly rewrites. I discuss dynamic and static
 typing in different languages and how Haskell enables me to do large
@@ -47,9 +47,9 @@ callback, surely we can live that?
 
 From my experience these growing pieces of code doesn't get refactored out of
 the fear of introducing bugs. Invalid business logic, null pointer exceptions,
-various simple programming errors, concurrency bugs - a lot of things can go
-wrong if you try to break this mega-class into pieces and so we take the path
-of least resistance.
+various simple programming errors, concurrency bugs &mdash; a lot of things can
+go wrong if you try to break this class into pieces and so we take the path of
+least resistance.
 
 It's just not about the lines of code and complexity. As a project evolve
 developers usually come and go. People quit their jobs or start working in

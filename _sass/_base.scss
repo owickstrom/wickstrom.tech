@@ -92,8 +92,8 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
-  margin-bottom: $spacing-unit/2;
-  font-weight: bold;
+  margin-bottom: $spacing-unit/4;
+  font-weight: 600;
 }
 
 
@@ -146,12 +146,15 @@ strong {
 pre,
 code {
   font-family: $monospace-font-family;
-  line-height: 1.3;
+  line-height: inherit;
 }
 
 pre {
   padding: ($spacing-unit / 2);
   overflow-x: auto;
+  font-size: $small-font-size;
+}
+p code {
   font-size: $small-font-size;
 }
 @include media-query($on-laptop) {
