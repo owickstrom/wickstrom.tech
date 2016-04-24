@@ -92,7 +92,7 @@ Programming in Haskell is another workflow for me. I personally don't rely much
 on the GHCi REPL for experimentation. Instead the types guide me to the end
 goal. That sounds cheesy, I know, but let me try to explain.
 
-First off; **I think about it**. In the shower, before falling asleep, when
+First off, *I think about it*. In the shower, before falling asleep, when
 looking out the window, when riding the bike to work. Staring at code or
 pressing keyboard buttons will not help me solve the problem at hand, I just
 get stuck and become frustrated.
