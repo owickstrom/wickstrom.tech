@@ -1,0 +1,37 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+
+body {
+  font-size: 16px;
+}
+
+a {
+  color: inherit;
+
+  &:visited {
+    color: inherit;
+  }
+
+}
+.post-content a:after{
+  content: " (" attr(href) ")";
+  /*font-size: 80%;*/
+  font-style: italic;
+  /*vertical-align: super;*/
+}
+
+p {
+  page-break-inside: avoid;
+}
+
+.wrapper {
+  max-width: none;
+}
+
+.rss-subscribe,
+#post-comments-link {
+  display: none;
+}
+
