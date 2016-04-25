@@ -80,9 +80,9 @@ forward, that itching fear or changing existing code takes hold of me when a
 project starts to grow.
 
 There are tools for dynamically typed languages that aims to address these
-issues. Racket has [Typed Racket](typedracket), a statically typed dialect of
-Racket.  Clojure has [Typed Clojure](typedclojure), an optional type system for
-Clojure that can validate your program at compile time. [Schema](schema) is
+issues. Racket has [Typed Racket][typedracket], a statically typed dialect of
+Racket.  Clojure has [Typed Clojure][typedclojure], an optional type system for
+Clojure that can validate your program at compile time. [Schema][schema] is
 another option for Clojure that performs runtime data validation based on
 contracts.
 
