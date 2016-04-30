@@ -54,16 +54,19 @@ windows:
               --exec 'tmux send-keys -t "oden:0.1" :r Enter main Enter'
 {% endhighlight %}
 
-This tmuxinator configuration launches one split window with `vim` and `cabal
-repl spec` as well as another window running `nodemon`. When Haskell source
-files in `src` and `test` change the GHCi REPL in the first window gets the
-`:r` command executed, which reloads all modules, followed by the invocation of
-`main` which runs the tests again.
+This tmuxinator configuration launches one split window with Vim and GHCi as
+well as another window running `nodemon`. When Haskell source files in `src`
+and `test` change the GHCi REPL in the first window gets the `:r` command
+executed, which reloads all modules, followed by the invocation of `main` which
+runs the tests again.
 
 The reason I use `cabal exec -- -isrc -itest Main` is to have both targets
 loaded as interpreted sources in GHCi. When you run `cabal repl <target>` only
 that target's sources can be reloaded. I want to reload changed source files
 both in the library and in the test targets.
+
+If you are using [Stack](https://github.com/commercialhaskell/stack) just
+replace `cabal` with `stack` in these commands and it should work as well.
 
 ## Summary
 
