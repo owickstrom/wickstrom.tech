@@ -48,6 +48,9 @@ Modern Typewriter* font on light and dark backgrounds.
 
 ## Installation
 
-Simply copy the color scheme file to your `~/.vim/colors directory` or use a
-plugin manager like Plug or Vundle and add `"owickstrom/vim-colors-paramount"`
-as a plugin.
+Simply copy [the color scheme
+file](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/colors/paramount.vim)
+to your `~/.vim/colors directory` or use a plugin manager like Plug or Vundle
+and add `"owickstrom/vim-colors-paramount"` as a plugin.
+
+The source is available [on GitHub](https://github.com/owickstrom/vim-colors-paramount).
