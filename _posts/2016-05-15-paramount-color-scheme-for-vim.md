@@ -23,8 +23,8 @@ scheme for Vim. I call it [Paramount][].
 [Paramount]: https://github.com/owickstrom/vim-colors-paramount
 
 The goal of Paramount is to not clutter your editor with all colors of the
-rainbow, just to keep it simple. It uses two monochrome colors for most text
-together with the purple accent color. Diffs and some errors use red and green
+rainbow, just to keep it simple. It uses three monochrome colors for most text
+together with a purple accent color. Diffs and some errors use red and green
 colors.
 
 Paramount is based on the [pencil][] and [off][] color schemes. Thanks for the
