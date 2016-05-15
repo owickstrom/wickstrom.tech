@@ -53,4 +53,7 @@ file](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/c
 to your `~/.vim/colors directory` or use a plugin manager like Plug or Vundle
 and add `"owickstrom/vim-colors-paramount"` as a plugin.
 
-The source is available [on GitHub](https://github.com/owickstrom/vim-colors-paramount).
+The source is available [on
+GitHub](https://github.com/owickstrom/vim-colors-paramount).  You can preview
+the theme on the [*~/.vim/colors*](http://vimcolors.com/438/paramount/dark)
+site.
