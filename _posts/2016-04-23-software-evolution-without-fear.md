@@ -2,6 +2,7 @@
 layout: post
 title: Software Evolution Without Fear
 date: 2016-04-23 17:00
+author: Oskar Wickström
 category: programming
 tags: haskell tools languages type-systems
 ---

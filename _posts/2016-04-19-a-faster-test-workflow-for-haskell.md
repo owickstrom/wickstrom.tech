@@ -2,6 +2,7 @@
 layout: post
 title:  "A Faster Test Workflow for Haskell"
 date:   2016-04-19 07:00 +0200
+author: Oskar Wickström
 categories: Programming
 tags: ["haskell", "tools"]
 ---

@@ -23,17 +23,20 @@ body {
   -o-font-feature-settings: "kern" 1;
   font-feature-settings: "kern" 1;
   font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
 }
 
 @include media-query($on-laptop) {
   body {
-    font-size: 17px;
+    font-size: 16px;
+    line-height: 22px;
   }
 }
 
 @include media-query($on-palm) {
   body {
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 20px;
   }
 }
 
@@ -44,7 +47,14 @@ body {
 p, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
-  margin-bottom: 1em;
+  margin-bottom: 24px;
+
+  @include media-query($on-laptop) {
+    margin-bottom: 22px;
+  }
+  @include media-query($on-palm) {
+    margin-bottom: 20px;
+  }
 }
 
 
@@ -93,7 +103,6 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
-  margin-bottom: $spacing-unit/4;
   font-weight: 600;
 }
 
@@ -153,10 +162,6 @@ code {
 pre {
   padding: ($spacing-unit / 2);
   overflow-x: auto;
-  font-size: $small-font-size;
-}
-p code {
-  font-size: $small-font-size;
 }
 @include media-query($on-laptop) {
   pre {

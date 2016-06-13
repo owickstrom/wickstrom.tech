@@ -40,13 +40,7 @@
  */
 .site-footer {
   padding: 0 0 $spacing-unit;
-  font-size: 16px;
   text-align: center;
-}
-
-.site-footer .copyright {
-  color: $grey-color;
-  font-size: $small-font-size;
 }
 
 /**
@@ -63,9 +57,9 @@
 
 .page-title {
   font-size: 42px;
-  letter-spacing: -1px;
-  line-height: 1;
   margin-bottom: $spacing-unit / 4;
+  line-height: $base-line-height * 2;
+  letter-spacing: -1px;
 
   @include media-query($on-laptop) {
     font-size: 36px;
@@ -80,9 +74,14 @@
   > li {
     margin-bottom: $spacing-unit / 2;
   }
+
+  .post-meta {
+    font-style: normal;
+  }
 }
 .about-me {
   margin-bottom: $spacing-unit;
+  text-align: justify;
 }
 .index-heading {
   position: absolute;
@@ -90,17 +89,14 @@
 }
 
 .post-meta {
-  font-size: $small-font-size;
-  color: $grey-color;
-}
-
-.page-header .post-meta {
-  font-size: $base-font-size;
+  font-size: 100%;
+  font-style: italic;
 }
 
 .post-link {
   display: block;
-  font-size: 125%;
+  font-size: 150%;
+  line-height: $base-line-height * 2;
 }
 
 
@@ -110,21 +106,49 @@
 
 .post-content {
   margin-bottom: 2em;
+  text-align: justify;
 
   h2 {
-    margin-top: $spacing-unit;
-    font-size: 150%;
+    font-size: 28px;
+    line-height: $base-line-height * 2;
   }
 
   h3 {
-    font-size: 125%;
+    font-size: 22px;
+    line-height: $base-line-height * 2;
   }
 
-  h4 {
-    font-size: 100%;
+  h4, h5, h6 {
+    font-size: $base-font-size;
+    line-height: $base-line-height;
+  }
 
-    @include media-query($on-laptop) {
+  @include media-query($on-laptop) {
+    h2 {
+      line-height: 44px;
+      font-size: 24px;
+    }
+    h3 {
+      line-height: 44px;
+      font-size: 20px;
+    }
+    h4, h5, h6 {
+      line-height: 22px;
+      font-size: 16px;
+    }
+  }
+  @include media-query($on-palm) {
+    h2 {
+      line-height: 40px;
+      font-size: 22px;
+    }
+    h3 {
+      line-height: 44px;
       font-size: 18px;
+    }
+    h4, h5, h6 {
+      line-height: 20px;
+      font-size: 14px;
     }
   }
 }

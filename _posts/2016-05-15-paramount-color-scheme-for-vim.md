@@ -2,6 +2,7 @@
 layout: post
 title:  "Paramount Color Scheme for Vim"
 date:   2016-05-15 09:00 +0200
+author: Oskar Wickström
 categories: Programming
 tags: ["vim", "tools"]
 ---
