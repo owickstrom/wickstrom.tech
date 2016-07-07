@@ -36,16 +36,17 @@ great work on those projects!
 
 ## Screenshots
 
-The following screenshots show some Haskell code together with the *Computer
-Modern Typewriter* font on light and dark backgrounds.
+The following screenshots show some Go code together with the *Latin Modern
+Mono* font on light and dark backgrounds.
 
-![](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/light-cmu.png)
-![](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/dark-cmu.png)
+![](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/latin-modern-light.png)
+![](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/latin-modern-dark.png)
 
-...and if you use the *Courier* font to show Go code:
+...and if you use the *Monaco* font to show the Ruby code from
+[vimcolors.com](http://vimcolors.com/):
 
-![](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/light-courier.png)
-![](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/dark-courier.png)
+![](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/monaco-light.png)
+![](https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/monaco-dark.png)
 
 ## Installation
 
