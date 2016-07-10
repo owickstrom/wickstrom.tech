@@ -1,4 +1,4 @@
-# Welcome to Jekyll!
+
 #
 # This config file is meant for settings that affect your whole blog, values
 # which you are expected to set up once and rarely need to edit after that.
@@ -9,7 +9,7 @@
 title: "Oskar Wickström's Programming Blog"
 email: oskar.wickstrom@gmail.com
 description: >
-  Sharing thoughts, reflections and lessons learned.
+  Thoughts, reflections and lessons learned in programming.
 baseurl: ""
 url: "https://wickstrom.tech"
 twitter_username: owickstrom

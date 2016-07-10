@@ -67,9 +67,8 @@
 }
 
 .post-list {
-  margin: $spacing-unit*2 0 0;
+  margin: $spacing-unit/2 0 0;
   list-style: none;
-  text-align: center;
 
   > li {
     margin-bottom: $spacing-unit / 2;
@@ -95,8 +94,8 @@
 
 .post-link {
   display: block;
-  font-size: 150%;
-  line-height: $base-line-height * 2;
+  font-size: 125%;
+  line-height: $base-line-height * 1.2;
 }
 
 
