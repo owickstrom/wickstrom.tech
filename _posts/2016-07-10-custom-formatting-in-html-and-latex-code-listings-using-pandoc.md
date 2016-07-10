@@ -15,7 +15,7 @@ For some code listings and syntax examples I want the typesetting to convey the
 meaning of text in the listing -- user input, command output, placeholders,
 etc. The User Guide build uses [Pandoc](http://pandoc.org/) to transform
 Markdown documents to PDF (through LaTeX) and to HTML. I could not find a good
-way to express these custom formattings in a way that worked with both LaTeX
+way to express the custom formatting in a way that worked with both LaTeX
 and HTML using standard Pandoc functionality. Hence, I create a
 [filter](http://pandoc.org/scripting.html) to handle my input format, called
 [IncludeCode.hs](https://github.com/oden-lang/oden/blob/master/doc/user-guide/src/filters/IncludeCode.hs).
