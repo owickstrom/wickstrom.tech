@@ -104,7 +104,7 @@ li {
  */
 h1, h2, h3, h4, h5, h6 {
   font-size: 100%;
-  line-height: 1.5;
+  line-height: inherit;
   margin-bottom: 24px;
   font-weight: 600;
 }
@@ -122,7 +122,16 @@ h3 {
   letter-spacing: 0.05em;
 }
 
-h4, h5, h6 {
+@include media-query($on-laptop) {
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 22px;
+  }
+}
+
+@include media-query($on-palm) {
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 20px;
+  }
 }
 
 /**
