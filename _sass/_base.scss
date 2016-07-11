@@ -24,6 +24,7 @@ body {
   font-feature-settings: "kern" 1;
   font-kerning: normal;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility; 
 }
 
 @include media-query($on-laptop) {
@@ -47,7 +48,7 @@ body {
 p, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
-  margin-bottom: 24px;
+  margin-bottom: $base-line-height;
 
   @include media-query($on-laptop) {
     margin-bottom: 22px;
@@ -105,7 +106,7 @@ li {
 h1, h2, h3, h4, h5, h6 {
   font-size: 100%;
   line-height: inherit;
-  margin-bottom: 24px;
+  margin-bottom: $base-line-height;
   font-weight: 600;
 }
 

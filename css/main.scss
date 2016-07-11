@@ -6,13 +6,13 @@
 
 
 // Our variables
-$base-font-family: "Hoefler Text", "Baskerville", "Roboto Slab", "Palatino", "Georgia", serif;
+$base-font-family: "Hoefler Text", "Palatino", "Roboto Slab", "Georgia", serif;
 $sans-font-family: "Gill Sans", "Trebuchet MS", sans-serif;
 $monospace-font-family: 'Latin Modern Mono', 'CMU Typewriter Text', 'Monaco', 'Consolas', monospace;
-$base-font-size:   18px;
+$base-font-size:   20px;
 $base-font-weight: 400;
 $small-font-size:  90%;
-$base-line-height: 24px;
+$base-line-height: 26px;
 
 $spacing-unit:     32px;
 
@@ -25,7 +25,7 @@ $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
 
 // Width of the content area
-$content-width:    800px;
+$content-width:    $base-font-size * 45;
 
 $on-palm:          600px;
 $on-laptop:        800px;

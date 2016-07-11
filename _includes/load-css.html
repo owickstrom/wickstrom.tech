@@ -1,4 +1,10 @@
 <script>
+// Override fonts for Safari, see: https://bugs.webkit.org/show_bug.cgi?id=149455
+// Quite depressing, indeed.
+if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+  document.body.style.fontFamily = 'Palatino, Georgia, serif';
+}
+
 function loadCssAsync(path) {
   function cb() {
     var l = document.createElement('link'); l.rel = 'stylesheet';
