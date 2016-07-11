@@ -16,7 +16,7 @@ meaning of text in the listing -- user input, command output, placeholders,
 etc. The User Guide build uses [Pandoc](http://pandoc.org/) to transform
 Markdown documents to PDF (through LaTeX) and to HTML. I could not find a good
 way to express the custom formatting in a way that worked with both LaTeX
-and HTML using standard Pandoc functionality. Hence, I create a
+and HTML using standard Pandoc functionality. Therefore, I created a
 [filter](http://pandoc.org/scripting.html) to handle my input format, called
 [IncludeCode.hs](https://github.com/oden-lang/oden/blob/master/doc/user-guide/src/filters/IncludeCode.hs).
 Using this filter, I can write code listings in separate files, using a small

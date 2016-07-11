@@ -1,5 +1,5 @@
 .site-title {
-  font-weight: 600;
+  font-weight: 400;
 }
 .site-nav {
 
@@ -39,7 +39,8 @@
  * Site footer
  */
 .site-footer {
-  padding: 0 0 $spacing-unit;
+  padding: $spacing-unit 0 $spacing-unit;
+  border-top: 1px solid #ddd;
   text-align: center;
 }
 
@@ -60,6 +61,7 @@
   margin-bottom: $spacing-unit / 4;
   line-height: $base-line-height * 2;
   letter-spacing: -1px;
+  font-weight: 500;
 
   @include media-query($on-laptop) {
     font-size: 36px;
@@ -67,8 +69,7 @@
 }
 
 .post-list {
-  margin: $spacing-unit/2 0 0;
-  list-style: none;
+  margin-top: $spacing-unit/2;
 
   > li {
     margin-bottom: $spacing-unit / 2;
@@ -92,12 +93,6 @@
   font-style: italic;
 }
 
-.post-link {
-  display: block;
-  font-size: 125%;
-  line-height: $base-line-height * 1.2;
-}
-
 
 /**
  * Posts
@@ -106,48 +101,4 @@
 .post-content {
   margin-bottom: 2em;
   text-align: justify;
-
-  h2 {
-    font-size: 28px;
-    line-height: $base-line-height * 2;
-  }
-
-  h3 {
-    font-size: 22px;
-    line-height: $base-line-height * 2;
-  }
-
-  h4, h5, h6 {
-    font-size: $base-font-size;
-    line-height: $base-line-height;
-  }
-
-  @include media-query($on-laptop) {
-    h2 {
-      line-height: 44px;
-      font-size: 24px;
-    }
-    h3 {
-      line-height: 44px;
-      font-size: 20px;
-    }
-    h4, h5, h6 {
-      line-height: 22px;
-      font-size: 16px;
-    }
-  }
-  @include media-query($on-palm) {
-    h2 {
-      line-height: 40px;
-      font-size: 22px;
-    }
-    h3 {
-      line-height: 44px;
-      font-size: 18px;
-    }
-    h4, h5, h6 {
-      line-height: 20px;
-      font-size: 14px;
-    }
-  }
 }

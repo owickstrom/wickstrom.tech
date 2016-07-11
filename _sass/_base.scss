@@ -103,9 +103,27 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+  line-height: 1.5;
+  margin-bottom: 24px;
   font-weight: 600;
 }
 
+h2, h3 {
+  font-family: $sans-font-family;
+}
+
+h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+h3 {
+  letter-spacing: 0.05em;
+}
+
+h4, h5, h6 {
+}
 
 /**
  * Links
@@ -133,7 +151,7 @@ blockquote {
   color: $grey-color;
   border-left: 4px solid $grey-color-light;
   padding-left: $spacing-unit / 2;
-  font-size: 120%;
+  font-size: 125%;
   letter-spacing: -1px;
   font-style: italic;
 
@@ -162,6 +180,10 @@ code {
 pre {
   padding: ($spacing-unit / 2);
   overflow-x: auto;
+  font-size: 80%;
+}
+p code {
+  font-size: 80%;
 }
 @include media-query($on-laptop) {
   pre {
