@@ -190,10 +190,10 @@ code {
 pre {
   padding: ($spacing-unit / 2);
   overflow-x: auto;
-  font-size: 90%;
+  font-size: 85%;
 }
 p code {
-  font-size: 90%;
+  font-size: 85%;
 }
 @include media-query($on-laptop) {
   pre {
