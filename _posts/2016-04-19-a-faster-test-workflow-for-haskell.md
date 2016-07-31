@@ -77,3 +77,12 @@ seconds. All in all, I'm very happy with this workflow.
 
 If you have any improvements or recommendations you would like to share then
 please post a comment below.
+
+## Update 2016-07-31
+
+Even though it is somewhat slower, I use `stack test --file-watch` more often
+in the beginning of a project as it handles changes in the Cabal file. I have
+also started using the interactive session support in the Emacs *haskell-mode*
+to reload test modules using `C-c C-l` and then run the individual tests with
+`hspec spec` in the Emacs GHCi session. Maybe later I will create an Emacs
+keybinding for reloading a test module and running the specs.

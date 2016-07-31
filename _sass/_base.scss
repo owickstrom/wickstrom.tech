@@ -29,15 +29,13 @@ body {
 
 @include media-query($on-laptop) {
   body {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 18px;
   }
 }
 
 @include media-query($on-palm) {
   body {
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 16px;
   }
 }
 
@@ -48,14 +46,7 @@ body {
 p, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
-  margin-bottom: $base-line-height;
-
-  @include media-query($on-laptop) {
-    margin-bottom: 22px;
-  }
-  @include media-query($on-palm) {
-    margin-bottom: 20px;
-  }
+  margin-bottom: 1.3em;
 }
 
 
@@ -106,7 +97,7 @@ li {
 h1, h2, h3, h4, h5, h6 {
   font-size: 100%;
   line-height: inherit;
-  margin-bottom: $base-line-height;
+  margin-bottom: 1.3em;
   font-weight: 600;
 }
 
@@ -121,18 +112,6 @@ h2 {
 
 h3 {
   letter-spacing: 0.05em;
-}
-
-@include media-query($on-laptop) {
-  h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 22px;
-  }
-}
-
-@include media-query($on-palm) {
-  h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 20px;
-  }
 }
 
 /**
