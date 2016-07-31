@@ -48,12 +48,18 @@
  * Page content
  */
 .page-content {
-  padding: $spacing-unit*2 0;
+  padding: $spacing-unit*1 0;
 }
 
 .page-header {
+  margin-top: $spacing-unit;
   margin-bottom: $spacing-unit * 2;
   text-align: center;
+}
+
+.intro {
+  margin-top: 0;
+  margin-bottom: $spacing-unit * 3;
 }
 
 .page-title {
