@@ -167,7 +167,7 @@ code {
 }
 
 pre {
-  padding: ($spacing-unit / 2);
+  padding: 0 1.4rem;
   overflow-x: auto;
   font-size: 85%;
 }
@@ -176,12 +176,14 @@ p code {
 }
 @include media-query($on-laptop) {
   pre {
-    padding: $spacing-unit 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 @include media-query($on-palm) {
   pre {
-    padding: $spacing-unit 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
