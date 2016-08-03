@@ -187,6 +187,18 @@ p code {
   }
 }
 
+table {
+    border-spacing: 0;
+    border-collapse: separate;
+}
+table th {
+    border-bottom: 1px solid $text-color;
+}
+
+table th,
+table td {
+    padding: .25rem;
+}
 
 
 /**

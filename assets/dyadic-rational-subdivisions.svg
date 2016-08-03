@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="612" height="351" viewBox="0 0 612 351" overflow="visible" enable-background="new 0 0 612 351" xml:space="preserve">
+<line fill="#FFFFFF" stroke="#000000" stroke-width="3" x1="9" y1="333" x2="603" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="18" y1="333" x2="18" y2="45"/>
+<line fill="#FFFFFF" stroke="#000000" x1="594" y1="333" x2="594" y2="45"/>
+<text transform="matrix(1 0 0 1 9 36)" font-family="Liberation Serif" font-style="normal" font-size="36">0</text>
+<text transform="matrix(1 0 0 1 585 36)" font-family="Liberation Serif" font-style="normal" font-size="36">1</text>
+<line fill="#FFFFFF" stroke="#000000" x1="306" y1="333" x2="306" y2="81"/>
+<text transform="matrix(1 0 0 1 285.5547 72)" font-family="Liberation Serif" font-style="normal" font-size="32">1/2</text>
+<line fill="#FFFFFF" stroke="#000000" x1="162" y1="333" x2="162" y2="117"/>
+<line fill="#FFFFFF" stroke="#000000" x1="450" y1="333" x2="450" y2="117"/>
+<text transform="matrix(1 0 0 1 144.1104 108)" font-family="Liberation Serif" font-style="normal" font-size="28">1/4</text>
+
+<text transform="matrix(1 0 0 1 432.1104 108)" font-family="Liberation Serif" font-style="normal" font-size="28">3/4</text>
+<line fill="#FFFFFF" stroke="#000000" x1="90" y1="333" x2="90" y2="153"/>
+<line fill="#FFFFFF" stroke="#000000" x1="234" y1="333" x2="234" y2="153"/>
+<line fill="#FFFFFF" stroke="#000000" x1="378" y1="333" x2="378" y2="153"/>
+<line fill="#FFFFFF" stroke="#000000" x1="522" y1="333" x2="522" y2="153"/>
+<text transform="matrix(1 0 0 1 74.666 144)" font-family="Liberation Serif" font-style="normal" font-size="24">1/8</text>
+<text transform="matrix(1 0 0 1 218.666 144)" font-family="Liberation Serif" font-style="normal" font-size="24">3/8</text>
+<text transform="matrix(1 0 0 1 362.666 144)" font-family="Liberation Serif" font-style="normal" font-size="24">5/8</text>
+<text transform="matrix(1 0 0 1 506.666 144)" font-family="Liberation Serif" font-style="normal" font-size="24">7/8</text>
+<line fill="#FFFFFF" stroke="#000000" x1="54" y1="333" x2="54" y2="189"/>
+<line fill="#FFFFFF" stroke="#000000" x1="126" y1="189" x2="126" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="198" y1="189" x2="198" y2="333"/>
+
+<line fill="#FFFFFF" stroke="#000000" x1="270" y1="189" x2="270" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="342" y1="333" x2="342" y2="189"/>
+<line fill="#FFFFFF" stroke="#000000" x1="414" y1="189" x2="414" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="486" y1="189" x2="486" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="558" y1="189" x2="558" y2="333"/>
+<text transform="matrix(1 0 0 1 36.2217 180)" font-family="Liberation Serif" font-style="normal" font-size="20">1/16</text>
+<text transform="matrix(1 0 0 1 108.2217 180)" font-family="Liberation Serif" font-style="normal" font-size="20">3/16</text>
+<text transform="matrix(1 0 0 1 180.2217 180)" font-family="Liberation Serif" font-style="normal" font-size="20">5/16</text>
+<text transform="matrix(1 0 0 1 252.2217 180)" font-family="Liberation Serif" font-style="normal" font-size="20">7/16</text>
+<text transform="matrix(1 0 0 1 324.2217 180)" font-family="Liberation Serif" font-style="normal" font-size="20">9/16</text>
+<text transform="matrix(1 0 0 1 391.2217 180)" font-family="Liberation Serif" font-style="normal" font-size="20">11/16</text>
+
+<text transform="matrix(1 0 0 1 463.2217 180)" font-family="Liberation Serif" font-style="normal" font-size="20">13/16</text>
+<text transform="matrix(1 0 0 1 535.2217 180)" font-family="Liberation Serif" font-style="normal" font-size="20">15/16</text>
+<line fill="#FFFFFF" stroke="#000000" x1="576" y1="225" x2="576" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="540" y1="225" x2="540" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="504" y1="225" x2="504" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="468" y1="225" x2="468" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="432" y1="225" x2="432" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="396" y1="225" x2="396" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="360" y1="225" x2="360" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="324" y1="225" x2="324" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="288" y1="225" x2="288" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="252" y1="225" x2="252" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="216" y1="225" x2="216" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="180" y1="225" x2="180" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="144" y1="225" x2="144" y2="333"/>
+
+<line fill="#FFFFFF" stroke="#000000" x1="108" y1="225" x2="108" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="72" y1="225" x2="72" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="36" y1="225" x2="36" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="27" y1="261" x2="27" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="45" y1="261" x2="45" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="63" y1="261" x2="63" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="81" y1="261" x2="81" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="99" y1="261" x2="99" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="117" y1="261" x2="117" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="135" y1="261" x2="135" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="153" y1="261" x2="153" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="171" y1="261" x2="171" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="189" y1="261" x2="189" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="207" y1="261" x2="207" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="225" y1="261" x2="225" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="243" y1="261" x2="243" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="261" y1="261" x2="261" y2="333"/>
+
+<line fill="#FFFFFF" stroke="#000000" x1="279" y1="261" x2="279" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="297" y1="261" x2="297" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="315" y1="261" x2="315" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="333" y1="261" x2="333" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="351" y1="261" x2="351" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="369" y1="261" x2="369" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="387" y1="261" x2="387" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="405" y1="261" x2="405" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="423" y1="261" x2="423" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="441" y1="261" x2="441" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="459" y1="261" x2="459" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="477" y1="261" x2="477" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="495" y1="261" x2="495" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="513" y1="261" x2="513" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="531" y1="261" x2="531" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="549" y1="261" x2="549" y2="333"/>
+<line fill="#FFFFFF" stroke="#000000" x1="567" y1="261" x2="567" y2="333"/>
+
+<line fill="#FFFFFF" stroke="#000000" x1="585" y1="261" x2="585" y2="333"/>
+<rect fill="none" width="612" height="351"/>
+</svg>
