@@ -10,14 +10,14 @@ tags: ["music", "logic", "clp", "clojure"]
 
 Foo bar baz.
 
-<figure>
-<img alt="Sight Reading Example"
-     src="/post-assets/music-clp-clojure/sight-reading-example.1x.png"
-     srcset="
-         /post-assets/music-clp-clojure/sight-reading-example.1x.png 1x,
-         /post-assets/music-clp-clojure/sight-reading-example.2x.png 2x" />
-<figcaption>A short example of a sight reading exercise.</figcaption>
-</figure>
+{% lilypond A short example of a hand-written sight reading exercise. %}
+\relative {
+  c''4 b a g
+  a2 r4 e8 g
+  e4 r8 d16 c d8. c16  a8 g
+  c2 r2 \bar "|."
+}
+{% endlilypond %}
 
 Let's try to break this down...
 
