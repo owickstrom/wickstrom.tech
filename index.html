@@ -34,10 +34,13 @@ layout: default
 
       <ul class="post-list">
         {% for post in site.posts %}
-          <li>
-            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-            <div class="post-meta">{{ post.date | date: "%B %-d, %Y" }}</div>
-          </li>
+        <li>
+          <a class="post-link {% if post.published == false %}draft{% endif %}"
+             href="{{ post.url | prepend: site.baseurl }}">
+            {{ post.title }}
+          </a>
+          <div class="post-meta">{{ post.date | date: "%B %-d, %Y" }}</div>
+        </li>
         {% endfor %}
       </ul>
 

@@ -80,6 +80,17 @@
     margin-bottom: $spacing-unit / 2;
   }
 
+  .draft {
+    color: #222;
+    background: #ffea33;
+
+    &:before {
+      content: '[DRAFT] ';
+      font-family: $sans-font-family;
+      font-weight: 500;
+    }
+  }
+
   .post-meta {
     font-style: normal;
   }
