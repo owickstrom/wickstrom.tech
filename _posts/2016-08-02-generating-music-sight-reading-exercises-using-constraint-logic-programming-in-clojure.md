@@ -13,5 +13,5 @@ Foo bar baz.
 <img alt="Sight Reading Example"
      src="/post-assets/music-clp-clojure/groups-trimmed.png"
      srcset="
-         /post-assets/music-clp-clojure/groups-trimmed.png 1x
+         /post-assets/music-clp-clojure/groups-trimmed.png 1x,
          /post-assets/music-clp-clojure/groups-trimmed-2x.png 2x" />
