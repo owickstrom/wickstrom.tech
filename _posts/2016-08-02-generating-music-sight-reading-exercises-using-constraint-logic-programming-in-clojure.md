@@ -10,8 +10,17 @@ tags: ["music", "logic", "clp", "clojure"]
 
 Foo bar baz.
 
+<figure>
 <img alt="Sight Reading Example"
-     src="/post-assets/music-clp-clojure/groups-trimmed.png"
+     src="/post-assets/music-clp-clojure/sight-reading-example.1x.png"
      srcset="
-         /post-assets/music-clp-clojure/groups-trimmed.png 1x,
-         /post-assets/music-clp-clojure/groups-trimmed-2x.png 2x" />
+         /post-assets/music-clp-clojure/sight-reading-example.1x.png 1x,
+         /post-assets/music-clp-clojure/sight-reading-example.2x.png 2x" />
+<figcaption>A short example of a sight reading exercise.</figcaption>
+</figure>
+
+Let's try to break this down...
+
+## A Naive Generator
+
+...

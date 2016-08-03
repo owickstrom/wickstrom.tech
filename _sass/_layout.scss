@@ -115,3 +115,14 @@
 .post-content {
   margin-bottom: 2em;
 }
+
+.post-content figure {
+    text-align: center;
+
+    img {
+        margin: 1em auto;
+    }
+    figcaption {
+        font-style: italic;
+    }
+}
