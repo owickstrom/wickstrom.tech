@@ -28,7 +28,7 @@ class LilypondTag < Liquid::Block
     out_name = Digest::SHA256.hexdigest(IO.read(in_f)) + ".#{scale}x.png"
 
     %x[lilypond --format=png -dresolution=#{scale * 100} --output #{out_lilypond_name} #{in_f.path}]
-    %x[convert #{out_path} -trim #{out_dir}/#{out_name}]
+    %x[gm convert #{out_path} -trim #{out_dir}/#{out_name}]
 
     in_f.unlink
 
