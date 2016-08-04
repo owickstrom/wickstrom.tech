@@ -16,7 +16,6 @@
 
 #post-comments-link {
   display: block;
-  font-style: italic;
   text-align: center;
 }
 
@@ -73,6 +72,11 @@
   }
 }
 
+.draft {
+  color: #222;
+  background: #ffea33;
+}
+
 .post-list {
   margin-top: $spacing-unit/2;
 
@@ -80,15 +84,10 @@
     margin-bottom: $spacing-unit / 2;
   }
 
-  .draft {
-    color: #222;
-    background: #ffea33;
-
-    &:before {
-      content: '[DRAFT] ';
-      font-family: $sans-font-family;
-      font-weight: 500;
-    }
+  .draft:before {
+    content: '[DRAFT] ';
+    font-family: $sans-font-family;
+    font-weight: 500;
   }
 
   .post-meta {
@@ -121,6 +120,12 @@
         margin: 1em auto;
     }
 }
+.post-content p.draft {
+  padding: 1em;
+  background: lighten(#ffea33, 25%);
+  border: 1px dashed #ffea33;
+  color: darken(#ffea33, 50%);
+}
 
 figcaption,
 .caption {
@@ -134,9 +139,10 @@ figcaption,
 .musical-signs {
     text-align: center;
     margin: 0 auto;
-    
-    tbody tr td:first-child {
-        font-size: 150%;
+
+    td img {
+      display: inline-block;
+      margin: .25em 0;
     }
 }
 .music-sign {
