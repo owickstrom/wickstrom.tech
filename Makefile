@@ -18,4 +18,6 @@ generate-music-symbols:
 	_tools/render-musical-symbol.sh r4 quarter-rest
 	_tools/render-musical-symbol.sh r8 eighth-rest
 	_tools/render-musical-symbol.sh r16 sixteenth-rest
+	_tools/render-musical-symbol.sh '\key g \major' sharp
+	_tools/render-musical-symbol.sh '\key d \minor' flat
 	SHOW_TIME_SIGN=1 _tools/render-musical-symbol.sh '' common-time
