@@ -31,11 +31,11 @@ subset of the constructs and rules from music theory, and incrementally expand
 that model to meet our needs.
 
 Our first step is to define a goal, a piece of music that exhibits the elements
-and patterns we want in a generated sight-reading exercise. Score 1.1 is a
+and patterns we want in a generated sight-reading exercise. [Score 1](#score-1) is a
 four-measure melody I wrote by hand. In my personal taste this melody does not
 sound random or generated, it is musical.
 
-{% lilypond Score 1.1: A hand-written melodious sight reading exercise. %}
+{% lilypond A hand-written melodious sight reading exercise. %}
 \relative {
     c''4 b a g
     a2 r4 e8 g
@@ -44,13 +44,13 @@ sound random or generated, it is musical.
 }
 {% endlilypond %}
 
-Let's have a closer look at the music in Score 1.1. I will cover only the
+Let's have a closer look at the music in [Score 1](#score-1). I will cover only the
 minimum amount of music theory needed to understand the rest of the
 article. If you are interested in digging deeper, I encourage you to check out
 [Music Theory for Musicians and Normal People][1]
 for a light introduction to music theory.
 
-The music in Score 1.1 is in the key of C major, or A minor. A key
+The music in [Score 1](#score-1) is in the key of C major, or A minor. A key
 signature is a set of sharp
 (<img src="/assets/music/sharp.1x.png"
       srcset="/assets/music/sharp.2x.png 2x, /assets/music/sharp.1x.png 1x"
@@ -65,10 +65,10 @@ symbols, raising or lowering the note on the line it is placed, until the next
 key signature, or to the end of the score. A sharp raises the note by a
 semitone, a flat lowers the note by a semitone. In our example we have no sharp
 or flat symbols in the key signature, thus all notes are in the diatonic C
-scale. Score 1.2 shows a key signature for music in the key of D major, raising
+scale. [Score 2](#score-2) shows a key signature for music in the key of D major, raising
 all F notes to F#, and all C notes to C#.
 
-{% lilypond Score 1.2: Music in the key of D major. %}
+{% lilypond Music in the key of D major. %}
 \relative {
   \key d \major
   d'8 e fis g b a cis b
@@ -81,7 +81,7 @@ and minor keys, and diatonic scales. For the purpose of this article you will
 only need to be aware that keys exist and that key signatures affect the notes
 to be played in a score.
 
-Score 1.1 consists of four measures, also called *bars*, divided by bar
+[Score 1](#score-1) consists of four measures, also called *bars*, divided by bar
 lines. The time signature is 4/4, as denoted by the common time
 sign
 (<img src="/assets/music/common-time.1x.png"
@@ -180,7 +180,7 @@ no way a complete list of musical symbols.
 </tbody>
 </table>
 
-<div class="caption">Musical elements used in Score 1.1.</div>
+<div class="caption">Musical elements used in [Score 1](#score-1).</div>
 
 A note describes both the pitch of a sound, and the relative duration of the
 sound. The vertical position in the staff, along with key signature and
@@ -205,16 +205,16 @@ Dyadic rational divisions. Graphic from
 
 Another way of describing such note values is by *tying* multiple notes together.
 The following two scores have the same musical meaning, in that they sound the
-same way, but Score 1.3 is notated using ties, and Score 1.4 is notated using
+same way, but [Score 3](#score-3) is notated using ties, and [Score 4](#score-4) is notated using
 dotted notes.
 
-{% lilypond Score 1.3: Using ties for 3/8 and 3/16 duration notes. %}
+{% lilypond Using ties for 3/8 and 3/16 duration notes. %}
 \relative {
     c'4~c8 c8~c4 r4 c8~ c16 c16~ c8 r8 r2
 }
 {% endlilypond %}
 
-{% lilypond Score 1.4: Using dotted notes for 3/8 and 3/16 duration notes. %}
+{% lilypond Using dotted notes for 3/8 and 3/16 duration notes. %}
 \relative {
     c'4. c r4 c8. c r8 r2
 }
@@ -223,33 +223,34 @@ dotted notes.
 Another important aspect of musical notation is *note grouping*. This technique
 helps the reader to see the sub-divisions of a bar by visually grouping notes.
 Notes are commonly grouped within quarter and eighth note durations, depending
-on the note values. Score 1.5. shows a phrase of quarter notes following a
+on the note values. [Score 5](#score-5). shows a phrase of quarter notes following a
 single sixteenth note, without any grouping. The same phrase is written with
-note groups in Score 1.6 for greater readability.
+note groups in [Score 6](#score-6) for greater readability.
 
-{% lilypond Score 1.5. A phrase without proper grouping is harder to read. %}
+{% lilypond [Score 5](#score-5). A phrase without proper grouping is harder to read. %}
 \relative {
     c'16 d4 e4 f4 g16 r8
 }
 {% endlilypond %}
 
-{% lilypond Score 1.6: Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together. %}
+{% lilypond Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together. %}
 \relative {
     c'16 d8.~d16 e8.~e16 f8.~f16 g16 r8
 }
 {% endlilypond %}
 
 Exceptions are made for common rythmic patterns, like the eighth note followed
-by a *single* quarter note and an eighth note (see Score 1.7). Multiple quarter
-notes following an eighth note should be grouped, as shown in Score 1.8.
+by a *single* quarter note and an eighth note, illustrated in [Score
+7](#score-7). Multiple quarter notes following an eighth note should be
+grouped, as shown in [Score 8](#score-8).
 
-{% lilypond Score 1.7: A common rythmic pattern that does not need grouping. %}
+{% lilypond A common rythmic pattern that does not need grouping. %}
 \relative {
     c'8 d4 e8 r2
 }
 {% endlilypond %}
 
-{% lilypond Score 1.8: Multiple quarter notes broken up into tied eighth notes. %}
+{% lilypond Multiple quarter notes broken up into tied eighth notes. %}
 \relative {
     c'8 d8~d8 e8~e8 f8~f8 g8
 }
@@ -259,7 +260,7 @@ We have just scratched the surface of music theory in describing the first
 piece of music, but we have enough of a model to start generating simple
 sight-reading exercises. Let us start by building a simple program using
 *core.logic*, and then gradually add constraints to make the generated music
-more "realistic" and challenging.
+more realistic and challenging.
 
 [1]: http://tobyrush.com/theorypages/
 [2]: https://en.wikipedia.org/wiki/Circle_of_fifths
