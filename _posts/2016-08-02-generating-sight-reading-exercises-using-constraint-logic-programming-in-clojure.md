@@ -26,7 +26,7 @@ adding constraints from our model.
 
 Music theory is a huge area with lots of rules and exceptions. Trying to
 include all those rules in our initial attempts at a music generator would not
-be productive. Let us instead define the model for our program by picking a
+be productive. Let's instead define the model for our program by picking a
 subset of the constructs and rules from music theory, and incrementally expand
 that model to meet our needs.
 
@@ -82,16 +82,16 @@ only need to be aware that keys exist and that key signatures affect the notes
 to be played in a score.
 
 [Score 1](#score-1) consists of four measures, also called *bars*, divided by bar
-lines. The time signature is 4/4, as denoted by the common time
+lines. The time signature is $$4/4$$, as denoted by the common time
 sign
 (<img src="/assets/music/common-time.1x.png"
       srcset="/assets/music/common-time.2x.png 2x, /assets/music/common-time.1x.png 1x"
       alt="Common time sign"
       style="margin: 0 .25em;">).
-With a time signature of 4/4, the total value of notes in each bar must
-equal 4/4. It might be tempting to say that the total value of a bar must be
-1 at all times, but it is not that simple. In other time signatures, such as
-3/4, 6/8, and 5/4, the total is not 1.
+With a time signature of $$4/4$$, the total value of notes in each bar must
+equal $$4/4$$. It might be tempting to say that the total value of a bar must be
+$$1$$ at all times, but it is not that simple. In other time signatures, such as
+$$3/4$$, $$6/8$$, and $$5/4$$, the total is not $$1$$.
 
 The following table describes the used note symbols and their meaning. It is in
 no way a complete list of musical symbols.
@@ -112,7 +112,7 @@ no way a complete list of musical symbols.
      alt="Half note">
 </td>
 <td>Half note</td>
-<td>1/2</td>
+<td>$$1/2$$</td>
 </tr>
 <tr>
 <td>
@@ -121,7 +121,7 @@ no way a complete list of musical symbols.
      alt="Quarter note">
 </td>
 <td>Quarter note</td>
-<td>1/4</td>
+<td>$$1/4$$</td>
 </tr>
 <tr>
 <td>
@@ -130,7 +130,7 @@ no way a complete list of musical symbols.
      alt="Eighth note">
 </td>
 <td>Eighth note</td>
-<td>1/8</td>
+<td>$$1/8$$</td>
 </tr>
 <tr>
 <td>
@@ -139,7 +139,7 @@ no way a complete list of musical symbols.
      alt="Sixteenth note">
 </td>
 <td>Sixteenth note</td>
-<td>1/16</td>
+<td>$$1/16$$</td>
 </tr>
 <tr>
 <td>
@@ -148,7 +148,7 @@ no way a complete list of musical symbols.
      alt="Dotted eighth note">
 </td>
 <td>Dotted eighth note</td>
-<td>3/16</td>
+<td>$$3/16$$</td>
 </tr>
 <tr>
 <td>
@@ -157,7 +157,7 @@ no way a complete list of musical symbols.
      alt="Dotted eighth note">
 </td>
 <td>Half rest</td>
-<td>1/2</td>
+<td>$$1/2$$</td>
 </tr>
 <tr>
 <td>
@@ -166,7 +166,7 @@ no way a complete list of musical symbols.
      alt="Dotted eighth note">
 </td>
 <td>Quarter rest</td>
-<td>1/4</td>
+<td>$$1/4$$</td>
 </tr>
 <tr>
 <td>
@@ -175,7 +175,7 @@ no way a complete list of musical symbols.
      alt="Dotted eighth note">
 </td>
 <td>Eighth rest</td>
-<td>1/8</td>
+<td>$$1/8$$</td>
 </tr>
 </tbody>
 </table>
@@ -258,7 +258,7 @@ grouped, as shown in [Score 8](#score-8).
 
 We have just scratched the surface of music theory in describing the first
 piece of music, but we have enough of a model to start generating simple
-sight-reading exercises. Let us start by building a simple program using
+sight-reading exercises. Let's start by building a simple program using
 *core.logic*, and then gradually add constraints to make the generated music
 more realistic and challenging.
 
@@ -267,11 +267,242 @@ more realistic and challenging.
 
 ## A Naive Generator
 
-<p class="draft">
-About building the first generator. No difficulty settings, no groupings.
-Should explain core.logic and why we get permutations in order. How to do
-random? Do we need random?
-</p>
+We start out building our first naive generator by only encoding very basic
+properties of notes and bars. As we are generating sheet music, let's call this
+project *SMUG*, short for <u>S</u>heet <u>Mu</u>sic <u>G</u>enerator. We begin
+by declaring our namespace and requiring `core.typed` and `core.typed.fd`. The
+`fd` namespace contains the stuff we need to work with finite domains.
+
+```clojure
+(ns smug.music
+  (:refer-clojure :exclude [==])
+  (:require [clojure.core.logic :refer :all]
+            [clojure.core.logic.fd :as fd]))
+```
+
+A notes has a pitch and a value. We represent the pitch an integer between 1
+and 7, inclusive. To use finite domain constraints we need to find ways of
+representing the values in our domain as integers. We will map the results of
+queries to other data types later. Using `interval` we create a finite domain
+based on the of numbers, and constrain $$p$$ to that domain.
+
+```clojure
+(defn pitcho [p]
+  (fd/in p (fd/interval 1 7)))
+```
+
+Similarly to note pitch, we represent the note value as an integer. In this
+case, however, the note value $$v$$ is not within a range of numbers, but $$v
+\in \{1, 2, 4, 8, 16\} $$, representing the numerator in $$1/16$$, $$2/16$$,
+$$4/16$$, $$8/16$$, and $$16/16$$.  In other words, with this representation
+we only support the note values from whole notes down to sixteenth notes. Using
+`domain` we create a finite domain based on the set of numbers, and constrain
+$$v$$ to that domain.
+
+```clojure
+(defn note-valueo [v]
+  (fd/in v (fd/domain 1 2 4 8 16)))
+```
+
+Let's compose these two relations into a note relation, with the pair of pitch
+and note value as a vector. We use `defne` to define a relation that
+destructures $$note$$ into its parts $$p$$ and $$d$$, and then constrain the
+pitch and note value.
+
+```clojure
+(defne noteo [note]
+  ([ [p v] ]
+   (pitcho p)
+   (note-valueo v)))
+```
+
+A bar can be represented as a sequence of notes. Using our `noteo` relation, we
+recursively describe the sequence. The first branch matches the empty sequence
+and succeeds. The second branch matches the non-empty sequence, constrains the
+first element to be a note, and recurses on the rest of the sequence.
+
+```clojure
+(defne noteso [notes]
+  ([ [] ])
+  ([ [n . ns] ]
+   (noteo n)
+   (noteso ns)))
+```
+
+We are soon ready to define `baro`, but first we need a way to ensure that the
+note values add up to a total of 16. To make the generator support different
+time signatures we would have to make that number configurable. For now we will
+only generate music in $$4/4$$, so hard-coding 16 is fine.
+
+For empty sequences the total is zero. For non-empty sequences we ensure that
+`v` is a note value and unify `total` with `s`, where `s` is the sum of `v`
+and the total of the remaining notes.
+
+```clojure
+(defne notes-total-valueo [notes total]
+  ([ [] _ ]
+   (fd/== total 0))
+  ([ [[p v] . ns] _ ]
+   (fresh (s)
+     (note-valueo v)
+     (fd/+ v s total)
+     (notes-total-valueo ns s))))
+```
+
+This definition is analogous to how `(reduce + (map first notes))` would work
+on a sequence `notes` using regular Clojure data structures, but as we are
+using logic variables we can't use `reduce` and `first`; we have to describe
+the logical relation of the reduction.
+
+Now to last relation we need to define, called `baro`. It simply states that
+a bar is a sequence of notes and that the total note value must be 16.
+
+```clojure
+(defn baro [notes]
+  (fresh []
+    (noteso notes)
+    (notes-total-valueo notes 16)))
+```
+
+We use `run` to query for bars. The following query gives us 32 valid bars,
+neatly pretty-printed in the REPL.
+
+```clojure
+smug.music> (clojure.pprint/pprint
+             (run 32 [q]
+               (baro q)))
+(([1 16])
+ ([2 16])
+ ([3 16])
+ ([4 16])
+ ([5 16])
+ ([6 16])
+ ([1 8] [1 8])
+ ([7 16])
+ ([2 8] [1 8])
+ ([3 8] [1 8])
+ ([4 8] [1 8])
+ ([5 8] [1 8])
+ ([6 8] [1 8])
+ ([7 8] [1 8])
+ ([1 4] [1 4] [1 8])
+ ([1 8] [1 4] [1 4])
+ ([2 4] [1 4] [1 8])
+ ([1 2] [1 8] [1 2] [1 4])
+ ([1 4] [1 8] [1 2] [1 2])
+ ([2 8] [1 4] [1 4])
+ ([3 4] [1 4] [1 8])
+ ([2 2] [1 8] [1 2] [1 4])
+ ([1 8] [1 4] [1 2] [1 2])
+ ([3 8] [1 4] [1 4])
+ ([4 4] [1 4] [1 8])
+ ([2 4] [1 8] [1 2] [1 2])
+ ([1 1] [1 8] [1 4] [1 2] [1 1])
+ ([4 8] [1 4] [1 4])
+ ([3 2] [1 8] [1 2] [1 4])
+ ([2 8] [1 4] [1 2] [1 2])
+ ([5 4] [1 4] [1 8])
+ ([2 1] [1 8] [1 4] [1 2] [1 1]))
+nil
+```
+
+The output is a bit crude; a sequence of sequences of pairs of integers. Let's
+define some conversion functions to make the results reflect the domain of
+musical notation.
+
+```clojure
+(defn ->pitch [p]
+  (nth [:c :d :e :f :g :a :b] (- p 1)))
+
+(defn ->duration [d]
+  (/ d 16))
+
+(defn ->note [[p d]]
+  [(->pitch p)
+   (->duration d)])
+
+(defn ->bar [bar]
+  (map ->note bar))
+```
+
+All right, let's try again.
+
+```clojure
+smug.music> (clojure.pprint/pprint
+             (map ->bar (run 32 [q]
+                          (baro q))))
+(([:c 1])
+ ([:d 1])
+ ([:e 1])
+ ([:f 1])
+ ([:g 1])
+ ([:a 1])
+ ([:c 1/2] [:c 1/2])
+ ([:b 1])
+ ([:d 1/2] [:c 1/2])
+ ([:e 1/2] [:c 1/2])
+ ([:f 1/2] [:c 1/2])
+ ([:g 1/2] [:c 1/2])
+ ([:a 1/2] [:c 1/2])
+ ([:b 1/2] [:c 1/2])
+ ([:c 1/4] [:c 1/4] [:c 1/2])
+ ([:c 1/2] [:c 1/4] [:c 1/4])
+ ([:d 1/4] [:c 1/4] [:c 1/2])
+ ([:c 1/8] [:c 1/8] [:c 1/4] [:c 1/2])
+ ([:d 1/2] [:c 1/4] [:c 1/4])
+ ([:c 1/4] [:c 1/8] [:c 1/8] [:c 1/2])
+ ([:e 1/4] [:c 1/4] [:c 1/2])
+ ([:d 1/8] [:c 1/8] [:c 1/4] [:c 1/2])
+ ([:e 1/2] [:c 1/4] [:c 1/4])
+ ([:c 1/2] [:c 1/8] [:c 1/8] [:c 1/4])
+ ([:f 1/4] [:c 1/4] [:c 1/2])
+ ([:d 1/4] [:c 1/8] [:c 1/8] [:c 1/2])
+ ([:f 1/2] [:c 1/4] [:c 1/4])
+ ([:c 1/16] [:c 1/8] [:c 1/16] [:c 1/2] [:c 1/4])
+ ([:g 1/4] [:c 1/4] [:c 1/2])
+ ([:e 1/8] [:c 1/8] [:c 1/4] [:c 1/2])
+ ([:d 1/2] [:c 1/8] [:c 1/8] [:c 1/4])
+ ([:g 1/2] [:c 1/4] [:c 1/4]))
+nil
+```
+
+Neat! Let's wrap all this up in to function that we can use as the API for the
+generator. Here we wrap the sequence of bars in map as well. Later on we can
+add other key-value pairs to the map, like the time and key signatures.
+
+```clojure
+(defn generate-score [n]
+  (let [bars (run n [q]
+               (baro q))]
+    {:bars (map ->bar bars)}))
+```
+
+We now have a very simple, but working generator. The average musician
+does not read music in the form of Clojure source code, though. We need
+rendering. I stumbled across [Lilypond](lilypond), a music engraving program in
+the [GNU Project](gnu-project). The input format is a TeX-like markup that is
+simple to generate, and the program can output stunningly beautiful scores in
+PDF, PNG, and SVG formats. To keep the article focused, I will not include the
+rendering code, but you can check out [the full source on
+GitHub](github-project) if you are interested. [Score 9](#score-9) shows our
+previous result rendered with Lilypond.
+
+{% lilypond Our generated 32 bars of music. %}
+{
+  c'1 \bar "|" d'1 \bar "|" e'1 \bar "|" f'1 \bar "|" g'1 \bar "|" a'1 \bar "|" c'2 c'2 \bar "|" b'1 \break
+   d'2 c'2 \bar "|" e'2 c'2 \bar "|" f'2 c'2 \bar "|" g'2 c'2 \bar "|" a'2 c'2 \bar "|" b'2 c'2 \bar "|" c'4 c'4 c'2 \bar "|" c'2 c'4 c'4 \break
+   d'4 c'4 c'2 \bar "|" c'8 c'2 c'8 c'4 \bar "|" d'2 c'4 c'4 \bar "|" e'4 c'4 c'2 \bar "|" e'2 c'4 c'4 \bar "|" c'16 c'2 c'8 c'4 c'16 \bar "|" f'4 c'4 c'2 \bar "|" c'4 c'2 c'8 c'8 \break
+   f'2 c'4 c'4 \bar "|" d'16 c'2 c'8 c'4 c'16 \bar "|" g'4 c'4 c'2 \bar "|" c'8 c'2 c'16 c'4 c'16 \bar "|" g'2 c'4 c'4 \bar "|" a'4 c'4 c'2 \bar "|" c'4 c'2 c'16 c'8 c'16 \bar "|" d'8 c'2 c'8 c'4 \bar "|."
+}
+{% endlilypond %}
+
+Remember note grouping from the music theory introduction? When we render the
+generated music, like in [Score 9](#score-9), the lack of proper note grouping
+becomes very clear. Bar 22, 26, and 28 have intolerable sequences of notes values
+without grouping. Let's fix that!
+
+[lilypond]: http://lilypond.org/
+[gnu-project]: http://gnu.org/
 
 ## Note Grouping
 
@@ -291,9 +522,17 @@ Add constraints to enforce variation, in pitch and duration.
 Extend the first generator with difficulty setting.
 </p>
 
+## Randomness
+
+<p class="draft">
+When do we introduce randomness? How?
+</p>
+
 ## Next Steps
 
 <p class="draft">
 What have we covered? What can be the next steps? Link to a complete sample on
 GitHub.
 </p>
+
+[github-project]: http://github.com/owickstrom/smug
