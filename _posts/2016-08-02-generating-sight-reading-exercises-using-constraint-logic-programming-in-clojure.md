@@ -479,12 +479,12 @@ add other key-value pairs to the map, like the time and key signatures.
 
 We now have a very simple, but working generator. The average musician
 does not read music in the form of Clojure source code, though. We need
-rendering. I stumbled across [Lilypond](lilypond), a music engraving program in
-the [GNU Project](gnu-project). The input format is a TeX-like markup that is
+rendering. I stumbled across [Lilypond][lilypond], a music engraving program in
+the [GNU Project][gnu-project]. The input format is a TeX-like markup that is
 simple to generate, and the program can output stunningly beautiful scores in
 PDF, PNG, and SVG formats. To keep the article focused, I will not include the
 rendering code, but you can check out [the full source on
-GitHub](github-project) if you are interested. [Score 9](#score-9) shows our
+GitHub][github-project] if you are interested. [Score 9](#score-9) shows our
 previous result rendered with Lilypond.
 
 {% lilypond Our generated 32 bars of music. %}
