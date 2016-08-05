@@ -8,17 +8,17 @@ categories: Programming
 tags: ["music", "logic", "clp", "clojure"]
 ---
 
-Programming is fun! Music is fun! Combining the two seems like a joyful
+Programming is fun! Music is fun! Combining the two should be a joyful
 endeavour. I have long been curious about generating music as a tool for
-practicing sight-reading. It does not have to be beautiful music, its
-purpose is to help practitioners advance their skills gradually. I do, however,
-want to explore ways to generate music following patterns and idioms, resulting
-in realistic and useful material.
+practicing sight-reading. It does not have to be beautiful music, its purpose
+is to help practitioners advance their skills gradually. I do, however, want to
+explore ways to generate music following patterns and idioms, resulting in
+realistic and useful material.
 
-This article aims to introduce you to concepts both from music theory and from
-constraint logic programming using [core.logic][1]. We will build a naive music
-generator based on a simplified musical model, and incrementally improve the
-output by adding constraints from our model.
+This article introduces concepts both from music theory and from constraint
+logic programming using [core.logic][1]. We will build a naive music generator
+based on a simplified musical model, and incrementally improve the output by
+adding constraints from our model.
 
 [1]: https://github.com/clojure/core.logic
 
@@ -240,8 +240,8 @@ note groups in Score 1.6 for greater readability.
 {% endlilypond %}
 
 Exceptions are made for common rythmic patterns, like the eighth note followed
-by a quarter note and an eighth note (see Score 1.7). Multiple quarter notes
-following an eighth note should be grouped, as shown in Score 1.8.
+by a *single* quarter note and an eighth note (see Score 1.7). Multiple quarter
+notes following an eighth note should be grouped, as shown in Score 1.8.
 
 {% lilypond Score 1.7: A common rythmic pattern that does not need grouping. %}
 \relative {
@@ -276,6 +276,12 @@ random? Do we need random?
 
 <p class="draft">
 Extend the first generator with note groups.
+</p>
+
+## Varying Pitch and Duration
+
+<p class="draft">
+Add constraints to enforce variation, in pitch and duration.
 </p>
 
 ## Difficulty Levels
