@@ -413,12 +413,12 @@ musical notation.
 (defn ->pitch [p]
   (nth [:c :d :e :f :g :a :b] (- p 1)))
 
-(defn ->duration [d]
+(defn ->note-value [d]
   (/ d 16))
 
 (defn ->note [[p d]]
   [(->pitch p)
-   (->duration d)])
+   (->note-value d)])
 
 (defn ->bar [bar]
   (map ->note bar))
@@ -430,6 +430,7 @@ All right, let's try again.
 smug.music> (clojure.pprint/pprint
              (map ->bar (run 32 [q]
                           (baro q))))
+;; output:
 (([:c 1])
  ([:d 1])
  ([:e 1])
@@ -462,7 +463,6 @@ smug.music> (clojure.pprint/pprint
  ([:e 1/8] [:c 1/8] [:c 1/4] [:c 1/2])
  ([:d 1/2] [:c 1/8] [:c 1/8] [:c 1/4])
  ([:g 1/2] [:c 1/4] [:c 1/4]))
-nil
 ```
 
 Neat! Let's wrap all this up in to function that we can use as the API for the
@@ -508,9 +508,26 @@ without grouping. Let's fix that!
 We need to define relations that constrain groups of notes depending on their
 note values. To make it more practical we introduce a new level in our
 hierarchy of sequences that represents note groups. A bar consist of a seqence
-of groups of notes, rather than a sequence of notes.
+of groups of notes, rather than a sequence of notes. [Score 10](#score-10)
+contains the note groupings that we will support.
 
-Let's define the new relation `groupo`. It is similar to our old `baro`
+{% lilypond Matched note groups in the groupo relation. %}
+\relative {
+  \override Staff.TimeSignature #'stencil = ##f
+  \override Staff.Clef #'stencil = ##f
+  \time 1/4
+  c'16 c c c
+  c16 c8 c16
+  c8 c16 c16
+  c16 c16 c8
+  c8 c8
+  \time 2/4
+  c8 c4 c8
+  \once \override Score.BarLine.break-visibility = ##(#f #t #t)
+}
+{% endlilypond %}
+
+Let's define the new relation `groupo`. It is similar to our previous `baro`
 relation, but matches the group of notes to ensure that the note values follow
 one of the predefined patterns. The last branch matches on a group with a
 single note longer or equal to a quarter note.
@@ -538,27 +555,9 @@ single note longer or equal to a quarter note.
             (fd/== duration v)))))
 ```
 
-The initial six patterns in `groupo` are equivalent to the note groups shown in
-[Score 10]( #score-10).
 
-{% lilypond Matched note groups in the groupo relation. %}
-\relative {
-  \override Staff.TimeSignature #'stencil = ##f
-  \override Staff.Clef #'stencil = ##f
-  \time 1/4
-  c'16 c c c
-  c16 c8 c16
-  c8 c16 c16
-  c16 c16 c8
-  c8 c8
-  \time 2/4
-  c8 c4 c8
-  \once \override Score.BarLine.break-visibility = ##(#f #t #t)
-}
-{% endlilypond %}
-
-We define the `groupso` relation for sequences of groups, with a parameter for
-the total duration.
+We also need the `groupso` relation for sequences of groups, with a parameter
+for the total duration.
 
 ```clojure
 (defne groupso [groups duration]
@@ -571,8 +570,8 @@ the total duration.
      (groupso gs sub-total))))
 ```
 
-The `baro` relation can be simplified to only constrain groups in a bar to have
-a total duration of 16.
+The `baro` relation can now be simplified to only constrain groups in a bar to
+have a total duration of 16.
 
 ```clojure
 (defn baro [groups]
@@ -602,7 +601,7 @@ smug.music> (defn pitcho [p]
 #'smug.music/pitcho
 ```
 
-As the first bars consists of simpler note values we generate a score 64 bars
+As the first bars consist of simpler note values we generate a score of 64 bars
 and drop the first half.
 
 ```clojure
@@ -610,6 +609,7 @@ smug.music> (clojure.pprint/pprint
              (->> (generate-score 64)
                   :bars
                   (drop 32)))
+;; output:
 (([:c 1/16] [:c 1/8] [:c 1/16] [:c 1/2] [:c 1/8] [:c 1/8])
  ([:c 1/4] [:c 1/8] [:c 1/16] [:c 1/16] [:c 1/2])
  ([:c 1/2] [:c 1/8] [:c 1/16] [:c 1/16] [:c 1/4])
@@ -642,7 +642,6 @@ smug.music> (clojure.pprint/pprint
  ([:c 1/4] [:c 1/16] [:c 1/16] [:c 1/8] [:c 1/2])
  ([:c 1/2] [:c 1/16] [:c 1/16] [:c 1/8] [:c 1/4])
  ([:c 1/8] [:c 1/16] [:c 1/16] [:c 1/2] [:c 1/8] [:c 1/8]))
-nil
 ```
 
 Looks good. [Score 11](#score-11) shows the rendered result.

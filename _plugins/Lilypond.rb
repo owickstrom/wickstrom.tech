@@ -29,6 +29,9 @@ class LilypondTag < Liquid::Block
     \\header {
       tagline = ""
     }
+    \\paper {
+      indent = 0\cm
+    }
     HEADER
     in_f.write(header)
     in_f.write(content)
