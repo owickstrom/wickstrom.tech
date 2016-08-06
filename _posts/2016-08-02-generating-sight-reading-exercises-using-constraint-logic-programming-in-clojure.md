@@ -655,7 +655,7 @@ Looks good. [Score 11](#score-11) shows the rendered result.
 }
 {% endlilypond %}
 
-
+Sweet, it works.
 
 ## Varying Pitch and Duration
 
