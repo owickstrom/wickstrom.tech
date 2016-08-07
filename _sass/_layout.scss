@@ -1,3 +1,9 @@
+body {
+  position: relative;
+  background-image: url('/assets/header-bg.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
 .site-nav {
 
   .page-link {
@@ -36,7 +42,7 @@
  */
 .site-footer {
   padding: $spacing-unit 0 $spacing-unit;
-  border-top: 1px solid #ddd;
+  border-top: 5px solid $grey-color-light;
   text-align: center;
   font-size: $small-font-size;
 }
