@@ -44,8 +44,8 @@ be productive. Let's instead define the model for our program by picking a
 subset of the constructs and rules from music theory, and incrementally expand
 that model to meet our needs.
 
-Our first step is to define the goals of our project. I have asked my musician
-friends on Facebook what they think is the most important traits of a
+Our first step is to define the goals of our project. I have asked some of
+my musician friends what they think is the most important traits of a
 sight-reading exercise. The following is a list based on my own evaluation, and
 their responses, in order of importance.
 
@@ -56,6 +56,8 @@ their responses, in order of importance.
 1. Interesting pitch variations (melodies, scales, patterns)
 1. Key signatures, modes, accidentals
 1. Parameterized difficulty
+1. Dotted notes
+1. Ties
 1. Playback (generate a MIDI or WAV file)
 1. Odd time signatures
 
@@ -710,6 +712,8 @@ Anyway, we can now cross of the first three points on our list:
 1. Rests
 1. Key signatures, modes, accidentals
 1. Parameterized difficulty
+1. Dotted notes
+1. Ties
 1. Playback (generate a MIDI or WAV file)
 1. Odd time signatures
 
