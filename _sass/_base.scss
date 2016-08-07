@@ -174,7 +174,7 @@ pre {
 
 p code {
   background: $grey-color-light;
-  padding: 0 .2em;
+  padding: .1em .2em;
 }
 
 @include media-query($on-laptop) {

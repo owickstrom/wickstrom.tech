@@ -259,7 +259,7 @@ dotted notes.
 Another important aspect of musical notation is *note grouping*. This technique
 helps the reader to see the sub-divisions of a bar by visually grouping notes.
 Notes are commonly grouped within quarter and eighth note durations, depending
-on the note values. [Score 5](#score-5). shows a phrase of quarter notes following a
+on the note values. [Score 5](#score-5) shows a phrase of quarter notes following a
 single sixteenth note, without any grouping. The same phrase is written with
 note groups in [Score 6](#score-6) for greater readability.
 
@@ -295,7 +295,7 @@ grouped, as shown in [Score 8](#score-8).
 We have just scratched the surface of music theory in describing the first
 piece of music, but we have enough of a model to start generating simple
 sight-reading exercises. Let's start by building a simple program using
-*core.logic*, and then gradually add constraints to make the generated music
+core.logic, and then gradually add constraints to make the generated music
 more realistic and challenging.
 
 [1]: http://tobyrush.com/theorypages/
@@ -316,11 +316,11 @@ by declaring our namespace and requiring `core.typed` and `core.typed.fd`. The
             [clojure.core.logic.fd :as fd]))
 ```
 
-A notes has a pitch and a value. We represent the pitch an integer between 1
+A note has a pitch and a value. We represent the pitch as an integer between 1
 and 7, inclusive. To use finite domain constraints we need to find ways of
-representing the values in our domain as integers. We will map the results of
+representing the values in *our domain* as integers. We will map the results of
 queries to other data types later. Using `interval` we create a finite domain
-based on the of numbers, and constrain p to that domain.
+based on a set of numbers, and constrain `p` to that domain.
 
 ```clojure
 (defn pitcho [p]
@@ -329,10 +329,11 @@ based on the of numbers, and constrain p to that domain.
 
 Similarly to note pitch, we represent the note value as an integer. In this
 case, however, the note value is not within a range of numbers, but a number in
-the set `{1, 2, 4, 8, 16}` , representing the numerators in 1/16, 2/16, 4/16,
-8/16, and 16/16.  In other words, with this representation we only support the
-note values from whole notes down to sixteenth notes. Using `domain` we create
-a finite domain based on the set of numbers, and constrain `v` to that domain.
+the set `{1, 2, 4, 8, 16}` , representing the numerators in the dyadic
+rationals 1/16, 2/16, 4/16, 8/16, and 16/16.  In other words, with this
+representation we only support the note values from whole notes down to
+sixteenth notes. Using `domain` we create a finite domain based on the set of
+numbers, and constrain `v` to that domain.
 
 ```clojure
 (defn note-valueo [v]
@@ -341,8 +342,8 @@ a finite domain based on the set of numbers, and constrain `v` to that domain.
 
 Let's compose these two relations into a note relation, with the pair of pitch
 and note value as a vector. We use `defne` to define a relation that
-destructures note into its parts `p` and `v`, and then constrain the pitch and
-note value.
+destructures a note into its parts, `p` and `v`, and then constrain the pitch
+and note value.
 
 ```clojure
 (defne noteo [note]
@@ -389,8 +390,8 @@ on a sequence `notes` using regular Clojure data structures, but as we are
 using logic variables we can't use `reduce` and `first`; we have to describe
 the logical relation of the reduction.
 
-Now to last relation we need to define, called `baro`. It simply states that
-a bar is a sequence of notes and that the total note value must be 16.
+The last relation define is called `baro`. It simply states that a bar is a
+sequence of notes, and that the total note value must be 16.
 
 ```clojure
 (defn baro [notes]
@@ -439,7 +440,6 @@ smug.music> (clojure.pprint/pprint
  ([2 8] [1 4] [1 2] [1 2])
  ([5 4] [1 4] [1 8])
  ([2 1] [1 8] [1 4] [1 2] [1 1]))
-nil
 ```
 
 The output is a bit crude; a sequence of sequences of pairs of integers. Let's
@@ -503,7 +503,7 @@ smug.music> (clojure.pprint/pprint
 ```
 
 Neat! Let's wrap all this up in to function that we can use as the API for the
-generator. Here we wrap the sequence of bars in map as well. Later on we can
+generator. Here we wrap the sequence of bars in a map as well. Later on we can
 add other key-value pairs to the map, like the time and key signatures.
 
 ```clojure
@@ -513,15 +513,15 @@ add other key-value pairs to the map, like the time and key signatures.
     {:bars (map ->bar bars)}))
 ```
 
-We now have a very simple, but working generator. The average musician
-does not read music in the form of Clojure source code, though. We need
-rendering. I stumbled across [Lilypond][lilypond], a music engraving program in
-the [GNU Project][gnu-project]. The input format is a TeX-like markup that is
-simple to generate, and the program can output stunningly beautiful scores in
-PDF, PNG, and SVG formats. To keep the post focused, I will not include the
-rendering code, but you can check out [the full source on
-GitHub][github-project] if you are interested. [Score 9](#score-9) shows our
-previous result rendered with Lilypond.
+We now have a very simple generator. The average musician does not read music
+in the form of Clojure data literals, though. We need rendering. I stumbled
+across [Lilypond][lilypond], a music engraving program in the [GNU
+Project][gnu-project]. The input format is a TeX-like markup that is simple to
+generate, and the program can output stunningly beautiful scores in PDF, PNG,
+and SVG formats. To keep the post focused, I will not include the rendering
+code, but you can check out [the full source on GitHub][github-code] if you
+are interested. [Score 9](#score-9) shows our previous result rendered with
+Lilypond.
 
 {% lilypond Our generated 32 bars of music. %}
 {
@@ -697,11 +697,11 @@ Sweet, it works! That concludes our work on note groups, for now.
 ## Summary
 
 We have gone through the basic music theory we need for our project, and
-created a simple generator on which we can improve. There are some problems
-with the relations still, like `(run 8 [q] (groupo q 16))` not terminating.
-This seems to cause the same behaviour when trying to generate a score of more
-than 308 bars. If anyone knows why, please let me know. I'll try to find out
-why before the next post.
+created a simple generator on which we can improve incrementally. There are
+some problems with the relations still, like `(run 8 [q] (groupo q 16))` not
+terminating.  This seems to cause the same behaviour when trying to generate a
+score of more than 308 bars. If anyone knows why, please let me know. I'll try
+to find out why before the next post.
 
 Anyway, we can now cross of the first three points on our list:
 
@@ -724,8 +724,8 @@ have nailed our other objectives. This way, it is much easier to verify how or
 relations work.
 
 The SMUG source code for this post is available on GitHub [at the `blog-post-1`
-tag][github-code]. I hope you enjoyed this post and will continue following
-the series. Don't forget to help me steer this thing in the right direction by
+tag][github-code]. I hope you enjoyed the read and will continue following the
+series. Don't forget to help me steer this thing in the right direction by
 letting me know what's interesting to read about.
 
 [github-code]: https://github.com/owickstrom/smug/tree/blog-post-1
