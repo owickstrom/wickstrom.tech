@@ -15,10 +15,16 @@ twitter_username: owickstrom
 github_username:  owickstrom
 
 # Build settings
-markdown: kramdown
+markdown: Pandoc
 
 sass:
   style: compressed
 
 gems:
   - jekyll-sitemap
+  - jekyll-pandoc
+
+pandoc:
+  extensions:
+    #- 'implicit_figures'
+    highlight-style: pygments

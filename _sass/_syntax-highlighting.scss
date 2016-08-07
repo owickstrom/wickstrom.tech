@@ -1,3 +1,35 @@
+
+
+code > span.kw { color: #222; } /* Keyword */
+code > span.dt { color: #445588; } /* DataType */
+code > span.dv { color: #009999; } /* DecVal */
+code > span.bn { color: #009999; } /* BaseN */
+code > span.fl { color: #009999; } /* Float */
+code > span.ch { color: #009999; } /* Char */
+code > span.st { color: #d01040; } /* String */
+code > span.co { color: #999; font-style: italic; } /* Comment */
+code > span.ot { color: #222; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #222; } /* Function */
+code > span.er { color: #ff0000; } /* Error */
+code > span.wa { color: #60a0b0; font-style: italic; } /* Warning */
+code > span.cn { color: #d01040; } /* Constant */
+code > span.sc { color: #d01040; } /* SpecialChar */
+code > span.vs { color: #d01040; } /* VerbatimString */
+code > span.ss { color: #d01040; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #222; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #999; } /* Preprocessor */
+code > span.at { color: #666; } /* Attribute */
+code > span.do { color: #999; font-style: italic; } /* Documentation */
+code > span.an { color: #999; font-style: italic; } /* Annotation */
+code > span.cv { color: #999; font-style: italic; } /* CommentVar */
+code > span.in { color: #999; font-style: italic; } /* Information */
+
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999; font-style: italic } /* Comment */
 .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */

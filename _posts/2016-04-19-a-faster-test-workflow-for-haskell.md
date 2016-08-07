@@ -20,9 +20,9 @@ As I already use *tmux* for all work I figured I could use that together with
 GHCi somehow.  Tmux has a command called `send-keys` that lets you
 programmatically send keys as though they were typed in at the target pane.
 
-{% highlight bash %}
+```bash
 tmux send-keys -t "mysession:0.1" "echo hello, world" Enter
-{% endhighlight %}
+```
 
 This sends `echo hello, world` followed by a line break to the pane with index
 1, in the window with index 0, in the session called *mysession*. The `-t`
@@ -34,7 +34,7 @@ I also use *tmuxinator* to setup windows and panes for my projects, which means
 I know what indices they will have. The following is an excerpt of my new Oden
 tmuxinator configuration.
 
-{% highlight yaml %}
+```yaml
 name: oden
 root: ~/Projects/oden-lang
 
@@ -53,7 +53,7 @@ windows:
               --watch test \
               -e hs \
               --exec 'tmux send-keys -t "oden:0.1" :r Enter main Enter'
-{% endhighlight %}
+```
 
 This tmuxinator configuration launches one split window with Vim and GHCi as
 well as another window running `nodemon`. When Haskell source files in `src`

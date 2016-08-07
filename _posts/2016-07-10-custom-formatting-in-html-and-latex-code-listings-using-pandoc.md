@@ -23,20 +23,18 @@ Using this filter, I can write code listings in separate files, using a small
 subset of HTML. Here's an example of a shell command listing source file from
 the User Guide:
 
-{% highlight html %}
+```html
 $ <strong>GOPATH=PWD/target/go:$GOPATH go build -o hello hello/main</strong>
 $ <strong>./hello</strong>
 Hello, world!
-{% endhighlight %}
+```
 
 The `strong` tags in the listing are part of the HTML subset I use. To include
 listings in the Pandoc Markdown source I use regular code block syntax and add
 the custom `include` and `formatted` attributes:
 
-{% highlight markdown %}
-```{include=src/listings/hello-world-go-build-and-run.html formatted=true}
-```
-{% endhighlight %}
+    ```{include=src/listings/hello-world-go-build-and-run.html formatted=true}
+    ```
 
 The output, both in HTML and PDF, looks like this:
 

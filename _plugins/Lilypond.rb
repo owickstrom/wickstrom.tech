@@ -26,12 +26,12 @@ class LilypondTag < Liquid::Block
 
     in_f = Tempfile.new(["music", ".ly"])
     header = <<-HEADER
-    \\header {
-      tagline = ""
-    }
-    \\paper {
-      indent = 0\cm
-    }
+\\header {
+  tagline = ""
+}
+\\paper {
+  indent = 0\cm
+}
     HEADER
     in_f.write(header)
     in_f.write(content)
@@ -73,14 +73,14 @@ class LilypondTag < Liquid::Block
     url_2x = "#{site.baseurl}/generated/#{name_2x}"
 
     <<-MARKUP.strip
-    <figure class="lilypond music">
-      <span id="score-#{number}"></span>
-      <img src="#{url_1x}" srcset="#{url_1x} 1x, #{url_2x} 2x" alt="#{@caption}" />
-      <figcaption>
-        <span class="caption-number">Score #{number}:</span>
-        #{@caption}
-      </figcaption>
-    </figure>
+<figure class="lilypond music">
+<span id="score-#{number}"></span>
+<img src="#{url_1x}" srcset="#{url_1x} 1x, #{url_2x} 2x" alt="#{@caption}" />
+<figcaption>
+<span class="caption-number">Score #{number}:</span>
+#{@caption}
+</figcaption>
+</figure>
     MARKUP
   end
 end

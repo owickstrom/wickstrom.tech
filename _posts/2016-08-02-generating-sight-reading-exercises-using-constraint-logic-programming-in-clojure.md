@@ -16,11 +16,11 @@ explore ways to generate music following patterns and idioms, resulting in
 realistic and useful material.
 
 This article introduces concepts both from music theory and from constraint
-logic programming using [core.logic][1]. We will build a naive music generator
+logic programming using [core.logic][core-logic]. We will build a naive music generator
 based on a simplified musical model, and incrementally improve the output by
 adding constraints from our model.
 
-[1]: https://github.com/clojure/core.logic
+[core-logic]: https://github.com/clojure/core.logic
 
 ## Defining the Musical Model
 
