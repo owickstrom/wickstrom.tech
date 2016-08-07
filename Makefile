@@ -1,4 +1,4 @@
-build: music-pngs
+build:
 	jekyll build
 
 deploy: build

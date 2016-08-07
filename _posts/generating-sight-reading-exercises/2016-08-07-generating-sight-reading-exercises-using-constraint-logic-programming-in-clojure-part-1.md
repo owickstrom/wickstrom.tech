@@ -1,8 +1,7 @@
 ---
 layout: post
 title: "Generating Sight-Reading Exercises using Constraint Logic Programming in Clojure, Part 1"
-date: 2016-08-03 08:00 +0200
-published: false
+date: 2016-08-07 08:00 +0200
 author: Oskar Wickström
 categories: Programming
 tags: ["music", "logic", "clp", "clojure"]
