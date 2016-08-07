@@ -25,7 +25,7 @@ is to help practitioners advance their skills gradually. I do, however, want to
 explore ways to generate music following patterns and idioms, resulting in
 realistic and useful material.
 
-### What you need to know
+### What You Need to Know
 
 This post introduces concepts both from music theory and from constraint
 logic programming using [core.logic][core-logic]. You are not expected to have
