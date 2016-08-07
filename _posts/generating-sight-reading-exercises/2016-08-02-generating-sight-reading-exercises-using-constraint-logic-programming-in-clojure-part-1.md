@@ -30,7 +30,7 @@ realistic and useful material.
 This post introduces concepts both from music theory and from constraint
 logic programming using [core.logic][core-logic]. You are not expected to have
 any knowledge about music theory. Some familiarity with core.logic, or logic
-programming languages like Prolog or miniKanren, will help; I recommend you to
+programming languages like Prolog or miniKanren, is needed. I recommend you to
 go through [the core.logic primer][core-logic-primer] for an introduction.
 
 [core-logic]: https://github.com/clojure/core.logic
