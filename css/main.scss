@@ -6,22 +6,22 @@
 
 
 // Our variables
-$base-font-family: "Palatino", "Roboto Slab", "Georgia", serif;
-$sans-font-family: "Gill Sans", "Trebuchet MS", "Ubuntu", sans-serif;
-$monospace-font-family: 'Monaco', 'Consolas', 'Roboto Mono', monospace;
+$base-font-family: "Cabin", sans-serif;
+$display-font-family: "Montserrat", sans-serif;
+$monospace-font-family: "Inconsolata", monospace;
 $base-font-size:   18px;
 $base-font-weight: 400;
 $small-font-size:  90%;
 $base-line-height: 1.4;
 
-$spacing-unit:     32px;
+$spacing-unit:     2rem;
 
 $text-color:       #222;
 $background-color: #fff;
 $brand-color:      #e81c4f;
 
 $grey-color:       #777;
-$grey-color-light: lighten($grey-color, 40%);
+$grey-color-light: #f0f0f0;
 $grey-color-dark:  darken($grey-color, 25%);
 
 // Width of the content area

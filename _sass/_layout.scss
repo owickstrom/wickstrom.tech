@@ -59,16 +59,15 @@
 }
 
 .page-title {
-  font-size: 42px;
+  font-size: 32px;
   margin-bottom: $spacing-unit / 4;
-  letter-spacing: -1px;
-  font-weight: 500;
+  font-weight: 800;
 
   @include media-query($on-laptop) {
-    font-size: 36px;
+    font-size: 28px;
   }
   @include media-query($on-palm) {
-    font-size: 32px;
+    font-size: 24px;
   }
 }
 
@@ -76,6 +75,16 @@
   color: #222;
   background: #ffea33;
 }
+
+.post-meta {
+  font-size: 80%;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.site-title {
+  font-family: $display-font-family;
+}
+
 
 .post-list {
   margin-top: $spacing-unit/2;
@@ -86,7 +95,7 @@
 
   .draft:before {
     content: '[DRAFT] ';
-    font-family: $sans-font-family;
+    font-family: $display-font-family;
     font-weight: 500;
   }
 
@@ -100,10 +109,6 @@
 .index-heading {
   position: absolute;
   text-indent: -9999px;
-}
-
-.post-meta {
-  font-size: 100%;
 }
 
 

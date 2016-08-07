@@ -29,13 +29,13 @@ body {
 
 @include media-query($on-laptop) {
   body {
-    font-size: 16px;
+    font-size: 17px;
   }
 }
 
 @include media-query($on-palm) {
   body {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -95,15 +95,11 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
-  font-size: 100%;
+  font-family: $display-font-family;
+  font-size: 95%;
   line-height: inherit;
   margin-bottom: 1.4rem;
-  font-weight: 600;
-  font-size: 95%;
-}
-
-h2, h3 {
-  font-family: $sans-font-family;
+  font-weight: 800;
 }
 
 h2 {
@@ -139,10 +135,9 @@ a {
  */
 blockquote {
   color: $grey-color;
-  border-left: 4px solid $grey-color-light;
+  border-left: 5px solid $grey-color-light;
   padding-left: $spacing-unit / 2;
   font-size: 125%;
-  letter-spacing: -1px;
   font-style: italic;
 
   > :last-child {
@@ -171,21 +166,27 @@ pre {
   padding: .7rem 1.4rem;
   margin-bottom: 1.4rem;
   overflow-x: auto;
-  font-size: 85%;
 }
+
+.sourceCode pre {
+  border-left: 5px solid $grey-color-light;
+}
+
 p code {
-  font-size: 85%;
+  background: $grey-color-light;
+  padding: 0 .2em;
 }
+
 @include media-query($on-laptop) {
   pre {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: .7rem;
+    padding-right: .7rem;
   }
 }
 @include media-query($on-palm) {
   pre {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: .7rem;
+    padding-right: .7rem;
   }
 }
 
