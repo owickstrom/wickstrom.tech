@@ -8,6 +8,17 @@ categories: Programming
 tags: ["music", "logic", "clp", "clojure"]
 ---
 
+_This is the first post in a series about generating sheet music for
+sight-reading exercises, using Clojure and core.logic. The size and direction
+of the series is not set in stone; your feedback matters! Please post a comment
+or get in touch on [Twitter](twitter). In this post we will define the goals of
+the generator, go through some basic music theory, and create our first simple
+program._
+
+[twitter]: https://twitter.com/owickstrom
+
+## Introduction
+
 Programming is fun! Music is fun! Combining the two should be a joyful
 endeavour. I have long been curious about generating music as a tool for
 practicing sight-reading. It does not have to be beautiful music, its purpose
@@ -15,12 +26,16 @@ is to help practitioners advance their skills gradually. I do, however, want to
 explore ways to generate music following patterns and idioms, resulting in
 realistic and useful material.
 
-This article introduces concepts both from music theory and from constraint
-logic programming using [core.logic][core-logic]. We will build a naive music generator
-based on a simplified musical model, and incrementally improve the output by
-adding constraints from our model.
+### What you need to know
+
+This post introduces concepts both from music theory and from constraint
+logic programming using [core.logic][core-logic]. You are not expected to have
+any knowledge about music theory. Some familiarity with core.logic, or logic
+programming languages like Prolog or miniKanren, will help; I recommend you to
+go through [the core.logic primer][core-logic-primer] for an introduction.
 
 [core-logic]: https://github.com/clojure/core.logic
+[core-logic-primer]: https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer
 
 ## Defining the Musical Model
 
@@ -30,10 +45,30 @@ be productive. Let's instead define the model for our program by picking a
 subset of the constructs and rules from music theory, and incrementally expand
 that model to meet our needs.
 
-Our first step is to define a goal, a piece of music that exhibits the elements
-and patterns we want in a generated sight-reading exercise. [Score 1](#score-1) is a
-four-measure melody I wrote by hand. In my personal taste this melody does not
-sound random or generated, it is musical.
+Our first step is to define the goals of our project. I have asked my musician
+friends on Facebook what they think is the most important traits of a
+sight-reading exercise. The following is a list based on my own evaluation, and
+their responses, in order of importance.
+
+1. Rythmic variation
+1. Pitch variation
+1. Common rythmic patterns
+1. Rests
+1. Interesting pitch variations (melodies, scales, patterns)
+1. Key signatures, modes, accidentals
+1. Parameterized difficulty
+1. Playback (generate a MIDI or WAV file)
+1. Odd time signatures
+
+In this post we will work with points 1-3. I hope this series will be able to
+cover most or all of the aspects in the list.
+
+As a complement to the prioritized list, we will look at a piece of music that
+exhibits the elements and patterns we want in a generated sight-reading
+exercise. [Score 1](#score-1) is a four-measure melody I wrote by hand. In my
+personal taste this melody does not sound random or generated, it is musical.
+We will use it as an inspiration and long-term goal for our music-generator
+project.
 
 {% lilypond A hand-written melodious sight reading exercise. %}
 \relative {
@@ -46,7 +81,7 @@ sound random or generated, it is musical.
 
 Let's have a closer look at the music in [Score 1](#score-1). I will cover only the
 minimum amount of music theory needed to understand the rest of the
-article. If you are interested in digging deeper, I encourage you to check out
+post. If you are interested in digging deeper, I encourage you to check out
 [Music Theory for Musicians and Normal People][1]
 for a light introduction to music theory.
 
@@ -77,7 +112,7 @@ all F notes to F#, and all C notes to C#.
 {% endlilypond %}
 
 Please see [Circle of fifths][2] for more information on key signatures, major
-and minor keys, and diatonic scales. For the purpose of this article you will
+and minor keys, and diatonic scales. For the purpose of this post you will
 only need to be aware that keys exist and that key signatures affect the notes
 to be played in a score.
 
@@ -180,7 +215,7 @@ no way a complete list of musical symbols.
 </tbody>
 </table>
 
-<div class="caption">Musical elements used in <a href="#score-1">Score 1</a>.</div>
+<div class="caption">Notes, and their symbols, used in <a href="#score-1">Score 1</a>.</div>
 
 A note describes both the pitch of a sound, and the relative duration of the
 sound. The vertical position in the staff, along with key signature and
@@ -370,6 +405,7 @@ neatly pretty-printed in the REPL.
 smug.music> (clojure.pprint/pprint
              (run 32 [q]
                (baro q)))
+;; output:
 (([1 16])
  ([2 16])
  ([3 16])
@@ -481,7 +517,7 @@ does not read music in the form of Clojure source code, though. We need
 rendering. I stumbled across [Lilypond][lilypond], a music engraving program in
 the [GNU Project][gnu-project]. The input format is a TeX-like markup that is
 simple to generate, and the program can output stunningly beautiful scores in
-PDF, PNG, and SVG formats. To keep the article focused, I will not include the
+PDF, PNG, and SVG formats. To keep the post focused, I will not include the
 rendering code, but you can check out [the full source on
 GitHub][github-project] if you are interested. [Score 9](#score-9) shows our
 previous result rendered with Lilypond.
@@ -655,31 +691,38 @@ Looks good. [Score 11](#score-11) shows the rendered result.
 }
 {% endlilypond %}
 
-Sweet, it works.
+Sweet, it works! That concludes our work on note groups, for now.
 
-## Varying Pitch and Duration
+## Summary
 
-<p class="draft">
-Add constraints to enforce variation, in pitch and duration.
-</p>
+We have gone through the basic music theory we need for our project, and
+created a simple generator on which we can improve. There are some problems
+with the relations still, like `(run 8 [q] (groupo q 16))` not terminating.
+This seems to cause the same behaviour when trying to generate a score of more
+than 308 bars. If anyone knows why, please let me know. I'll try to find out
+why before the next post.
 
-## Difficulty Levels
+Anyway, we can now cross of the first three points on our list:
 
-<p class="draft">
-Extend the first generator with difficulty setting.
-</p>
+1. <s>Rythmic variation</s>
+1. <s>Pitch variation</s>
+1. <s>Common rythmic patterns</s>
+1. Interesting pitch variations (melodies, scales, patterns)
+1. Rests
+1. Key signatures, modes, accidentals
+1. Parameterized difficulty
+1. Playback (generate a MIDI or WAV file)
+1. Odd time signatures
 
-## Randomness
+We still have no randomness in our generator, so we get the same result every
+time. This really defeats the purpose of a sight-reading exercise generator.
+Even if we eventually need to add it, I think it's a good idea to wait until we
+have nailed our other objectives. This way, it is much easier to verify how or
+relations work.
 
-<p class="draft">
-When do we introduce randomness? How?
-</p>
+The SMUG source code for this post is available on GitHub [at the `blog-post-1`
+tag][github-code]. I hope you enjoyed this post and will continue following
+the series. Don't forget to help me steer this thing in the right direction by
+letting me know what's interesting to read about.
 
-## Next Steps
-
-<p class="draft">
-What have we covered? What can be the next steps? Link to a complete sample on
-GitHub.
-</p>
-
-[github-project]: http://github.com/owickstrom/smug
+[github-code]: https://github.com/owickstrom/smug/tree/blog-post-1

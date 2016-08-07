@@ -46,7 +46,7 @@ body {
 p, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
-  margin-bottom: 1.4em;
+  margin-bottom: 1.6em;
 }
 
 
@@ -98,7 +98,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $display-font-family;
   font-size: 95%;
   line-height: inherit;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.6rem;
   font-weight: 800;
 }
 
@@ -163,8 +163,8 @@ code {
 }
 
 pre {
-  padding: .7rem 1.4rem;
-  margin-bottom: 1.4rem;
+  padding: .8rem 1.6rem;
+  margin-bottom: 1.6rem;
   overflow-x: auto;
 }
 
@@ -179,14 +179,14 @@ p code {
 
 @include media-query($on-laptop) {
   pre {
-    padding-left: .7rem;
-    padding-right: .7rem;
+    padding-left: .8rem;
+    padding-right: .8rem;
   }
 }
 @include media-query($on-palm) {
   pre {
-    padding-left: .7rem;
-    padding-right: .7rem;
+    padding-left: .8rem;
+    padding-right: .8rem;
   }
 }
 
