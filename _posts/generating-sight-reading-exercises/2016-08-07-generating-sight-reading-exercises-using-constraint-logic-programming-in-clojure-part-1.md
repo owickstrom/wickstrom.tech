@@ -305,8 +305,9 @@ more realistic and challenging.
 We start out building our first naive generator by only encoding very basic
 properties of notes and bars. As we are generating sheet music, let's call this
 project *SMUG*, short for <u>S</u>heet <u>Mu</u>sic <u>G</u>enerator. We begin
-by declaring our namespace and requiring `core.typed` and `core.typed.fd`. The
-`fd` namespace contains the stuff we need to work with finite domains.
+by declaring our namespace and requiring `clojure.core.logic` and
+`clojure.core.logic.fd`. The `fd` namespace contains the stuff we need to work
+with finite domains.
 
 ```clojure
 (ns smug.music

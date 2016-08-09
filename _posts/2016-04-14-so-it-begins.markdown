@@ -5,6 +5,7 @@ date:   2016-04-14 12:00 +0200
 author: Oskar Wickström
 categories: General
 tags: ["meta"]
+excerpt: "The introductory post of this blog, setting the tone for future posts."
 ---
 
 Yep. I'm starting a programming blog.

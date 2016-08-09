@@ -93,10 +93,20 @@ body {
 
 
 .post-list {
-  margin-top: $spacing-unit/2;
+  display: flex;
+  flex-wrap: wrap;
 
-  > li {
-    margin-bottom: $spacing-unit / 2;
+  list-style-type: none;
+  padding: 0;
+  margin-left: 0;
+  font-size: 90%;
+
+  li {
+    margin-bottom: 1.8em;
+  }
+
+  p {
+    margin: .8em 0;
   }
 
   .draft:before {

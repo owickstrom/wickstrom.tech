@@ -5,6 +5,7 @@ date:   2016-07-10 17:00 +0200
 author: Oskar Wickström
 categories: Programming
 tags: ["html", "latex", "documentation"]
+excerpt: "When working on the Oden User Guide I developed a way of including pre-formatted code listings in HTML and LaTeX."
 ---
 
 I have worked intensively on the [Oden User Guide](https://oden-lang.org/user-guide/latest/)

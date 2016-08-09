@@ -5,6 +5,7 @@ date: 2016-04-23 17:00
 author: Oskar Wickström
 category: programming
 tags: haskell tools languages type-systems
+excerpt: "The software we create needs to evolve continuously. Let's find ways of reducing the fear in changing our code."
 ---
 
 The software we create needs to evolve continuously. There are many reasons for

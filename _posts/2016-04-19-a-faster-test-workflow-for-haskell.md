@@ -5,6 +5,7 @@ date:   2016-04-19 07:00 +0200
 author: Oskar Wickström
 categories: Programming
 tags: ["haskell", "tools"]
+excerpt: "This post shows a way of running large Haskell test suites quickly using tmux and the send-keys command."
 ---
 
 The amount of tests in Oden has been increasing steadily since the beginning of
@@ -17,7 +18,7 @@ how it works.
 ## Sendings Keys
 
 As I already use *tmux* for all work I figured I could use that together with
-GHCi somehow.  Tmux has a command called `send-keys` that lets you
+GHCi somehow. Tmux has a command called `send-keys` that lets you
 programmatically send keys as though they were typed in at the target pane.
 
 ```bash
