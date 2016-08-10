@@ -20,15 +20,17 @@ $text-color:       #222;
 $background-color: #fff;
 $brand-color:      #e81c4f;
 
-$grey-color:       #777;
+$grey-color:       #aaa;
 $grey-color-light: #f0f0f0;
 $grey-color-dark:  darken($grey-color, 25%);
 
 // Width of the content area
 $content-width:    $base-font-size * 45;
 
-$on-palm:          600px;
-$on-laptop:        800px;
+$on-palm:             600px;
+$on-laptop:           800px;
+$on-big-screen:       1400px;
+$on-very-big-screen:  1800px;
 
 
 

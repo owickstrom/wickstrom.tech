@@ -2,48 +2,41 @@
 layout: default
 ---
 
-<div class="page-content">
-  <div class="wrapper">
-    <div class="home">
-
-      <header class="page-header intro">
-        <img class="logo" src="/logo.png" alt="Logo" width="64" height="64">
-        <h1 class="page-title" itemprop="name headline">{{ site.title }}</h1>
-        <p class="post-meta">{{ site.description }}</p>
-      </header>
-
-      <div class="about-me">
-        <p>
-        My name is Oskar Wickström and this is where I write about functional
-        programming, open source software and <a
-          href="http://oden-lang.org">The Oden Programming
-        Language</a>.
-        You can find me at
-        <a href="https://twitter.com/owickstrom">Twitter</a> and
-        <a href="https://github.com/owickstrom">GitHub</a>.
-        </p>
-
-        <p>
-        Another big part of my life is music. I post some of my stuff at <a
-        href="https://soundcloud.com/oskar-wickstrom">SoundCloud</a> and <a
-        href="https://www.youtube.com/channel/UC1edduMaIVhvx8Y3btQcQuw">YouTube</a>.
-        </p>
-      </div>
-
-      <h2>Posts</h2>
-
+<div class="home-page">
+  <div class="title-pane">
+    <div class="wrapper">
+      <h1 itemprop="name headline">{{ site.title }}</h1>
+      <img src="/assets/logo.png"
+          srcset="/assets/logo.png 1x,
+                  /assets/logo@2x.png 2x"
+          alt="FUNC DA WORLD">
+      <p><span class="name">Oskar Wickström</span> on functional programming</p>
+    </div>
+    <nav class="nav">
+      <ul>
+        {% include nav-items.html %}
+      </ul>
+    </nav>
+  </div>
+  <div class="post-list-pane">
+    <div class="wrapper">
       <ul class="post-list">
         {% for post in site.posts %}
         <li>
           <a class="post-link {% if post.published == false %}draft{% endif %}"
              href="{{ post.url | prepend: site.baseurl }}">
-            {{ post.title }}
+            <time>{{ post.date | date: "%B %-d, %Y" }}</time>
+            <span class="title">{{ post.title }}</span>
+            <span class="excerpt">{{ post.excerpt }}</span>
+            <ul class="tags">
+            {% for tag in post.tags %}
+              <li>{{ tag }}</li>
+            {% endfor %}
+            </ul>
           </a>
-          <div class="post-meta">{{ post.date | date: "%B %-d, %Y" }}</div>
         </li>
         {% endfor %}
       </ul>
-
     </div>
   </div>
 </div>

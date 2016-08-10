@@ -1,5 +1,6 @@
 html {
   box-sizing: border-box;
+  height: 100%;
 }
 *, *:before, *:after {
   box-sizing: inherit;
@@ -21,6 +22,7 @@ dl, dd, ol, ul, figure {
  * Basic styling
  */
 body {
+  height: 100%;
   font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
   color: $text-color;
   background-color: $background-color;
@@ -126,11 +128,10 @@ a {
   text-decoration: none;
 
   &:visited {
-    color: darken($brand-color, 15%);
+    color: #771fc1;
   }
 
   &:hover {
-    color: $text-color;
     text-decoration: underline;
   }
 }
