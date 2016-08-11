@@ -6,7 +6,7 @@
   <title>{% if page.title %}{{ page.title | escape }} | {{ site.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
-  <link rel="icon" type="image/png" href="{{ "/logo.png" | prepend: site.baseurl }}">
+  <link rel="icon" type="image/png" href="{{ "/assets/icon.png" | prepend: site.baseurl }}">
 
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
   <link rel="stylesheet" media="print" href="{{ "/css/print.css" | prepend: site.baseurl }}">
@@ -30,5 +30,5 @@
   {% else %}
   <meta name="twitter:description" content="{{ site.description }}">
   {% endif %}
-  <meta name="twitter:image:src" content="{{ site.url }}/logo.png">
+  <meta name="twitter:image:src" content="{{ site.url }}/assets/square.png">
 </head>
