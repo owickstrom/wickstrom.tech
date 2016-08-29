@@ -4,10 +4,10 @@
     <title>Func Da World</title>
     <description>Oskar Wickström on functional programming.
 </description>
-    <link>https://wickstrom.tech/</link>
-    <atom:link href="https://wickstrom.tech/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 29 Aug 2016 21:05:33 +0200</pubDate>
-    <lastBuildDate>Mon, 29 Aug 2016 21:05:33 +0200</lastBuildDate>
+    <link>https://owickstrom.github.io/</link>
+    <atom:link href="https://owickstrom.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 29 Aug 2016 21:11:56 +0200</pubDate>
+    <lastBuildDate>Mon, 29 Aug 2016 21:11:56 +0200</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -493,8 +493,8 @@ Dyadic rational divisions. Graphic from &lt;a href=&quot;https://en.wikipedia.or
 &lt;p&gt;The SMUG source code for this post is available on GitHub &lt;a href=&quot;https://github.com/owickstrom/smug/tree/blog-post-1&quot;&gt;at the &lt;code&gt;blog-post-1&lt;/code&gt; tag&lt;/a&gt;. I hope you enjoyed the read and will continue following the series. Don't forget to help me steer this thing in the right direction by letting me know what's interesting to read about.&lt;/p&gt;
 </description>
         <pubDate>Sun, 07 Aug 2016 08:00:00 +0200</pubDate>
-        <link>https://wickstrom.tech/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</link>
-        <guid isPermaLink="true">https://wickstrom.tech/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</guid>
+        <link>https://owickstrom.github.io/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</guid>
         
         <category>music</category>
         
@@ -541,8 +541,8 @@ in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Long live Pandoc!&lt;/p&gt;
 </description>
         <pubDate>Sun, 10 Jul 2016 17:00:00 +0200</pubDate>
-        <link>https://wickstrom.tech/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</link>
-        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</guid>
         
         <category>html</category>
         
@@ -571,8 +571,8 @@ in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The source is available &lt;a href=&quot;https://github.com/owickstrom/vim-colors-paramount&quot;&gt;on GitHub&lt;/a&gt;. You can preview the theme on the &lt;a href=&quot;http://vimcolors.com/438/paramount/dark&quot;&gt;&lt;em&gt;~/.vim/colors&lt;/em&gt;&lt;/a&gt; site.&lt;/p&gt;
 </description>
         <pubDate>Sun, 15 May 2016 09:00:00 +0200</pubDate>
-        <link>https://wickstrom.tech/programming/2016/05/15/paramount-color-scheme-for-vim.html</link>
-        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/05/15/paramount-color-scheme-for-vim.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/05/15/paramount-color-scheme-for-vim.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/05/15/paramount-color-scheme-for-vim.html</guid>
         
         <category>vim</category>
         
@@ -610,8 +610,8 @@ in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;I am certain that we can have have mainstream programming languages with static typing and still retain the expressiveness and exploratory power of dynamically typed languages. I think we should strive for tools that help us fearlessly evolve software. We can do a lot better than we are doing right now! Also, static typing as we know it today might only be a stepping stone to something even greater.&lt;/p&gt;
 </description>
         <pubDate>Sat, 23 Apr 2016 17:00:00 +0200</pubDate>
-        <link>https://wickstrom.tech/programming/2016/04/23/software-evolution-without-fear.html</link>
-        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/04/23/software-evolution-without-fear.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/04/23/software-evolution-without-fear.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/04/23/software-evolution-without-fear.html</guid>
         
         <category>haskell</category>
         
@@ -662,8 +662,8 @@ in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Even though it is somewhat slower, I use &lt;code&gt;stack test --file-watch&lt;/code&gt; more often in the beginning of a project as it handles changes in the Cabal file. I have also started using the interactive session support in the Emacs &lt;em&gt;haskell-mode&lt;/em&gt; to reload test modules using &lt;code&gt;C-c C-l&lt;/code&gt; and then run the individual tests with &lt;code&gt;hspec spec&lt;/code&gt; in the Emacs GHCi session. Maybe later I will create an Emacs keybinding for reloading a test module and running the specs.&lt;/p&gt;
 </description>
         <pubDate>Tue, 19 Apr 2016 07:00:00 +0200</pubDate>
-        <link>https://wickstrom.tech/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</link>
-        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</guid>
         
         <category>haskell</category>
         
@@ -703,8 +703,8 @@ greet &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; \&lt;span class=&quot;kw&q
 &lt;p&gt;If you want to find out more about syntax extensions you should check out the &lt;a href=&quot;https://downloads.haskell.org/~ghc/7.8.4/docs/html/users_guide/syntax-extns.html&quot;&gt;GHC users guide&lt;/a&gt;. Thanks for reading. Happy pattern matching!&lt;/p&gt;
 </description>
         <pubDate>Thu, 14 Apr 2016 16:24:00 +0200</pubDate>
-        <link>https://wickstrom.tech/programming/2016/04/14/the-case-for-case.html</link>
-        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/04/14/the-case-for-case.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/04/14/the-case-for-case.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/04/14/the-case-for-case.html</guid>
         
         <category>haskell</category>
         
@@ -723,8 +723,8 @@ greet &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; \&lt;span class=&quot;kw&q
 &lt;p&gt;I hope you will enjoy the blog and keep reading!&lt;/p&gt;
 </description>
         <pubDate>Thu, 14 Apr 2016 12:00:00 +0200</pubDate>
-        <link>https://wickstrom.tech/2016/04/14/so-it-begins.html</link>
-        <guid isPermaLink="true">https://wickstrom.tech/2016/04/14/so-it-begins.html</guid>
+        <link>https://owickstrom.github.io/2016/04/14/so-it-begins.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/2016/04/14/so-it-begins.html</guid>
         
         <category>meta</category>
         
