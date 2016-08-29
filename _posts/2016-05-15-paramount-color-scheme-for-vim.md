@@ -3,7 +3,7 @@ layout: post
 title:  "Paramount Color Scheme for Vim"
 date:   2016-05-15 09:00 +0200
 author: Oskar Wickström
-categories: Programming
+categories: programming
 tags: ["vim", "tools"]
 excerpt: "Introducing Paramount, a minimal color scheme for Vim, based on the \"pencil\" and \"off\" color schemes."
 ---

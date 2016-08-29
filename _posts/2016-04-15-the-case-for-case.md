@@ -3,7 +3,7 @@ layout: post
 title:  "The Case for Case"
 date:   2016-04-14 16:24 +0200
 author: Oskar Wickström
-categories: Programming
+categories: programming
 tags: ["haskell", "functional"]
 excerpt: "Top-level pattern matching in Haskell leads to repeating the function name. Here we look at how case and LambdaCase can make your code more succinct."
 ---

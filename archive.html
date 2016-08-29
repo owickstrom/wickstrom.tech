@@ -5,10 +5,18 @@ layout: page
 <ul class="archive post-list">
   {% for post in site.posts %}
   <li{% if post.published == false %} class="draft"{% endif %}>
-    <time>{{ post.date | date: "%B %-d, %Y" }}</time>
     <h2 class="title">
       <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
     </h2>
+    <div class="post-meta">
+      <time>{{ post.date | date: "%B %-d, %Y" }}</time>
+      {% assign category = post.categories | first %}
+      {% if category %}
+      <span class="category">
+        In <a href="/{{category}}">{{category | replace: '-', ' ' }}</a>
+      </span>
+      {% endif %}
+    </div>
     <p class="excerpt">{{ post.excerpt }}</p>
     <ul class="tags">
     {% for tag in post.tags %}

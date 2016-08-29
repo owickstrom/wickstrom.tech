@@ -3,7 +3,7 @@ layout: post
 title: "Generating Sight-Reading Exercises using Constraint Logic Programming in Clojure, Part 1"
 date: 2016-08-07 08:00 +0200
 author: Oskar Wickström
-categories: Programming
+categories: generative-music
 tags: ["music", "logic", "clp", "clojure"]
 excerpt: "This is the first post in a series about generating sheet music for sight-reading exercises, using Clojure and core.logic."
 ---

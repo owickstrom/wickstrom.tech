@@ -158,12 +158,12 @@ body {
   margin: 0 0 0 $grid-spacing;
 }
 
-.post-list time {
+.post-list .post-meta {
   display: block;
+  font-size: 80%;
   text-transform: uppercase;
-  font-size: 90%;
-  font-family: $display-font-family;
-  font-weight: 600;
+  letter-spacing: .05em;
+  margin-bottom: .8rem;
 }
 
 .home-page .post-list > li {
@@ -195,6 +195,8 @@ body {
     }
     time {
       color: $brand-color;
+      text-transform: uppercase;
+      font-size: 90%;
     }
 
     &:hover {
@@ -315,6 +317,9 @@ body {
 .page-content {
   margin-bottom: $spacing-unit 0;
 }
+.category-excerpt {
+  font-style: italic;
+}
 
 .page-header {
   margin-top: $spacing-unit*2;
@@ -347,16 +352,21 @@ body {
   font-style: italic;
   font-size: 90%;
 }
-.post-meta {
+.post .post-meta {
   font-size: 80%;
   text-transform: uppercase;
   letter-spacing: .05em;
+  .category {
+    margin-top: .5rem;
+    display: block;
+  }
 }
 .site-title {
   font-family: $display-font-family;
 }
 
-.post-list.archive {
+.post-list.archive,
+.category-page .post-list {
   list-style-type: none;
   margin-left: 0;
 

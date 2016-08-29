@@ -3,7 +3,7 @@ layout: post
 title:  "Custom Formatting in HTML and LaTeX Code Listings using Pandoc"
 date:   2016-07-10 17:00 +0200
 author: Oskar Wickström
-categories: Programming
+categories: programming
 tags: ["html", "latex", "documentation"]
 excerpt: "When working on the Oden User Guide I developed a way of including pre-formatted code listings in HTML and LaTeX."
 ---
