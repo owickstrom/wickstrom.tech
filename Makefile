@@ -1,6 +1,7 @@
+TOOLS=src/tools
+
 build:
-	rm -rf docs
-	bundle exec jekyll build --destination docs
+	cd src && bundle exec jekyll build --destination ../docs
 
 deploy: build
 	aws s3 sync docs s3://wickstrom.tech --acl=public-read
@@ -8,17 +9,17 @@ deploy: build
 
 .PHONY: generate-music-symbols
 generate-music-symbols:
-	_tools/render-musical-symbol.sh c\'1 whole
-	_tools/render-musical-symbol.sh c\'2 half
-	_tools/render-musical-symbol.sh c\'4 quarter
-	_tools/render-musical-symbol.sh c\'8 eighth
-	_tools/render-musical-symbol.sh c\'16 sixteenth
-	_tools/render-musical-symbol.sh c\'8. dotted-eighth
-	_tools/render-musical-symbol.sh r1 whole-rest
-	_tools/render-musical-symbol.sh r2 half-rest
-	_tools/render-musical-symbol.sh r4 quarter-rest
-	_tools/render-musical-symbol.sh r8 eighth-rest
-	_tools/render-musical-symbol.sh r16 sixteenth-rest
-	_tools/render-musical-symbol.sh '\key g \major' sharp
-	_tools/render-musical-symbol.sh '\key d \minor' flat
-	SHOW_TIME_SIGN=1 _tools/render-musical-symbol.sh '' common-time
+	$(TOOLS)/render-musical-symbol.sh c\'1 whole
+	$(TOOLS)/render-musical-symbol.sh c\'2 half
+	$(TOOLS)/render-musical-symbol.sh c\'4 quarter
+	$(TOOLS)/render-musical-symbol.sh c\'8 eighth
+	$(TOOLS)/render-musical-symbol.sh c\'16 sixteenth
+	$(TOOLS)/render-musical-symbol.sh c\'8. dotted-eighth
+	$(TOOLS)/render-musical-symbol.sh r1 whole-rest
+	$(TOOLS)/render-musical-symbol.sh r2 half-rest
+	$(TOOLS)/render-musical-symbol.sh r4 quarter-rest
+	$(TOOLS)/render-musical-symbol.sh r8 eighth-rest
+	$(TOOLS)/render-musical-symbol.sh r16 sixteenth-rest
+	$(TOOLS)/render-musical-symbol.sh '\key g \major' sharp
+	$(TOOLS)/render-musical-symbol.sh '\key d \minor' flat
+	SHOW_TIME_SIGN=1 $(TOOLS)/render-musical-symbol.sh '' common-time
