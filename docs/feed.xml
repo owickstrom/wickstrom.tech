@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Func Da World</title>
+    <description>Oskar Wickström on functional programming.
+</description>
+    <link>https://wickstrom.tech/</link>
+    <atom:link href="https://wickstrom.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 29 Aug 2016 20:58:18 +0200</pubDate>
+    <lastBuildDate>Mon, 29 Aug 2016 20:58:18 +0200</lastBuildDate>
+    <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Generating Sight-Reading Exercises using Constraint Logic Programming in Clojure, Part 1</title>
+        <description>&lt;p&gt;&lt;em&gt;This is the first post in a series about generating sheet music for sight-reading exercises, using Clojure and core.logic. The size and direction of the series is not set in stone; your feedback matters! Please post a comment or get in touch on &lt;a href=&quot;twitter&quot;&gt;Twitter&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Programming is fun! Music is fun! Combining the two should be a joyful endeavour. I have long been curious about generating music as a tool for practicing sight-reading. It does not have to be beautiful music, its purpose is to help practitioners advance their skills gradually. I do, however, want to explore ways to generate music following patterns and idioms, resulting in realistic and useful material.&lt;/p&gt;
+&lt;h3 id=&quot;what-you-need-to-know&quot;&gt;What You Need to Know&lt;/h3&gt;
+&lt;p&gt;This post introduces concepts both from music theory and from constraint logic programming using &lt;a href=&quot;https://github.com/clojure/core.logic&quot;&gt;core.logic&lt;/a&gt;. You are not expected to have any knowledge about music theory. Some familiarity with core.logic, or logic programming languages like Prolog or miniKanren, is needed. I recommend you to go through &lt;a href=&quot;https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer&quot;&gt;the core.logic primer&lt;/a&gt; for an introduction.&lt;/p&gt;
+&lt;h2 id=&quot;defining-the-musical-model&quot;&gt;Defining the Musical Model&lt;/h2&gt;
+&lt;p&gt;Music theory is a huge area with lots of rules and exceptions. Trying to include all those rules in our initial attempts at a music generator would not be productive. Let's instead define the model for our program by picking a subset of the constructs and rules from music theory, and incrementally expand that model to meet our needs.&lt;/p&gt;
+&lt;p&gt;Our first step is to define the goals of our project. I have asked some of my musician friends what they think is the most important traits of a sight-reading exercise. The following is a list based on my own evaluation, and their responses, in order of importance.&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Rythmic variation&lt;/li&gt;
+&lt;li&gt;Pitch variation&lt;/li&gt;
+&lt;li&gt;Common rythmic patterns&lt;/li&gt;
+&lt;li&gt;Rests&lt;/li&gt;
+&lt;li&gt;Interesting pitch variations (melodies, scales, patterns)&lt;/li&gt;
+&lt;li&gt;Key signatures, modes, accidentals&lt;/li&gt;
+&lt;li&gt;Parameterized difficulty&lt;/li&gt;
+&lt;li&gt;Dotted notes&lt;/li&gt;
+&lt;li&gt;Ties&lt;/li&gt;
+&lt;li&gt;Playback (generate a MIDI or WAV file)&lt;/li&gt;
+&lt;li&gt;Odd time signatures&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In this post we will work with points 1-3. I hope this series will be able to cover most or all of the aspects in the list.&lt;/p&gt;
+&lt;p&gt;As a complement to the prioritized list, we will look at a piece of music that exhibits the elements and patterns we want in a generated sight-reading exercise. &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; is a four-measure melody I wrote by hand. In my personal taste this melody does not sound random or generated, it is musical. We will use it as an inspiration and long-term goal for our music-generator project.&lt;/p&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-1&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png&quot; srcset=&quot;/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png 1x, /generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.2x.png 2x&quot; alt=&quot;A hand-written melodious sight reading exercise.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 1:&lt;/span&gt; A hand-written melodious sight reading exercise.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Let's have a closer look at the music in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt;. I will cover only the minimum amount of music theory needed to understand the rest of the post. If you are interested in digging deeper, I encourage you to check out &lt;a href=&quot;http://tobyrush.com/theorypages/&quot;&gt;Music Theory for Musicians and Normal People&lt;/a&gt; for a light introduction to music theory.&lt;/p&gt;
+&lt;p&gt;The music in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; is in the key of C major, or A minor. A key signature is a set of sharp (&lt;img src=&quot;/assets/music/sharp.1x.png&quot;
+      srcset=&quot;/assets/music/sharp.2x.png 2x, /assets/music/sharp.1x.png 1x&quot;
+      alt=&quot;Sharp sign&quot;
+      style=&quot;margin: 0 .25em;&quot;&gt;) or flat (&lt;img src=&quot;/assets/music/flat.1x.png&quot;
+      srcset=&quot;/assets/music/flat.2x.png 2x, /assets/music/flat.1x.png 1x&quot;
+      alt=&quot;Flat sign&quot;
+      style=&quot;margin: 0 .25em;&quot;&gt;) symbols, raising or lowering the note on the line it is placed, until the next key signature, or to the end of the score. A sharp raises the note by a semitone, a flat lowers the note by a semitone. In our example we have no sharp or flat symbols in the key signature, thus all notes are in the diatonic C scale. &lt;a href=&quot;#score-2&quot;&gt;Score 2&lt;/a&gt; shows a key signature for music in the key of D major, raising all F notes to F#, and all C notes to C#.&lt;/p&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-2&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png&quot; srcset=&quot;/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png 1x, /generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.2x.png 2x&quot; alt=&quot;Music in the key of D major.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 2:&lt;/span&gt; Music in the key of D major.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Please see &lt;a href=&quot;https://en.wikipedia.org/wiki/Circle_of_fifths&quot;&gt;Circle of fifths&lt;/a&gt; for more information on key signatures, major and minor keys, and diatonic scales. For the purpose of this post you will only need to be aware that keys exist and that key signatures affect the notes to be played in a score.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; consists of four measures, also called &lt;em&gt;bars&lt;/em&gt;, divided by bar lines. The time signature is 4/4, as denoted by the common time sign (&lt;img src=&quot;/assets/music/common-time.1x.png&quot;
+      srcset=&quot;/assets/music/common-time.2x.png 2x, /assets/music/common-time.1x.png 1x&quot;
+      alt=&quot;Common time sign&quot;
+      style=&quot;margin: 0 .25em;&quot;&gt;). With a time signature of 4/4, the total value of notes in each bar must equal 4/4. It might be tempting to say that the total value of a bar must be 1 at all times, but it is not that simple. In other time signatures, such as 3/4, 6/8, and 5/4, the total is not 1.&lt;/p&gt;
+&lt;p&gt;The following table describes the used note symbols and their meaning. It is in no way a complete list of musical symbols.&lt;/p&gt;
+&lt;table class=&quot;musical-signs&quot;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;
+Symbol
+&lt;/th&gt;
+&lt;th&gt;
+Value
+&lt;/th&gt;
+&lt;th&gt;
+Duration
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;img src=&quot;/assets/music/half.1x.png&quot;
+     srcset=&quot;/assets/music/half.2x.png 2x, /assets/music/half.1x.png 1x&quot;
+     alt=&quot;Half note&quot;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+Half note
+&lt;/td&gt;
+&lt;td&gt;
+1/2
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;img src=&quot;/assets/music/half.1x.png&quot;
+     srcset=&quot;/assets/music/quarter.2x.png 2x, /assets/music/quarter.1x.png 1x&quot;
+     alt=&quot;Quarter note&quot;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+Quarter note
+&lt;/td&gt;
+&lt;td&gt;
+1/4
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;img src=&quot;/assets/music/half.1x.png&quot;
+     srcset=&quot;/assets/music/eighth.2x.png 2x, /assets/music/eighth.1x.png 1x&quot;
+     alt=&quot;Eighth note&quot;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+Eighth note
+&lt;/td&gt;
+&lt;td&gt;
+1/8
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;img src=&quot;/assets/music/sixteenth.1x.png&quot;
+     srcset=&quot;/assets/music/sixteenth.2x.png 2x, /assets/music/sixteenth.1x.png 1x&quot;
+     alt=&quot;Sixteenth note&quot;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+Sixteenth note
+&lt;/td&gt;
+&lt;td&gt;
+1/16
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;img src=&quot;/assets/music/dotted-eighth.1x.png&quot;
+     srcset=&quot;/assets/music/dotted-eighth.2x.png 2x, /assets/music/dotted-eighth.1x.png 1x&quot;
+     alt=&quot;Dotted eighth note&quot;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+Dotted eighth note
+&lt;/td&gt;
+&lt;td&gt;
+3/16
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;img src=&quot;/assets/music/half-rest.1x.png&quot;
+     srcset=&quot;/assets/music/half-rest.2x.png 2x, /assets/music/half-rest.1x.png 1x&quot;
+     alt=&quot;Dotted eighth note&quot;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+Half rest
+&lt;/td&gt;
+&lt;td&gt;
+1/2
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;img src=&quot;/assets/music/quarter-rest.1x.png&quot;
+     srcset=&quot;/assets/music/quarter-rest.2x.png 2x, /assets/music/quarter-rest.1x.png 1x&quot;
+     alt=&quot;Dotted eighth note&quot;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+Quarter rest
+&lt;/td&gt;
+&lt;td&gt;
+1/4
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;img src=&quot;/assets/music/eighth-rest.1x.png&quot;
+     srcset=&quot;/assets/music/eighth-rest.2x.png 2x, /assets/music/eighth-rest.1x.png 1x&quot;
+     alt=&quot;Dotted eighth note&quot;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+Eighth rest
+&lt;/td&gt;
+&lt;td&gt;
+1/8
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class=&quot;caption&quot;&gt;
+Notes, and their symbols, used in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt;.
+&lt;/div&gt;
+&lt;p&gt;A note describes both the pitch of a sound, and the relative duration of the sound. The vertical position in the staff, along with key signature and accidentals, determines the pitch. The &lt;em&gt;note value&lt;/em&gt;, written using differents note head shapes, stem, and beams, determines the relative duration.&lt;/p&gt;
+&lt;p&gt;The note values in the conventional Western music system are &lt;em&gt;dyadic rational numbers&lt;/em&gt;, i.e. rational numbers where the denominator is a power of two. Note values can be modified using dots. A dot adds the next shorter note value to the original note value, effectively making it one and half times longer. The technique of using dotted notes is similar to how inch units are divided in the imperial system.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img alt=&quot;Dyadic rational sub-divisions&quot;
+     src=&quot;/assets/dyadic-rational-subdivisions.svg&quot;/&gt;
+&lt;figcaption&gt;
+Dyadic rational divisions. Graphic from &lt;a href=&quot;https://en.wikipedia.org/wiki/File:Dyadic_rational.svg&quot;&gt;Wikipedia&lt;/a&gt;.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Another way of describing such note values is by &lt;em&gt;tying&lt;/em&gt; multiple notes together. The following two scores have the same musical meaning, in that they sound the same way, but &lt;a href=&quot;#score-3&quot;&gt;Score 3&lt;/a&gt; is notated using ties, and &lt;a href=&quot;#score-4&quot;&gt;Score 4&lt;/a&gt; is notated using dotted notes.&lt;/p&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-3&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png&quot; srcset=&quot;/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png 1x, /generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.2x.png 2x&quot; alt=&quot;Using ties for 3/8 and 3/16 duration notes.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 3:&lt;/span&gt; Using ties for 3/8 and 3/16 duration notes.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-4&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png&quot; srcset=&quot;/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png 1x, /generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.2x.png 2x&quot; alt=&quot;Using dotted notes for 3/8 and 3/16 duration notes.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 4:&lt;/span&gt; Using dotted notes for 3/8 and 3/16 duration notes.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Another important aspect of musical notation is &lt;em&gt;note grouping&lt;/em&gt;. This technique helps the reader to see the sub-divisions of a bar by visually grouping notes. Notes are commonly grouped within quarter and eighth note durations, depending on the note values. &lt;a href=&quot;#score-5&quot;&gt;Score 5&lt;/a&gt; shows a phrase of quarter notes following a single sixteenth note, without any grouping. The same phrase is written with note groups in &lt;a href=&quot;#score-6&quot;&gt;Score 6&lt;/a&gt; for greater readability.&lt;/p&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-5&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png&quot; srcset=&quot;/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png 1x, /generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.2x.png 2x&quot; alt=&quot;A phrase without proper grouping is harder to read.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 5:&lt;/span&gt; A phrase without proper grouping is harder to read.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-6&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png&quot; srcset=&quot;/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png 1x, /generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.2x.png 2x&quot; alt=&quot;Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 6:&lt;/span&gt; Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Exceptions are made for common rythmic patterns, like the eighth note followed by a &lt;em&gt;single&lt;/em&gt; quarter note and an eighth note, illustrated in &lt;a href=&quot;#score-7&quot;&gt;Score 7&lt;/a&gt;. Multiple quarter notes following an eighth note should be grouped, as shown in &lt;a href=&quot;#score-8&quot;&gt;Score 8&lt;/a&gt;.&lt;/p&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-7&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png&quot; srcset=&quot;/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png 1x, /generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.2x.png 2x&quot; alt=&quot;A common rythmic pattern that does not need grouping.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 7:&lt;/span&gt; A common rythmic pattern that does not need grouping.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-8&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png&quot; srcset=&quot;/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png 1x, /generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.2x.png 2x&quot; alt=&quot;Multiple quarter notes broken up into tied eighth notes.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 8:&lt;/span&gt; Multiple quarter notes broken up into tied eighth notes.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;We have just scratched the surface of music theory in describing the first piece of music, but we have enough of a model to start generating simple sight-reading exercises. Let's start by building a simple program using core.logic, and then gradually add constraints to make the generated music more realistic and challenging.&lt;/p&gt;
+&lt;h2 id=&quot;a-naive-generator&quot;&gt;A Naive Generator&lt;/h2&gt;
+&lt;p&gt;We start out building our first naive generator by only encoding very basic properties of notes and bars. As we are generating sheet music, let's call this project &lt;em&gt;SMUG&lt;/em&gt;, short for &lt;u&gt;S&lt;/u&gt;heet &lt;u&gt;Mu&lt;/u&gt;sic &lt;u&gt;G&lt;/u&gt;enerator. We begin by declaring our namespace and requiring &lt;code&gt;clojure.core.logic&lt;/code&gt; and &lt;code&gt;clojure.core.logic.fd&lt;/code&gt;. The &lt;code&gt;fd&lt;/code&gt; namespace contains the stuff we need to work with finite domains.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;ns&lt;/span&gt; smug.music
+  (&lt;span class=&quot;kw&quot;&gt;:refer-clojure&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;:exclude&lt;/span&gt; [&lt;span class=&quot;kw&quot;&gt;==&lt;/span&gt;])
+  (&lt;span class=&quot;kw&quot;&gt;:require&lt;/span&gt; [clojure.core.logic &lt;span class=&quot;kw&quot;&gt;:refer&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;:all&lt;/span&gt;]
+            [clojure.core.logic.fd &lt;span class=&quot;kw&quot;&gt;:as&lt;/span&gt; fd]))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;A note has a pitch and a value. We represent the pitch as an integer between 1 and 7, inclusive. To use finite domain constraints we need to find ways of representing the values in &lt;em&gt;our domain&lt;/em&gt; as integers. We will map the results of queries to other data types later. Using &lt;code&gt;interval&lt;/code&gt; we create a finite domain based on a set of numbers, and constrain &lt;code&gt;p&lt;/code&gt; to that domain.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; pitcho &lt;/span&gt;[p]
+  (fd/in p (fd/interval &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;7&lt;/span&gt;)))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Similarly to note pitch, we represent the note value as an integer. In this case, however, the note value is not within a range of numbers, but a number in the set &lt;code&gt;{1, 2, 4, 8, 16}&lt;/code&gt; , representing the numerators in the dyadic rationals 1/16, 2/16, 4/16, 8/16, and 16/16. In other words, with this representation we only support the note values from whole notes down to sixteenth notes. Using &lt;code&gt;domain&lt;/code&gt; we create a finite domain based on the set of numbers, and constrain &lt;code&gt;v&lt;/code&gt; to that domain.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; note-valueo &lt;/span&gt;[v]
+  (fd/in v (fd/domain &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;)))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Let's compose these two relations into a note relation, with the pair of pitch and note value as a vector. We use &lt;code&gt;defne&lt;/code&gt; to define a relation that destructures a note into its parts, &lt;code&gt;p&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt;, and then constrain the pitch and note value.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(defne noteo [note]
+  ([ [p v] ]
+   (pitcho p)
+   (note-valueo v)))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;A bar can be represented as a sequence of notes. Using our &lt;code&gt;noteo&lt;/code&gt; relation, we recursively describe the sequence. The first branch matches the empty sequence and succeeds. The second branch matches the non-empty sequence, constrains the first element to be a note, and recurses on the rest of the sequence.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(defne noteso [notes]
+  ([ [] ])
+  ([ [n . &lt;span class=&quot;kw&quot;&gt;ns&lt;/span&gt;] ]
+   (noteo n)
+   (noteso &lt;span class=&quot;kw&quot;&gt;ns&lt;/span&gt;)))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We are soon ready to define &lt;code&gt;baro&lt;/code&gt;, but first we need a way to ensure that the note values add up to a total of 16. To make the generator support different time signatures we would have to make that number configurable. For now we will only generate music in 4/4, so hard-coding 16 is fine.&lt;/p&gt;
+&lt;p&gt;For empty sequences the total is zero. For non-empty sequences we ensure that &lt;code&gt;v&lt;/code&gt; is a note value and unify &lt;code&gt;total&lt;/code&gt; with &lt;code&gt;s&lt;/code&gt;, where &lt;code&gt;s&lt;/code&gt; is the sum of &lt;code&gt;v&lt;/code&gt; and the total of the remaining notes.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(defne notes-total-valueo [notes total]
+  ([ [] _ ]
+   (fd/== total &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;))
+  ([ [[p v] . &lt;span class=&quot;kw&quot;&gt;ns&lt;/span&gt;] _ ]
+   (fresh (s)
+     (note-valueo v)
+     (fd/+ v s total)
+     (notes-total-valueo &lt;span class=&quot;kw&quot;&gt;ns&lt;/span&gt; s))))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This definition is analogous to how &lt;code&gt;(reduce + (map first notes))&lt;/code&gt; would work on a sequence &lt;code&gt;notes&lt;/code&gt; using regular Clojure data structures, but as we are using logic variables we can't use &lt;code&gt;reduce&lt;/code&gt; and &lt;code&gt;first&lt;/code&gt;; we have to describe the logical relation of the reduction.&lt;/p&gt;
+&lt;p&gt;The last relation define is called &lt;code&gt;baro&lt;/code&gt;. It simply states that a bar is a sequence of notes, and that the total note value must be 16.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; baro &lt;/span&gt;[notes]
+  (fresh []
+    (noteso notes)
+    (notes-total-valueo notes &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;)))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We use &lt;code&gt;run&lt;/code&gt; to query for bars. The following query gives us 32 valid bars, neatly pretty-printed in the REPL.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;smug.music&amp;gt; (clojure.pprint/pprint
+             (run &lt;span class=&quot;dv&quot;&gt;32&lt;/span&gt; [q]
+               (baro q)))
+&lt;span class=&quot;co&quot;&gt;;; output:&lt;/span&gt;
+(([&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;]))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The output is a bit crude; a sequence of sequences of pairs of integers. Let's define some conversion functions to make the results reflect the domain of musical notation.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; -&amp;gt;pitch &lt;/span&gt;[p]
+  (&lt;span class=&quot;kw&quot;&gt;nth&lt;/span&gt; [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;:d&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;:e&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;:f&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;:g&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;:a&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;:b&lt;/span&gt;] (&lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt; p &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;)))
+
+(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; -&amp;gt;note-value &lt;/span&gt;[d]
+  (&lt;span class=&quot;kw&quot;&gt;/&lt;/span&gt; d &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;))
+
+(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; -&amp;gt;note &lt;/span&gt;[[p d]]
+  [(-&amp;gt;pitch p)
+   (-&amp;gt;note-value d)])
+
+(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; -&amp;gt;bar &lt;/span&gt;[bar]
+  (&lt;span class=&quot;kw&quot;&gt;map&lt;/span&gt; -&amp;gt;note bar))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;All right, let's try again.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;smug.music&amp;gt; (clojure.pprint/pprint
+             (&lt;span class=&quot;kw&quot;&gt;map&lt;/span&gt; -&amp;gt;bar (run &lt;span class=&quot;dv&quot;&gt;32&lt;/span&gt; [q]
+                          (baro q))))
+&lt;span class=&quot;co&quot;&gt;;; output:&lt;/span&gt;
+(([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:d&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:e&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:f&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:g&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:a&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:b&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:d&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:e&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:f&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:g&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:a&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:b&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:d&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:d&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:e&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:d&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:e&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:f&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:d&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:f&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:g&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:e&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:d&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:g&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;]))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Neat! Let's wrap all this up in to function that we can use as the API for the generator. Here we wrap the sequence of bars in a map as well. Later on we can add other key-value pairs to the map, like the time and key signatures.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; generate-score &lt;/span&gt;[n]
+  (&lt;span class=&quot;kw&quot;&gt;let&lt;/span&gt; [bars (run n [q]
+               (baro q))]
+    {&lt;span class=&quot;kw&quot;&gt;:bars&lt;/span&gt; (&lt;span class=&quot;kw&quot;&gt;map&lt;/span&gt; -&amp;gt;bar bars)}))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We now have a very simple generator. The average musician does not read music in the form of Clojure data literals, though. We need rendering. I stumbled across &lt;a href=&quot;http://lilypond.org/&quot;&gt;Lilypond&lt;/a&gt;, a music engraving program in the &lt;a href=&quot;http://gnu.org/&quot;&gt;GNU Project&lt;/a&gt;. The input format is a TeX-like markup that is simple to generate, and the program can output stunningly beautiful scores in PDF, PNG, and SVG formats. To keep the post focused, I will not include the rendering code, but you can check out &lt;a href=&quot;https://github.com/owickstrom/smug/tree/blog-post-1&quot;&gt;the full source on GitHub&lt;/a&gt; if you are interested. &lt;a href=&quot;#score-9&quot;&gt;Score 9&lt;/a&gt; shows our previous result rendered with Lilypond.&lt;/p&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-9&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png&quot; srcset=&quot;/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png 1x, /generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.2x.png 2x&quot; alt=&quot;Our generated 32 bars of music.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 9:&lt;/span&gt; Our generated 32 bars of music.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Remember note grouping from the music theory introduction? When we render the generated music, like in &lt;a href=&quot;#score-9&quot;&gt;Score 9&lt;/a&gt;, the lack of proper note grouping becomes very clear. Bar 22, 26, and 28 have intolerable sequences of notes values without grouping. Let's fix that!&lt;/p&gt;
+&lt;h2 id=&quot;note-grouping&quot;&gt;Note Grouping&lt;/h2&gt;
+&lt;p&gt;We need to define relations that constrain groups of notes depending on their note values. To make it more practical we introduce a new level in our hierarchy of sequences that represents note groups. A bar consist of a seqence of groups of notes, rather than a sequence of notes. &lt;a href=&quot;#score-10&quot;&gt;Score 10&lt;/a&gt; contains the note groupings that we will support.&lt;/p&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-10&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png&quot; srcset=&quot;/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png 1x, /generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.2x.png 2x&quot; alt=&quot;Matched note groups in the groupo relation.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 10:&lt;/span&gt; Matched note groups in the groupo relation.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Let's define the new relation &lt;code&gt;groupo&lt;/code&gt;. It is similar to our previous &lt;code&gt;baro&lt;/code&gt; relation, but matches the group of notes to ensure that the note values follow one of the predefined patterns. The last branch matches on a group with a single note longer or equal to a quarter note.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; groupo &lt;/span&gt;[notes duration]
+  (all
+   (noteso notes)
+   (note-valueo duration)
+   (matche [notes]
+           ([ [[_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;]] ]
+            (fd/== duration &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;))
+           ([ [[_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;]] ]
+            (fd/== duration &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;))
+           ([ [[_ &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;]] ]
+            (fd/== duration &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;))
+           ([ [[_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;]] ]
+            (fd/== duration &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;))
+           ([ [[_ &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;]] ]
+            (fd/== duration &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;))
+           ([ [[_ &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [_ &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;]] ]
+            (fd/== duration &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;))
+           ([ [[_ v]] ]
+            (fd/&amp;gt;= v &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;)
+            (fd/== duration v)))))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We also need the &lt;code&gt;groupso&lt;/code&gt; relation for sequences of groups, with a parameter for the total duration.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(defne groupso [groups duration]
+  ([ [] _ ]
+   (fd/== duration &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;))
+  ([ [g . gs] _ ]
+   (fresh [group-total sub-total]
+     (groupo g group-total)
+     (fd/+ group-total sub-total duration)
+     (groupso gs sub-total))))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;baro&lt;/code&gt; relation can now be simplified to only constrain groups in a bar to have a total duration of 16.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; baro &lt;/span&gt;[groups]
+  (groupso groups &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We need to flatten the groups to keep our external format intact. This way note grouping is only a concern in the generator.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; flatten-groups &lt;/span&gt;[groups]
+  (&lt;span class=&quot;kw&quot;&gt;map&lt;/span&gt; #(&lt;span class=&quot;kw&quot;&gt;apply&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;concat&lt;/span&gt; %&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;) groups))
+
+(&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; generate-score &lt;/span&gt;[n]
+  (&lt;span class=&quot;kw&quot;&gt;let&lt;/span&gt; [groups (run n [q]
+                 (baro q))
+        bars (flatten-groups groups)]
+    {&lt;span class=&quot;kw&quot;&gt;:bars&lt;/span&gt; (&lt;span class=&quot;kw&quot;&gt;map&lt;/span&gt; -&amp;gt;bar bars)}))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To verify the behaviour of &lt;code&gt;groupo&lt;/code&gt; we temporarily constrain the note pitch to only take the value 1, the note C, by redefining &lt;code&gt;pitcho&lt;/code&gt; in the REPL.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;smug.music&amp;gt; (&lt;span class=&quot;kw&quot;&gt;defn&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt; pitcho &lt;/span&gt;[p]
+              (fd/in p (fd/domain &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;)))
+&lt;span class=&quot;kw&quot;&gt;#&amp;#39;&lt;/span&gt;smug.music/pitcho&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As the first bars consist of simpler note values we generate a score of 64 bars and drop the first half.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode clojure&quot;&gt;&lt;code class=&quot;sourceCode clojure&quot;&gt;smug.music&amp;gt; (clojure.pprint/pprint
+             (&lt;span class=&quot;kw&quot;&gt;-&amp;gt;&amp;gt;&lt;/span&gt; (generate-score &lt;span class=&quot;dv&quot;&gt;64&lt;/span&gt;)
+                  &lt;span class=&quot;kw&quot;&gt;:bars&lt;/span&gt;
+                  (&lt;span class=&quot;kw&quot;&gt;drop&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;32&lt;/span&gt;)))
+&lt;span class=&quot;co&quot;&gt;;; output:&lt;/span&gt;
+(([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;])
+ ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;]))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Looks good. &lt;a href=&quot;#score-11&quot;&gt;Score 11&lt;/a&gt; shows the rendered result.&lt;/p&gt;
+&lt;figure class=&quot;lilypond music&quot;&gt;
+&lt;span id=&quot;score-11&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png&quot; srcset=&quot;/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png 1x, /generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.2x.png 2x&quot; alt=&quot;A generated score with note groups.&quot; /&gt;
+&lt;figcaption&gt;
+&lt;span class=&quot;caption-number&quot;&gt;Score 11:&lt;/span&gt; A generated score with note groups.
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Sweet, it works! That concludes our work on note groups, for now.&lt;/p&gt;
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;We have gone through the basic music theory we need for our project, and created a simple generator on which we can improve incrementally. There are some problems with the relations still, like &lt;code&gt;(run 8 [q] (groupo q 16))&lt;/code&gt; not terminating. This seems to cause the same behaviour when trying to generate a score of more than 308 bars. If anyone knows why, please let me know. I'll try to find out why before the next post.&lt;/p&gt;
+&lt;p&gt;Anyway, we can now cross of the first three points on our list:&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;&lt;s&gt;Rythmic variation&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;Pitch variation&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;Common rythmic patterns&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;Interesting pitch variations (melodies, scales, patterns)&lt;/li&gt;
+&lt;li&gt;Rests&lt;/li&gt;
+&lt;li&gt;Key signatures, modes, accidentals&lt;/li&gt;
+&lt;li&gt;Parameterized difficulty&lt;/li&gt;
+&lt;li&gt;Dotted notes&lt;/li&gt;
+&lt;li&gt;Ties&lt;/li&gt;
+&lt;li&gt;Playback (generate a MIDI or WAV file)&lt;/li&gt;
+&lt;li&gt;Odd time signatures&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We still have no randomness in our generator, so we get the same result every time. This really defeats the purpose of a sight-reading exercise generator. Even if we eventually need to add it, I think it's a good idea to wait until we have nailed our other objectives. This way, it is much easier to verify how or relations work.&lt;/p&gt;
+&lt;p&gt;The SMUG source code for this post is available on GitHub &lt;a href=&quot;https://github.com/owickstrom/smug/tree/blog-post-1&quot;&gt;at the &lt;code&gt;blog-post-1&lt;/code&gt; tag&lt;/a&gt;. I hope you enjoyed the read and will continue following the series. Don't forget to help me steer this thing in the right direction by letting me know what's interesting to read about.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 07 Aug 2016 08:00:00 +0200</pubDate>
+        <link>https://wickstrom.tech/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</link>
+        <guid isPermaLink="true">https://wickstrom.tech/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</guid>
+        
+        <category>music</category>
+        
+        <category>logic</category>
+        
+        <category>clp</category>
+        
+        <category>clojure</category>
+        
+        
+        <category>generative-music</category>
+        
+      </item>
+    
+      <item>
+        <title>Custom Formatting in HTML and LaTeX Code Listings using Pandoc</title>
+        <description>&lt;p&gt;I have worked intensively on the &lt;a href=&quot;https://oden-lang.org/user-guide/latest/&quot;&gt;Oden User Guide&lt;/a&gt; lately, primarly on improving content, but also on providing high-quality PDF and HTML output formats with detailed control over typesetting.&lt;/p&gt;
+&lt;p&gt;For some code listings and syntax examples I want the typesetting to convey the meaning of text in the listing -- user input, command output, placeholders, etc. The User Guide build uses &lt;a href=&quot;http://pandoc.org/&quot;&gt;Pandoc&lt;/a&gt; to transform Markdown documents to PDF (through LaTeX) and to HTML. I could not find a good way to express the custom formatting in a way that worked with both LaTeX and HTML using standard Pandoc functionality. Therefore, I created a &lt;a href=&quot;http://pandoc.org/scripting.html&quot;&gt;filter&lt;/a&gt; to handle my input format, called &lt;a href=&quot;https://github.com/oden-lang/oden/blob/master/doc/user-guide/src/filters/IncludeCode.hs&quot;&gt;IncludeCode.hs&lt;/a&gt;. Using this filter, I can write code listings in separate files, using a small subset of HTML. Here's an example of a shell command listing source file from the User Guide:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode html&quot;&gt;&lt;code class=&quot;sourceCode html&quot;&gt;$ &lt;span class=&quot;kw&quot;&gt;&amp;lt;strong&amp;gt;&lt;/span&gt;GOPATH=PWD/target/go:$GOPATH go build -o hello hello/main&lt;span class=&quot;kw&quot;&gt;&amp;lt;/strong&amp;gt;&lt;/span&gt;
+$ &lt;span class=&quot;kw&quot;&gt;&amp;lt;strong&amp;gt;&lt;/span&gt;./hello&lt;span class=&quot;kw&quot;&gt;&amp;lt;/strong&amp;gt;&lt;/span&gt;
+Hello, world!&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;strong&lt;/code&gt; tags in the listing are part of the HTML subset I use. To include listings in the Pandoc Markdown source I use regular code block syntax and add the custom &lt;code&gt;include&lt;/code&gt; and &lt;code&gt;formatted&lt;/code&gt; attributes:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;```{include=src/listings/hello-world-go-build-and-run.html formatted=true}
+```&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The output, both in HTML and PDF, looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ &lt;strong&gt;GOPATH=PWD/target/go:$GOPATH go build -o hello hello/main&lt;/strong&gt;
+$ &lt;strong&gt;./hello&lt;/strong&gt;
+Hello, world!&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For listings explaining the syntax of the Oden language I want placeholders to be typeset in italic text. Where the language supports a sequence of forms I want to express that using placeholder expressions with subscripts. The following listing source file explains the &lt;em&gt;let binding&lt;/em&gt; syntax of Oden.&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;let &lt;span class=&quot;nt&quot;&gt;&amp;lt;em&amp;gt;&lt;/span&gt;identifier&lt;span class=&quot;nt&quot;&gt;&amp;lt;sub&amp;gt;&lt;/span&gt;1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sub&amp;gt;&amp;lt;/em&amp;gt;&lt;/span&gt; = &lt;span class=&quot;nt&quot;&gt;&amp;lt;em&amp;gt;&lt;/span&gt;expression&lt;span class=&quot;nt&quot;&gt;&amp;lt;sub&amp;gt;&lt;/span&gt;1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sub&amp;gt;&amp;lt;/em&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;em&amp;gt;&lt;/span&gt;identifier&lt;span class=&quot;nt&quot;&gt;&amp;lt;sub&amp;gt;&lt;/span&gt;2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sub&amp;gt;&amp;lt;/em&amp;gt;&lt;/span&gt; = &lt;span class=&quot;nt&quot;&gt;&amp;lt;em&amp;gt;&lt;/span&gt;expression&lt;span class=&quot;nt&quot;&gt;&amp;lt;sub&amp;gt;&lt;/span&gt;2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sub&amp;gt;&amp;lt;/em&amp;gt;&lt;/span&gt;
+    ...
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;em&amp;gt;&lt;/span&gt;identifier&lt;span class=&quot;nt&quot;&gt;&amp;lt;sub&amp;gt;&lt;/span&gt;n&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sub&amp;gt;&amp;lt;/em&amp;gt;&lt;/span&gt; = &lt;span class=&quot;nt&quot;&gt;&amp;lt;em&amp;gt;&lt;/span&gt;expression&lt;span class=&quot;nt&quot;&gt;&amp;lt;sub&amp;gt;&lt;/span&gt;n&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sub&amp;gt;&amp;lt;/em&amp;gt;&lt;/span&gt;
+in &lt;span class=&quot;nt&quot;&gt;&amp;lt;em&amp;gt;&lt;/span&gt;body-expression&lt;span class=&quot;nt&quot;&gt;&amp;lt;/em&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/figure&gt;
+&lt;p&gt;When included in the document, just like in the example before, the output looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;let &lt;em&gt;identifier&lt;sub&gt;1&lt;/sub&gt;&lt;/em&gt; = &lt;em&gt;expression&lt;sub&gt;1&lt;/sub&gt;&lt;/em&gt;
+    &lt;em&gt;identifier&lt;sub&gt;2&lt;/sub&gt;&lt;/em&gt; = &lt;em&gt;expression&lt;sub&gt;2&lt;/sub&gt;&lt;/em&gt;
+    ...
+    &lt;em&gt;identifier&lt;sub&gt;n&lt;/sub&gt;&lt;/em&gt; = &lt;em&gt;expression&lt;sub&gt;n&lt;/sub&gt;&lt;/em&gt;
+in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The filter is very simplistic in that it only supports &lt;code&gt;em&lt;/code&gt;, &lt;code&gt;strong&lt;/code&gt;, and &lt;code&gt;sub&lt;/code&gt; elements, but it suits the needs of the Oden User Guide. I find extending Pandoc with filters very powerful, and I hope you find this technique and the blog post useful. If you are interested in the complete solution, including the Makefile compiling the filter and running Pandoc, please see &lt;a href=&quot;https://github.com/oden-lang/oden/tree/master/doc/user-guide&quot;&gt;doc/user-guide&lt;/a&gt; in the Oden repository. Also, you might want to have a look at the &lt;a href=&quot;https://oden-lang.org/user-guide/latest/user-guide.pdf&quot;&gt;PDF version of the User Guide&lt;/a&gt; to see the result after LaTeX typesetting.&lt;/p&gt;
+&lt;p&gt;Long live Pandoc!&lt;/p&gt;
+</description>
+        <pubDate>Sun, 10 Jul 2016 17:00:00 +0200</pubDate>
+        <link>https://wickstrom.tech/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</link>
+        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</guid>
+        
+        <category>html</category>
+        
+        <category>latex</category>
+        
+        <category>documentation</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>Paramount Color Scheme for Vim</title>
+        <description>&lt;p&gt;Having tried a lot of color schemes for editors, especially for Vim, I have gotten quite picky. All right, &lt;em&gt;very&lt;/em&gt; picky. Most of the time Vim has been configured to use &lt;a href=&quot;https://github.com/chriskempson/tomorrow-theme&quot;&gt;Tomorrow Night&lt;/a&gt; or &lt;a href=&quot;https://github.com/morhetz/gruvbox&quot;&gt;Gruvbox&lt;/a&gt;. Although they're great, they have felt a bit over the top. Also, depending on where I'm sitting at the moment I use both dark and light backgrounds for best contrast.&lt;/p&gt;
+&lt;p&gt;The last couple of days I've tried &lt;a href=&quot;https://github.com/pbrisbin/vim-colors-off&quot;&gt;off&lt;/a&gt; with some small modifications for accent colors, e.g. number, strings and escape sequences. This setup fit my taste very well so I decided to package that as a color scheme for Vim. I call it &lt;a href=&quot;https://github.com/owickstrom/vim-colors-paramount&quot;&gt;Paramount&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The goal of Paramount is to not clutter your editor with all colors of the rainbow, just to keep it simple. It uses three monochrome colors for most text together with a purple accent color. Diffs and some errors use red and green colors.&lt;/p&gt;
+&lt;p&gt;Paramount is based on the &lt;a href=&quot;https://github.com/reedes/vim-colors-pencil&quot;&gt;pencil&lt;/a&gt; and &lt;a href=&quot;https://github.com/pbrisbin/vim-colors-off&quot;&gt;off&lt;/a&gt; color schemes. Thanks for the great work on those projects!&lt;/p&gt;
+&lt;h2 id=&quot;screenshots&quot;&gt;Screenshots&lt;/h2&gt;
+&lt;p&gt;The following screenshots show some Go code together with the &lt;em&gt;Latin Modern Mono&lt;/em&gt; font on light and dark backgrounds.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/latin-modern-light.png&quot; /&gt; &lt;img src=&quot;https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/latin-modern-dark.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;...and if you use the &lt;em&gt;Monaco&lt;/em&gt; font to show the Ruby code from &lt;a href=&quot;http://vimcolors.com/&quot;&gt;vimcolors.com&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/monaco-light.png&quot; /&gt; &lt;img src=&quot;https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/screenshots/monaco-dark.png&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+&lt;p&gt;Simply copy &lt;a href=&quot;https://raw.githubusercontent.com/owickstrom/vim-colors-paramount/master/colors/paramount.vim&quot;&gt;the color scheme file&lt;/a&gt; to your &lt;code&gt;~/.vim/colors directory&lt;/code&gt; or use a plugin manager like Plug or Vundle and add &lt;code&gt;&amp;quot;owickstrom/vim-colors-paramount&amp;quot;&lt;/code&gt; as a plugin.&lt;/p&gt;
+&lt;p&gt;The source is available &lt;a href=&quot;https://github.com/owickstrom/vim-colors-paramount&quot;&gt;on GitHub&lt;/a&gt;. You can preview the theme on the &lt;a href=&quot;http://vimcolors.com/438/paramount/dark&quot;&gt;&lt;em&gt;~/.vim/colors&lt;/em&gt;&lt;/a&gt; site.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 15 May 2016 09:00:00 +0200</pubDate>
+        <link>https://wickstrom.tech/programming/2016/05/15/paramount-color-scheme-for-vim.html</link>
+        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/05/15/paramount-color-scheme-for-vim.html</guid>
+        
+        <category>vim</category>
+        
+        <category>tools</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>Software Evolution Without Fear</title>
+        <description>&lt;p&gt;The software we create needs to evolve continuously. There are many reasons for programs to evolve; changing business needs, bug fixes, shifting technical requirements, performance, staff changes, quality improvements, the release of the next big Javascript framework, etc. The list goes on and on.&lt;/p&gt;
+&lt;p&gt;In this post I offer my rather technical viewpoint on the subject — what programming languages and tools can do to help us evolve software in a reliable way, avoiding status quo or costly rewrites. I discuss dynamic and static typing in different languages and how Haskell enables me to do large changes to the Oden compiler without introducing programming errors.&lt;/p&gt;
+&lt;h2 id=&quot;scenario-changing-business-needs&quot;&gt;Scenario: Changing Business Needs&lt;/h2&gt;
+&lt;p&gt;Let's say your job is to add a new shipping option in an E-commerce application. The existing shipping code resides in the dreaded &lt;code&gt;ECommerceControllerBaseFactory&lt;/code&gt; class, weighing in at 7500+ lines of code. Everyone in the team knows how complex this code is and still it continues to thrive.&lt;/p&gt;
+&lt;p&gt;Eventually you find the four-level nested &lt;code&gt;if&lt;/code&gt; statement doing lots of stuff with shipping options, customer bonus points, country tax regulations, mixed with all kinds of non-business concerns like logging, constructing and destructuring of values and closing resources. There's small attempts at abstraction in there, with private class methods small chunks of the work, but it's still a big &lt;a href=&quot;https://en.wiktionary.org/wiki/complect&quot;&gt;complected&lt;/a&gt; mess of different capabilities and technical necessities. If you've been in the &amp;quot;bread and butter&amp;quot; side of systems development, I bet you've seen something like this before, both in back and front end applications.&lt;/p&gt;
+&lt;h3 id=&quot;fear-of-change&quot;&gt;Fear of Change&lt;/h3&gt;
+&lt;p&gt;Why hasn't anyone refactored this mass of complexity? Having the giant elefant in the room cannot possibly be a good thing, especially not in the part of the code that models your core business. This is where you should have the best code! I believe it usually starts out rather innocent. As the software evolves over time, by people making many small changes, complexity steadily creeps in. One additional &lt;code&gt;else if { ... }&lt;/code&gt; cannot be that bad, right? Or one more nested callback, surely we can live that?&lt;/p&gt;
+&lt;p&gt;From my experience these growing pieces of code doesn't get refactored out of the fear of introducing bugs. Invalid business logic, null pointer exceptions, various simple programming errors, concurrency bugs — a lot of things can go wrong if you try to break this class into pieces and so we take the path of least resistance.&lt;/p&gt;
+&lt;p&gt;It's just not about the lines of code and complexity. As a project evolve developers usually come and go. People quit their jobs or start working in other departments or roles, and new people join. And if the project grows it it might get more developers working in parallel in the same code. Even if you had the guts to make a big change to the massive class, you could spend weeks with merge conflicts and thus have an even greater risk of errors. Also, as the fragmentation of developers increase the individual developer might now feel responsible for taking greater action.&lt;/p&gt;
+&lt;p&gt;When we continually opt for the change of least risk the situation does not improve. We are often pushed by deadlines or sprints, limiting our time to add, delete or modify the code in question. &lt;em&gt;&amp;quot;You only need to add the shipping option, that's it! We don't have time for tests or refactoring right now&amp;quot;&lt;/em&gt;, you might be told.&lt;/p&gt;
+&lt;p&gt;One of way of dealing with these issues is to have a dedicated time slot for quality improvements. While this is probably better than doing nothing at all, working proactively with quality rather than retroactively is the way to go.&lt;/p&gt;
+&lt;h2 id=&quot;tools-that-reduce-fear&quot;&gt;Tools that Reduce Fear&lt;/h2&gt;
+&lt;p&gt;Different programming languages and tools help us at varying degrees. You can argue that a dynamically typed programming language is faster to prototype and experiment with than statically typed alternatives. As much as I love hanging out in a Scheme REPL for a couple of hours, trying stuff out and working my way forward, that itching fear or changing existing code takes hold of me when a project starts to grow.&lt;/p&gt;
+&lt;p&gt;There are tools for dynamically typed languages that aims to address these issues. Racket has &lt;a href=&quot;https://docs.racket-lang.org/ts-guide/&quot;&gt;Typed Racket&lt;/a&gt;, a statically typed dialect of Racket. Clojure has &lt;a href=&quot;http://typedclojure.org/&quot;&gt;Typed Clojure&lt;/a&gt;, an optional type system for Clojure that can validate your program at compile time. &lt;a href=&quot;https://github.com/plumatic/schema&quot;&gt;Schema&lt;/a&gt; is another option for Clojure that performs runtime data validation based on contracts.&lt;/p&gt;
+&lt;h3 id=&quot;the-haskell-experience&quot;&gt;The Haskell Experience&lt;/h3&gt;
+&lt;p&gt;Programming in Haskell is another workflow for me. I personally don't rely much on the GHCi REPL for experimentation. Instead the types guide me to the end goal. That sounds cheesy, I know, but let me try to explain.&lt;/p&gt;
+&lt;p&gt;First off, &lt;em&gt;I think about it&lt;/em&gt;. In the shower, before falling asleep, when looking out the window, when riding the bike to work. Staring at code or pressing keyboard buttons will not help me solve the problem at hand, I just get stuck and become frustrated.&lt;/p&gt;
+&lt;p&gt;After thinking about it, I hopefully arrive at something that might work. I start by modeling my thinking in terms of data types and function type signatures. Functions are &lt;code&gt;undefined&lt;/code&gt; until I'm ready write the implementation. This is basically a top-down approach for materializing the design I have in my head into code. It enables me to explore freely and also give me statically typed code right from the start.&lt;/p&gt;
+&lt;p&gt;In an existing Haskell code base, given that everything is not typed as &lt;code&gt;IO ()&lt;/code&gt;, making structural changes is not that scary. Having rewritten the Oden compiler from Racket to Haskell I think comparing the two implementations is reasonable. Lately I have been doing big changes to the core model of the compiler, changing thousands of lines of code affecting the majority of source files, and still I'm confident there will be no annoying programming errors, null pointer exceptions or incorrectly interleaved effects. I actively avoided making those kinds of changes to the Racket code base due to the risks of introducing runtime errors.&lt;/p&gt;
+&lt;p&gt;I should point out that the Oden compiler is like a big pure function with no external state, so it is easier to test than a system with integrations and side effects. And yes, I can still introduce bugs that Haskell won't be able to catch, but the majority of errors I would have to consider in a language like Java or Scheme just isn't there.&lt;/p&gt;
+&lt;h2 id=&quot;lets-be-explicit&quot;&gt;Let's Be Explicit&lt;/h2&gt;
+&lt;p&gt;Lately I've been trying to become aware of how I think about functions and data as I write programs. What I've found is that I generally think in terms of algebraic data types, records with known sets of fields, monads and functors, regardless if I'm programming in Haskell, Scheme or Javascript. &lt;em&gt;&amp;quot;Oh, that's just like the List monad.&amp;quot;&lt;/em&gt;, I might think to myself. I consider this &lt;em&gt;my inner type system&lt;/em&gt; that I fall back to when there is no explicit type system in the programming language. I suspect many of us think about code in a similar way. If so, why not formalize that into an encoding that we can share between humans and computers to improve quality? This is what I consider the essence of static typing.&lt;/p&gt;
+&lt;p&gt;I am certain that we can have have mainstream programming languages with static typing and still retain the expressiveness and exploratory power of dynamically typed languages. I think we should strive for tools that help us fearlessly evolve software. We can do a lot better than we are doing right now! Also, static typing as we know it today might only be a stepping stone to something even greater.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 23 Apr 2016 17:00:00 +0200</pubDate>
+        <link>https://wickstrom.tech/programming/2016/04/23/software-evolution-without-fear.html</link>
+        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/04/23/software-evolution-without-fear.html</guid>
+        
+        <category>haskell</category>
+        
+        <category>tools</category>
+        
+        <category>languages</category>
+        
+        <category>type-systems</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>A Faster Test Workflow for Haskell</title>
+        <description>&lt;p&gt;The amount of tests in Oden has been increasing steadily since the beginning of this compiler iteration. I like to have tests run automatically when both library and test source code changes, so I have previously used &lt;em&gt;nodemon&lt;/em&gt; to watch for file changes and execute &lt;code&gt;cabal test&lt;/code&gt; or the like. It was starting to get a bit slow so decided to search for a new setup. This post explains how it works.&lt;/p&gt;
+&lt;h2 id=&quot;sendings-keys&quot;&gt;Sendings Keys&lt;/h2&gt;
+&lt;p&gt;As I already use &lt;em&gt;tmux&lt;/em&gt; for all work I figured I could use that together with GHCi somehow. Tmux has a command called &lt;code&gt;send-keys&lt;/code&gt; that lets you programmatically send keys as though they were typed in at the target pane.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span class=&quot;kw&quot;&gt;tmux&lt;/span&gt; send-keys -t &lt;span class=&quot;st&quot;&gt;&amp;quot;mysession:0.1&amp;quot;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;echo hello, world&amp;quot;&lt;/span&gt; Enter&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This sends &lt;code&gt;echo hello, world&lt;/code&gt; followed by a line break to the pane with index 1, in the window with index 0, in the session called &lt;em&gt;mysession&lt;/em&gt;. The &lt;code&gt;-t&lt;/code&gt; switch handles convenient tokens such as &lt;code&gt;last&lt;/code&gt; and &lt;code&gt;left&lt;/code&gt; so you don't have to figure out indices. See the &lt;a href=&quot;http://man.openbsd.org/OpenBSD-current/man1/tmux.1&quot;&gt;tmux man page&lt;/a&gt; for all variants.&lt;/p&gt;
+&lt;p&gt;I also use &lt;em&gt;tmuxinator&lt;/em&gt; to setup windows and panes for my projects, which means I know what indices they will have. The following is an excerpt of my new Oden tmuxinator configuration.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode yaml&quot;&gt;&lt;code class=&quot;sourceCode yaml&quot;&gt;&lt;span class=&quot;fu&quot;&gt;name:&lt;/span&gt; oden
+&lt;span class=&quot;fu&quot;&gt;root:&lt;/span&gt; ~/Projects/oden-lang
+
+&lt;span class=&quot;fu&quot;&gt;windows:&lt;/span&gt;
+  &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;oden:&lt;/span&gt;
+      &lt;span class=&quot;fu&quot;&gt;root:&lt;/span&gt; ~/Projects/oden-lang/oden
+      &lt;span class=&quot;fu&quot;&gt;panes:&lt;/span&gt;
+        &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt; vim
+        &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt; cabal exec ghci -- -isrc -itest Main
+  &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;test-watch:&lt;/span&gt;
+      &lt;span class=&quot;fu&quot;&gt;root:&lt;/span&gt; ~/Projects/oden-lang/oden
+      &lt;span class=&quot;fu&quot;&gt;panes:&lt;/span&gt;
+        &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt; &amp;gt;
+            nodemon \
+              &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt;-watch src \
+              &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt;-watch test \
+              &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt;e hs \
+              &lt;span class=&quot;kw&quot;&gt;-&lt;/span&gt;-&lt;span class=&quot;fu&quot;&gt;exec &amp;#39;tmux send-keys -t &amp;quot;oden:&lt;/span&gt;0.1&amp;quot; :r Enter main Enter&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This tmuxinator configuration launches one split window with Vim and GHCi as well as another window running &lt;code&gt;nodemon&lt;/code&gt;. When Haskell source files in &lt;code&gt;src&lt;/code&gt; and &lt;code&gt;test&lt;/code&gt; change the GHCi REPL in the first window gets the &lt;code&gt;:r&lt;/code&gt; command executed, which reloads all modules, followed by the invocation of &lt;code&gt;main&lt;/code&gt; which runs the tests again.&lt;/p&gt;
+&lt;p&gt;The reason I use &lt;code&gt;cabal exec -- -isrc -itest Main&lt;/code&gt; is to have both targets loaded as interpreted sources in GHCi. When you run &lt;code&gt;cabal repl &amp;lt;target&amp;gt;&lt;/code&gt; only that target's sources can be reloaded. I want to reload changed source files both in the library and in the test targets.&lt;/p&gt;
+&lt;p&gt;If you are using &lt;a href=&quot;https://github.com/commercialhaskell/stack&quot;&gt;Stack&lt;/a&gt; just replace &lt;code&gt;cabal&lt;/code&gt; with &lt;code&gt;stack&lt;/code&gt; in these commands and it should work as well.&lt;/p&gt;
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;With this I have hundreds of tests run automatically in about a second, which I think is fine for Haskell. My previous setup had a latency at about 4 seconds. All in all, I'm very happy with this workflow.&lt;/p&gt;
+&lt;p&gt;If you have any improvements or recommendations you would like to share then please post a comment below.&lt;/p&gt;
+&lt;h2 id=&quot;update-2016-07-31&quot;&gt;Update 2016-07-31&lt;/h2&gt;
+&lt;p&gt;Even though it is somewhat slower, I use &lt;code&gt;stack test --file-watch&lt;/code&gt; more often in the beginning of a project as it handles changes in the Cabal file. I have also started using the interactive session support in the Emacs &lt;em&gt;haskell-mode&lt;/em&gt; to reload test modules using &lt;code&gt;C-c C-l&lt;/code&gt; and then run the individual tests with &lt;code&gt;hspec spec&lt;/code&gt; in the Emacs GHCi session. Maybe later I will create an Emacs keybinding for reloading a test module and running the specs.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 19 Apr 2016 07:00:00 +0200</pubDate>
+        <link>https://wickstrom.tech/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</link>
+        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</guid>
+        
+        <category>haskell</category>
+        
+        <category>tools</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>The Case for Case</title>
+        <description>&lt;p&gt;I try to keep an eye out for quick wins that can improve my Haskell code. One thing that annoys me in the code I have written before is the use of pattern matching at the top level where the function name is repeated for each pattern.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode haskell&quot;&gt;&lt;code class=&quot;sourceCode haskell&quot;&gt;&lt;span class=&quot;ot&quot;&gt;greet ::&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;String&lt;/span&gt;
+greet (&lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Oskar&amp;quot;&lt;/span&gt;)       &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Ohai, me.&amp;quot;&lt;/span&gt;
+greet (&lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;John Bonham&amp;quot;&lt;/span&gt;) &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Wait... How is this happening?&amp;quot;&lt;/span&gt;
+greet (&lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; someone)       &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Hi, &amp;quot;&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;++&lt;/span&gt; someone &lt;span class=&quot;fu&quot;&gt;++&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt;
+greet &lt;span class=&quot;dt&quot;&gt;Nothing&lt;/span&gt;              &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;People of the Earth!&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Greet, greet, greet, greet... &lt;em&gt;&lt;em&gt;Sigh&lt;/em&gt;&lt;/em&gt;. Would you agree that the repetition becomes a bit tedious? Let's put those patterns into a case expression instead.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode haskell&quot;&gt;&lt;code class=&quot;sourceCode haskell&quot;&gt;&lt;span class=&quot;ot&quot;&gt;greet ::&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;String&lt;/span&gt;
+greet who &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;case&lt;/span&gt; who &lt;span class=&quot;kw&quot;&gt;of&lt;/span&gt;
+  &lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Oskar&amp;quot;&lt;/span&gt;       &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Ohai, me.&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;John Bonham&amp;quot;&lt;/span&gt; &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Wait... How is this happening?&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; someone       &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Hi, &amp;quot;&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;++&lt;/span&gt; someone &lt;span class=&quot;fu&quot;&gt;++&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;dt&quot;&gt;Nothing&lt;/span&gt;            &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;People of the Earth!&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Much better! Notice also how the parenthesis around the Maybe pattern can be removed.&lt;/p&gt;
+&lt;p&gt;If you want you can take this even further using the &lt;em&gt;LambdaCase&lt;/em&gt; language extension. Either use the flag &lt;code&gt;-XLambdaCase&lt;/code&gt; when compiling or add a language pragma at the top of your module as in the following example.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot;&gt;&lt;pre class=&quot;sourceCode haskell&quot;&gt;&lt;code class=&quot;sourceCode haskell&quot;&gt;&lt;span class=&quot;ot&quot;&gt;{-# LANGUAGE LambdaCase #-}&lt;/span&gt;
+&lt;span class=&quot;kw&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Greetings&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;where&lt;/span&gt;
+
+&lt;span class=&quot;ot&quot;&gt;greet ::&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;String&lt;/span&gt;
+greet &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; \&lt;span class=&quot;kw&quot;&gt;case&lt;/span&gt;
+  &lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Oskar&amp;quot;&lt;/span&gt;       &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Ohai, me.&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;John Bonham&amp;quot;&lt;/span&gt; &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Wait... How is this happening?&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;dt&quot;&gt;Just&lt;/span&gt; someone       &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Hi, &amp;quot;&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;++&lt;/span&gt; someone &lt;span class=&quot;fu&quot;&gt;++&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;dt&quot;&gt;Nothing&lt;/span&gt;            &lt;span class=&quot;ot&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;People of the Earth!&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you want to find out more about syntax extensions you should check out the &lt;a href=&quot;https://downloads.haskell.org/~ghc/7.8.4/docs/html/users_guide/syntax-extns.html&quot;&gt;GHC users guide&lt;/a&gt;. Thanks for reading. Happy pattern matching!&lt;/p&gt;
+</description>
+        <pubDate>Thu, 14 Apr 2016 16:24:00 +0200</pubDate>
+        <link>https://wickstrom.tech/programming/2016/04/14/the-case-for-case.html</link>
+        <guid isPermaLink="true">https://wickstrom.tech/programming/2016/04/14/the-case-for-case.html</guid>
+        
+        <category>haskell</category>
+        
+        <category>functional</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>So It Begins</title>
+        <description>&lt;p&gt;Yep. I'm starting a programming blog.&lt;/p&gt;
+&lt;p&gt;Potential blog post ideas cross my mind on a regular basis and until now I haven't had any good place to post them. I want to keep &lt;a href=&quot;http://oden-lang.org/blog/&quot;&gt;the Oden blog&lt;/a&gt; focused on just that project — writing about Vim or other programming languages there would just be confusing.&lt;/p&gt;
+&lt;p&gt;A goal is to find a steady pace in publishing, even if not very frequent. The topics might vary over time but I can assure you there will be a primary focus on functional programming, followed by personal reflections on open source work and the Oden Programming Language project. There's more to that project than just coding, to put it mildly.&lt;/p&gt;
+&lt;p&gt;I hope you will enjoy the blog and keep reading!&lt;/p&gt;
+</description>
+        <pubDate>Thu, 14 Apr 2016 12:00:00 +0200</pubDate>
+        <link>https://wickstrom.tech/2016/04/14/so-it-begins.html</link>
+        <guid isPermaLink="true">https://wickstrom.tech/2016/04/14/so-it-begins.html</guid>
+        
+        <category>meta</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>

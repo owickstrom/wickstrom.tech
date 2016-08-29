@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Custom Formatting in HTML and LaTeX Code Listings using Pandoc | Func Da World</title>
+  <meta name="description" content="When working on the Oden User Guide I developed a way of including pre-formatted code listings in HTML and LaTeX.">
+
+  <link rel="icon" type="image/png" href="/assets/icon.png">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" media="print" href="/css/print.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:400,400i|Inconsolata|Montserrat:700">
+
+  <link rel="canonical" href="https://wickstrom.tech/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html">
+  <link rel="alternate" type="application/rss+xml" title="Func Da World" href="https://wickstrom.tech/feed.xml">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:creator" content="owickstrom">
+  
+  <meta name="twitter:title" content="Custom Formatting in HTML and LaTeX Code Listings using Pandoc">
+  
+  
+  <meta name="twitter:url" content="https://wickstrom.tech/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html">
+  
+  
+  <meta name="twitter:description" content="Oskar Wickström on functional programming.
+">
+  
+  <meta name="twitter:image:src" content="https://wickstrom.tech/assets/square.png">
+</head>
+
+
+  <body>
+
+    <nav class="top-nav">
+  <div class="wrapper">
+    <a href="/" class="home">
+      <img src="/assets/logo.png"
+          srcset="/assets/logo.png 1x,
+          /assets/logo@2x.png 2x"
+          alt="FUNC DA WORLD">
+    </a>
+    <div class="nav">
+      <ul>
+        
+  
+  
+
+  <li class="first  ">
+    <a class="" href="/archive.html">Archive</a>
+  </li>
+
+  
+  
+
+  <li class="  last">
+    <a class="" href="/about.html">About</a>
+  </li>
+
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+      <header class="page-header post-header">
+        <h1 class="page-title post-title" itemprop="name headline">Custom Formatting in HTML and LaTeX Code Listings using Pandoc</h1>
+        <p class="post-meta">
+          <time datetime="2016-07-10T17:00:00+02:00" itemprop="datePublished">July 10, 2016</time> by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Oskar Wickström</span></span>
+          
+          
+          <span class="category">
+          In <a href="/programming">programming</a>
+          </span>
+          
+        </p>
+      </header>
+
+      <div class="post-content" itemprop="articleBody">
+        <p>I have worked intensively on the <a href="https://oden-lang.org/user-guide/latest/">Oden User Guide</a> lately, primarly on improving content, but also on providing high-quality PDF and HTML output formats with detailed control over typesetting.</p>
+<p>For some code listings and syntax examples I want the typesetting to convey the meaning of text in the listing -- user input, command output, placeholders, etc. The User Guide build uses <a href="http://pandoc.org/">Pandoc</a> to transform Markdown documents to PDF (through LaTeX) and to HTML. I could not find a good way to express the custom formatting in a way that worked with both LaTeX and HTML using standard Pandoc functionality. Therefore, I created a <a href="http://pandoc.org/scripting.html">filter</a> to handle my input format, called <a href="https://github.com/oden-lang/oden/blob/master/doc/user-guide/src/filters/IncludeCode.hs">IncludeCode.hs</a>. Using this filter, I can write code listings in separate files, using a small subset of HTML. Here's an example of a shell command listing source file from the User Guide:</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">$ <span class="kw">&lt;strong&gt;</span>GOPATH=PWD/target/go:$GOPATH go build -o hello hello/main<span class="kw">&lt;/strong&gt;</span>
+$ <span class="kw">&lt;strong&gt;</span>./hello<span class="kw">&lt;/strong&gt;</span>
+Hello, world!</code></pre></div>
+<p>The <code>strong</code> tags in the listing are part of the HTML subset I use. To include listings in the Pandoc Markdown source I use regular code block syntax and add the custom <code>include</code> and <code>formatted</code> attributes:</p>
+<pre><code>```{include=src/listings/hello-world-go-build-and-run.html formatted=true}
+```</code></pre>
+<p>The output, both in HTML and PDF, looks like this:</p>
+<pre><code>$ <strong>GOPATH=PWD/target/go:$GOPATH go build -o hello hello/main</strong>
+$ <strong>./hello</strong>
+Hello, world!</code></pre>
+<p>For listings explaining the syntax of the Oden language I want placeholders to be typeset in italic text. Where the language supports a sequence of forms I want to express that using placeholder expressions with subscripts. The following listing source file explains the <em>let binding</em> syntax of Oden.</p>
+<figure class="highlight">
+<pre><code class="language-html" data-lang="html">let <span class="nt">&lt;em&gt;</span>identifier<span class="nt">&lt;sub&gt;</span>1<span class="nt">&lt;/sub&gt;&lt;/em&gt;</span> = <span class="nt">&lt;em&gt;</span>expression<span class="nt">&lt;sub&gt;</span>1<span class="nt">&lt;/sub&gt;&lt;/em&gt;</span>
+    <span class="nt">&lt;em&gt;</span>identifier<span class="nt">&lt;sub&gt;</span>2<span class="nt">&lt;/sub&gt;&lt;/em&gt;</span> = <span class="nt">&lt;em&gt;</span>expression<span class="nt">&lt;sub&gt;</span>2<span class="nt">&lt;/sub&gt;&lt;/em&gt;</span>
+    ...
+    <span class="nt">&lt;em&gt;</span>identifier<span class="nt">&lt;sub&gt;</span>n<span class="nt">&lt;/sub&gt;&lt;/em&gt;</span> = <span class="nt">&lt;em&gt;</span>expression<span class="nt">&lt;sub&gt;</span>n<span class="nt">&lt;/sub&gt;&lt;/em&gt;</span>
+in <span class="nt">&lt;em&gt;</span>body-expression<span class="nt">&lt;/em&gt;</span></code></pre>
+</figure>
+<p>When included in the document, just like in the example before, the output looks like this:</p>
+<pre><code>let <em>identifier<sub>1</sub></em> = <em>expression<sub>1</sub></em>
+    <em>identifier<sub>2</sub></em> = <em>expression<sub>2</sub></em>
+    ...
+    <em>identifier<sub>n</sub></em> = <em>expression<sub>n</sub></em>
+in <em>body-expression</em></code></pre>
+<p>The filter is very simplistic in that it only supports <code>em</code>, <code>strong</code>, and <code>sub</code> elements, but it suits the needs of the Oden User Guide. I find extending Pandoc with filters very powerful, and I hope you find this technique and the blog post useful. If you are interested in the complete solution, including the Makefile compiling the filter and running Pandoc, please see <a href="https://github.com/oden-lang/oden/tree/master/doc/user-guide">doc/user-guide</a> in the Oden repository. Also, you might want to have a look at the <a href="https://oden-lang.org/user-guide/latest/user-guide.pdf">PDF version of the User Guide</a> to see the result after LaTeX typesetting.</p>
+<p>Long live Pandoc!</p>
+
+      </div>
+
+      <a id="post-comments-link"
+         href="#disqus_thread"
+         data-disqus-identifier="custom-formatting-in-html-and-latex-code-listings-using-pandoc">
+      </a>
+      <noscript class="no-javascript">Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments</a>.</noscript>
+    </article>
+  </div>
+</div>
+
+<div class="page-comments hidden" id="post-comments">
+  <div class="wrapper">
+    <div id="disqus_thread"></div>
+    <script src="/js/comments.js"></script>
+    <script>
+    initializeComments('https://wickstrom.tech/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html', 'custom-formatting-in-html-and-latex-code-listings-using-pandoc');
+    </script>
+    <script id="dsq-count-scr" src="//owickstrom.disqus.com/count.js" async></script>
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+    <p><a class="rss-subscribe" href="/feed.xml">Subscribe via RSS</a></p>
+    <p class="copyright">Copyright &copy; 2015 Oskar Wickström</p>
+  </div>
+
+</footer>
+
+
+
+    <script>
+function loadCssAsync(path) {
+  function cb() {
+    var l = document.createElement('link'); l.rel = 'stylesheet';
+    l.href = path;
+    var h = document.getElementsByTagName('head')[0]; h.appendChild(l, h);
+  };
+  var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+  webkitRequestAnimationFrame || msRequestAnimationFrame;
+  if (raf) raf(cb);
+  else window.addEventListener('load', cb);
+};
+
+loadCssAsync('/css/syntax-highlighting.css');
+</script>
+
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-42197774-2', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+
+</html>
