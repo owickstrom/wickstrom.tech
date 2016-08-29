@@ -2,6 +2,7 @@ TOOLS=src/tools
 
 build:
 	cd src && bundle exec jekyll build --destination ../docs
+	rm docs/Gemfile* docs/CNAME.old
 
 deploy: build
 	aws s3 sync docs s3://wickstrom.tech --acl=public-read
