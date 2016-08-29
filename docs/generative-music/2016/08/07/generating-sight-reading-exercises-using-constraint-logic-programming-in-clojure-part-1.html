@@ -9,14 +9,14 @@
   <title>Generating Sight-Reading Exercises using Constraint Logic Programming in Clojure, Part 1 | Func Da World</title>
   <meta name="description" content="This is the first post in a series about generating sheet music for sight-reading exercises, using Clojure and core.logic.">
 
-  <link rel="icon" type="image/png" href="/assets/icon.png">
+  <link rel="icon" type="image/png" href="/blog-test/assets/icon.png">
 
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" media="print" href="/css/print.css">
+  <link rel="stylesheet" href="/blog-test/css/main.css">
+  <link rel="stylesheet" media="print" href="/blog-test/css/print.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:400,400i|Inconsolata|Montserrat:700">
 
-  <link rel="canonical" href="https://owickstrom.github.io/blog-test//generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html">
-  <link rel="alternate" type="application/rss+xml" title="Func Da World" href="https://owickstrom.github.io/blog-test//feed.xml">
+  <link rel="canonical" href="https://owickstrom.github.io/blog-test/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html">
+  <link rel="alternate" type="application/rss+xml" title="Func Da World" href="https://owickstrom.github.io/blog-test/feed.xml">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:creator" content="owickstrom">
@@ -24,13 +24,13 @@
   <meta name="twitter:title" content="Generating Sight-Reading Exercises using Constraint Logic Programming in Clojure, Part 1">
   
   
-  <meta name="twitter:url" content="https://owickstrom.github.io/blog-test//generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html">
+  <meta name="twitter:url" content="https://owickstrom.github.io/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html">
   
   
   <meta name="twitter:description" content="Oskar Wickström on functional programming.
 ">
   
-  <meta name="twitter:image:src" content="https://owickstrom.github.io/blog-test//assets/square.png">
+  <meta name="twitter:image:src" content="https://owickstrom.github.io/assets/square.png">
 </head>
 
 
@@ -38,7 +38,7 @@
 
     <nav class="top-nav">
   <div class="wrapper">
-    <a href="/" class="home">
+    <a href="/blog-test/" class="home">
       <img src="/assets/logo.png"
           srcset="/assets/logo.png 1x,
           /assets/logo@2x.png 2x"
@@ -110,7 +110,7 @@
 <p>In this post we will work with points 1-3. I hope this series will be able to cover most or all of the aspects in the list.</p>
 <p>As a complement to the prioritized list, we will look at a piece of music that exhibits the elements and patterns we want in a generated sight-reading exercise. <a href="#score-1">Score 1</a> is a four-measure melody I wrote by hand. In my personal taste this melody does not sound random or generated, it is musical. We will use it as an inspiration and long-term goal for our music-generator project.</p>
 <figure class="lilypond music">
-<span id="score-1"></span> <img src="/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png" srcset="/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png 1x, /generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.2x.png 2x" alt="A hand-written melodious sight reading exercise." />
+<span id="score-1"></span> <img src="/blog-test/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png" srcset="/blog-test/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png 1x, /blog-test/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.2x.png 2x" alt="A hand-written melodious sight reading exercise." />
 <figcaption>
 <span class="caption-number">Score 1:</span> A hand-written melodious sight reading exercise.
 </figcaption>
@@ -124,7 +124,7 @@
       alt="Flat sign"
       style="margin: 0 .25em;">) symbols, raising or lowering the note on the line it is placed, until the next key signature, or to the end of the score. A sharp raises the note by a semitone, a flat lowers the note by a semitone. In our example we have no sharp or flat symbols in the key signature, thus all notes are in the diatonic C scale. <a href="#score-2">Score 2</a> shows a key signature for music in the key of D major, raising all F notes to F#, and all C notes to C#.</p>
 <figure class="lilypond music">
-<span id="score-2"></span> <img src="/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png" srcset="/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png 1x, /generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.2x.png 2x" alt="Music in the key of D major." />
+<span id="score-2"></span> <img src="/blog-test/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png" srcset="/blog-test/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png 1x, /blog-test/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.2x.png 2x" alt="Music in the key of D major." />
 <figcaption>
 <span class="caption-number">Score 2:</span> Music in the key of D major.
 </figcaption>
@@ -270,39 +270,39 @@ Dyadic rational divisions. Graphic from <a href="https://en.wikipedia.org/wiki/F
 </figure>
 <p>Another way of describing such note values is by <em>tying</em> multiple notes together. The following two scores have the same musical meaning, in that they sound the same way, but <a href="#score-3">Score 3</a> is notated using ties, and <a href="#score-4">Score 4</a> is notated using dotted notes.</p>
 <figure class="lilypond music">
-<span id="score-3"></span> <img src="/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png" srcset="/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png 1x, /generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.2x.png 2x" alt="Using ties for 3/8 and 3/16 duration notes." />
+<span id="score-3"></span> <img src="/blog-test/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png" srcset="/blog-test/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png 1x, /blog-test/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.2x.png 2x" alt="Using ties for 3/8 and 3/16 duration notes." />
 <figcaption>
 <span class="caption-number">Score 3:</span> Using ties for 3/8 and 3/16 duration notes.
 </figcaption>
 </figure>
 <figure class="lilypond music">
-<span id="score-4"></span> <img src="/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png" srcset="/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png 1x, /generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.2x.png 2x" alt="Using dotted notes for 3/8 and 3/16 duration notes." />
+<span id="score-4"></span> <img src="/blog-test/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png" srcset="/blog-test/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png 1x, /blog-test/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.2x.png 2x" alt="Using dotted notes for 3/8 and 3/16 duration notes." />
 <figcaption>
 <span class="caption-number">Score 4:</span> Using dotted notes for 3/8 and 3/16 duration notes.
 </figcaption>
 </figure>
 <p>Another important aspect of musical notation is <em>note grouping</em>. This technique helps the reader to see the sub-divisions of a bar by visually grouping notes. Notes are commonly grouped within quarter and eighth note durations, depending on the note values. <a href="#score-5">Score 5</a> shows a phrase of quarter notes following a single sixteenth note, without any grouping. The same phrase is written with note groups in <a href="#score-6">Score 6</a> for greater readability.</p>
 <figure class="lilypond music">
-<span id="score-5"></span> <img src="/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png" srcset="/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png 1x, /generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.2x.png 2x" alt="A phrase without proper grouping is harder to read." />
+<span id="score-5"></span> <img src="/blog-test/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png" srcset="/blog-test/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png 1x, /blog-test/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.2x.png 2x" alt="A phrase without proper grouping is harder to read." />
 <figcaption>
 <span class="caption-number">Score 5:</span> A phrase without proper grouping is harder to read.
 </figcaption>
 </figure>
 <figure class="lilypond music">
-<span id="score-6"></span> <img src="/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png" srcset="/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png 1x, /generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.2x.png 2x" alt="Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together." />
+<span id="score-6"></span> <img src="/blog-test/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png" srcset="/blog-test/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png 1x, /blog-test/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.2x.png 2x" alt="Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together." />
 <figcaption>
 <span class="caption-number">Score 6:</span> Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together.
 </figcaption>
 </figure>
 <p>Exceptions are made for common rythmic patterns, like the eighth note followed by a <em>single</em> quarter note and an eighth note, illustrated in <a href="#score-7">Score 7</a>. Multiple quarter notes following an eighth note should be grouped, as shown in <a href="#score-8">Score 8</a>.</p>
 <figure class="lilypond music">
-<span id="score-7"></span> <img src="/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png" srcset="/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png 1x, /generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.2x.png 2x" alt="A common rythmic pattern that does not need grouping." />
+<span id="score-7"></span> <img src="/blog-test/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png" srcset="/blog-test/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png 1x, /blog-test/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.2x.png 2x" alt="A common rythmic pattern that does not need grouping." />
 <figcaption>
 <span class="caption-number">Score 7:</span> A common rythmic pattern that does not need grouping.
 </figcaption>
 </figure>
 <figure class="lilypond music">
-<span id="score-8"></span> <img src="/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png" srcset="/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png 1x, /generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.2x.png 2x" alt="Multiple quarter notes broken up into tied eighth notes." />
+<span id="score-8"></span> <img src="/blog-test/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png" srcset="/blog-test/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png 1x, /blog-test/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.2x.png 2x" alt="Multiple quarter notes broken up into tied eighth notes." />
 <figcaption>
 <span class="caption-number">Score 8:</span> Multiple quarter notes broken up into tied eighth notes.
 </figcaption>
@@ -441,7 +441,7 @@ Dyadic rational divisions. Graphic from <a href="https://en.wikipedia.org/wiki/F
     {<span class="kw">:bars</span> (<span class="kw">map</span> -&gt;bar bars)}))</code></pre></div>
 <p>We now have a very simple generator. The average musician does not read music in the form of Clojure data literals, though. We need rendering. I stumbled across <a href="http://lilypond.org/">Lilypond</a>, a music engraving program in the <a href="http://gnu.org/">GNU Project</a>. The input format is a TeX-like markup that is simple to generate, and the program can output stunningly beautiful scores in PDF, PNG, and SVG formats. To keep the post focused, I will not include the rendering code, but you can check out <a href="https://github.com/owickstrom/smug/tree/blog-post-1">the full source on GitHub</a> if you are interested. <a href="#score-9">Score 9</a> shows our previous result rendered with Lilypond.</p>
 <figure class="lilypond music">
-<span id="score-9"></span> <img src="/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png" srcset="/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png 1x, /generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.2x.png 2x" alt="Our generated 32 bars of music." />
+<span id="score-9"></span> <img src="/blog-test/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png" srcset="/blog-test/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png 1x, /blog-test/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.2x.png 2x" alt="Our generated 32 bars of music." />
 <figcaption>
 <span class="caption-number">Score 9:</span> Our generated 32 bars of music.
 </figcaption>
@@ -450,7 +450,7 @@ Dyadic rational divisions. Graphic from <a href="https://en.wikipedia.org/wiki/F
 <h2 id="note-grouping">Note Grouping</h2>
 <p>We need to define relations that constrain groups of notes depending on their note values. To make it more practical we introduce a new level in our hierarchy of sequences that represents note groups. A bar consist of a seqence of groups of notes, rather than a sequence of notes. <a href="#score-10">Score 10</a> contains the note groupings that we will support.</p>
 <figure class="lilypond music">
-<span id="score-10"></span> <img src="/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png" srcset="/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png 1x, /generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.2x.png 2x" alt="Matched note groups in the groupo relation." />
+<span id="score-10"></span> <img src="/blog-test/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png" srcset="/blog-test/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png 1x, /blog-test/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.2x.png 2x" alt="Matched note groups in the groupo relation." />
 <figcaption>
 <span class="caption-number">Score 10:</span> Matched note groups in the groupo relation.
 </figcaption>
@@ -541,7 +541,7 @@ Dyadic rational divisions. Graphic from <a href="https://en.wikipedia.org/wiki/F
  ([<span class="kw">:c</span> <span class="dv">1</span>/<span class="dv">8</span>] [<span class="kw">:c</span> <span class="dv">1</span>/<span class="dv">16</span>] [<span class="kw">:c</span> <span class="dv">1</span>/<span class="dv">16</span>] [<span class="kw">:c</span> <span class="dv">1</span>/<span class="dv">2</span>] [<span class="kw">:c</span> <span class="dv">1</span>/<span class="dv">8</span>] [<span class="kw">:c</span> <span class="dv">1</span>/<span class="dv">8</span>]))</code></pre></div>
 <p>Looks good. <a href="#score-11">Score 11</a> shows the rendered result.</p>
 <figure class="lilypond music">
-<span id="score-11"></span> <img src="/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png" srcset="/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png 1x, /generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.2x.png 2x" alt="A generated score with note groups." />
+<span id="score-11"></span> <img src="/blog-test/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png" srcset="/blog-test/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png 1x, /blog-test/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.2x.png 2x" alt="A generated score with note groups." />
 <figcaption>
 <span class="caption-number">Score 11:</span> A generated score with note groups.
 </figcaption>
@@ -580,9 +580,9 @@ Dyadic rational divisions. Graphic from <a href="https://en.wikipedia.org/wiki/F
 <div class="page-comments hidden" id="post-comments">
   <div class="wrapper">
     <div id="disqus_thread"></div>
-    <script src="/js/comments.js"></script>
+    <script src="/blog-test/js/comments.js"></script>
     <script>
-    initializeComments('https://owickstrom.github.io/blog-test//generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html', 'generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1');
+    initializeComments('https://owickstrom.github.io/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html', 'generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1');
     </script>
     <script id="dsq-count-scr" src="//owickstrom.disqus.com/count.js" async></script>
   </div>
@@ -591,7 +591,7 @@ Dyadic rational divisions. Graphic from <a href="https://en.wikipedia.org/wiki/F
 <footer class="site-footer">
 
   <div class="wrapper">
-    <p><a class="rss-subscribe" href="/feed.xml">Subscribe via RSS</a></p>
+    <p><a class="rss-subscribe" href="/blog-test/feed.xml">Subscribe via RSS</a></p>
     <p class="copyright">Copyright &copy; 2015 Oskar Wickström</p>
   </div>
 
@@ -612,7 +612,7 @@ function loadCssAsync(path) {
   else window.addEventListener('load', cb);
 };
 
-loadCssAsync('/css/syntax-highlighting.css');
+loadCssAsync('/blog-test/css/syntax-highlighting.css');
 </script>
 
     <script>
