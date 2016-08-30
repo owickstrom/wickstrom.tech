@@ -15,7 +15,7 @@ layout: default
           {% assign category = page.categories | first %}
           {% if category %}
           <span class="category">
-          In <a href="/{{category}}">{{category | replace: '-', ' ' }}</a>
+          In <a href="{{ site.baseurl }}/{{ category }}">{{category | replace: '-', ' ' }}</a>
           </span>
           {% endif %}
         </p>
