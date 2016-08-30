@@ -6,9 +6,9 @@ layout: default
   <div class="title-pane">
     <div class="wrapper">
       <h1 itemprop="name headline">{{ site.title }}</h1>
-      <img src="/assets/logo.png"
-          srcset="/assets/logo.png 1x,
-                  /assets/logo@2x.png 2x"
+      <img src="{{ site.baseurl }}/assets/logo.png"
+          srcset="{{ site.baseurl }}/assets/logo.png 1x,
+          {{ site.baseurl }}/assets/logo@2x.png 2x"
           alt="FUNC DA WORLD">
       <p><span class="name">Oskar Wickström</span> on functional programming</p>
     </div>
