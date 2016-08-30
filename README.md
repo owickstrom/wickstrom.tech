@@ -1,4 +1,4 @@
-owickstrom.github.io
+FUNC DA WORLD
 =============
 
-Source for my GitHub user site.
+Source for my blog.
