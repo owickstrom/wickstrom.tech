@@ -1,13 +1,13 @@
 TOOLS=src/tools
 
 build:
-	cd src && bundle exec jekyll build --destination ../docs
+	cd src && bundle exec jekyll build --destination ../target
 
 serve:
-	cd src && bundle exec jekyll serve --destination ../docs
+	cd src && bundle exec jekyll serve --destination ../target
 
 deploy: build
-	aws s3 sync docs s3://wickstrom.tech --acl=public-read
+	aws s3 sync target s3://wickstrom.tech --acl=public-read
 
 
 .PHONY: generate-music-symbols
