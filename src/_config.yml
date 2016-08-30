@@ -16,9 +16,9 @@ github_username:  owickstrom
 
 navigation:
   - text: Archive
-    url: /archive.html
+    url: /blog-test/archive.html
   - text: About
-    url: /about.html
+    url: /blog-test/about.html
 
 # Build settings
 markdown: Pandoc
