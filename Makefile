@@ -2,7 +2,6 @@ TOOLS=src/tools
 
 build:
 	cd src && bundle exec jekyll build --destination ../docs
-	rm docs/Gemfile* docs/CNAME.old
 
 serve:
 	cd src && bundle exec jekyll serve --destination ../docs

@@ -4,10 +4,10 @@
     <title>Func Da World</title>
     <description>Oskar Wickström on functional programming.
 </description>
-    <link>https://owickstrom.github.io/func-da-world/</link>
-    <atom:link href="https://owickstrom.github.io/func-da-world/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 30 Aug 2016 21:26:28 +0200</pubDate>
-    <lastBuildDate>Tue, 30 Aug 2016 21:26:28 +0200</lastBuildDate>
+    <link>https://owickstrom.github.io/</link>
+    <atom:link href="https://owickstrom.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 30 Aug 2016 21:35:17 +0200</pubDate>
+    <lastBuildDate>Tue, 30 Aug 2016 21:35:17 +0200</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -36,28 +36,28 @@
 &lt;p&gt;In this post we will work with points 1-3. I hope this series will be able to cover most or all of the aspects in the list.&lt;/p&gt;
 &lt;p&gt;As a complement to the prioritized list, we will look at a piece of music that exhibits the elements and patterns we want in a generated sight-reading exercise. &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; is a four-measure melody I wrote by hand. In my personal taste this melody does not sound random or generated, it is musical. We will use it as an inspiration and long-term goal for our music-generator project.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-1&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png&quot; srcset=&quot;/func-da-world/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png 1x, /func-da-world/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.2x.png 2x&quot; alt=&quot;A hand-written melodious sight reading exercise.&quot; /&gt;
+&lt;span id=&quot;score-1&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png&quot; srcset=&quot;/generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.1x.png 1x, /generated/24eb7d08e0e050b799aa5f3685dd0c8e36eea06b77cbf2ea73f95da76fb46354.2x.png 2x&quot; alt=&quot;A hand-written melodious sight reading exercise.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 1:&lt;/span&gt; A hand-written melodious sight reading exercise.
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Let's have a closer look at the music in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt;. I will cover only the minimum amount of music theory needed to understand the rest of the post. If you are interested in digging deeper, I encourage you to check out &lt;a href=&quot;http://tobyrush.com/theorypages/&quot;&gt;Music Theory for Musicians and Normal People&lt;/a&gt; for a light introduction to music theory.&lt;/p&gt;
-&lt;p&gt;The music in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; is in the key of C major, or A minor. A key signature is a set of sharp (&lt;img src=&quot;/func-da-world/assets/music/sharp.1x.png&quot;
-      srcset=&quot;/func-da-world/assets/music/sharp.2x.png 2x, /func-da-world/assets/music/sharp.1x.png 1x&quot;
+&lt;p&gt;The music in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; is in the key of C major, or A minor. A key signature is a set of sharp (&lt;img src=&quot;/assets/music/sharp.1x.png&quot;
+      srcset=&quot;/assets/music/sharp.2x.png 2x, /assets/music/sharp.1x.png 1x&quot;
       alt=&quot;Sharp sign&quot;
-      style=&quot;margin: 0 .25em;&quot;&gt;) or flat (&lt;img src=&quot;/func-da-world/assets/music/flat.1x.png&quot;
-      srcset=&quot;/func-da-world/assets/music/flat.2x.png 2x, /func-da-world/assets/music/flat.1x.png 1x&quot;
+      style=&quot;margin: 0 .25em;&quot;&gt;) or flat (&lt;img src=&quot;/assets/music/flat.1x.png&quot;
+      srcset=&quot;/assets/music/flat.2x.png 2x, /assets/music/flat.1x.png 1x&quot;
       alt=&quot;Flat sign&quot;
       style=&quot;margin: 0 .25em;&quot;&gt;) symbols, raising or lowering the note on the line it is placed, until the next key signature, or to the end of the score. A sharp raises the note by a semitone, a flat lowers the note by a semitone. In our example we have no sharp or flat symbols in the key signature, thus all notes are in the diatonic C scale. &lt;a href=&quot;#score-2&quot;&gt;Score 2&lt;/a&gt; shows a key signature for music in the key of D major, raising all F notes to F#, and all C notes to C#.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-2&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png&quot; srcset=&quot;/func-da-world/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png 1x, /func-da-world/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.2x.png 2x&quot; alt=&quot;Music in the key of D major.&quot; /&gt;
+&lt;span id=&quot;score-2&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png&quot; srcset=&quot;/generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.1x.png 1x, /generated/c1ed2f237283328522c42502a0fb902028925924f861c40c9abd49c6e44235e7.2x.png 2x&quot; alt=&quot;Music in the key of D major.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 2:&lt;/span&gt; Music in the key of D major.
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Please see &lt;a href=&quot;https://en.wikipedia.org/wiki/Circle_of_fifths&quot;&gt;Circle of fifths&lt;/a&gt; for more information on key signatures, major and minor keys, and diatonic scales. For the purpose of this post you will only need to be aware that keys exist and that key signatures affect the notes to be played in a score.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; consists of four measures, also called &lt;em&gt;bars&lt;/em&gt;, divided by bar lines. The time signature is 4/4, as denoted by the common time sign (&lt;img src=&quot;/func-da-world/assets/music/common-time.1x.png&quot;
-      srcset=&quot;/func-da-world/assets/music/common-time.2x.png 2x, /func-da-world/assets/music/common-time.1x.png 1x&quot;
+&lt;p&gt;&lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; consists of four measures, also called &lt;em&gt;bars&lt;/em&gt;, divided by bar lines. The time signature is 4/4, as denoted by the common time sign (&lt;img src=&quot;/assets/music/common-time.1x.png&quot;
+      srcset=&quot;/assets/music/common-time.2x.png 2x, /assets/music/common-time.1x.png 1x&quot;
       alt=&quot;Common time sign&quot;
       style=&quot;margin: 0 .25em;&quot;&gt;). With a time signature of 4/4, the total value of notes in each bar must equal 4/4. It might be tempting to say that the total value of a bar must be 1 at all times, but it is not that simple. In other time signatures, such as 3/4, 6/8, and 5/4, the total is not 1.&lt;/p&gt;
 &lt;p&gt;The following table describes the used note symbols and their meaning. It is in no way a complete list of musical symbols.&lt;/p&gt;
@@ -78,8 +78,8 @@ Duration
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/func-da-world/assets/music/half.1x.png&quot;
-     srcset=&quot;/func-da-world/assets/music/half.2x.png 2x, /func-da-world/assets/music/half.1x.png 1x&quot;
+&lt;img src=&quot;/assets/music/half.1x.png&quot;
+     srcset=&quot;/assets/music/half.2x.png 2x, /assets/music/half.1x.png 1x&quot;
      alt=&quot;Half note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -91,8 +91,8 @@ Half note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/func-da-world/assets/music/half.1x.png&quot;
-     srcset=&quot;/func-da-world/assets/music/quarter.2x.png 2x, /func-da-world/assets/music/quarter.1x.png 1x&quot;
+&lt;img src=&quot;/assets/music/half.1x.png&quot;
+     srcset=&quot;/assets/music/quarter.2x.png 2x, /assets/music/quarter.1x.png 1x&quot;
      alt=&quot;Quarter note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -104,8 +104,8 @@ Quarter note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/func-da-world/assets/music/half.1x.png&quot;
-     srcset=&quot;/func-da-world/assets/music/eighth.2x.png 2x, /func-da-world/assets/music/eighth.1x.png 1x&quot;
+&lt;img src=&quot;/assets/music/half.1x.png&quot;
+     srcset=&quot;/assets/music/eighth.2x.png 2x, /assets/music/eighth.1x.png 1x&quot;
      alt=&quot;Eighth note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -117,8 +117,8 @@ Eighth note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/func-da-world/assets/music/sixteenth.1x.png&quot;
-     srcset=&quot;/func-da-world/assets/music/sixteenth.2x.png 2x, /func-da-world/assets/music/sixteenth.1x.png 1x&quot;
+&lt;img src=&quot;/assets/music/sixteenth.1x.png&quot;
+     srcset=&quot;/assets/music/sixteenth.2x.png 2x, /assets/music/sixteenth.1x.png 1x&quot;
      alt=&quot;Sixteenth note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -130,8 +130,8 @@ Sixteenth note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/func-da-world/assets/music/dotted-eighth.1x.png&quot;
-     srcset=&quot;/func-da-world/assets/music/dotted-eighth.2x.png 2x, /func-da-world/assets/music/dotted-eighth.1x.png 1x&quot;
+&lt;img src=&quot;/assets/music/dotted-eighth.1x.png&quot;
+     srcset=&quot;/assets/music/dotted-eighth.2x.png 2x, /assets/music/dotted-eighth.1x.png 1x&quot;
      alt=&quot;Dotted eighth note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -143,8 +143,8 @@ Dotted eighth note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/func-da-world/assets/music/half-rest.1x.png&quot;
-     srcset=&quot;/func-da-world/assets/music/half-rest.2x.png 2x, /func-da-world/assets/music/half-rest.1x.png 1x&quot;
+&lt;img src=&quot;/assets/music/half-rest.1x.png&quot;
+     srcset=&quot;/assets/music/half-rest.2x.png 2x, /assets/music/half-rest.1x.png 1x&quot;
      alt=&quot;Half rest&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -156,8 +156,8 @@ Half rest
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/func-da-world/assets/music/quarter-rest.1x.png&quot;
-     srcset=&quot;/func-da-world/assets/music/quarter-rest.2x.png 2x, /func-da-world/assets/music/quarter-rest.1x.png 1x&quot;
+&lt;img src=&quot;/assets/music/quarter-rest.1x.png&quot;
+     srcset=&quot;/assets/music/quarter-rest.2x.png 2x, /assets/music/quarter-rest.1x.png 1x&quot;
      alt=&quot;Quarter rest&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -169,8 +169,8 @@ Quarter rest
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/func-da-world/assets/music/eighth-rest.1x.png&quot;
-     srcset=&quot;/func-da-world/assets/music/eighth-rest.2x.png 2x, /func-da-world/assets/music/eighth-rest.1x.png 1x&quot;
+&lt;img src=&quot;/assets/music/eighth-rest.1x.png&quot;
+     srcset=&quot;/assets/music/eighth-rest.2x.png 2x, /assets/music/eighth-rest.1x.png 1x&quot;
      alt=&quot;Eighth rest&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -189,46 +189,46 @@ Notes, and their symbols, used in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;
 &lt;p&gt;The note values in the conventional Western music system are &lt;em&gt;dyadic rational numbers&lt;/em&gt;, i.e. rational numbers where the denominator is a power of two. Note values can be modified using dots. A dot adds the next shorter note value to the original note value, effectively making it one and half times longer. The technique of using dotted notes is similar to how inch units are divided in the imperial system.&lt;/p&gt;
 &lt;figure&gt;
 &lt;img alt=&quot;Dyadic rational sub-divisions&quot;
-     src=&quot;/func-da-world/assets/dyadic-rational-subdivisions.svg&quot;/&gt;
+     src=&quot;/assets/dyadic-rational-subdivisions.svg&quot;/&gt;
 &lt;figcaption&gt;
 Dyadic rational divisions. Graphic from &lt;a href=&quot;https://en.wikipedia.org/wiki/File:Dyadic_rational.svg&quot;&gt;Wikipedia&lt;/a&gt;.
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Another way of describing such note values is by &lt;em&gt;tying&lt;/em&gt; multiple notes together. The following two scores have the same musical meaning, in that they sound the same way, but &lt;a href=&quot;#score-3&quot;&gt;Score 3&lt;/a&gt; is notated using ties, and &lt;a href=&quot;#score-4&quot;&gt;Score 4&lt;/a&gt; is notated using dotted notes.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-3&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png&quot; srcset=&quot;/func-da-world/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png 1x, /func-da-world/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.2x.png 2x&quot; alt=&quot;Using ties for 3/8 and 3/16 duration notes.&quot; /&gt;
+&lt;span id=&quot;score-3&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png&quot; srcset=&quot;/generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.1x.png 1x, /generated/cf33fa675ff02d40f673a406897e302c2a40392d463891a9bcd4fd5a933caf06.2x.png 2x&quot; alt=&quot;Using ties for 3/8 and 3/16 duration notes.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 3:&lt;/span&gt; Using ties for 3/8 and 3/16 duration notes.
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-4&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png&quot; srcset=&quot;/func-da-world/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png 1x, /func-da-world/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.2x.png 2x&quot; alt=&quot;Using dotted notes for 3/8 and 3/16 duration notes.&quot; /&gt;
+&lt;span id=&quot;score-4&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png&quot; srcset=&quot;/generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.1x.png 1x, /generated/abeeb272b7db166914ade0b7e6756020b4efae2a3ca2a9d57d3f99b2f439c4a0.2x.png 2x&quot; alt=&quot;Using dotted notes for 3/8 and 3/16 duration notes.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 4:&lt;/span&gt; Using dotted notes for 3/8 and 3/16 duration notes.
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Another important aspect of musical notation is &lt;em&gt;note grouping&lt;/em&gt;. This technique helps the reader to see the sub-divisions of a bar by visually grouping notes. Notes are commonly grouped within quarter and eighth note durations, depending on the note values. &lt;a href=&quot;#score-5&quot;&gt;Score 5&lt;/a&gt; shows a phrase of quarter notes following a single sixteenth note, without any grouping. The same phrase is written with note groups in &lt;a href=&quot;#score-6&quot;&gt;Score 6&lt;/a&gt; for greater readability.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-5&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png&quot; srcset=&quot;/func-da-world/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png 1x, /func-da-world/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.2x.png 2x&quot; alt=&quot;A phrase without proper grouping is harder to read.&quot; /&gt;
+&lt;span id=&quot;score-5&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png&quot; srcset=&quot;/generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.1x.png 1x, /generated/138722819bb23d2cdf3a6bf00286d9f3b5bff63fad96c9ec429abc3b90032f60.2x.png 2x&quot; alt=&quot;A phrase without proper grouping is harder to read.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 5:&lt;/span&gt; A phrase without proper grouping is harder to read.
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-6&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png&quot; srcset=&quot;/func-da-world/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png 1x, /func-da-world/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.2x.png 2x&quot; alt=&quot;Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together.&quot; /&gt;
+&lt;span id=&quot;score-6&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png&quot; srcset=&quot;/generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.1x.png 1x, /generated/7080571fbcb0e2146bed9ff1f6e64eda24c3b2ebfd346404ce88ced6a2338b0e.2x.png 2x&quot; alt=&quot;Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 6:&lt;/span&gt; Quarter notes spanning groups are split into dotted eighth notes and sixteenth notes, and tied together.
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Exceptions are made for common rythmic patterns, like the eighth note followed by a &lt;em&gt;single&lt;/em&gt; quarter note and an eighth note, illustrated in &lt;a href=&quot;#score-7&quot;&gt;Score 7&lt;/a&gt;. Multiple quarter notes following an eighth note should be grouped, as shown in &lt;a href=&quot;#score-8&quot;&gt;Score 8&lt;/a&gt;.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-7&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png&quot; srcset=&quot;/func-da-world/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png 1x, /func-da-world/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.2x.png 2x&quot; alt=&quot;A common rythmic pattern that does not need grouping.&quot; /&gt;
+&lt;span id=&quot;score-7&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png&quot; srcset=&quot;/generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.1x.png 1x, /generated/357ef89f5bd6d6b3d7039bddc6ba9562a9c8ad893d9493907c1c18401b0aaece.2x.png 2x&quot; alt=&quot;A common rythmic pattern that does not need grouping.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 7:&lt;/span&gt; A common rythmic pattern that does not need grouping.
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-8&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png&quot; srcset=&quot;/func-da-world/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png 1x, /func-da-world/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.2x.png 2x&quot; alt=&quot;Multiple quarter notes broken up into tied eighth notes.&quot; /&gt;
+&lt;span id=&quot;score-8&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png&quot; srcset=&quot;/generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.1x.png 1x, /generated/7d9333f2de5620173e1bd0654bb49cf3fd4e1977c96a1773b8e97b301cf3b73a.2x.png 2x&quot; alt=&quot;Multiple quarter notes broken up into tied eighth notes.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 8:&lt;/span&gt; Multiple quarter notes broken up into tied eighth notes.
 &lt;/figcaption&gt;
@@ -367,7 +367,7 @@ Dyadic rational divisions. Graphic from &lt;a href=&quot;https://en.wikipedia.or
     {&lt;span class=&quot;kw&quot;&gt;:bars&lt;/span&gt; (&lt;span class=&quot;kw&quot;&gt;map&lt;/span&gt; -&amp;gt;bar bars)}))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;We now have a very simple generator. The average musician does not read music in the form of Clojure data literals, though. We need rendering. I stumbled across &lt;a href=&quot;http://lilypond.org/&quot;&gt;Lilypond&lt;/a&gt;, a music engraving program in the &lt;a href=&quot;http://gnu.org/&quot;&gt;GNU Project&lt;/a&gt;. The input format is a TeX-like markup that is simple to generate, and the program can output stunningly beautiful scores in PDF, PNG, and SVG formats. To keep the post focused, I will not include the rendering code, but you can check out &lt;a href=&quot;https://github.com/owickstrom/smug/tree/blog-post-1&quot;&gt;the full source on GitHub&lt;/a&gt; if you are interested. &lt;a href=&quot;#score-9&quot;&gt;Score 9&lt;/a&gt; shows our previous result rendered with Lilypond.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-9&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png&quot; srcset=&quot;/func-da-world/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png 1x, /func-da-world/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.2x.png 2x&quot; alt=&quot;Our generated 32 bars of music.&quot; /&gt;
+&lt;span id=&quot;score-9&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png&quot; srcset=&quot;/generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.1x.png 1x, /generated/eb478bf1fca8a95825e2ccd5a016f3295b78707d2813fd913eb6a23d0f5544e9.2x.png 2x&quot; alt=&quot;Our generated 32 bars of music.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 9:&lt;/span&gt; Our generated 32 bars of music.
 &lt;/figcaption&gt;
@@ -376,7 +376,7 @@ Dyadic rational divisions. Graphic from &lt;a href=&quot;https://en.wikipedia.or
 &lt;h2 id=&quot;note-grouping&quot;&gt;Note Grouping&lt;/h2&gt;
 &lt;p&gt;We need to define relations that constrain groups of notes depending on their note values. To make it more practical we introduce a new level in our hierarchy of sequences that represents note groups. A bar consist of a seqence of groups of notes, rather than a sequence of notes. &lt;a href=&quot;#score-10&quot;&gt;Score 10&lt;/a&gt; contains the note groupings that we will support.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-10&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png&quot; srcset=&quot;/func-da-world/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png 1x, /func-da-world/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.2x.png 2x&quot; alt=&quot;Matched note groups in the groupo relation.&quot; /&gt;
+&lt;span id=&quot;score-10&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png&quot; srcset=&quot;/generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.1x.png 1x, /generated/f8dd8cda28e16d633f36946ac285cba98b8ad0c66196af8b6c2a0c61ea1d51a1.2x.png 2x&quot; alt=&quot;Matched note groups in the groupo relation.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 10:&lt;/span&gt; Matched note groups in the groupo relation.
 &lt;/figcaption&gt;
@@ -467,7 +467,7 @@ Dyadic rational divisions. Graphic from &lt;a href=&quot;https://en.wikipedia.or
  ([&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;] [&lt;span class=&quot;kw&quot;&gt;:c&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;/&lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;]))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Looks good. &lt;a href=&quot;#score-11&quot;&gt;Score 11&lt;/a&gt; shows the rendered result.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
-&lt;span id=&quot;score-11&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/func-da-world/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png&quot; srcset=&quot;/func-da-world/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png 1x, /func-da-world/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.2x.png 2x&quot; alt=&quot;A generated score with note groups.&quot; /&gt;
+&lt;span id=&quot;score-11&quot;&gt;&lt;/span&gt; &lt;img src=&quot;/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png&quot; srcset=&quot;/generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.1x.png 1x, /generated/b281aa2bd959dd0093b24d70830f83cdf4e9c0f584af21bbff827d272a659281.2x.png 2x&quot; alt=&quot;A generated score with note groups.&quot; /&gt;
 &lt;figcaption&gt;
 &lt;span class=&quot;caption-number&quot;&gt;Score 11:&lt;/span&gt; A generated score with note groups.
 &lt;/figcaption&gt;
@@ -493,8 +493,8 @@ Dyadic rational divisions. Graphic from &lt;a href=&quot;https://en.wikipedia.or
 &lt;p&gt;The SMUG source code for this post is available on GitHub &lt;a href=&quot;https://github.com/owickstrom/smug/tree/blog-post-1&quot;&gt;at the &lt;code&gt;blog-post-1&lt;/code&gt; tag&lt;/a&gt;. I hope you enjoyed the read and will continue following the series. Don't forget to help me steer this thing in the right direction by letting me know what's interesting to read about.&lt;/p&gt;
 </description>
         <pubDate>Sun, 07 Aug 2016 08:00:00 +0200</pubDate>
-        <link>https://owickstrom.github.io/func-da-world/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</link>
-        <guid isPermaLink="true">https://owickstrom.github.io/func-da-world/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</guid>
+        <link>https://owickstrom.github.io/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/generative-music/2016/08/07/generating-sight-reading-exercises-using-constraint-logic-programming-in-clojure-part-1.html</guid>
         
         <category>music</category>
         
@@ -541,8 +541,8 @@ in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Long live Pandoc!&lt;/p&gt;
 </description>
         <pubDate>Sun, 10 Jul 2016 17:00:00 +0200</pubDate>
-        <link>https://owickstrom.github.io/func-da-world/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</link>
-        <guid isPermaLink="true">https://owickstrom.github.io/func-da-world/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/07/10/custom-formatting-in-html-and-latex-code-listings-using-pandoc.html</guid>
         
         <category>html</category>
         
@@ -571,8 +571,8 @@ in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The source is available &lt;a href=&quot;https://github.com/owickstrom/vim-colors-paramount&quot;&gt;on GitHub&lt;/a&gt;. You can preview the theme on the &lt;a href=&quot;http://vimcolors.com/438/paramount/dark&quot;&gt;&lt;em&gt;~/.vim/colors&lt;/em&gt;&lt;/a&gt; site.&lt;/p&gt;
 </description>
         <pubDate>Sun, 15 May 2016 09:00:00 +0200</pubDate>
-        <link>https://owickstrom.github.io/func-da-world/programming/2016/05/15/paramount-color-scheme-for-vim.html</link>
-        <guid isPermaLink="true">https://owickstrom.github.io/func-da-world/programming/2016/05/15/paramount-color-scheme-for-vim.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/05/15/paramount-color-scheme-for-vim.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/05/15/paramount-color-scheme-for-vim.html</guid>
         
         <category>vim</category>
         
@@ -610,8 +610,8 @@ in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;I am certain that we can have have mainstream programming languages with static typing and still retain the expressiveness and exploratory power of dynamically typed languages. I think we should strive for tools that help us fearlessly evolve software. We can do a lot better than we are doing right now! Also, static typing as we know it today might only be a stepping stone to something even greater.&lt;/p&gt;
 </description>
         <pubDate>Sat, 23 Apr 2016 17:00:00 +0200</pubDate>
-        <link>https://owickstrom.github.io/func-da-world/programming/2016/04/23/software-evolution-without-fear.html</link>
-        <guid isPermaLink="true">https://owickstrom.github.io/func-da-world/programming/2016/04/23/software-evolution-without-fear.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/04/23/software-evolution-without-fear.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/04/23/software-evolution-without-fear.html</guid>
         
         <category>haskell</category>
         
@@ -662,8 +662,8 @@ in &lt;em&gt;body-expression&lt;/em&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Even though it is somewhat slower, I use &lt;code&gt;stack test --file-watch&lt;/code&gt; more often in the beginning of a project as it handles changes in the Cabal file. I have also started using the interactive session support in the Emacs &lt;em&gt;haskell-mode&lt;/em&gt; to reload test modules using &lt;code&gt;C-c C-l&lt;/code&gt; and then run the individual tests with &lt;code&gt;hspec spec&lt;/code&gt; in the Emacs GHCi session. Maybe later I will create an Emacs keybinding for reloading a test module and running the specs.&lt;/p&gt;
 </description>
         <pubDate>Tue, 19 Apr 2016 07:00:00 +0200</pubDate>
-        <link>https://owickstrom.github.io/func-da-world/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</link>
-        <guid isPermaLink="true">https://owickstrom.github.io/func-da-world/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/04/19/a-faster-test-workflow-for-haskell.html</guid>
         
         <category>haskell</category>
         
@@ -703,8 +703,8 @@ greet &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; \&lt;span class=&quot;kw&q
 &lt;p&gt;If you want to find out more about syntax extensions you should check out the &lt;a href=&quot;https://downloads.haskell.org/~ghc/7.8.4/docs/html/users_guide/syntax-extns.html&quot;&gt;GHC users guide&lt;/a&gt;. Thanks for reading. Happy pattern matching!&lt;/p&gt;
 </description>
         <pubDate>Thu, 14 Apr 2016 16:24:00 +0200</pubDate>
-        <link>https://owickstrom.github.io/func-da-world/programming/2016/04/14/the-case-for-case.html</link>
-        <guid isPermaLink="true">https://owickstrom.github.io/func-da-world/programming/2016/04/14/the-case-for-case.html</guid>
+        <link>https://owickstrom.github.io/programming/2016/04/14/the-case-for-case.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/programming/2016/04/14/the-case-for-case.html</guid>
         
         <category>haskell</category>
         
@@ -723,8 +723,8 @@ greet &lt;span class=&quot;fu&quot;&gt;=&lt;/span&gt; \&lt;span class=&quot;kw&q
 &lt;p&gt;I hope you will enjoy the blog and keep reading!&lt;/p&gt;
 </description>
         <pubDate>Thu, 14 Apr 2016 12:00:00 +0200</pubDate>
-        <link>https://owickstrom.github.io/func-da-world/2016/04/14/so-it-begins.html</link>
-        <guid isPermaLink="true">https://owickstrom.github.io/func-da-world/2016/04/14/so-it-begins.html</guid>
+        <link>https://owickstrom.github.io/2016/04/14/so-it-begins.html</link>
+        <guid isPermaLink="true">https://owickstrom.github.io/2016/04/14/so-it-begins.html</guid>
         
         <category>meta</category>
         
