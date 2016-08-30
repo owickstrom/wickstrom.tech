@@ -6,8 +6,8 @@
 </description>
     <link>https://owickstrom.github.io/blog-test/</link>
     <atom:link href="https://owickstrom.github.io/blog-test/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 30 Aug 2016 07:20:37 +0200</pubDate>
-    <lastBuildDate>Tue, 30 Aug 2016 07:20:37 +0200</lastBuildDate>
+    <pubDate>Tue, 30 Aug 2016 21:22:35 +0200</pubDate>
+    <lastBuildDate>Tue, 30 Aug 2016 21:22:35 +0200</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -42,11 +42,11 @@
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Let's have a closer look at the music in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt;. I will cover only the minimum amount of music theory needed to understand the rest of the post. If you are interested in digging deeper, I encourage you to check out &lt;a href=&quot;http://tobyrush.com/theorypages/&quot;&gt;Music Theory for Musicians and Normal People&lt;/a&gt; for a light introduction to music theory.&lt;/p&gt;
-&lt;p&gt;The music in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; is in the key of C major, or A minor. A key signature is a set of sharp (&lt;img src=&quot;/assets/music/sharp.1x.png&quot;
-      srcset=&quot;/assets/music/sharp.2x.png 2x, /assets/music/sharp.1x.png 1x&quot;
+&lt;p&gt;The music in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; is in the key of C major, or A minor. A key signature is a set of sharp (&lt;img src=&quot;/blog-test/assets/music/sharp.1x.png&quot;
+      srcset=&quot;/blog-test/assets/music/sharp.2x.png 2x, /blog-test/assets/music/sharp.1x.png 1x&quot;
       alt=&quot;Sharp sign&quot;
-      style=&quot;margin: 0 .25em;&quot;&gt;) or flat (&lt;img src=&quot;/assets/music/flat.1x.png&quot;
-      srcset=&quot;/assets/music/flat.2x.png 2x, /assets/music/flat.1x.png 1x&quot;
+      style=&quot;margin: 0 .25em;&quot;&gt;) or flat (&lt;img src=&quot;/blog-test/assets/music/flat.1x.png&quot;
+      srcset=&quot;/blog-test/assets/music/flat.2x.png 2x, /blog-test/assets/music/flat.1x.png 1x&quot;
       alt=&quot;Flat sign&quot;
       style=&quot;margin: 0 .25em;&quot;&gt;) symbols, raising or lowering the note on the line it is placed, until the next key signature, or to the end of the score. A sharp raises the note by a semitone, a flat lowers the note by a semitone. In our example we have no sharp or flat symbols in the key signature, thus all notes are in the diatonic C scale. &lt;a href=&quot;#score-2&quot;&gt;Score 2&lt;/a&gt; shows a key signature for music in the key of D major, raising all F notes to F#, and all C notes to C#.&lt;/p&gt;
 &lt;figure class=&quot;lilypond music&quot;&gt;
@@ -56,8 +56,8 @@
 &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;Please see &lt;a href=&quot;https://en.wikipedia.org/wiki/Circle_of_fifths&quot;&gt;Circle of fifths&lt;/a&gt; for more information on key signatures, major and minor keys, and diatonic scales. For the purpose of this post you will only need to be aware that keys exist and that key signatures affect the notes to be played in a score.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; consists of four measures, also called &lt;em&gt;bars&lt;/em&gt;, divided by bar lines. The time signature is 4/4, as denoted by the common time sign (&lt;img src=&quot;/assets/music/common-time.1x.png&quot;
-      srcset=&quot;/assets/music/common-time.2x.png 2x, /assets/music/common-time.1x.png 1x&quot;
+&lt;p&gt;&lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;/a&gt; consists of four measures, also called &lt;em&gt;bars&lt;/em&gt;, divided by bar lines. The time signature is 4/4, as denoted by the common time sign (&lt;img src=&quot;/blog-test/assets/music/common-time.1x.png&quot;
+      srcset=&quot;/blog-test/assets/music/common-time.2x.png 2x, /blog-test/assets/music/common-time.1x.png 1x&quot;
       alt=&quot;Common time sign&quot;
       style=&quot;margin: 0 .25em;&quot;&gt;). With a time signature of 4/4, the total value of notes in each bar must equal 4/4. It might be tempting to say that the total value of a bar must be 1 at all times, but it is not that simple. In other time signatures, such as 3/4, 6/8, and 5/4, the total is not 1.&lt;/p&gt;
 &lt;p&gt;The following table describes the used note symbols and their meaning. It is in no way a complete list of musical symbols.&lt;/p&gt;
@@ -78,8 +78,8 @@ Duration
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/assets/music/half.1x.png&quot;
-     srcset=&quot;/assets/music/half.2x.png 2x, /assets/music/half.1x.png 1x&quot;
+&lt;img src=&quot;/blog-test/assets/music/half.1x.png&quot;
+     srcset=&quot;/blog-test/assets/music/half.2x.png 2x, /blog-test/assets/music/half.1x.png 1x&quot;
      alt=&quot;Half note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -91,8 +91,8 @@ Half note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/assets/music/half.1x.png&quot;
-     srcset=&quot;/assets/music/quarter.2x.png 2x, /assets/music/quarter.1x.png 1x&quot;
+&lt;img src=&quot;/blog-test/assets/music/half.1x.png&quot;
+     srcset=&quot;/blog-test/assets/music/quarter.2x.png 2x, /blog-test/assets/music/quarter.1x.png 1x&quot;
      alt=&quot;Quarter note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -104,8 +104,8 @@ Quarter note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/assets/music/half.1x.png&quot;
-     srcset=&quot;/assets/music/eighth.2x.png 2x, /assets/music/eighth.1x.png 1x&quot;
+&lt;img src=&quot;/blog-test/assets/music/half.1x.png&quot;
+     srcset=&quot;/blog-test/assets/music/eighth.2x.png 2x, /blog-test/assets/music/eighth.1x.png 1x&quot;
      alt=&quot;Eighth note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -117,8 +117,8 @@ Eighth note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/assets/music/sixteenth.1x.png&quot;
-     srcset=&quot;/assets/music/sixteenth.2x.png 2x, /assets/music/sixteenth.1x.png 1x&quot;
+&lt;img src=&quot;/blog-test/assets/music/sixteenth.1x.png&quot;
+     srcset=&quot;/blog-test/assets/music/sixteenth.2x.png 2x, /blog-test/assets/music/sixteenth.1x.png 1x&quot;
      alt=&quot;Sixteenth note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -130,8 +130,8 @@ Sixteenth note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/assets/music/dotted-eighth.1x.png&quot;
-     srcset=&quot;/assets/music/dotted-eighth.2x.png 2x, /assets/music/dotted-eighth.1x.png 1x&quot;
+&lt;img src=&quot;/blog-test/assets/music/dotted-eighth.1x.png&quot;
+     srcset=&quot;/blog-test/assets/music/dotted-eighth.2x.png 2x, /blog-test/assets/music/dotted-eighth.1x.png 1x&quot;
      alt=&quot;Dotted eighth note&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
@@ -143,9 +143,9 @@ Dotted eighth note
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/assets/music/half-rest.1x.png&quot;
-     srcset=&quot;/assets/music/half-rest.2x.png 2x, /assets/music/half-rest.1x.png 1x&quot;
-     alt=&quot;Dotted eighth note&quot;&gt;
+&lt;img src=&quot;/blog-test/assets/music/half-rest.1x.png&quot;
+     srcset=&quot;/blog-test/assets/music/half-rest.2x.png 2x, /blog-test/assets/music/half-rest.1x.png 1x&quot;
+     alt=&quot;Half rest&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
 Half rest
@@ -156,9 +156,9 @@ Half rest
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/assets/music/quarter-rest.1x.png&quot;
-     srcset=&quot;/assets/music/quarter-rest.2x.png 2x, /assets/music/quarter-rest.1x.png 1x&quot;
-     alt=&quot;Dotted eighth note&quot;&gt;
+&lt;img src=&quot;/blog-test/assets/music/quarter-rest.1x.png&quot;
+     srcset=&quot;/blog-test/assets/music/quarter-rest.2x.png 2x, /blog-test/assets/music/quarter-rest.1x.png 1x&quot;
+     alt=&quot;Quarter rest&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
 Quarter rest
@@ -169,9 +169,9 @@ Quarter rest
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;img src=&quot;/assets/music/eighth-rest.1x.png&quot;
-     srcset=&quot;/assets/music/eighth-rest.2x.png 2x, /assets/music/eighth-rest.1x.png 1x&quot;
-     alt=&quot;Dotted eighth note&quot;&gt;
+&lt;img src=&quot;/blog-test/assets/music/eighth-rest.1x.png&quot;
+     srcset=&quot;/blog-test/assets/music/eighth-rest.2x.png 2x, /blog-test/assets/music/eighth-rest.1x.png 1x&quot;
+     alt=&quot;Eighth rest&quot;&gt;
 &lt;/td&gt;
 &lt;td&gt;
 Eighth rest
@@ -189,7 +189,7 @@ Notes, and their symbols, used in &lt;a href=&quot;#score-1&quot;&gt;Score 1&lt;
 &lt;p&gt;The note values in the conventional Western music system are &lt;em&gt;dyadic rational numbers&lt;/em&gt;, i.e. rational numbers where the denominator is a power of two. Note values can be modified using dots. A dot adds the next shorter note value to the original note value, effectively making it one and half times longer. The technique of using dotted notes is similar to how inch units are divided in the imperial system.&lt;/p&gt;
 &lt;figure&gt;
 &lt;img alt=&quot;Dyadic rational sub-divisions&quot;
-     src=&quot;/assets/dyadic-rational-subdivisions.svg&quot;/&gt;
+     src=&quot;/blog-test/assets/dyadic-rational-subdivisions.svg&quot;/&gt;
 &lt;figcaption&gt;
 Dyadic rational divisions. Graphic from &lt;a href=&quot;https://en.wikipedia.org/wiki/File:Dyadic_rational.svg&quot;&gt;Wikipedia&lt;/a&gt;.
 &lt;/figcaption&gt;

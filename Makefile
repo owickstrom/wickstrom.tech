@@ -4,6 +4,9 @@ build:
 	cd src && bundle exec jekyll build --destination ../docs
 	rm docs/Gemfile* docs/CNAME.old
 
+serve:
+	cd src && bundle exec jekyll serve --destination ../docs
+
 deploy: build
 	aws s3 sync docs s3://wickstrom.tech --acl=public-read
 

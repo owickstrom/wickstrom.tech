@@ -87,13 +87,13 @@ for a light introduction to music theory.
 
 The music in [Score 1](#score-1) is in the key of C major, or A minor. A key
 signature is a set of sharp
-(<img src="/assets/music/sharp.1x.png"
-      srcset="/assets/music/sharp.2x.png 2x, /assets/music/sharp.1x.png 1x"
+(<img src="{{ site.baseurl }}/assets/music/sharp.1x.png"
+      srcset="{{ site.baseurl }}/assets/music/sharp.2x.png 2x, {{ site.baseurl }}/assets/music/sharp.1x.png 1x"
       alt="Sharp sign"
       style="margin: 0 .25em;">)
 or flat
-(<img src="/assets/music/flat.1x.png"
-      srcset="/assets/music/flat.2x.png 2x, /assets/music/flat.1x.png 1x"
+(<img src="{{ site.baseurl }}/assets/music/flat.1x.png"
+      srcset="{{ site.baseurl }}/assets/music/flat.2x.png 2x, {{ site.baseurl }}/assets/music/flat.1x.png 1x"
       alt="Flat sign"
       style="margin: 0 .25em;">)
 symbols, raising or lowering the note on the line it is placed, until the next
@@ -119,8 +119,8 @@ to be played in a score.
 [Score 1](#score-1) consists of four measures, also called *bars*, divided by bar
 lines. The time signature is 4/4, as denoted by the common time
 sign
-(<img src="/assets/music/common-time.1x.png"
-      srcset="/assets/music/common-time.2x.png 2x, /assets/music/common-time.1x.png 1x"
+(<img src="{{ site.baseurl }}/assets/music/common-time.1x.png"
+      srcset="{{ site.baseurl }}/assets/music/common-time.2x.png 2x, {{ site.baseurl }}/assets/music/common-time.1x.png 1x"
       alt="Common time sign"
       style="margin: 0 .25em;">).
 With a time signature of 4/4, the total value of notes in each bar must
@@ -142,8 +142,8 @@ no way a complete list of musical symbols.
 <tbody>
 <tr>
 <td>
-<img src="/assets/music/half.1x.png"
-     srcset="/assets/music/half.2x.png 2x, /assets/music/half.1x.png 1x"
+<img src="{{ site.baseurl }}/assets/music/half.1x.png"
+     srcset="{{ site.baseurl }}/assets/music/half.2x.png 2x, {{ site.baseurl }}/assets/music/half.1x.png 1x"
      alt="Half note">
 </td>
 <td>Half note</td>
@@ -151,8 +151,8 @@ no way a complete list of musical symbols.
 </tr>
 <tr>
 <td>
-<img src="/assets/music/half.1x.png"
-     srcset="/assets/music/quarter.2x.png 2x, /assets/music/quarter.1x.png 1x"
+<img src="{{ site.baseurl }}/assets/music/half.1x.png"
+     srcset="{{ site.baseurl }}/assets/music/quarter.2x.png 2x, {{ site.baseurl }}/assets/music/quarter.1x.png 1x"
      alt="Quarter note">
 </td>
 <td>Quarter note</td>
@@ -160,8 +160,8 @@ no way a complete list of musical symbols.
 </tr>
 <tr>
 <td>
-<img src="/assets/music/half.1x.png"
-     srcset="/assets/music/eighth.2x.png 2x, /assets/music/eighth.1x.png 1x"
+<img src="{{ site.baseurl }}/assets/music/half.1x.png"
+     srcset="{{ site.baseurl }}/assets/music/eighth.2x.png 2x, {{ site.baseurl }}/assets/music/eighth.1x.png 1x"
      alt="Eighth note">
 </td>
 <td>Eighth note</td>
@@ -169,8 +169,8 @@ no way a complete list of musical symbols.
 </tr>
 <tr>
 <td>
-<img src="/assets/music/sixteenth.1x.png"
-     srcset="/assets/music/sixteenth.2x.png 2x, /assets/music/sixteenth.1x.png 1x"
+<img src="{{ site.baseurl }}/assets/music/sixteenth.1x.png"
+     srcset="{{ site.baseurl }}/assets/music/sixteenth.2x.png 2x, {{ site.baseurl }}/assets/music/sixteenth.1x.png 1x"
      alt="Sixteenth note">
 </td>
 <td>Sixteenth note</td>
@@ -178,8 +178,8 @@ no way a complete list of musical symbols.
 </tr>
 <tr>
 <td>
-<img src="/assets/music/dotted-eighth.1x.png"
-     srcset="/assets/music/dotted-eighth.2x.png 2x, /assets/music/dotted-eighth.1x.png 1x"
+<img src="{{ site.baseurl }}/assets/music/dotted-eighth.1x.png"
+     srcset="{{ site.baseurl }}/assets/music/dotted-eighth.2x.png 2x, {{ site.baseurl }}/assets/music/dotted-eighth.1x.png 1x"
      alt="Dotted eighth note">
 </td>
 <td>Dotted eighth note</td>
@@ -187,27 +187,27 @@ no way a complete list of musical symbols.
 </tr>
 <tr>
 <td>
-<img src="/assets/music/half-rest.1x.png"
-     srcset="/assets/music/half-rest.2x.png 2x, /assets/music/half-rest.1x.png 1x"
-     alt="Dotted eighth note">
+<img src="{{ site.baseurl }}/assets/music/half-rest.1x.png"
+     srcset="{{ site.baseurl }}/assets/music/half-rest.2x.png 2x, {{ site.baseurl }}/assets/music/half-rest.1x.png 1x"
+     alt="Half rest">
 </td>
 <td>Half rest</td>
 <td>1/2</td>
 </tr>
 <tr>
 <td>
-<img src="/assets/music/quarter-rest.1x.png"
-     srcset="/assets/music/quarter-rest.2x.png 2x, /assets/music/quarter-rest.1x.png 1x"
-     alt="Dotted eighth note">
+<img src="{{ site.baseurl }}/assets/music/quarter-rest.1x.png"
+     srcset="{{ site.baseurl }}/assets/music/quarter-rest.2x.png 2x, {{ site.baseurl }}/assets/music/quarter-rest.1x.png 1x"
+     alt="Quarter rest">
 </td>
 <td>Quarter rest</td>
 <td>1/4</td>
 </tr>
 <tr>
 <td>
-<img src="/assets/music/eighth-rest.1x.png"
-     srcset="/assets/music/eighth-rest.2x.png 2x, /assets/music/eighth-rest.1x.png 1x"
-     alt="Dotted eighth note">
+<img src="{{ site.baseurl }}/assets/music/eighth-rest.1x.png"
+     srcset="{{ site.baseurl }}/assets/music/eighth-rest.2x.png 2x, {{ site.baseurl }}/assets/music/eighth-rest.1x.png 1x"
+     alt="Eighth rest">
 </td>
 <td>Eighth rest</td>
 <td>1/8</td>
@@ -231,7 +231,7 @@ imperial system.
 
 <figure>
 <img alt="Dyadic rational sub-divisions"
-     src="/assets/dyadic-rational-subdivisions.svg"/>
+     src="{{ site.baseurl }}/assets/dyadic-rational-subdivisions.svg"/>
 <figcaption>
 Dyadic rational divisions. Graphic from
 <a href="https://en.wikipedia.org/wiki/File:Dyadic_rational.svg">Wikipedia</a>.
