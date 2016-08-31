@@ -10,7 +10,7 @@ layout: default
           srcset="{{ site.baseurl }}/assets/logo.png 1x,
           {{ site.baseurl }}/assets/logo@2x.png 2x"
           alt="FUNC DA WORLD">
-      <p><span class="name">Oskar Wickström</span> on functional programming</p>
+      <p>{{ site.description }}</p>
     </div>
     <nav class="nav">
       <ul>
@@ -25,14 +25,15 @@ layout: default
         <li>
           <a class="post-link {% if post.published == false %}draft{% endif %}"
              href="{{ post.url | prepend: site.baseurl }}">
-            <time>{{ post.date | date: "%B %-d, %Y" }}</time>
             <span class="title">{{ post.title }}</span>
             <span class="excerpt">{{ post.excerpt }}</span>
-            <ul class="tags">
-            {% for tag in post.tags %}
-              <li>{{ tag }}</li>
-            {% endfor %}
-            </ul>
+            <span class="post-meta">
+              <time>{{ post.date | date: "%B %-d, %Y" }}</time>
+              {% assign category = post.categories | first %}
+              {% if category %}
+              <span class="category">in {{category | replace: '-', ' ' }}</span>
+              {% endif %}
+            </span>
           </a>
         </li>
         {% endfor %}

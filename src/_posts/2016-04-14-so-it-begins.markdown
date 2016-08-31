@@ -3,6 +3,7 @@ layout: post
 title:  "So It Begins"
 date:   2016-04-14 12:00 +0200
 author: Oskar Wickström
+category: general
 tags: ["meta"]
 excerpt: "The introductory post of this blog, setting the tone for future posts."
 ---

@@ -8,6 +8,7 @@ layout: page
     <h2 class="title">
       <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
     </h2>
+    <p class="excerpt">{{ post.excerpt }}</p>
     <div class="post-meta">
       <time>{{ post.date | date: "%B %-d, %Y" }}</time>
       {% assign category = post.categories | first %}
@@ -17,12 +18,6 @@ layout: page
       </span>
       {% endif %}
     </div>
-    <p class="excerpt">{{ post.excerpt }}</p>
-    <ul class="tags">
-    {% for tag in post.tags %}
-      <li>{{ tag }}</li>
-    {% endfor %}
-    </ul>
   </li>
   {% endfor %}
 </ul>

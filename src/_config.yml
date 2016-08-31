@@ -8,7 +8,8 @@
 title: "Func Da World"
 email: oskar.wickstrom@gmail.com
 description: >
-  Oskar Wickström on functional programming.
+  Where Oskar Wickström writes about functional programming, open source
+  software, and other delightful things.
 baseurl: ""
 url: "https://owickstrom.github.io"
 twitter_username: owickstrom

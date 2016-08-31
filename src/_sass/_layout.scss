@@ -103,14 +103,13 @@ body {
   }
 
   p {
+    display: block;
+    margin-top: 1.6rem;
     font-family: $display-font-family;
     font-weight: 800;
     text-align: left;
     text-transform: uppercase;
-    font-size: 125%;
-  }
-  .name {
-    display: block;
+    font-size: 110%;
     color: #fff;
   }
 }
@@ -161,6 +160,7 @@ body {
 .post-list .post-meta {
   display: block;
   font-size: 80%;
+  font-family: $display-font-family;
   text-transform: uppercase;
   letter-spacing: .05em;
   margin-bottom: .8rem;
@@ -193,10 +193,11 @@ body {
       font-style: italic;
       font-size: 90%;
     }
-    time {
+    .post-meta {
+      margin: .8rem 0 0;
+    }
+    .post-meta time {
       color: $brand-color;
-      text-transform: uppercase;
-      font-size: 90%;
     }
 
     &:hover {
@@ -319,6 +320,7 @@ body {
 }
 .category-excerpt {
   font-style: italic;
+  margin-bottom: 3.2rem;
 }
 
 .page-header {
@@ -371,7 +373,7 @@ body {
   margin-left: 0;
 
   li {
-    margin-bottom: 1.6rem;
+    margin-bottom: 3.2rem;
   }
 
   .title,
