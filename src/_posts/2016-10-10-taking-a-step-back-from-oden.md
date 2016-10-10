@@ -51,7 +51,10 @@ excited about my little language project?"
 All of this has come together as a challenging balance for me - a balance
 between doing Oden for my own sake, a way of learning more about designing and
 building a programming language, and doing it for other people and for the Go
-community. I have reached a turning point and I will stop here.
+community. I have reached a turning point and I will stop here. This post may
+seem as an attempt of creating some drama, which is not the point. I think it
+is reasonable for me to be clear why I am doing this, and to avoid any false
+expectations on the project's future.
 
 The Oden source code will remain at GitHub, with a big disclaimer that it is no
 longer in active development. I will shut down [oden-lang.org](https://oden-lang.org/)
