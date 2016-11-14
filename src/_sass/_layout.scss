@@ -12,7 +12,6 @@ body {
   padding: 0 1rem;
   font-weight: 600;
   font-size: 80%;
-  font-family: $display-font-family;
 
   li {
     display: block;
@@ -105,8 +104,7 @@ body {
   p {
     display: block;
     margin-top: 1.6rem;
-    font-family: $display-font-family;
-    font-weight: 800;
+    font-weight: 600;
     text-align: left;
     text-transform: uppercase;
     font-size: 110%;
@@ -160,7 +158,7 @@ body {
 .post-list .post-meta {
   display: block;
   font-size: 80%;
-  font-family: $display-font-family;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: .05em;
   margin-bottom: .8rem;
@@ -183,15 +181,12 @@ body {
     .title {
       display: block;
       font-weight: 600;
-      font-family: $display-font-family;
-      font-size: 90%;
       text-transform: uppercase;
     }
     .excerpt {
       flex: 1 1 auto;
       display: block;
-      font-style: italic;
-      font-size: 90%;
+      margin: .8rem 0 0;
     }
     .post-meta {
       margin: .8rem 0 0;
@@ -305,11 +300,6 @@ body {
   margin-top: $spacing-unit;
   text-align: center;
   font-size: $small-font-size;
-
-  .wrapper {
-    border-top: 5px solid $grey-color-light;
-    padding: $spacing-unit 0 $spacing-unit;
-  }
 }
 
 /**
@@ -333,9 +323,9 @@ body {
 }
 
 .page-title {
-  font-size: 32px;
+  font-size: 28px;
   margin-bottom: $spacing-unit / 4;
-  font-weight: 800;
+  font-weight: 600;
 
   @include media-query($on-laptop) {
     font-size: 28px;
@@ -356,15 +346,13 @@ body {
 }
 .post .post-meta {
   font-size: 80%;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: .05em;
   .category {
     margin-top: .5rem;
     display: block;
   }
-}
-.site-title {
-  font-family: $display-font-family;
 }
 
 .post-list.archive,
@@ -449,7 +437,6 @@ figcaption,
     height: auto;
 
     h1 {
-      font-family: $display-font-family;
       font-size: 200%;
       text-transform: uppercase;
       position: static;

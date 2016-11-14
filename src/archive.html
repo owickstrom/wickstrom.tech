@@ -2,6 +2,10 @@
 layout: page
 ---
 
+<header class="page-header">
+  <h1 class="page-title" itemprop="name headline">Archive</h1>
+</header>
+
 <ul class="archive post-list">
   {% for post in site.posts %}
   <li{% if post.published == false %} class="draft"{% endif %}>

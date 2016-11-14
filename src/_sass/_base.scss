@@ -26,25 +26,17 @@ body {
   font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
   color: $text-color;
   background-color: $background-color;
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-feature-settings: "kern" 1;
-  -moz-font-feature-settings: "kern" 1;
-  -o-font-feature-settings: "kern" 1;
-  font-feature-settings: "kern" 1;
-  font-kerning: normal;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility; 
 }
 
 @include media-query($on-laptop) {
   body {
-    font-size: 17px;
+    font-size: 15px;
   }
 }
 
 @include media-query($on-palm) {
   body {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -104,11 +96,10 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
-  font-family: $display-font-family;
-  font-size: 95%;
+  font-size: 100%;
   line-height: inherit;
   margin-bottom: 1.6rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 h2 {
@@ -174,9 +165,6 @@ pre {
   padding: .8rem 1.6rem;
   margin-bottom: 1.6rem;
   overflow-x: auto;
-}
-
-.sourceCode pre {
   border-left: 5px solid $grey-color-light;
 }
 
