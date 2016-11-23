@@ -31,11 +31,11 @@ Eventually you find the four-level nested `if` statement doing lots of stuff
 with shipping options, customer bonus points, country tax regulations, mixed
 with all kinds of non-business concerns like logging, constructing and
 destructuring of values and closing resources. There's small attempts at
-abstraction in there, with private class methods small chunks of the work, but
-it's still a big [complected][complected] mess of different capabilities and
-technical necessities. If you've been in the "bread and butter" side of
-systems development, I bet you've seen something like this before, both in back
-and front end applications.
+abstraction in there, with private class methods hiding small chunks of the
+work, but it's still a big [complected][complected] mess of different
+capabilities and technical necessities. If you've been in the "bread and
+butter" side of systems development, I bet you've seen something like this
+before, both in back and front end applications.
 
 ### Fear of Change
 
@@ -53,7 +53,7 @@ various simple programming errors, concurrency bugs &mdash; a lot of things can
 go wrong if you try to break this class into pieces and so we take the path of
 least resistance.
 
-It's just not about the lines of code and complexity. As a project evolve
+It's not only about the lines of code and complexity. As a project evolve
 developers usually come and go. People quit their jobs or start working in
 other departments or roles, and new people join. And if the project grows it
 it might get more developers working in parallel in the same code. Even if you
@@ -135,12 +135,12 @@ If so, why not formalize that into an encoding that we can share between humans
 and computers to improve quality? This is what I consider the essence of static
 typing.
 
-I am certain that we can have have mainstream programming languages with static
+I am certain that we can have mainstream programming languages with static
 typing and still retain the expressiveness and exploratory power of dynamically
 typed languages. I think we should strive for tools that help us fearlessly
 evolve software. We can do a lot better than we are doing right now! Also,
-static typing as we know it today might only be a stepping stone to something
-even greater.
+static typing as we know it today might only be a stepping stone to
+something even greater.
 
 
 [complected]: https://en.wiktionary.org/wiki/complect
