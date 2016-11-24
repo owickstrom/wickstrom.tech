@@ -160,7 +160,7 @@ body {
   font-size: 80%;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: .05em;
+  letter-spacing: .02em;
   margin-bottom: .8rem;
 }
 
@@ -181,7 +181,6 @@ body {
     .title {
       display: block;
       font-weight: 600;
-      text-transform: uppercase;
     }
     .excerpt {
       flex: 1 1 auto;
@@ -348,7 +347,7 @@ body {
   font-size: 80%;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: .05em;
+  
   .category {
     margin-top: .5rem;
     display: block;
@@ -364,6 +363,9 @@ body {
     margin-bottom: 3.2rem;
   }
 
+  .title {
+   text-transform: none;
+  }
   .title,
   .excerpt {
     margin-bottom: .8rem;

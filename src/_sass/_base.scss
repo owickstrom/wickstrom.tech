@@ -30,13 +30,13 @@ body {
 
 @include media-query($on-laptop) {
   body {
-    font-size: 15px;
+    font-size: 14px;
   }
 }
 
 @include media-query($on-palm) {
   body {
-    font-size: 14px;
+    font-size: 13px;
   }
 }
 
@@ -104,11 +104,9 @@ h1, h2, h3, h4, h5, h6 {
 
 h2 {
   text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 h3 {
-  letter-spacing: 0.05em;
 }
 
 /**
