@@ -31,6 +31,7 @@ body {
 .top-nav {
   background: $text-color;
   font-family: $secondary-font-family;
+  font-size: 80%;
   text-transform: uppercase;
 
   .wrapper {
@@ -47,6 +48,8 @@ body {
       display: block;
       height: 100%;
       margin: 0;
+      color: #fff;
+      line-height: 32px;
     }
   }
   .nav ul {
@@ -79,7 +82,7 @@ body {
   margin: .4em 0 0 0;
   font-size: 90%;
   font-family: $monospace-font-family;
-  font-weight: 600;
+  font-weight: 400;
 
   li {
     display: inline-block;
@@ -185,18 +188,14 @@ body {
 }
 
 .page-header {
-  margin-top: $spacing-unit*2;
-  margin-bottom: $spacing-unit;
+  margin: $spacing-unit*2 0;
   text-align: center;
-}
-.post-header {
-  margin-bottom: $spacing-unit * 2;
 }
 
 .page-title {
   font-size: 38px;
   margin: ($spacing-unit * 2) 0 $spacing-unit;
-  font-weight: 600;
+  font-weight: 500;
 
   @include media-query($on-laptop) {
     font-size: 32px;
@@ -226,14 +225,12 @@ body {
 
 .post-meta {
   font-family: $secondary-font-family;
-  font-size: 90%;
+  font-size: 80%;
   color: #888;
   text-transform: uppercase;
 }
 
 .post .post-meta {
-  font-size: 100%;
-
   .category {
     margin-bottom: .5rem;
   }

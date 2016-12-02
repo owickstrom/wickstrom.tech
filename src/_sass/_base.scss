@@ -98,7 +98,7 @@ li {
 h1, h2, h3, h4, h5, h6 {
   line-height: inherit;
   margin-bottom: 1.6rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 h2 {
@@ -106,11 +106,11 @@ h2 {
 }
 
 h3 {
-  font-size: 100%;
+  font-size: 125%;
 }
 
 h4, h5, h6 {
-  font-size: 90%;
+  font-size: 100%;
 }
 
 /**
@@ -160,14 +160,14 @@ strong {
 pre,
 code {
   font-family: $monospace-font-family;
-  font-size: $base-font-size - 1;
+  font-size: $base-font-size - 4;
   line-height: inherit;
 
   @include media-query($on-laptop) {
-    font-size: $base-font-size - 2;
+    font-size: $base-font-size - 5;
   }
   @include media-query($on-palm) {
-    font-size: $base-font-size - 3;
+    font-size: $base-font-size - 6;
   }
 }
 
