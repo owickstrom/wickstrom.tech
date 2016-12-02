@@ -6,18 +6,19 @@
 
 
 // Our variables
-$base-font-family: "Fira Sans", "Helvetica Neue", "Helvetica", "Segoe UI", sans-serif;
+$base-font-family: 'Crimson Text', serif;
+$secondary-font-family: 'Montserrat', sans-serif;
 $monospace-font-family: "Fira Mono", monospace;
-$base-font-size:   15px;
+$base-font-size:   16px;
 $base-font-weight: 400;
 $small-font-size:  90%;
 $base-line-height: 1.6;
 
 $spacing-unit:     2rem;
 
-$text-color:       #222;
+$brand-color:      #656b49;
+$text-color:       darken($brand-color, 20%);
 $background-color: #fff;
-$brand-color:      #e81c4f;
 
 $grey-color:       #aaa;
 $grey-color-light: #f0f0f0;

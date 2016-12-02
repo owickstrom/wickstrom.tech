@@ -11,11 +11,11 @@ layout: default
       <header class="page-header post-header">
         <h1 class="page-title post-title" itemprop="name headline">{{ page.title }}</h1>
         <p class="post-meta">
-          <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%B %-d, %Y" }}</time>{% if page.author %} by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}
+          <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%B %-d, %Y" }}</time>
           {% assign category = page.categories | first %}
           {% if category %}
           <span class="category">
-          In <a href="{{ site.baseurl }}/{{ category }}">{{category | replace: '-', ' ' }}</a>
+            <a href="{{ site.baseurl }}/{{ category }}">{{category | replace: '-', ' ' | capitalize_all }}</a>
           </span>
           {% endif %}
         </p>

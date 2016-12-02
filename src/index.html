@@ -1,43 +1,28 @@
 ---
-layout: default
+layout: page
 ---
 
-<div class="home-page">
-  <div class="title-pane">
-    <div class="wrapper">
-      <h1 itemprop="name headline">{{ site.title }}</h1>
-      <img src="{{ site.baseurl }}/assets/logo.png"
-          srcset="{{ site.baseurl }}/assets/logo.png 1x,
-          {{ site.baseurl }}/assets/logo@2x.png 2x"
-          alt="FUNC DA WORLD">
-      <p>{{ site.description }}</p>
+<header class="page-header">
+  <h1 class="page-title" itemprop="name headline">{{ site.title }}</h1>
+  <p class="site-description">{{ site.description }}</p>
+</header>
+
+<ul class="archive post-list">
+  {% for post in site.posts %}
+  <li{% if post.published == false %} class="draft"{% endif %}>
+    <h2 class="title">
+      <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+    </h2>
+    <p class="excerpt">{{ post.excerpt }}</p>
+    <div class="post-meta">
+      <time>{{ post.date | date: "%B %-d, %Y" }}</time>
+      {% assign category = post.categories | first %}
+      {% if category %}
+      <span class="category">
+        <a href="{{ site.baseurl }}/{{ category }}">{{category | replace: '-', ' ' | capitalize_all }}</a>
+      </span>
+      {% endif %}
     </div>
-    <nav class="nav">
-      <ul>
-        {% include nav-items.html %}
-      </ul>
-    </nav>
-  </div>
-  <div class="post-list-pane">
-    <div class="wrapper">
-      <ul class="post-list">
-        {% for post in site.posts %}
-        <li>
-          <a class="post-link {% if post.published == false %}draft{% endif %}"
-             href="{{ post.url | prepend: site.baseurl }}">
-            <span class="title">{{ post.title }}</span>
-            <span class="excerpt">{{ post.excerpt }}</span>
-            <span class="post-meta">
-              <time>{{ post.date | date: "%B %-d, %Y" }}</time>
-              {% assign category = post.categories | first %}
-              {% if category %}
-              <span class="category">in {{category | replace: '-', ' ' }}</span>
-              {% endif %}
-            </span>
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-</div>
+  </li>
+  {% endfor %}
+</ul>
