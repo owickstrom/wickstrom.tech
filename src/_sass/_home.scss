@@ -1,0 +1,90 @@
+.home {
+  background: #c3c8ad;
+  height: 100%;
+  color: $brand-color;
+
+  display: -webkit-flex;
+  display: flex;
+
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+  -webkit-align-items: center;
+  align-items: center;
+
+  -webkit-justify-content: center;
+  justify-content: center;
+
+  .wrapper {
+    padding: $spacing-unit;
+  }
+}
+.home .page {
+  text-align: center;
+
+  .site-title {
+    font-size: 52px;
+    margin: 0 0 $spacing-unit;
+    font-weight: 600;
+    color: $text-color;
+  }
+
+  .site-description {
+    margin: $spacing-unit 0 $spacing-unit*4;
+    max-width: 20em;
+    font-size: 150%;
+  }
+
+  .nav ul {
+    font-family: $secondary-font-family;
+    text-transform: uppercase;
+
+    li {
+      display: inline-block;
+      float: none;
+
+      a {
+        color: $text-color;
+      }
+
+      &:after {
+        color: $grey-color;
+        content: ' | ';
+      }
+      &:last-child:after {
+        content: '';
+      }
+    }
+  }
+
+  @include media-query($on-laptop) {
+    .site-title {
+      font-size: 44px;
+    }
+    .site-description {
+      font-size: 125%;
+    }
+    .nav {
+      font-size: 80%;
+    }
+  }
+  @include media-query($on-palm) {
+    .site-title {
+      font-size: 32px;
+    }
+    .site-description {
+      font-size: 100%;
+    }
+  }
+
+}
+
+@include media-query($on-very-big-screen) {
+  .home-page {
+  }
+}
+
+@include media-query($on-laptop) {
+  .home-page {
+  }
+}

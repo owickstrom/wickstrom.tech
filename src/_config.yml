@@ -16,6 +16,8 @@ twitter_username: owickstrom
 github_username:  owickstrom
 
 navigation:
+  - text: Archive
+    url: /archive.html
   - text: About
     url: /about.html
 

@@ -1,28 +1,17 @@
 ---
-layout: page
+layout: default
 ---
 
-<header class="page-header">
-  <h1 class="page-title" itemprop="name headline">{{ site.title }}</h1>
-  <p class="site-description">{{ site.description }}</p>
-</header>
-
-<ul class="archive post-list">
-  {% for post in site.posts %}
-  <li{% if post.published == false %} class="draft"{% endif %}>
-    <h2 class="title">
-      <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-    </h2>
-    <p class="excerpt">{{ post.excerpt }}</p>
-    <div class="post-meta">
-      <time>{{ post.date | date: "%B %-d, %Y" }}</time>
-      {% assign category = post.categories | first %}
-      {% if category %}
-      <span class="category">
-        <a href="{{ site.baseurl }}/{{ category }}">{{category | replace: '-', ' ' | capitalize_all }}</a>
-      </span>
-      {% endif %}
-    </div>
-  </li>
-  {% endfor %}
-</ul>
+<div class="page-content home">
+  <div class="wrapper">
+    <article class="page" itemscope itemtype="http://schema.org/WebPage">
+      <h1 class="site-title" itemprop="name headline">{{ site.title }}</h1>
+      <p class="site-description">{{ site.description }}</p>
+      <div class="nav">
+        <ul>
+          {% include nav-items.html %}
+        </ul>
+      </div>
+    </article>
+  </div>
+</div>
