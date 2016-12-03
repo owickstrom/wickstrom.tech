@@ -20,23 +20,29 @@
   }
 }
 .home .page {
+  font-family: $secondary-font-family;
   text-align: center;
 
   .site-title {
+    position: absolute;
+    text-indent: -9999px;
     font-size: 52px;
-    margin: 0 0 $spacing-unit;
-    font-weight: 600;
     color: $text-color;
+  }
+
+  img {
+    width: 100%;
+    max-width: 500px;
   }
 
   .site-description {
     margin: $spacing-unit 0 $spacing-unit*4;
-    max-width: 20em;
-    font-size: 150%;
+    max-width: 500px;
+    font-size: 125%;
+    text-align: justify;
   }
 
   .nav ul {
-    font-family: $secondary-font-family;
     text-transform: uppercase;
 
     li {
@@ -58,22 +64,13 @@
   }
 
   @include media-query($on-laptop) {
-    .site-title {
-      font-size: 44px;
-    }
+  }
+  @include media-query($on-palm) {
     .site-description {
-      font-size: 125%;
+      font-size: 100%;
     }
     .nav {
       font-size: 80%;
-    }
-  }
-  @include media-query($on-palm) {
-    .site-title {
-      font-size: 32px;
-    }
-    .site-description {
-      font-size: 100%;
     }
   }
 

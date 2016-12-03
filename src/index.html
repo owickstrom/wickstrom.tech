@@ -6,6 +6,10 @@ layout: default
   <div class="wrapper">
     <article class="page" itemscope itemtype="http://schema.org/WebPage">
       <h1 class="site-title" itemprop="name headline">{{ site.title }}</h1>
+      <img src="{{ site.baseurl }}/assets/logo.png"
+          srcset="{{ site.baseurl }}/assets/logo.png 1x,
+          {{ site.baseurl }}/assets/logo@2x.png 2x"
+          alt="FUNC DA WORLD">
       <p class="site-description">{{ site.description }}</p>
       <div class="nav">
         <ul>
