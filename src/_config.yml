@@ -18,6 +18,8 @@ github_username:  owickstrom
 navigation:
   - text: Archive
     url: /archive.html
+  - text: Projects
+    url: /projects.html
   - text: About
     url: /about.html
 
