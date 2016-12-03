@@ -156,14 +156,14 @@ strong {
 pre,
 code {
   font-family: $monospace-font-family;
-  font-size: $base-font-size - 4;
+  font-size: $base-font-size - 2;
   line-height: inherit;
 
   @include media-query($on-laptop) {
-    font-size: $base-font-size - 5;
+    font-size: $base-font-size - 3;
   }
   @include media-query($on-palm) {
-    font-size: $base-font-size - 6;
+    font-size: $base-font-size - 4;
   }
 }
 
