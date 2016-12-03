@@ -1,7 +1,7 @@
 .home {
-  background: #c3c8ad;
+  background: $brand-color;
   height: 100%;
-  color: $brand-color;
+  color: #fff;
 
   display: -webkit-flex;
   display: flex;
@@ -40,6 +40,7 @@
     max-width: 500px;
     font-size: 125%;
     text-align: justify;
+    color: lighten($brand-color, 20%);
   }
 
   .nav ul {
@@ -50,11 +51,11 @@
       float: none;
 
       a {
-        color: $text-color;
+        color: #fff;
       }
 
       &:after {
-        color: $grey-color;
+        color: darken($brand-color, 10%);
         content: ' | ';
       }
       &:last-child:after {
