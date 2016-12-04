@@ -46,8 +46,16 @@ Hacker](https://www.youtube.com/watch?v=V10hzjgoklA) left most jaws fully
 dropped.
 
 <p>
-<blockquote class="twitter-tweet" data-lang="sv"><p lang="es" dir="ltr">Tomando un café con algunos de los Grandes <a href="https://twitter.com/Lambda_World">@Lambda_World</a> <a href="https://twitter.com/CodeSeagull">@CodeSeagull</a> <a href="https://twitter.com/mittie">@mittie</a> <a href="https://twitter.com/owickstrom">@owickstrom</a> <a href="https://twitter.com/anler">@anler</a> <a href="https://t.co/DvKq08AZY3">pic.twitter.com/DvKq08AZY3</a></p>&mdash; Saulo Alvarado (@sauloalvarado) <a href="https://twitter.com/sauloalvarado/status/782137217837826048">1 oktober 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-lang="es">
+Tomando un café con algunos de los Grandes
+<a href="https://twitter.com/Lambda_World">@Lambda_World</a>
+<a href="https://twitter.com/CodeSeagull">@CodeSeagull</a>
+<a href="https://twitter.com/mittie">@mittie</a>
+<a href="https://twitter.com/owickstrom">@owickstrom</a>
+<a href="https://twitter.com/anler">@anler</a>
+<a href="https://t.co/DvKq08AZY3"><img src="https://pbs.twimg.com/media/Ctq1o1KW8AAHBun.jpg"></a>
+&mdash; Saulo Alvarado (@sauloalvarado) <a href="https://twitter.com/sauloalvarado/status/782137217837826048">1 October 2016</a>
+</blockquote>
 </p>
 
 I met a lot of interesting people, both speakers and atteendees, all of whom I
