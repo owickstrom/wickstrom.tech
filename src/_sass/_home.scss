@@ -2,6 +2,7 @@
   background: $brand-color;
   height: 100%;
   color: #fff;
+  text-align: center;
 
   display: -webkit-flex;
   display: flex;
@@ -21,8 +22,8 @@
 }
 .home .page {
   font-family: $secondary-font-family;
-  text-align: center;
   max-width: 500px;
+  margin: 0 auto;
 
   .site-title {
     position: absolute;
