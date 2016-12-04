@@ -15,7 +15,7 @@ to share some of my experiences and photos.
 
 This is my first post sharing photos, and as you might notice, I like to take
 a fuzzy, dark, strange, and abstract photos. The ones in this post are not that
-strange, though. I am somewhat nervous about showing this stuff, and to *not
+strange, though. It feels somewhat uncomfortable showing this stuff, and to *not
 only* write about programming, but I have decided to give it a sincere try.
 
 ![Flight from Madrid to Cádiz.](/assets/cadiz-trip/flight.jpg)
