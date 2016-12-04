@@ -1,14 +1,14 @@
 ---
 layout: post
-title:  "A Delayed Summary of My Trip to Cádiz and LambdaWorld"
+title:  "A Delayed Summary of My Trip to Cádiz and Lambda World"
 date:   2016-12-04 12:00 +0200
 author: Oskar Wickström
 categories: general
 tags: ["spain", "conference"]
-excerpt: "I spoke at LambdaWorld 2016 in the lovely town of Cádiz, in Spain, and wanted to share some of my experiences and photos."
+excerpt: "I spoke at Lambda World 2016 in the lovely town of Cádiz, in Spain, and wanted to share some of my experiences and photos."
 ---
 
-Earlier this year, in the beginning of October, I spoke at [LambdaWorld
+Earlier this year, in the beginning of October, I spoke at [Lambda World
 2016](http://www.lambda.world/). The conference took place in the lovely town
 of Cádiz, in southern Spain. Although two months late with this post, I wanted
 to share some of my experiences and photos.
@@ -22,7 +22,7 @@ only* write about programming, but I have decided to give it a sincere try.
 
 After a stop at the Madrid airport, consuming some much needed Paella and a
 glass of Rioja, a small aircraft took me to Cádiz. I was very well taken care
-of by the friendly organizers of LambdaWorld, and arrived at the hotel, where a
+of by the friendly organizers of Lambda World, and arrived at the hotel, where a
 pleasant surprise awaited me.
 
 ![The arrival gift for speakers, a box of local chocolate.](/assets/cadiz-trip/chocolate.jpg)
@@ -51,7 +51,7 @@ dropped.
 </p>
 
 I met a lot of interesting people, both speakers and atteendees, all of whom I
-hope to come across again. To summarize, LambdaWorld was a great functional
+hope to come across again. To summarize, Lambda World was a great functional
 programming conference, I hope to be able attend again, and I can recommend it
 to anyone interested in functional programming, be it in Scala, Haskell,
 Javascript, or something else.
