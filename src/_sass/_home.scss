@@ -22,6 +22,7 @@
 .home .page {
   font-family: $secondary-font-family;
   text-align: center;
+  max-width: 500px;
 
   .site-title {
     position: absolute;
@@ -32,12 +33,10 @@
 
   img {
     width: 100%;
-    max-width: 500px;
   }
 
   .site-description {
-    margin: $spacing-unit 0 $spacing-unit*4;
-    max-width: 500px;
+    margin: $spacing-unit auto $spacing-unit*4;
     font-size: 125%;
     text-align: justify;
     color: lighten($brand-color, 20%);
