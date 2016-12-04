@@ -14,7 +14,7 @@ of Cádiz, in southern Spain. Although two months late with this post, I wanted
 to share some of my experiences and photos.
 
 This is my first post sharing photos, and as you might notice, I like to take
-a fuzzy, dark, strange, and abstract photos. The ones in this post is not that
+a fuzzy, dark, strange, and abstract photos. The ones in this post are not that
 strange, though. I am somewhat nervous about showing this stuff, and to *not
 only* write about programming, but I have decided to give it a sincere try.
 
