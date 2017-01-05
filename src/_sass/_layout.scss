@@ -34,6 +34,7 @@ body {
   }
   .home {
     background: $brand-color;
+    background-image: linear-gradient( 45deg, darken($brand-color, 10%), $brand-color );
     display: block;
     height: 100%;
     float: left;

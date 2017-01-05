@@ -1,6 +1,9 @@
 html {
   box-sizing: border-box;
   height: 100%;
+  background-color: $background-color;
+  font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
+  color: $text-color;
 }
 *, *:before, *:after {
   box-sizing: inherit;
@@ -23,9 +26,6 @@ dl, dd, ol, ul, figure {
  */
 body {
   height: 100%;
-  font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
-  color: $text-color;
-  background-color: $background-color;
 }
 
 @include media-query($on-laptop) {
