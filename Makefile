@@ -1,6 +1,7 @@
 TOOLS=src/tools
+PLANTUML=deps/plantuml.jar
 
-build:
+build: $(PLANTUML)
 	cd src && bundle exec jekyll build --destination ../target
 
 serve:
@@ -26,3 +27,7 @@ generate-music-symbols:
 	$(TOOLS)/render-musical-symbol.sh '\key g \major' sharp
 	$(TOOLS)/render-musical-symbol.sh '\key d \minor' flat
 	SHOW_TIME_SIGN=1 $(TOOLS)/render-musical-symbol.sh '' common-time
+
+$(PLANTUML):
+	mkdir -p deps
+	wget http://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O $@

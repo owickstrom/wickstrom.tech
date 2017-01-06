@@ -40,6 +40,10 @@ body {
     float: left;
     padding: 8px;
 
+    &:hover {
+      background-image: linear-gradient( 45deg, $brand-color, lighten($brand-color, 10%) );
+    }
+
     img {
       display: block;
       height: 100%;
@@ -242,7 +246,11 @@ body {
 
 .post-content figure {
     img {
-        margin: 1em auto;
+      display: block;
+      margin: 1em auto;
+    }
+    a {
+      text-align: center;
     }
 }
 .post-content p.draft {

@@ -35,5 +35,8 @@ gems:
 
 pandoc:
   extensions:
-    #- 'implicit_figures'
     highlight-style: pygments
+
+plantuml:
+  plantuml_jar: ../deps/plantuml.jar     # path to plantuml jar
+  tmp_folder: generated
