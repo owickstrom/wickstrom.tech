@@ -217,15 +217,16 @@ in this case `HTML`, from the response type required by the server, which
 for NodeJS is a `Buffer`. The transformation between `HTML` and `Buffer` is
 done behind the scenes by a bit of type class machinery.
 
-What we have looked at is the low level API for responding to HTTP requests in
-Hyper. I have plans for designing a simpler interface, based on *Ring* response
-maps in Clojure, where response handlers simply return a data structure
-describing the response to be written.
+The bits presented so far constitute the low level API for responding to HTTP
+requests in Hyper. I have plans for designing a simpler interface, based on
+*Ring* response maps in Clojure, where response handlers simply return a data
+structure describing the response to be written. Such an API can be built on
+top of the existing low-level API.
 
 ## Wrapping Up
 
 We have looked at the core design of Hyper, and the motivation behind the
-project, but only scratched the surface. The [documentation][documentation]
+project, but merely scratched the surface. The [documentation][documentation]
 describes in much greater detail the implementation and current components of
 Hyper. I hope, however, that I have caught your interest. If so, please go
 ahead and check out some of the provided examples at GitHub:
@@ -241,11 +242,13 @@ Also, note that the project is highly experimental, not nearly ready for any
 production use. But it could be! If you are interested in contributing, do not
 hesitate to send me a tweet or a PM. I need help writing the library,
 middleware, servers for different PureScript backends, more examples,
-documentation, etc.
+documentation, etc. If you want to have a look at the source code, it's [also
+on GitHub][repository].
 
 Thanks for reading!
 
 [documentation]: https://owickstrom.github.io/hyper/
+[repository]: https://github.com/owickstrom/hyper
 [bind]: https://pursuit.purescript.org/packages/purescript-prelude/2.1.0/docs/Control.Bind#v:(%3E=%3E)
 [kleisli-composition]: https://pursuit.purescript.org/packages/purescript-prelude/2.1.0/docs/Control.Bind#v:(%3E=%3E)
 [hello-hyper]: https://github.com/owickstrom/hyper/blob/master/examples/hello-hyper/Main.purs
