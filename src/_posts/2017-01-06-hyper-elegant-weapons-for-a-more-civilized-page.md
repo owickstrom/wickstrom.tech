@@ -187,22 +187,17 @@ writeStatus (Tuple 200 "OK")
 >=> end
 ```
 
-Say we forget the line with `closeHeaders`. What happens? Informative type
+Say we forget the line with `closeHeaders`. What do we get? An informative type
 error, of course!
 
 ```haskell
-  19        writeStatus (Tuple 200 "OK")
-  20        >=> writeHeader (Tuple "Content-Type" "text/plain")
-  21        >=> respond "Greetings, friend!"
-                                           ^
+Could not match type
 
-  Could not match type
+  HeadersOpen
 
-    HeadersOpen
+with type
 
-  with type
-
-    BodyOpen
+  BodyOpen
 ```
 
 There are easier-to-use functions written on top of the response API so that
