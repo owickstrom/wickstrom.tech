@@ -71,7 +71,7 @@ both the request and response records. The structure of request and response
 records are *open*, and the compiler guarantees that the composition of
 middleware is correct.
 
-You might wonder what the purpose of `components` are. For the sake of this
+You might wonder what the purpose of `components` is. For the sake of this
 blog post, let us just say that it is a place for user-defined things not
 directly related to HTTP.
 
@@ -141,20 +141,24 @@ class ResponseWriter rw m b | rw -> b where
   writeStatus
     :: Status
     -> ResponseStateTransition m rw StatusLineOpen HeadersOpen
+
   writeHeader
     :: Header
     -> ResponseStateTransition m rw HeadersOpen HeadersOpen
+
   closeHeaders
     :: ResponseStateTransition m rw HeadersOpen BodyOpen
+
   send
     :: b
     -> ResponseStateTransition m rw BodyOpen BodyOpen
+
   end
     :: ResponseStateTransition m rw BodyOpen ResponseEnded
 ```
 
 I know, it looks a bit scary with all the types. Stay strong, or have a look at
-this rendered as a state diagram instead.
+it rendered as a state diagram instead.
 
 {% plantuml The possible transitions between response states. %}
 @startuml
