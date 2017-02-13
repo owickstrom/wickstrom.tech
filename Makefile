@@ -8,7 +8,7 @@ serve:
 	cd src && bundle exec jekyll serve --destination ../target
 
 deploy: build
-	aws s3 sync target s3://wickstrom.tech --acl=public-read
+	aws s3 sync --region=eu-west-1 target s3://wickstrom.tech --acl=public-read
 
 
 .PHONY: generate-music-symbols
