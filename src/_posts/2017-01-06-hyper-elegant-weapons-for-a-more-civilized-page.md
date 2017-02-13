@@ -251,6 +251,15 @@ on GitHub][repository].
 
 Thanks for reading!
 
+---
+
+_**Note at Feb 13, 2017:** Since this blog post was published, the design of Hyper
+has changed.  It is no longer based on simple monadic functions, but instead
+indexed monads, to provider safer interaction with response writing side
+effects. The documentation at
+[owickstrom.github.io/hyper](https://owickstrom.github.io/hyper/) should always
+be up-to-date, so please have a look there as well._
+
 [documentation]: https://owickstrom.github.io/hyper/
 [repository]: https://github.com/owickstrom/hyper
 [bind]: https://pursuit.purescript.org/packages/purescript-prelude/2.1.0/docs/Control.Bind#v:(%3E=%3E)

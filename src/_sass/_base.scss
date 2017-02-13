@@ -205,6 +205,22 @@ table td {
     padding: .25rem;
 }
 
+hr {
+  margin: 1.6em 0 2.4em;
+  line-height: 0;
+  border-style: none none dotted;
+  color: #fff;
+  background-color: #fff;
+
+  &:after {
+    display: block;
+    content: '...';
+    color: $text-color;
+    text-align: center;
+    font-size: 200%;
+    font-family: $monospace-font-family;
+  }
+}
 
 /**
  * Wrapper
