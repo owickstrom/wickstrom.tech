@@ -1,0 +1,66 @@
+==================================================================
+https://keybase.io/owickstrom
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://wickstrom.tech
+  * I am owickstrom (https://keybase.io/owickstrom) on keybase.
+  * I have a public key with fingerprint 571E 0B73 FDB5 B163 DD48  7576 CEDE 3357 E0C5 F53E
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "01010e63e17634bda98dfe4f574b0de78eb132c57eda4b45a9e8f308d37ea4b129d40a",
+            "fingerprint": "571e0b73fdb5b163dd487576cede3357e0c5f53e",
+            "host": "keybase.io",
+            "key_id": "cede3357e0c5f53e",
+            "kid": "01010e63e17634bda98dfe4f574b0de78eb132c57eda4b45a9e8f308d37ea4b129d40a",
+            "uid": "fad39921038ab20124989a92ff25ac19",
+            "username": "owickstrom"
+        },
+        "service": {
+            "hostname": "wickstrom.tech",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1487052292,
+    "expire_in": 157680000,
+    "prev": "2eb14b1cd49fa8150aaa2f859af78d165f59fa3604d7d91d1863fab13c24d306",
+    "seqno": 7,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+
+owGtUltIFUEYPlqmeUHzQY1CaZMkOMnOXs7uHkQJ0rCCvICKCofZndlzFvXsaXe1
+vByiMMqHwgtkGWiYVBQ9SIWIhaCJkmRZlGBoEUGZlyKMlDKaFeupx2Yehvn/7/vm
++z+mOWaTIyJkYpYtfjvyLTNkfE52lHR3RtRTso5qKXc9VYHXD1yJsGl5KjREuSka
+kI1dLAaCi+VkBCURqZhTeYGTaYQFEcuAZRRewAhyMsdDCYsqS4uIFTApAEZCHA0p
+J6Vqfi82Aobmt4gsLwBMywKrIpmXgYtFiBMFXnApGGGWJWq0wqs8iwnRp5s2g5iT
+oYnTNZ3UyMWzbu8f+P/su3pdToWIlSQG0KwIZYYGDCeJEpQYVWV4qADJBprY8MMq
+TND6cU2pMC1Dr6KCTorUazQF29Has2xg/kLSLaz4CD9g6Jau6JWk57OsgOm2uVZt
+YB2MZc+GjEfW/IhkSRg12DA13U+5AUEqlmbrApIjzTOMxDgpfCKgGdij2QiSrUiT
+Zb+Da4gkg+VyQAZVECepUAQ8DSFkVJGXoCqICLhInqTBumgOCUgCCIguVoUkNYXh
+EEu7KHuyY36dcgvEJ/QSTVPz+qFVbWAqGNkUsnOzIyTCsSUs1P5ljsitcX++3sJk
+hOPRvaykXcrwyXeLj9s7LoZ/7I+fPnq9e7VqDLT8GPyU0dTauH1P5lx5W2Rq4oci
+d9ql7+6lOytT4TkZD3tnF9aa4pRC48tsVMeoGH3fe741ajG251rXdHpwhr7C5MUn
+dR4ZSj6YXfDAu9B7aLUl2HB5aP7s7uwbF3xtrc9X2q9yM8nv+4umSgPW2hPm1pvY
+5YW98wWRfakTn/PHS/qMopGCrxnbcnPDS3IrGqXMFyO/UgpDu+rOxNwcf+V7Wnt3
+YHQ+f6Clx+kwmxOEAy/HhlMOC6Xdy3kNp4qn91dnJXSEcWU7HK/H3A3RHc+qcwYT
+9002eiqDp3vOabfTUpfqApllP38D
+=QKzT
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/owickstrom
+
+==================================================================

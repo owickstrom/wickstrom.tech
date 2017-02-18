@@ -255,7 +255,7 @@ Thanks for reading!
 
 _**Note at Feb 13, 2017:** Since this blog post was published, the design of Hyper
 has changed.  It is no longer based on simple monadic functions, but instead
-indexed monads, to provider safer interaction with response writing side
+indexed monads, to provide safer interaction with response writing side
 effects. The documentation at
 [owickstrom.github.io/hyper](https://owickstrom.github.io/hyper/) should always
 be up-to-date, so please have a look there as well._
