@@ -257,10 +257,10 @@ _**Note at Feb 13, 2017:** Since this blog post was published, the design of Hyp
 has changed.  It is no longer based on simple monadic functions, but instead
 indexed monads, to provide safer interaction with response writing side
 effects. The documentation at
-[owickstrom.github.io/hyper](https://owickstrom.github.io/hyper/) should always
-be up-to-date, so please have a look there as well._
+[hyper.wickstrom.tech](http://hyper.wickstrom.tech) should always be
+up-to-date, so please have a look there as well._
 
-[documentation]: https://owickstrom.github.io/hyper/
+[documentation]: http://hyper.wickstrom.tech
 [repository]: https://github.com/owickstrom/hyper
 [bind]: https://pursuit.purescript.org/packages/purescript-prelude/2.1.0/docs/Control.Bind#v:(%3E=%3E)
 [kleisli-composition]: https://pursuit.purescript.org/packages/purescript-prelude/2.1.0/docs/Control.Bind#v:(%3E=%3E)

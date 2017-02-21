@@ -9,13 +9,21 @@ GitHub profile page](https://github.com/owickstrom).
 
 ## Hyper
 
-The goal of *Hyper* is to make use of row polymorphism, and other tasty type
-system features in [PureScript], to enforce
+The goal of [Hyper](http://hyper.wickstrom.tech) is to make use of row
+polymorphism, and other tasty type system features in [PureScript], to enforce
 correctly stacked middleware in HTTP server applications. All effects of
 middleware should be reflected in the types to ensure that otherwise common
-mistakes cannot be made. This is one of my most recent projects, which I have
-been wanting to do for a long time. Please have a look at the [the Hyper design
-document](https://owickstrom.github.io/hyper/) for more information.
+mistakes cannot be made. This is one of my most recent projects. Please have a
+look at the [the documentation](http://hyper.wickstrom.tech) for more
+information.
+
+## PureScript Spec
+
+[PureScript Spec](http://purescript-spec.wickstrom.tech/) is a testing framework
+for PureScript, which I have maintained since April, 2015. It is inspired by
+the Haskell testing frame [hspec](http://hspec.github.io/), and supports
+synchronous and asynchronous tests using a simple DSL, interoperability with
+other testing tools, and test output in various formats.
 
 ## The Oden Programming Language
 
