@@ -31,6 +31,10 @@ post some of my stuff at [SoundCloud][soundcloud] and [YouTube][youtube].
 [soundcloud]: https://soundcloud.com/oskar-wickstrom
 [youtube]: https://www.youtube.com/channel/UC1edduMaIVhvx8Y3btQcQuw
 
+## Curriculum Vitae
+
+You can download my CV [here](https://wickstrom.tech/cv.pdf).
+
 ## Public Key
 
 ```
