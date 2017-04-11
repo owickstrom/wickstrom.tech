@@ -20,12 +20,12 @@ in the form of tech conferences, and I hope to continue doing that.
 
 ## Work
 
-From the middle of May 2017, I'll be available and looking around for work. My
-strengths lies in functional programming and web development, and I am
-specifically interested in working with Haskell, PureScript, or some other
-statically typed functional programming language. Feel free to contact me, and
-see my CV below. Remote, or on-site in the Malmö/Copenhagen region, contracting
-or employment, are all of interest.
+From the middle of May 2017, I'll be available and for work. My strengths are
+functional programming and web development, and I am specifically interested in
+working with Haskell, PureScript, or some other statically typed functional
+programming language. Feel free to contact me, and see my CV below. Remote, or
+on-site in the Malmö/Copenhagen region, contracting or employment, can all be of
+interest.
 
 ## Contact
 
