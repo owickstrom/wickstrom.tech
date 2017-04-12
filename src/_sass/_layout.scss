@@ -326,6 +326,16 @@ figcaption,
   }
 }
 
+figure.two-images {
+  img {
+    float: left;
+    width: 50%;
+  }
+  figcaption {
+    clear: both;
+  }
+}
+
 @media print {
   .home-page .title-pane {
     position: static;
