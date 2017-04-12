@@ -301,16 +301,25 @@ figcaption,
   .form-row {
     margin: 0 0 1em 0;
   }
-  .form-row label {
+  label {
     display: block;
     font-family: $secondary-font-family;
     font-size: 80%;
-    font-weight: 600;
+    font-weight: 500;
     margin: 0 0 .25em;
   }
-  .form-row input,
-  .form-row textarea {
-    padding: .25em;
+  input,
+  textarea {
+    padding: .5em;
+    font-family: $secondary-font-family;
+    border: 1px solid #ccc;
+    color: #888;
+  }
+  input[type=submit] {
+    padding: .75em 1em;
+    text-transform: uppercase;
+    color: $text-color;
+    background: #eee;
   }
   textarea {
     width: 100%;
