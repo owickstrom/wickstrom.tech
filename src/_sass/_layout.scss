@@ -297,6 +297,26 @@ figcaption,
   max-width: 500px;
 }
 
+.contact-form {
+  .form-row {
+    margin: 0 0 1em 0;
+  }
+  .form-row label {
+    display: block;
+    font-family: $secondary-font-family;
+    font-size: 80%;
+    font-weight: 600;
+    margin: 0 0 .25em;
+  }
+  .form-row input,
+  .form-row textarea {
+    padding: .25em;
+  }
+  textarea {
+    width: 100%;
+  }
+}
+
 @media print {
   .home-page .title-pane {
     position: static;

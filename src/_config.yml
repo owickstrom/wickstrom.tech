@@ -16,12 +16,14 @@ twitter_username: owickstrom
 github_username:  owickstrom
 
 navigation:
-  - text: Blog Archive
+  - text: Blog
     url: /archive.html
   - text: Projects
     url: /projects.html
   - text: Talks
     url: /talks.html
+  - text: Work
+    url: /work.html
   - text: About
     url: /about.html
 
