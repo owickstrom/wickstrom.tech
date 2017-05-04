@@ -8,6 +8,7 @@ layout: page
 ### Events
 
 * [flatMap(Oslo)](http://2017.flatmap.no/talks/wickstrom/), 2-3 May 2017, Oslo, Norway
+ 	- [Slides](https://wickstrom.tech/talks/flatmap-oslo-2017-05-02.pdf)
 * [GOTO Nights CPH](https://www.meetup.com/GOTO-Nights-CPH/), February 22, 2017, Copenhagen, Denmark
  	- [Slides](https://wickstrom.tech/talks/kats-conf-2017-02-18.pdf)
 * [Kats Conf 2](http://www.katsconf.com/), February 18, 2017, Dublin, Ireland
