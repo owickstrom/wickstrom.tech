@@ -318,6 +318,6 @@ Revisions
 ---------
 
 1. Based on feedback from [Matthias
-   Henzel](https://twitter.com/mheinzel_), regarding the order of
+   Heinzel](https://twitter.com/mheinzel_), regarding the order of
    execution of setup actions, the expression `(<*> setup)` in the
    `beforeEach` instance was changed to `((&) <$> setup <*>)`.
