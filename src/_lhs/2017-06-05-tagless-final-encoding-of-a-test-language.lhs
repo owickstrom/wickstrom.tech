@@ -108,6 +108,7 @@ our imports.
 > import           Control.Monad.Identity
 > import           Control.Monad.IO.Class
 > import           Control.Monad.Writer
+> import           Data.Function
 > import           Data.List
 > import           System.IO.Memoize
 
@@ -197,13 +198,13 @@ runs the nested `WriterT` to collect all groups.
 >     tell [Describe name groups]
 
 The interesting part is the `beforeEach` instance, where the inner
-test function is applied using `(<*>)`. As the `Group` data type has
-an instance of `Functor`, the application can be mapped recursively
-over the structure using `fmap`.
+test function is applied using `(<*>)` and `(&)`. As the `Group` data
+type has an instance of `Functor`, the application can be mapped
+recursively over the structure using `fmap`.
 
 >   beforeEach setup spec = do
 >     groups <- lift $ execWriterT spec
->     tell $ fmap (<*> setup) <$> groups
+>     tell $ fmap ((&) <$> setup <*>) <$> groups
 
 This is where `WriterT` must be explicit in the `MonadSpec`
 operations. In a previous attempt, I had a `MonadWriter` constraint on
@@ -293,8 +294,8 @@ once, and that "before each ..." is printed for every test.
 ```
 *Test.Spec> :main
 module 1 > feature A > it works!
-before each 1!
 once, before all!
+before each 1!
 module 1 > feature A > it works again!
 before each 1!
 module 2 > feature B > it works!
@@ -312,3 +313,11 @@ for readers interested in EDSLs and tagless final style, in addition
 to it perhaps influencing or finding its way into the PureScript Spec
 project. It would also be interesting to explore a Free monad
 approach, and to compare the two.
+
+Revisions
+---------
+
+1. Based on feedback from [Matthias
+   Henzel](https://twitter.com/mheinzel_), regarding the order of
+   execution of setup actions, the expression `(<*> setup)` in the
+   `beforeEach` instance was changed to `((&) <$> setup <*>)`.

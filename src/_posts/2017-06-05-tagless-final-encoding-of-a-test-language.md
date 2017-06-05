@@ -68,6 +68,7 @@ module Test.Spec where
 import           Control.Monad.Identity
 import           Control.Monad.IO.Class
 import           Control.Monad.Writer
+import           Data.Function
 import           Data.List
 import           System.IO.Memoize
 ```
@@ -148,12 +149,12 @@ To wrap test groups in a `Describe` value, the instance of `describe` runs the n
     tell [Describe name groups]
 ```
 
-The interesting part is the `beforeEach` instance, where the inner test function is applied using `(<*>)`. As the `Group` data type has an instance of `Functor`, the application can be mapped recursively over the structure using `fmap`.
+The interesting part is the `beforeEach` instance, where the inner test function is applied using `(<*>)` and `(&)`. As the `Group` data type has an instance of `Functor`, the application can be mapped recursively over the structure using `fmap`.
 
 ``` haskell
   beforeEach setup spec = do
     groups <- lift $ execWriterT spec
-    tell $ fmap (<*> setup) <$> groups
+    tell $ fmap ((&) <$> setup <*>) <$> groups
 ```
 
 This is where `WriterT` must be explicit in the `MonadSpec` operations. In a previous attempt, I had a `MonadWriter` constraint on the interpreter, and no mention of `WriterT` in `MonadSpec`. That approach prohibited the monoidal type of `MonadWriter` to change during interpretation, a change required to apply test functions when interpreting setup combinators. Instead, by making `WriterT` explicit in the `MonadSpec` operations, the `Collector` instance can collect groups using `lift` and `execWriterT`, and freely change the test function types.
@@ -228,8 +229,8 @@ Looking at the output, we see that "once, before all!" is printed only once, and
 
     *Test.Spec> :main
     module 1 > feature A > it works!
-    before each 1!
     once, before all!
+    before each 1!
     module 1 > feature A > it works again!
     before each 1!
     module 2 > feature B > it works!
@@ -241,3 +242,9 @@ Summary
 -------
 
 Using tagless final style for embedded languages is fun and powerful. I hope this demonstration can serve as a motivating example for readers interested in EDSLs and tagless final style, in addition to it perhaps influencing or finding its way into the PureScript Spec project. It would also be interesting to explore a Free monad approach, and to compare the two.
+
+Revisions
+---------
+
+1.  Based on feedback from [Matthias Henzel](https://twitter.com/mheinzel_), regarding the order of execution of setup actions, the expression `(<*> setup)` in the `beforeEach` instance was changed to `((&) <$> setup <*>)`.
+
