@@ -23,7 +23,7 @@ describe "My Module" $ do
     it "does multiplication" (2 * 2 `shouldEqual` 4)
 ```
 
-The `Group` data type holds *describe* groups and *it* tests, here shown in a simplified form, and translated to Haskell. The test *body* has the paramaterized type `t`, making the `Group` structure suitable for representing not only tests to be run, but also for test results.
+The `Group` data type holds *describe* groups and *it* tests, here shown in a simplified form, and translated to Haskell. The test *body* has the parameterized type `t`, making the `Group` structure suitable for representing not only tests to be run, but also for test results.
 
 ``` haskell
 data Group t
@@ -33,7 +33,7 @@ data Group t
 
 A test suite to be run can have type `[Group (IO ())]`, and a test result can have type `[Group TestResult]`.
 
-In a GitHub pull request for PureScript Spec, we discussed how to implement setup and tear-down functions around tests, and how to make them type safe. I started poking around in the codebase, but soon realized that the required change was larger than I first imagined, and so I began on a clean slate prototype. The reason I used Haskell was to focus more on modeling different alternatives, and less time on hand-written instances for newtypes.
+In a GitHub pull request for PureScript Spec, we discussed how to implement setup and tear-down functions around tests, and how to make them type safe. I started poking around in the code base, but soon realized that the required change was larger than I first imagined, and so I began on a clean slate prototype. The reason I used Haskell was to focus more on modeling different alternatives, and less time on hand-written instances for newtypes.
 
 I wanted a setup function to provide a return value, and all tests run with the setup to receive the return value as a parameter. Thus, *n* setup functions would require test functions of *n* arguments. A test with an incorrect number of arguments would give a type error at compile-time.
 

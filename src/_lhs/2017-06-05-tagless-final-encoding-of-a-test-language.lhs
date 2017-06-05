@@ -25,7 +25,7 @@ describe "My Module" $ do
 
 The `Group` data type holds _describe_ groups and _it_ tests, here
 shown in a simplified form, and translated to Haskell. The test _body_
-has the paramaterized type `t`, making the `Group` structure suitable
+has the parameterized type `t`, making the `Group` structure suitable
 for representing not only tests to be run, but also for test results.
 
 ``` haskell
@@ -39,7 +39,7 @@ result can have type `[Group TestResult]`.
 
 In a GitHub pull request for PureScript Spec, we discussed how to
 implement setup and tear-down functions around tests, and how to make
-them type safe. I started poking around in the codebase, but soon
+them type safe. I started poking around in the code base, but soon
 realized that the required change was larger than I first imagined,
 and so I began on a clean slate prototype. The reason I used Haskell
 was to focus more on modeling different alternatives, and less time on
