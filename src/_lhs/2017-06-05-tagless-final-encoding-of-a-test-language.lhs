@@ -93,9 +93,10 @@ Applicative would solve it elegantly. The following design is the result
 of my own explorations after the meetup, and will hopefully be of use
 for the real implementation in PureScript Spec in the future.
 
-As this article is a runnable program in Literate Haskell form, we
-begin by declaring a bunch of language extensions, the module, and our
-imports.
+As this article is [a runnable program in Literate Haskell
+form](https://github.com/owickstrom/func-da-world/blob/master/src/_lhs/2017-06-05-tagless-final-encoding-of-a-test-language.lhs),
+we begin by declaring a bunch of language extensions, the module, and
+our imports.
 
 > {-# LANGUAGE DeriveFunctor              #-}
 > {-# LANGUAGE FlexibleContexts           #-}

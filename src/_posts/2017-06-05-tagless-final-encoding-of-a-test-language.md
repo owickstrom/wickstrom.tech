@@ -55,7 +55,7 @@ Exploring Tagless Final Encoding
 
 Having kept an eye out for practical examples of tagless final style, I was keen on trying it out for the test language. The discussion started on a local meetup in Malmö, where I presented the problem, together with my suspicion that a combination of tagless final style encoding and Applicative would solve it elegantly. The following design is the result of my own explorations after the meetup, and will hopefully be of use for the real implementation in PureScript Spec in the future.
 
-As this article is a runnable program in Literate Haskell form, we begin by declaring a bunch of language extensions, the module, and our imports.
+As this article is [a runnable program in Literate Haskell form](https://github.com/owickstrom/func-da-world/blob/master/src/_lhs/2017-06-05-tagless-final-encoding-of-a-test-language.lhs), we begin by declaring a bunch of language extensions, the module, and our imports.
 
 ``` haskell
 {-# LANGUAGE DeriveFunctor              #-}
