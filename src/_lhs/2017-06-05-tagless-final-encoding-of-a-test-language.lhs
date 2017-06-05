@@ -318,7 +318,7 @@ approach, and to compare the two.
 Revisions
 ---------
 
-1. Based on feedback from [Matthias
-   Heinzel](https://twitter.com/mheinzel_), regarding the order of
-   execution of setup actions, the expression `(<*> setup)` in the
-   `beforeEach` instance was changed to `((&) <$> setup <*>)`.
+**June 5, 2017:** Based on feedback from [Matthias
+Heinzel](https://twitter.com/mheinzel_), regarding the order of
+execution of setup actions, the expression `(<*> setup)` in the
+`beforeEach` instance was changed to `((&) <$> setup <*>)`.
