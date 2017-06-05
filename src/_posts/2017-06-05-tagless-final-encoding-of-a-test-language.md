@@ -131,7 +131,8 @@ In effect, the `Collector` interpreter loses information when collecting the tes
 The `MonadSpec` instance for the `Collector` interpreter defines the applicative type parameter as `IO`. This means that all setup combinator values must have type `(IO a)`, where the nested test functions have type `(IO (a -> b))`.
 
 ``` haskell
-instance (Monad m, MonadIO m) => MonadSpec (Collector m) IO where
+instance (Monad m, MonadIO m)
+         => MonadSpec (Collector m) IO where
 ```
 
 The `it` instance wraps the test body inside the applicative, and reports the `Group` in the `WriterT` monad.
@@ -200,7 +201,7 @@ We can now nest setup combinators, describe groupings, and tests, with different
 ``` haskell
 mySpec :: MonadSpec m IO => Spec m (IO (IO ()))
 mySpec =
-  beforeAll (putStrLn "once, before all!" >> return "foo") $ do
+  beforeAll (putStrLn "before all!" >> return "foo") $ do
 
     describe "module 1" $
       beforeEach (putStrLn "before each 1!" >> return 20) $
@@ -229,7 +230,7 @@ Looking at the output, we see that "once, before all!" is printed only once, and
 
     *Test.Spec> :main
     module 1 > feature A > it works!
-    once, before all!
+    before all!
     before each 1!
     module 1 > feature A > it works again!
     before each 1!
@@ -246,5 +247,5 @@ Using tagless final style for embedded languages is fun and powerful. I hope thi
 Revisions
 ---------
 
-1.  Based on feedback from [Matthias Henzel](https://twitter.com/mheinzel_), regarding the order of execution of setup actions, the expression `(<*> setup)` in the `beforeEach` instance was changed to `((&) <$> setup <*>)`.
+1.  Based on feedback from [Matthias Heinzel](https://twitter.com/mheinzel_), regarding the order of execution of setup actions, the expression `(<*> setup)` in the `beforeEach` instance was changed to `((&) <$> setup <*>)`.
 

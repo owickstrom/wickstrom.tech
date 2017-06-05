@@ -182,7 +182,8 @@ the applicative type parameter as `IO`. This means that all setup
 combinator values must have type `(IO a)`, where the nested test
 functions have type `(IO (a -> b))`.
 
-> instance (Monad m, MonadIO m) => MonadSpec (Collector m) IO where
+> instance (Monad m, MonadIO m)
+>          => MonadSpec (Collector m) IO where
 
 The `it` instance wraps the test body inside the applicative, and
 reports the `Group` in the `WriterT` monad.
@@ -264,7 +265,7 @@ feels a bit backwards from a user point of view.
 
 > mySpec :: MonadSpec m IO => Spec m (IO (IO ()))
 > mySpec =
->   beforeAll (putStrLn "once, before all!" >> return "foo") $ do
+>   beforeAll (putStrLn "before all!" >> return "foo") $ do
 >
 >     describe "module 1" $
 >       beforeEach (putStrLn "before each 1!" >> return 20) $
@@ -294,7 +295,7 @@ once, and that "before each ..." is printed for every test.
 ```
 *Test.Spec> :main
 module 1 > feature A > it works!
-once, before all!
+before all!
 before each 1!
 module 1 > feature A > it works again!
 before each 1!

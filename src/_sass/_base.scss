@@ -168,10 +168,9 @@ code {
 }
 
 pre {
-  padding: .8rem ($base-line-height * 1rem);
+  padding: 0 ($base-line-height * 1rem);
   margin-bottom: ($base-line-height * 1rem);
   overflow-x: auto;
-  border-left: 5px solid $grey-color-light;
 }
 
 @include media-query($on-laptop) {
