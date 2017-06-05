@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Finally Encoding the PureScript Spec Language
+title: Tagless Final Encoding of a Test Language
 author: Oskar Wickström
 categories: programming
 tags: ["haskell", "functional", "dsl"]
-excerpt: "To support combinators as beforeEach and beforeAll, the PureScript Spec language was modified to use final encoding. This article shows the design, but in Haskell."
+excerpt: "I experimented with a test language encoded in tagless final style, instead of algebraic data types, to support the typed combinators \"beforeEach\" and \"beforeAll\"."
 ---
