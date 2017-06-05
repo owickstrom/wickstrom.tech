@@ -151,7 +151,7 @@ structure during interpretation.
 
 > type Spec m a = WriterT [Group a] m ()
 
-The `Collector` interpreter collects a Spec into an data structure,
+The `Collector` interpreter collects a Spec into a data structure,
 much like the original approach, but _with all test functions fully
 applied_ inside the applicative.
 

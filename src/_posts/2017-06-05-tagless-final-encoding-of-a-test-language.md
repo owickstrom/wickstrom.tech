@@ -105,7 +105,7 @@ What is a `Spec`? A Writer monad transformer, collecting `Group` values. Using a
 type Spec m a = WriterT [Group a] m ()
 ```
 
-The `Collector` interpreter collects a Spec into an data structure, much like the original approach, but *with all test functions fully applied* inside the applicative.
+The `Collector` interpreter collects a Spec into a data structure, much like the original approach, but *with all test functions fully applied* inside the applicative.
 
 ``` haskell
 newtype Collector m a = Collector { unCollector :: m a }
