@@ -4,15 +4,14 @@ title: Tagless Final Encoding of a Test Language
 author: Oskar Wickström
 categories: programming
 tags: ["haskell", "functional", "dsl"]
-excerpt: "I experimented with a test language encoded in tagless final style, instead of algebraic data types, to support the typed combinators \"beforeEach\" and \"beforeAll\"."
 ---
 
-I experimented with a test language encoded in tagless final style, instead of algebraic data types, to support the typed combinators *beforeEach* and *beforeAll*. Although the real usage would be in the PureScript Spec library, I want to share the Haskell prototype I ended up with, and explain how I got there.
+I have experimented with a test language encoded in tagless final style, instead of algebraic data types, to support the typed combinators *beforeEach* and *beforeAll*. Although the intended use is for [PureScript Spec](http://purescript-spec.wickstrom.tech/), I want to share the Haskell prototype I ended up with, and explain how I got there.
 
 The Algebraic Data Type Approach
 --------------------------------
 
-The [PureScript Spec](http://purescript-spec.wickstrom.tech/) library, inspired by Haskell's *hspec*, provides an EDSL and framework for writing, organizing, and running PureScript tests. Combinators use a State monad collecting tests into an algebraic data structure, representing the test language tree structure.
+The PureScript Spec project, inspired by Haskell's [hspec](http://hspec.github.io/), provides an EDSL and framework for writing, organizing, and running PureScript tests. Combinators use a State monad collecting tests into an algebraic data structure, representing the test language tree structure.
 
 ``` haskell
 describe "My Module" $ do
@@ -23,7 +22,7 @@ describe "My Module" $ do
     it "does multiplication" (2 * 2 `shouldEqual` 4)
 ```
 
-The `Group` data type holds "describe" groups and "it" tests, here shown in a simplified form, and translated to Haskell. The test *body* has the paramaterized type `t`, making the `Group` structure suitable for representing not only tests to be run, but also for test results.
+The `Group` data type holds *describe* groups and *it* tests, here shown in a simplified form, and translated to Haskell. The test *body* has the paramaterized type `t`, making the `Group` structure suitable for representing not only tests to be run, but also for test results.
 
 ``` haskell
 data Group t
@@ -31,7 +30,7 @@ data Group t
   | It String t
 ```
 
-A test suite to be run can have type `Group (IO ())`, and a test result can have type `Group TestResult`.
+A test suite to be run can have type `[Group (IO ())]`, and a test result can have type `[Group TestResult]`.
 
 In a GitHub pull request for PureScript Spec, we discussed how to implement setup and tear-down functions around tests, and how to make them type safe. I started poking around in the codebase, but soon realized that the required change was larger than I first imagined, and so I began on a clean slate prototype. The reason I used Haskell was to focus more on modeling different alternatives, and less time on hand-written instances for newtypes.
 
@@ -46,12 +45,12 @@ data Group b t
   | BeforeEach (IO b) (Group b (b -> t))
 ```
 
-While this structure can hold multiple nested `BeforeEach` values, and enforce the correct number of arguments to `It` body functions, the type `b` cannot vary throughout the structure. Requiring all setup functions in a test suite to return values of the same type was not acceptable.
+While this structure can hold multiple nested `BeforeEach` values, and enforce the correct number of arguments to `It` body functions, the type `b` cannot vary throughout the structure. Requiring all setup functions in a test suite to return values of the same type was not acceptable. I suspect that there might be a way to solve this in Haskell using GADTs and existential types, but I'm not sure how it would translate to PureScript.
 
 Following the idea of parameterizing `Group` further, I'd probably end up close to a specialized version of the Free monad. [Why free monads matter](http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html) explains a similar path, arriving at the Free monad, most eloquently. I decided, however, to try out a [tagless final style](http://okmij.org/ftp/tagless-final/index.html) encoding for the test language in my Haskell prototype.
 
-Tagless Final Encoding
-----------------------
+Exploring Tagless Final Encoding
+--------------------------------
 
 Having kept an eye out for practical examples of tagless final style, I was keen on trying it out for the test language. The discussion started on a local meetup in Malmö, where I presented the problem, together with my suspicion that a combination of tagless final style encoding and Applicative would solve it elegantly. The following design is the result of my own explorations after the meetup, and will hopefully be of use for the real implementation in PureScript Spec in the future.
 
@@ -99,7 +98,7 @@ The setup combinators `beforeEach` and `beforeAll` have identical type signature
   beforeAll  :: f a -> Spec m (f (a -> b)) -> Spec m (f b)
 ```
 
-What is a `Spec`? A Writer monad transformer, collecting `Group` values. Using an explicit WriterT is needed for the interpreter, explained shortly, to capture nested tests, apply test functions to setup combinators' return values, and change the type of the test structure during interpretation.
+What is a `Spec`? A Writer monad transformer, collecting `Group` values. Using an explicit `WriterT` is needed for the interpreter, explained shortly, to capture nested tests, apply test functions to setup combinators' return values, and change the type of the test structure during interpretation.
 
 ``` haskell
 type Spec m a = WriterT [Group a] m ()
@@ -156,6 +155,8 @@ The interesting part is the `beforeEach` instance, where the inner test function
     tell $ fmap (<*> setup) <$> groups
 ```
 
+This is where `WriterT` must be explicit in the `MonadSpec` operations. In a previous attempt, I had a `MonadWriter` constraint on the interpreter, and no mention of `WriterT` in `MonadSpec`. That approach prohibited the monoidal type of `MonadWriter` to change during interpretation, a change required to apply test functions when interpreting setup combinators. Instead, by making `WriterT` explicit in the `MonadSpec` operations, the `Collector` instance can collect groups using `lift` and `execWriterT`, and freely change the test function types.
+
 As a slight variation on `beforeEach`, the `beforeAll` combinator must only run the setup action once, applying all test functions with the same return value. Using the [io-memoize](https://hackage.haskell.org/package/io-memoize) package, and the existing `beforeEach` combinator, we can do this neat trick:
 
 ``` haskell
@@ -164,7 +165,7 @@ As a slight variation on `beforeEach`, the `beforeAll` combinator must only run 
     beforeEach s spec
 ```
 
-Collecting all tests, fully applied with setup return values, is a matter of running the WriterT and Collector instances, and joining the applicative values with the test body values, here constrained to be the same `(Monad m)`.
+Collecting all tests, fully applied with setup return values, is a matter of running the `WriterT` and `Collector` instances, and joining the applicative values with the test body values, here constrained to be the same monadic type `m`. Note that Applicative is a super class of Monad since GHC 7.10.
 
 ``` haskell
 collect
@@ -192,28 +193,32 @@ run spec = do
       body
 ```
 
-We can now nest setup combinators, describe groupings, and tests, with different types, while retaining type safety. The test suite type signature is somewhat verbose, but that could be hidden with a type alias.
+We can now nest setup combinators, describe groupings, and tests, with different types, while retaining type safety. The test suite type signature is somewhat verbose, but that could be hidden with a type alias. The only drawback, as I see it, is that the outer setup combinators provide the right-most test function parameters, which feels a bit backwards from a user point of view.
 
 ``` haskell
 mySpec :: MonadSpec m IO => Spec m (IO (IO ()))
 mySpec =
-  beforeAll (putStrLn "once, before all!" >> return 10) $ do
+  beforeAll (putStrLn "once, before all!" >> return "foo") $ do
 
     describe "module 1" $
       beforeEach (putStrLn "before each 1!" >> return 20) $
         describe "feature A" $ do
           it "works!" (\x y -> assert (x == 20))
-          it "works again!" (\x y -> assert (y == 10))
+          it "works again!" (\x y -> assert (y == "foo"))
 
     describe "module 2" $
       beforeEach (putStrLn "before each 2!" >> return 30) $
         describe "feature B" $ do
           it "works!" (\x y -> assert (x == 30))
-          it "works again!" (\x y -> assert (y == 10))
+          it "works again!" (\x y -> assert (y == "foo"))
   where
     assert True = return ()
     assert False = fail "Test failure!"
+```
 
+Using `IO` and `fail` to report test failures would be less then ideal a real test suite, but it serves our purposes in this experiment. OK, let's run the test suite, already!
+
+``` haskell
 main :: IO ()
 main = run mySpec
 ```
@@ -234,4 +239,4 @@ Looking at the output, we see that "once, before all!" is printed only once, and
 Summary
 -------
 
-Using tagless final style for embedded languages is fun and powerful. I hope this demonstration can serve as a motivating example for readers interested in tagless final style, in addition to it perhaps influencing or finding its way into the PureScript Spec project. It would also be interesting to explore a Free monad approach, and to compare the two.
+Using tagless final style for embedded languages is fun and powerful. I hope this demonstration can serve as a motivating example for readers interested in EDSLs and tagless final style, in addition to it perhaps influencing or finding its way into the PureScript Spec project. It would also be interesting to explore a Free monad approach, and to compare the two.
