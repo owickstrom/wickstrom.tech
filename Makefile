@@ -5,7 +5,7 @@ build: $(PLANTUML)
 	cd src && bundle exec jekyll build --destination ../target
 
 serve:
-	cd src && bundle exec jekyll serve --destination ../target
+	cd src && bundle exec jekyll serve --destination ../target --unpublished
 
 deploy: build
 	aws s3 sync --region=eu-west-1 target s3://wickstrom.tech --acl=public-read

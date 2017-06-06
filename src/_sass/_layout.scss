@@ -184,9 +184,11 @@ body {
   }
 }
 
-.draft {
-  color: #222;
-  background: #ffea33;
+.draft .title {
+  a {
+    color: red;
+    background: #ffea33;
+  }
 }
 
 .category-excerpt {
