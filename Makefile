@@ -38,7 +38,7 @@ LHS_TARGETS=$(LHS_SOURCES:src/_lhs/%.lhs=src/_posts/%.md)
 src/_posts/%.md: src/_lhs/%.lhs src/_lhs/%.md
 	cp $(word 2,$^) $@
 	echo "" >> $@
-	pandoc $< -f markdown+lhs -t markdown_github | sed 's/sourceCode/haskell/' >> $@
+	pandoc $< -f markdown+lhs -t markdown_github --base-header-level=2 | sed 's/sourceCode/haskell/' >> $@
 
 .PHONY: lhs
 lhs: $(LHS_TARGETS)

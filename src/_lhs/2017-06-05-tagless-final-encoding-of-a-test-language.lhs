@@ -6,7 +6,7 @@ to share the Haskell prototype I ended up with, and explain how I got
 there.
 
 The Algebraic Data Type Approach
---------------------------------
+================================
 
 The PureScript Spec project, inspired by Haskell's
 [hspec](http://hspec.github.io/), provides an EDSL and framework for
@@ -83,7 +83,7 @@ style](http://okmij.org/ftp/tagless-final/index.html) encoding for the
 test language in my Haskell prototype.
 
 Exploring Tagless Final Encoding
---------------------------------
+================================
 
 Having kept an eye out for practical examples of tagless final style, I
 was keen on trying it out for the test language. The discussion started
@@ -306,7 +306,7 @@ before each 2!
 ```
 
 Summary
--------
+=======
 
 Using tagless final style for embedded languages is fun and
 powerful. I hope this demonstration can serve as a motivating example
@@ -316,7 +316,7 @@ project. It would also be interesting to explore a Free monad
 approach, and to compare the two.
 
 Revisions
----------
+=========
 
 **June 5, 2017:** Based on feedback from [Matthias
 Heinzel](https://twitter.com/mheinzel_), regarding the order of
