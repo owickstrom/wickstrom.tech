@@ -1,0 +1,22 @@
+digraph door_states {
+  graph [ dpi = 300 ];
+  splines=true;
+  esep=5;
+  rankdir=LR;
+
+  size="8,5";
+
+  edge [ fontname = "Ubuntu" ];
+  node [ fontname = "Ubuntu Bold" ];
+
+  node [shape = point, width = .25, height = .25 ];
+  Start;
+
+  node [shape = circle];
+  Opened;
+  Closed;
+
+  Start -> Closed
+  Closed -> Opened  [ label = "open" ];
+  Opened -> Closed  [ label = "close" ];
+}
