@@ -45,9 +45,9 @@ I'm less interested in:
 * Videos and GIFs
 
 This article demonstrates a setup that fulfills these goals, using
-Pandoc Markdown, Beamer, Graphviz and Make. I have also created a
-template, based on my setup, that you can use if you like this
-approach.
+Pandoc Markdown, Beamer, Graphviz and Make. I have also created [a
+template][template] based on my setup, that you can use if you like
+this approach.
 
 ## Writing Slides with Pandoc Markdown
 
@@ -80,7 +80,7 @@ change the styling.
 
 ## Including Source Code from External Files
 
-As stated in the introduction of this pots, I want my source code
+As stated in the introduction of this article, I want my source code
 samples to compile, and possibly be executable. If I have to write
 code directly in the slides, I will most likely make mistakes, and
 there will be no compiler or toolchain to tell me about it.
@@ -225,12 +225,12 @@ template that you can use for your own presentations. It is
 someone, and that it can be a good complement to this article.
 
 What I really like about the tools and techniques demonstrated in this
-article is that they are not tied to presentations. I use the same
-tools for writing documentation, and for writing this blog! Pandoc is
-an amazing piece of software, and I have just scratched the surface of
-what it can do. For instance, if you do not want PDF output for your
-talk, there's a number of Javascript-based formats for slideshows
-available.
+article is that they are not limited to writing presentations. I use
+the same tools for writing documentation, and for writing this blog.
+Pandoc is an amazing piece of software, and I have just scratched the
+surface of what it can do. For instance, if you do not want PDF output
+for your talk, there's a number of Javascript-based formats for
+slideshows available.
 
 Now go on and write some cool tech talks!
 
