@@ -1,10 +1,11 @@
 ---
 layout: post
-title: Programming Your Technical Presentation
+title: Automating the Build of your Technical Presentation
+slug: automating-the-build-of-your-technical-presentation
 date: 2017-09-24
 author: Oskar Wickström
 category: programming
-tags: ["pandoc", "make", "latex"]
+tags: ["automation", "presentation", "pandoc", "make", "latex"]
 published: false
 excerpt: TODO
 ---
@@ -19,11 +20,11 @@ software, you have to perform similar steps to include diagrams.
 In my process of writing a technical presentation, code samples and
 diagrams are not written first, and included in the slides at the last
 minute -- I work iteratively on slide content, source code, and
-diagrams. Having to repeat the time consuming and error prone process
-of updating code samples in slides, each time my original source code
-changes, breaks my creative flow completely. I also want to have my
-source code _compiled and executable_, so that I can be confident it
-is correct.
+diagrams, all at the same time. Having to repeat the time-consuming
+and error-prone process of updating code samples in slides, each time
+my original source code changes, breaks my creative flow completely. I
+also want to have my source code _compiled and executable_, so that I
+can be confident it is correct.
 
 The main features I'm looking for in a technical presentation setup
 includes:
@@ -41,12 +42,14 @@ I'm less interested in:
 * Videos and GIFs
 
 This article demonstrates a setup that fulfills these goals, using
-Pandoc Markdown, Beamer, Graphviz and Make.
+Pandoc Markdown, Beamer, Graphviz and Make. I have also created a
+template, based on my setup, that you can use if you like this
+approach.
 
 ## Writing Slides with Pandoc Markdown
 
 One of my favorite tools in technical writing is [Pandoc][]. I use it
-for documentation, talks, Markdown preview, this blog post, and for
+for documentation, talks, Markdown preview, this article, and for
 converting existing documents to more desirable formats[^1].
 
 A very nice feature of Pandoc is slideshow output formats. You can
@@ -64,8 +67,11 @@ pandoc -t beamer -o slides.tex slides.md
 pdflatex slides.tex
 ```
 
-Voilà! You have a PDF, such as [this one](/generated/pandoc-beamer-examples/first.pdf).
-
+Voilà! You have a PDF, such as [this
+one](/generated/pandoc-beamer-examples/first.pdf). You might want to
+customize some of the Beamer styling, which is done by including a
+`.tex` file using the `-H` command line parameter of Pandoc. The full
+template described below uses this technique to change the styling.
 
 ## Including Source Code from External Files
 
@@ -150,7 +156,7 @@ with the presentation build in a Makefile.
 Let's say I want to generate a state diagram. The following Graphviz
 source code generates a simple yet beautiful diagram:
 
-``` {.graphviz include=_posts/pandoc-beamer-examples/diagrams/door.dot}
+``` {.dot include=_posts/pandoc-beamer-examples/diagrams/door.dot}
 ```
 
 Generate a PNG file using the `dot` command:
@@ -175,11 +181,53 @@ DIAGRAMS=$(DIAGRAM_SRCS:src/%.dot=target/%.png)
 all: $(DIAGRAMS)
 
 target/%.png: src/%.dot
-	mkdir -p target
+	mkdir -p $(shell dirname $@)
 	dot -Tpng $< -o $@
 ```
 
-## A Full Template
+A similar setup can be used with [PlantUML][], although you might want the
+JAR file to download automatically:
+
+``` makefile
+PLANTUML=deps/plantuml.jar
+
+UML_SRCS=$(shell find src -name '*.uml.txt)
+UMLS=$(UML_SRCS:src/%.uml.txt=target/%.png)
+
+.PHONY: all
+all: $(UMLS)
+
+target/%.png: src/%.uml.txt $(PLANTUML)
+	mkdir -p $(shell dirname $@)
+	cat $< | java -jar $(PLANTUML) -tpng -pipe > $@
+
+$(PLANTUML):
+	mkdir -p $(shell dirname $@)
+	wget http://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O $@
+```
+
+I have used PlantUML in this blog, just as described above, to
+generate diagrams for posts. See the post [Hyper: Elegant Weapons for
+a More Civilized
+Page](/programming/2017/01/06/hyper-elegant-weapons-for-a-more-civilized-page.html)
+for an example.
+
+## Wrapping Up
+
+Based on the techniques described in this post, I have created a
+template that you can use for your own presentations. It is
+[published at GitHub][template]. I hope this will be useful to
+someone, and that it can be a good complement to this article.
+
+What I really like about the tools and techniques demonstrated in this
+article is that they are not tied to presentations. I use the same
+tools for writing documentation, and for writing this blog! Pandoc is
+an amazing piece of software, and I have just scratched the surface of
+what it can do. For instance, if you do not want PDF output for your
+talk, there's a number of Javascript-based formats for slideshows
+available.
+
+## Footnotes
 
 [^1]: I once needed to convert a technical manual from ODF to
     reStructuredText. A single Pandoc command later, and I had the
@@ -190,3 +238,4 @@ target/%.png: src/%.dot
 [pandoc-include-code]: https://github.com/owickstrom/pandoc-include-code
 [Graphviz]: http://graphviz.org
 [PlantUML]: http://plantuml.com
+[template]: https://github.com/owickstrom/automating-the-build-of-your-technical-presentation-template
