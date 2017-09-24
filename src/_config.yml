@@ -40,6 +40,7 @@ gems:
 pandoc:
   extensions:
     highlight-style: pygments
+    filter: pandoc-include-code
 
 plantuml:
   plantuml_jar: ../deps/plantuml.jar     # path to plantuml jar

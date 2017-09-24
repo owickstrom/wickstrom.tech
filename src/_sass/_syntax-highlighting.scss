@@ -1,29 +1,96 @@
-code > span.kw { color: #222; } /* Keyword */
-code > span.dt { color: #445588; } /* DataType */
-code > span.dv { color: #009999; } /* DecVal */
-code > span.bn { color: #009999; } /* BaseN */
-code > span.fl { color: #009999; } /* Float */
-code > span.ch { color: #009999; } /* Char */
-code > span.st { color: #d01040; } /* String */
-code > span.co { color: #999; font-style: italic; } /* Comment */
-code > span.ot { color: #222; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #222; } /* Function */
-code > span.er { color: #ff0000; } /* Error */
-code > span.wa { color: #60a0b0; font-style: italic; } /* Warning */
-code > span.cn { color: #d01040; } /* Constant */
-code > span.sc { color: #d01040; } /* SpecialChar */
-code > span.vs { color: #d01040; } /* VerbatimString */
-code > span.ss { color: #d01040; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #222; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #999; } /* Preprocessor */
-code > span.at { color: #666; } /* Attribute */
-code > span.do { color: #999; font-style: italic; } /* Documentation */
-code > span.an { color: #999; font-style: italic; } /* Annotation */
-code > span.cv { color: #999; font-style: italic; } /* CommentVar */
-code > span.in { color: #999; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: auto;
+}
+div.sourceLine, a.sourceLine {
+  display: inline-block;
+  min-height: 1.25em;
+}
+a.sourceLine {
+  pointer-events: none;
+  color: inherit;
+  text-decoration: inherit;
+}
+.sourceCode {
+  overflow: visible;
+}
+code.sourceCode {
+  white-space: pre;
+}
+@media print {
+  code.sourceCode {
+    white-space: pre-wrap;
+  }
+  div.sourceLine, a.sourceLine {
+    text-indent: -1em;
+    padding-left: 1em;
+  }
+}
+.numberSource div.sourceLine, .numberSource a.sourceLine {
+  position: relative;
+}
+.numberSource div.sourceLine::before, .numberSource a.sourceLine::before {
+  content: attr(data-line-number);
+  position: absolute;
+  left: -5em;
+  text-align: right;
+  vertical-align: baseline;
+  border: none;
+  pointer-events: all;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0 4px;
+  width: 4em;
+}
+.numberSource pre.sourceCode {
+  margin-left: 3em;
+  border-left: 1px solid #a0a0a0;
+  background-color: #ffffff;
+  color: #a0a0a0;
+  padding-left: 4px;
+}
+pre, code {
+  color: #1f1c1b;
+  background-color: #ffffff;
+}
+@media screen {
+  a.sourceLine::before {
+    text-decoration: underline;
+    color: initial;
+  }
+}
+
+code span.kw { color: #222; } /* Keyword */
+code span.dt { color: #445588; } /* DataType */
+code span.dv { color: #009999; } /* DecVal */
+code span.bn { color: #009999; } /* BaseN */
+code span.fl { color: #009999; } /* Float */
+code span.cn { color: #d01040; } /* Constant */
+code span.ch { color: #924c9d; } /* Char */
+code span.sc { color: #3daee9; } /* SpecialChar */
+code span.st { color: #d01040; } /* String */
+code span.vs { color: #d01040; } /* VerbatimString */
+code span.ss { color: #ff5500; } /* SpecialString */
+code span.im { color: #ff5500; } /* Import */
+code span.co { color: #898887; } /* Comment */
+code span.do { color: #607880; } /* Documentation */
+code span.an { color: #ca60ca; } /* Annotation */
+code span.cv { color: #0095ff; } /* CommentVar */
+code span.ot { color: #222; } /* Other */
+code span.fu { color: #644a9b; } /* Function */
+code span.va { color: #445588; } /* Variable */
+code span.cf { color: #644a9b; font-weight: bold; } /* ControlFlow */
+code span.op { color: #644a9b; } /* Operator */
+code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code span.pp { color: #006e28; } /* Preprocessor */
+code span.at { color: #445588; } /* Attribute */
+code span.re { color: #445588; } /* RegionMarker */
+code span.in { color: #009999; } /* Information */
+code span.wa { color: #d01040; } /* Warning */
+code span.al { color: #d01040; font-weight: bold; } /* Alert */
+code span.er { color: #d01040; text-decoration: underline; } /* Error */
+code span { color: #222; } /* Normal */

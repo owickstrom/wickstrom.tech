@@ -2,9 +2,11 @@ TOOLS=src/tools
 PLANTUML=deps/plantuml.jar
 
 build: $(PLANTUML)
+	make -C src/_posts/pandoc-beamer-examples all
 	cd src && bundle exec jekyll build --destination ../target
 
 serve:
+	make -C src/_posts/pandoc-beamer-examples all
 	cd src && bundle exec jekyll serve --destination ../target --unpublished
 
 deploy: build

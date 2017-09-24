@@ -65,6 +65,17 @@ body {
   }
 }
 
+.footnotes {
+  font-size: 90%;
+
+  hr {
+    display: none;
+  }
+  p {
+    font-style: italic;
+  }
+}
+
 @media screen and (max-width: $on-palm) {
   .top-nav .nav ul a {
     padding: .5rem;
