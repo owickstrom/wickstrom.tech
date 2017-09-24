@@ -6,8 +6,11 @@ date: 2017-09-24
 author: Oskar Wickström
 category: programming
 tags: ["automation", "presentation", "pandoc", "make", "latex"]
-published: false
-excerpt: TODO
+excerpt: |
+    Writing technical presentations that include code samples and diagrams
+    can a tedious task of copying, pasting, and fixing errors. This article
+    demonstrates a setup that automates the process and lets you focus on
+    your creative process.
 ---
 
 Writing technical presentations that include code samples and diagrams
@@ -49,8 +52,8 @@ approach.
 ## Writing Slides with Pandoc Markdown
 
 One of my favorite tools in technical writing is [Pandoc][]. I use it
-for documentation, talks, Markdown preview, this article, and for
-converting existing documents to more desirable formats[^1].
+for documentation, talks, Markdown preview, this article[^1],
+and for converting existing documents to more desirable formats[^2].
 
 A very nice feature of Pandoc is slideshow output formats. You can
 write your slides in Markdown using regular headings, with the
@@ -68,10 +71,12 @@ pdflatex slides.tex
 ```
 
 Voilà! You have a PDF, such as [this
-one](/generated/pandoc-beamer-examples/first.pdf). You might want to
-customize some of the Beamer styling, which is done by including a
-`.tex` file using the `-H` command line parameter of Pandoc. The full
-template described below uses this technique to change the styling.
+one](/generated/pandoc-beamer-examples/first.pdf).
+
+You might want to customize some of the Beamer styling, which is done
+by including a `.tex` file using the `-H` command line parameter of
+Pandoc. The full template described below uses this technique to
+change the styling.
 
 ## Including Source Code from External Files
 
@@ -227,9 +232,15 @@ what it can do. For instance, if you do not want PDF output for your
 talk, there's a number of Javascript-based formats for slideshows
 available.
 
+Now go on and write some cool tech talks!
+
 ## Footnotes
 
-[^1]: I once needed to convert a technical manual from ODF to
+[^1]: The [source
+code](https://raw.githubusercontent.com/owickstrom/func-da-world/master/src/_posts/2017-09-24-pandoc-beamer-graphviz.md)
+for this article uses some of the techniques it describes. Warning,
+there's nested fenced code blocks; not something for the weak-hearted.
+[^2]: I once needed to convert a technical manual from ODF to
     reStructuredText. A single Pandoc command later, and I had the
     sources for a proper Sphinx build.
 
