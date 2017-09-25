@@ -6,11 +6,7 @@ date: 2017-09-24
 author: Oskar Wickström
 category: programming
 tags: ["automation", "presentation", "pandoc", "make", "latex"]
-excerpt: |
-    Writing technical presentations that include code samples and diagrams
-    can a tedious task of copying, pasting, and fixing errors. This article
-    demonstrates a setup that automates the process and lets you focus on
-    your creative process.
+excerpt: "Writing technical presentations with code and diagrams can be a tedious task of copying, pasting, and fixing errors. This article demonstrates a setup that lets you focus on your creative process."
 ---
 
 Writing technical presentations that include code samples and diagrams
