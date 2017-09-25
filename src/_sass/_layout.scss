@@ -230,11 +230,31 @@ body {
   margin-left: 0;
 
   li {
+    display: flex;
     margin-bottom: 3.2rem;
   }
 
+  .title-and-excerpt {
+    flex: 1 1 auto;
+  }
   .title {
     margin-bottom: 0;
+  }
+  time {
+    flex: 0 0 auto;
+    text-align: right;
+    padding-left: 1em;
+
+    a {
+        color: $text-color;
+    }
+  }
+  .day, .year {
+    display: block;
+  }
+  .day {
+    font-size: 125%;
+    font-weight: 600;
   }
   .excerpt {
     margin: .8rem 0;
