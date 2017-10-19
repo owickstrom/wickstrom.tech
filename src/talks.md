@@ -3,12 +3,32 @@ title: Talks
 layout: page
 ---
 
+## Finite-state machines? Your compiler wants in!
+
+### Events
+
+* [Foo Cafe](http://www.foocafe.org/malmoe/events/1596-finite-state-machines-your-compiler-wants-in), November 1, 2017, Malmö
+* [CodeMesh](http://www.codemesh.io/codemesh2017/oskar-wickstrom), 7-9 November, 2017, London
+
+### Abstract
+
+When modeling problem domains, we collect different possible states,
+legal transitions between states, and relevant data for each
+state. Finite-state machines emerge. To verify that programs are
+constructed correctly, and to have a living machine-verified
+documentation, we should let the compiler in on our trade secrets.
+
+In this talk we will look at motivations and examples of encoding
+finite-state machines, using expressive type systems in functional
+languages.
+
 ## The Power of Functional Programming and Static Type Systems in Server-Side Web Applications
 
 ### Events
 
 * [flatMap(Oslo)](http://2017.flatmap.no/talks/wickstrom/), 2-3 May 2017, Oslo, Norway
  	- [Slides](https://wickstrom.tech/talks/flatmap-oslo-2017-05-02.pdf)
+    - [Video Recording](https://vimeo.com/216464016)
 * [GOTO Nights CPH](https://www.meetup.com/GOTO-Nights-CPH/), February 22, 2017, Copenhagen, Denmark
  	- [Slides](https://wickstrom.tech/talks/kats-conf-2017-02-18.pdf)
 * [Kats Conf 2](http://www.katsconf.com/), February 18, 2017, Dublin, Ireland
