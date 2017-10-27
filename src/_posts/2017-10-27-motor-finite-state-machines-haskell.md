@@ -28,7 +28,7 @@ The central finite-state machine abstraction in Motor is the
 that it has not one, but *three* type parameters:
 
 1. A `Row` of input resource states
-1. A `Row` of output resource state
+1. A `Row` of output resource states
 1. A return type (just as in `Monad`)
 
 The `MonadFSM` parameter kinds might look a bit
@@ -102,7 +102,7 @@ for some more information on how to use `RebindableSyntax`.
 To make it easier to read and write FSM computation types, there is some
 syntax sugar available.
 
-*State actions* allow you two describe state changes of named resources
+*State actions* allow you to describe state changes of named resources
 with a *single* list, as opposed two writing two rows. They also take
 care of matching the CTRex row combinators with the expectations of
 Motor, which can be tricky to do by hand.
