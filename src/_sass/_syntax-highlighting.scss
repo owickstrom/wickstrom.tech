@@ -1,6 +1,9 @@
 $code-background-color: #fff9de;
 
 div.sourceCode {
+  overflow: visible;
+}
+pre.sourceCode {
   overflow-x: auto;
 }
 div.sourceLine, a.sourceLine {
@@ -56,9 +59,6 @@ code.sourceCode {
 }
 pre, code {
   color: #222222;
-}
-pre {
-  background-color: $code-background-color;
 }
 @media screen {
   a.sourceLine::before {
