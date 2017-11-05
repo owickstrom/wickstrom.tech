@@ -284,10 +284,13 @@ body {
   }
 }
 
-div.sourceCode {
-  margin-bottom: ($base-line-height * 1rem);
+pre {
   background-color: $code-background-color;
   box-shadow: 1px 1px 1px desaturate(darken($code-background-color, 20%), 50%);
+
+  &.pgp {
+    font-size: 90%;
+  }
 }
 
 .index-heading {

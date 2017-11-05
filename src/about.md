@@ -33,7 +33,7 @@ post some of my stuff at [SoundCloud][soundcloud] and [YouTube][youtube].
 
 ## Public Key
 
-```
+```pgp
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG/MacGPG2 v2
 
