@@ -1,0 +1,17 @@
+@startuml
+!include src/_uml/styles.iuml
+
+state StatusLineOpen
+state HeadersOpen
+state BodyOpen
+state ResponseEnded
+
+[*] -right-> StatusLineOpen
+StatusLineOpen --> HeadersOpen : writeStatus
+HeadersOpen --> HeadersOpen : writeHeader
+HeadersOpen --> BodyOpen : closeHeaders
+BodyOpen --> BodyOpen : send
+BodyOpen --> ResponseEnded : end
+ResponseEnded -right-> [*]
+
+@enduml

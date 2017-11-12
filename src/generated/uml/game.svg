@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="54px" preserveAspectRatio="none" style="width:587px;height:54px;background:#000000;" version="1.1" viewBox="0 0 587 54" width="587px" zoomAndPan="magnify"><defs/><g><text fill="#33FF02" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="78" x="5" y="18.3027">@startuml</text><text fill="#33FF02" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="218" x="5" y="34.5928">!include src/uml/styles.iuml</text><text fill="#33FF02" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="0" x="10" y="50.8828"/><text fill="#FF0000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="575" x="10" y="50.8828">Cannot include /home/owi/projects/func-da-world/./src/uml/styles.iuml</text><!--
+@startuml
+!include src/uml/styles.iuml
+
+state Standing
+state Ducking
+state Jumping
+
+[*] -right-> Standing
+
+Standing -right-> Ducking : Press Down
+Standing -right-> Jumping : Press Space
+Ducking -left-> Standing : Release Down
+Ducking -right-> Jumping : Press Space
+Jumping -down-> Standing : (Hit Ground)
+
+@enduml
+
+PlantUML version 1.2017.16(Sun Sep 03 12:53:37 CEST 2017)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 9+181
+Operating System: Linux
+OS Version: 4.10.0-38-generic
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

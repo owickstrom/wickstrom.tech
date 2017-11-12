@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="69px" preserveAspectRatio="none" style="width:320px;height:69px;" version="1.1" viewBox="0 0 320 69" width="320px" zoomAndPan="magnify"><defs/><g><rect fill="#EEEEEE" height="50" rx="12.5" ry="12.5" style="stroke: #333333; stroke-width: 1.5;" width="67" x="6" y="8"/><line style="stroke: #333333; stroke-width: 1.5;" x1="6" x2="73" y1="31.9629" y2="31.9629"/><text fill="#000000" font-family="Monaco" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="47" x="16" y="24.4023">NoItems</text><rect fill="#EEEEEE" height="50" rx="12.5" ry="12.5" style="stroke: #333333; stroke-width: 1.5;" width="73" x="108" y="8"/><line style="stroke: #333333; stroke-width: 1.5;" x1="108" x2="181" y1="31.9629" y2="31.9629"/><text fill="#000000" font-family="Monaco" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="53" x="118" y="24.4023">HasItems</text><rect fill="#EEEEEE" height="50" rx="12.5" ry="12.5" style="stroke: #333333; stroke-width: 1.5;" width="92" x="216.5" y="8"/><line style="stroke: #333333; stroke-width: 1.5;" x1="216.5" x2="308.5" y1="31.9629" y2="31.9629"/><text fill="#000000" font-family="Monaco" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="72" x="226.5" y="24.4023">OrderPlaced</text><!--
+@startuml
+
+
+hide circle
+
+skinparam shadowing false
+
+skinparam defaultFontSize 12
+skinparam defaultFontName Monaco
+
+skinparam class {
+  BackgroundColor #eeeeee
+  ArrowColor #656b49
+  BorderColor #333333
+}
+
+skinparam state {
+  StartColor #445588
+  EndColor #D01040
+  BackgroundColor #eeeeee
+  BorderColor #333333
+}
+
+state NoItems
+
+state HasItems
+
+state OrderPlaced 
+
+@enduml
+
+PlantUML version 1.2017.16(Sun Sep 03 12:53:37 CEST 2017)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 9+181
+Operating System: Linux
+OS Version: 4.10.0-38-generic
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

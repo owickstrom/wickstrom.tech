@@ -1,0 +1,25 @@
+@startuml
+!include src/_uml/styles.iuml
+
+state FlightSelected
+state SeatReleased
+state BookingCancelled
+state SeatReserved
+state SeatBooked
+
+[*] -right-> FlightSelected : selectFlight
+FlightSelected -right-> SeatReserved : selectSeat
+
+SeatReserved --> SeatBooked : payForSeat
+
+SeatReserved --> SeatReleased : timeout(5min)
+SeatReleased --> FlightSelected : restart
+
+SeatReleased --> BookingCancelled : cancel
+SeatReserved --> BookingCancelled : cancel
+
+BookingCancelled -right-> [*]
+
+SeatBooked -right-> [*]
+
+@enduml

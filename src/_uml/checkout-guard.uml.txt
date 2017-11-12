@@ -1,0 +1,25 @@
+@startuml
+!include src/_uml/styles.iuml
+
+state HasItems : n : Nat
+state OrderPlaced
+
+[*] -right-> HasItems
+
+HasItems --> HasItems : select / ++n
+
+HasItems -down-> Checkout : checkout\n[n > 0]
+
+state "Checkout" as Checkout {
+  state NoCard : n : Nat
+  state CardSelected : n : Nat
+  state CardConfirmed : n : Nat
+  [*] -right-> NoCard
+  NoCard -down-> CardSelected : selectCard
+  CardSelected -down-> CardConfirmed : confirm
+  CardConfirmed -right-> OrderPlaced : placeOrder
+}
+
+Checkout --> HasItems : cancel
+OrderPlaced -right-> [*]
+@enduml

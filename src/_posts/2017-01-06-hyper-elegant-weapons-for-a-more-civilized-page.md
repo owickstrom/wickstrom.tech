@@ -162,7 +162,7 @@ it rendered as a state diagram instead.
 
 {% plantuml The possible transitions between response states. %}
 @startuml
-!include styles.iuml
+!include _uml/styles.iuml
 
 state StatusLineOpen
 state HeadersOpen

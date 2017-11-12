@@ -1,11 +1,15 @@
 TOOLS=src/tools
 PLANTUML=deps/plantuml.jar
 
-build: $(PLANTUML)
+UML_SRCS=$(shell find src/_uml -name '*.uml.txt')
+UMLS=$(UML_SRCS:src/_uml/%.uml.txt=src/generated/uml/%.svg)
+
+
+build: $(LHS_TARGETS) $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cd src && bundle exec jekyll build --destination ../target
 
-serve:
+serve: $(LHS_TARGETS) $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cd src && bundle exec jekyll serve --destination ../target --unpublished
 
@@ -44,3 +48,7 @@ src/_posts/%.md: src/_lhs/%.lhs src/_lhs/%.md
 
 .PHONY: lhs
 lhs: $(LHS_TARGETS)
+
+src/generated/uml/%.svg: src/_uml/%.uml.txt src/_uml/styles.iuml $(PLANTUML)
+	mkdir -p $(shell dirname $@)
+	cat $< | java -jar $(PLANTUML) -tsvg -pipe > $@

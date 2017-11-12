@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1803.125px" preserveAspectRatio="none" style="width:1693px;height:1803px;" version="1.1" viewBox="0 0 1693 1803" width="1693.75px" zoomAndPan="magnify"><defs/><g><!--cluster Checkout--><rect fill="#EEEEEE" height="1268.75" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="606.25" x="296.875" y="500"/><rect fill="#FFFFFF" height="1159.1705" rx="39.0625" ry="39.0625" style="stroke: #FFFFFF; stroke-width: 3.125;" width="587.5" x="306.25" y="600.2045"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="296.875" x2="903.125" y1="590.8295" y2="590.8295"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="206.25" x="496.875" y="559.2621">Checkout</text><rect fill="#EEEEEE" height="181.6589" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="225" x="603.125" y="643.75"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="603.125" x2="828.125" y1="734.5795" y2="734.5795"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="162.5" x="634.375" y="706.1371">NoCard</text><text fill="#000000" font-family="Noto Sans" font-size="43.75" lengthAdjust="spacingAndGlyphs" textLength="140.625" x="618.75" y="796.9666">n : Nat</text><rect fill="#EEEEEE" height="181.6589" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="343.75" x="450" y="1078.125"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="450" x2="793.75" y1="1168.9545" y2="1168.9545"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="281.25" x="481.25" y="1140.5121">CardSelected</text><text fill="#000000" font-family="Noto Sans" font-size="43.75" lengthAdjust="spacingAndGlyphs" textLength="140.625" x="465.625" y="1231.3416">n : Nat</text><rect fill="#EEEEEE" height="181.6589" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="390.625" x="432.8125" y="1512.5"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="432.8125" x2="823.4375" y1="1603.3295" y2="1603.3295"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="328.125" x="464.0625" y="1574.8871">CardConfirmed</text><text fill="#000000" font-family="Noto Sans" font-size="43.75" lengthAdjust="spacingAndGlyphs" textLength="140.625" x="448.4375" y="1665.7166">n : Nat</text><ellipse cx="462.5" cy="734.375" fill="#000000" rx="31.25" ry="31.25" style="stroke: none; stroke-width: 3.125;"/><rect fill="#EEEEEE" height="181.6589" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="268.75" x="190.625" y="25"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="190.625" x2="459.375" y1="115.8295" y2="115.8295"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="206.25" x="221.875" y="87.3871">HasItems</text><text fill="#000000" font-family="Noto Sans" font-size="43.75" lengthAdjust="spacingAndGlyphs" textLength="140.625" x="206.25" y="178.2166">n : Nat</text><rect fill="#EEEEEE" height="156.25" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="328.125" x="1157.8125" y="1525"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="1157.8125" x2="1485.9375" y1="1615.8295" y2="1615.8295"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="265.625" x="1189.0625" y="1587.3871">OrderPlaced</text><ellipse cx="50" cy="115.625" fill="#000000" rx="31.25" ry="31.25" style="stroke: none; stroke-width: 3.125;"/><ellipse cx="1628.125" cy="1603.125" fill="none" rx="31.25" ry="31.25" style="stroke: #000000; stroke-width: 3.125;"/><ellipse cx="1629.6875" cy="1604.6875" fill="#000000" rx="18.75" ry="18.75" style="stroke: none; stroke-width: 3.125;"/><!--link *start to HasItems--><path d="M82.2266,115.625 C112.9141,115.625 143.6016,115.625 174.2891,115.625 " fill="none" id="*start-HasItems" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="190.3366,115.625,162.2116,103.125,174.7116,115.625,162.2116,128.125,190.3366,115.625" style="stroke: #333333; stroke-width: 3.125;"/><!--link HasItems to HasItems--><path d="M460.3563,70.4687 C518.7531,66.7719 568.75,81.825 568.75,115.625 C568.75,146.2563 527.6875,161.4906 476.525,161.3281 " fill="none" id="HasItems-HasItems" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="460.3563,160.7813,488.0438,174.2224,475.9724,161.308,488.8867,149.2366,460.3563,160.7813" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="225" x="587.5" y="132.6996">select / ++n</text><!--link HasItems to Checkout--><path d="M223.2263,206.5313 C198.6166,233.7281 175.64,265.6594 162.5,300 C126.5583,393.9297 164.6051,499.8672 212.5148,583.2379 C236.4696,624.9232 262.8902,660.9669 283.7608,687.047 C286.3696,690.307 288.8917,693.4114 291.3114,696.3516 C292.5213,697.8217 293.7056,699.2508 294.8623,700.6378 C295.4406,701.3313 296.0121,702.0142 296.5765,702.6866 " fill="none" id="HasItems-Checkout" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="296.5765,702.6866,288.0685,673.1082,286.5308,690.7188,268.9202,689.1811,296.5765,702.6866" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="171.875" x="165.625" y="349.8871">checkout</text><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="125" x="189.0625" y="409.4666">[n &gt; 0]</text><!--link Checkout to HasItems--><path d="M351.3789,499.8584 C351.8139,493.9775 352.2255,488.0499 352.6107,482.0841 C353.3812,470.1524 354.0458,458.0676 354.5798,445.8967 C356.7159,397.2131 356.7617,347.1516 353.125,300 C351.1781,274.7594 347.7281,247.7156 343.8969,222.4219 " fill="none" id="Checkout-HasItems" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="341.4719,206.9344,333.4693,236.6535,343.887,222.3716,358.1689,232.7893,341.4719,206.9344" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="121.875" x="356.25" y="379.5746">cancel</text><!--link *start*Checkout to NoCard--><path d="M494.1406,734.375 C524.8375,734.375 555.5375,734.375 586.2344,734.375 " fill="none" id="*start*Checkout-NoCard" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="602.2875,734.375,574.1625,721.875,586.6625,734.375,574.1625,746.875,602.2875,734.375" style="stroke: #333333; stroke-width: 3.125;"/><!--link NoCard to CardSelected--><path d="M696.4281,825.1719 C681.3875,893.8562 660.4219,989.5906 644.5563,1062.0531 " fill="none" id="NoCard-CardSelected" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="641.0469,1078.0719,659.2759,1053.2733,644.3905,1062.8088,634.8551,1047.9235,641.0469,1078.0719" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="203.125" x="675" y="968.6371">selectCard</text><!--link CardSelected to CardConfirmed--><path d="M623.1563,1259.5469 C624.1563,1328.2313 625.5563,1423.9656 626.6125,1496.4281 " fill="none" id="CardSelected-CardConfirmed" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="626.8469,1512.4469,638.9358,1484.1427,626.6192,1496.8235,613.9384,1484.507,626.8469,1512.4469" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="150" x="628.125" y="1403.0121">confirm</text><!--link CardConfirmed to OrderPlaced--><path d="M824.1438,1603.125 C923.3813,1603.125 1043.0781,1603.125 1140.2188,1603.125 " fill="none" id="CardConfirmed-OrderPlaced" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="1156.8438,1603.125,1128.7188,1590.625,1141.2188,1603.125,1128.7188,1615.625,1156.8438,1603.125" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="218.75" x="881.25" y="1578.0121">placeOrder</text><!--link OrderPlaced to *end--><path d="M1486.9625,1603.125 C1517.9531,1603.125 1548.9469,1603.125 1579.9375,1603.125 " fill="none" id="OrderPlaced-*end" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="1596.1438,1603.125,1568.0188,1590.625,1580.5188,1603.125,1568.0188,1615.625,1596.1438,1603.125" style="stroke: #333333; stroke-width: 3.125;"/><!--
+@startuml
+hide circle
+
+skinparam dpi 300
+
+skinparam shadowing false
+
+skinparam defaultFontSize 14
+skinparam defaultFontName Noto Sans
+
+skinparam class {
+  BackgroundColor #eeeeee
+  ArrowColor #333333
+  BorderColor #333333
+}
+
+skinparam state {
+  BackgroundColor #eeeeee
+  BorderColor #333333
+  FontStyle bold
+}
+
+skinparam arrow {
+  FontStyle italic
+  ArrowColor #333333
+}
+
+state HasItems : n : Nat
+state OrderPlaced
+
+[*] -right-> HasItems
+
+HasItems - -> HasItems : select / ++n
+
+HasItems -down-> Checkout : checkout\n[n > 0]
+
+state "Checkout" as Checkout {
+  state NoCard : n : Nat
+  state CardSelected : n : Nat
+  state CardConfirmed : n : Nat
+  [*] -right-> NoCard
+  NoCard -down-> CardSelected : selectCard
+  CardSelected -down-> CardConfirmed : confirm
+  CardConfirmed -right-> OrderPlaced : placeOrder
+}
+
+Checkout - -> HasItems : cancel
+OrderPlaced -right-> [*]
+@enduml
+
+PlantUML version 1.2017.16(Sun Sep 03 12:53:37 CEST 2017)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 9+181
+Operating System: Linux
+OS Version: 4.10.0-38-generic
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

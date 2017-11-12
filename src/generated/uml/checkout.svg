@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1643.75px" preserveAspectRatio="none" style="width:2168px;height:1643px;" version="1.1" viewBox="0 0 2168 1643" width="2168.75px" zoomAndPan="magnify"><defs/><g><!--cluster Checkout--><rect fill="#EEEEEE" height="1193.75" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="606.25" x="771.875" y="415.625"/><rect fill="#FFFFFF" height="1084.1705" rx="39.0625" ry="39.0625" style="stroke: #FFFFFF; stroke-width: 3.125;" width="587.5" x="781.25" y="515.8295"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="771.875" x2="1378.125" y1="506.4545" y2="506.4545"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="206.25" x="971.875" y="474.8871">Checkout</text><rect fill="#EEEEEE" height="156.25" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="225" x="1078.125" y="559.375"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="1078.125" x2="1303.125" y1="650.2045" y2="650.2045"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="162.5" x="1109.375" y="621.7621">NoCard</text><rect fill="#EEEEEE" height="156.25" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="343.75" x="925" y="968.75"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="925" x2="1268.75" y1="1059.5795" y2="1059.5795"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="281.25" x="956.25" y="1031.1371">CardSelected</text><rect fill="#EEEEEE" height="156.25" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="390.625" x="907.8125" y="1378.125"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="907.8125" x2="1298.4375" y1="1468.9545" y2="1468.9545"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="328.125" x="939.0625" y="1440.5121">CardConfirmed</text><ellipse cx="937.5" cy="637.5" fill="#000000" rx="31.25" ry="31.25" style="stroke: none; stroke-width: 3.125;"/><rect fill="#EEEEEE" height="156.25" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="250" x="190.625" y="25"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="190.625" x2="440.625" y1="115.8295" y2="115.8295"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="187.5" x="221.875" y="87.3871">NoItems</text><rect fill="#EEEEEE" height="156.25" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="268.75" x="665.625" y="25"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="665.625" x2="934.375" y1="115.8295" y2="115.8295"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="206.25" x="696.875" y="87.3871">HasItems</text><rect fill="#EEEEEE" height="156.25" rx="39.0625" ry="39.0625" style="stroke: #333333; stroke-width: 4.6875;" width="328.125" x="1632.8125" y="1378.125"/><line style="stroke: #333333; stroke-width: 4.6875;" x1="1632.8125" x2="1960.9375" y1="1468.9545" y2="1468.9545"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="265.625" x="1664.0625" y="1440.5121">OrderPlaced</text><ellipse cx="50" cy="103.125" fill="#000000" rx="31.25" ry="31.25" style="stroke: none; stroke-width: 3.125;"/><ellipse cx="2103.125" cy="1456.25" fill="none" rx="31.25" ry="31.25" style="stroke: #000000; stroke-width: 3.125;"/><ellipse cx="2104.6875" cy="1457.8125" fill="#000000" rx="18.75" ry="18.75" style="stroke: none; stroke-width: 3.125;"/><!--link *start to NoItems--><path d="M82.1656,103.125 C112.7112,103.125 143.2569,103.125 173.8025,103.125 " fill="none" id="*start-NoItems" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="189.7756,103.125,161.6506,90.625,174.1506,103.125,161.6506,115.625,189.7756,103.125" style="stroke: #333333; stroke-width: 3.125;"/><!--link NoItems to HasItems--><path d="M441.625,103.125 C505.2031,103.125 582.7813,103.125 649.4781,103.125 " fill="none" id="NoItems-HasItems" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="665.2969,103.125,637.1719,90.625,649.6719,103.125,637.1719,115.625,665.2969,103.125" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="109.375" x="498.4375" y="78.0121">select</text><!--link HasItems to HasItems--><path d="M935.3563,66.075 C993.7531,63.0406 1043.75,75.3906 1043.75,103.125 C1043.75,128.2594 1002.6875,140.7594 951.525,140.625 " fill="none" id="HasItems-HasItems" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="935.3563,140.175,963.1239,153.4498,950.9752,140.6081,963.8169,128.4594,935.3563,140.175" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="109.375" x="1062.5" y="120.1996">select</text><!--link HasItems to Checkout--><path d="M703.4594,181.7031 C676.9594,208.0562 651.6438,239.9188 637.5,275 C605.3406,354.7578 643.4469,443.0617 690.4414,512.1781 C713.9387,546.7363 739.658,576.4977 759.9272,597.9954 C762.4609,600.6826 764.9094,603.2407 767.2578,605.6629 C768.4319,606.874 769.5811,608.0512 770.7033,609.1935 C770.9839,609.4791 771.2627,609.7625 771.5399,610.0437 " fill="none" id="HasItems-Checkout" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="771.5399,610.0437,760.6999,581.2381,760.5717,598.9153,742.8945,598.7872,771.5399,610.0437" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="171.875" x="640.625" y="324.8871">checkout</text><!--link Checkout to HasItems--><path d="M827.7517,415.5486 C827.8389,414.2946 827.9244,413.039 828.0082,411.7818 C828.3433,406.753 828.6505,401.6992 828.927,396.6273 C831.1387,356.0521 831.3789,314.3203 828.125,275 C826.0563,249.9875 822.2875,223.1031 818.1687,198.3063 " fill="none" id="Checkout-HasItems" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="815.2781,181.5188,807.733,211.3573,817.9301,196.9171,832.3703,207.1141,815.2781,181.5188" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="121.875" x="831.25" y="324.8871">cancel</text><!--link *start*Checkout to NoCard--><path d="M969.1406,637.5 C999.8375,637.5 1030.5375,637.5 1061.2344,637.5 " fill="none" id="*start*Checkout-NoCard" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="1077.2875,637.5,1049.1625,625,1061.6625,637.5,1049.1625,650,1077.2875,637.5" style="stroke: #333333; stroke-width: 3.125;"/><!--link NoCard to CardSelected--><path d="M1172.9906,716.45 C1157.4094,783.4531 1134.6469,881.325 1118.0781,952.5813 " fill="none" id="NoCard-CardSelected" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="1114.4281,968.2656,1132.9753,943.7041,1117.9683,953.047,1108.6255,938.0399,1114.4281,968.2656" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="203.125" x="1150" y="859.2621">selectCard</text><!--link CardSelected to CardConfirmed--><path d="M1098.05,1125.825 C1099.0906,1192.8281 1100.6063,1290.7 1101.7125,1361.9563 " fill="none" id="CardSelected-CardConfirmed" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="1101.9563,1377.6403,1114.0128,1349.3224,1101.7107,1362.0172,1089.0159,1349.7152,1101.9563,1377.6403" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="150" x="1103.125" y="1268.6371">confirm</text><!--link CardConfirmed to OrderPlaced--><path d="M1299.1438,1456.25 C1398.3813,1456.25 1518.0781,1456.25 1615.2188,1456.25 " fill="none" id="CardConfirmed-OrderPlaced" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="1631.8438,1456.25,1603.7188,1443.75,1616.2188,1456.25,1603.7188,1468.75,1631.8438,1456.25" style="stroke: #333333; stroke-width: 3.125;"/><text fill="#000000" font-family="Noto Sans" font-size="43.75" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="218.75" x="1356.25" y="1431.1371">placeOrder</text><!--link OrderPlaced to *end--><path d="M1961.9625,1456.25 C1992.9531,1456.25 2023.9469,1456.25 2054.9375,1456.25 " fill="none" id="OrderPlaced-*end" style="stroke: #333333; stroke-width: 3.125;"/><polygon fill="#333333" points="2071.1437,1456.25,2043.0188,1443.75,2055.5187,1456.25,2043.0188,1468.75,2071.1437,1456.25" style="stroke: #333333; stroke-width: 3.125;"/><!--
+@startuml
+hide circle
+
+skinparam dpi 300
+
+skinparam shadowing false
+
+skinparam defaultFontSize 14
+skinparam defaultFontName Noto Sans
+
+skinparam class {
+  BackgroundColor #eeeeee
+  ArrowColor #333333
+  BorderColor #333333
+}
+
+skinparam state {
+  BackgroundColor #eeeeee
+  BorderColor #333333
+  FontStyle bold
+}
+
+skinparam arrow {
+  FontStyle italic
+  ArrowColor #333333
+}
+
+state NoItems
+state HasItems
+state OrderPlaced
+
+[*] -right-> NoItems
+
+NoItems -right-> HasItems : select
+HasItems - -> HasItems : select
+
+HasItems -down-> Checkout : checkout
+
+state "Checkout" as Checkout {
+  state NoCard
+  state CardSelected
+  state CardConfirmed
+  [*] -right-> NoCard
+  NoCard -down-> CardSelected : selectCard
+  CardSelected -down-> CardConfirmed : confirm
+  CardConfirmed -right-> OrderPlaced : placeOrder
+}
+
+Checkout - -> HasItems : cancel
+OrderPlaced -right-> [*]
+@enduml
+
+PlantUML version 1.2017.16(Sun Sep 03 12:53:37 CEST 2017)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 9+181
+Operating System: Linux
+OS Version: 4.10.0-38-generic
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
