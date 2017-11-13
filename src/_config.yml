@@ -41,6 +41,7 @@ pandoc:
   extensions:
     highlight-style: pygments
     filter: pandoc-include-code
+    smart: ''
 
 plantuml:
   plantuml_jar: ../deps/plantuml.jar     # path to plantuml jar
