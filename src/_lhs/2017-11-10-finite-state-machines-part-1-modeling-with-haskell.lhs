@@ -1,13 +1,14 @@
-Stateful programs often become complex beasts when they grow. Program
+Stateful programs often become complex beasts as they grow. Program
 state incohesively spread across a bunch of variables, spuriously
 guarded by even more variables, is what I refer to as *implicit
 state*. When working with such code, we have to reconstruct a model
 mentally, identifying possible states and transitions between them, to
-modify it with any certainty. That process is tedious and error-prone,
-and I insist we should have our tools do the heavy lifting instead.
+modify the program with any certainty. That process is tedious and
+error-prone, and I insist we should have our tools do the heavy
+lifting instead.
 
-By telling the compiler and type system about possible states and
-state transitions in our program, it can verify that we follow our own
+By teaching the type system about possible states and state
+transitions in our program, it can verify that we follow our own
 business rules, both when we write new code, and when we modify
 existing code. It is not merely a process of asking the compiler "did
 I do okay?" Our workflow can be a conversation with the compiler, a
@@ -16,9 +17,9 @@ process known as *type-driven development.* Moreover, the program
 
 After having given my talk at Code Mesh on this topic, and having
 spent a lot of time researching and preparing examples, I want to
-share the material in the form of blog posts. I will split it into
-multiple posts, covering increasingly advanced techniques that give
-greater type safety. That is not to say that the latter techniques are
+share the material in the form of a blog post series. Each post will
+cover increasingly advanced techniques that give greater static
+safety guarantees. That is not to say that the latter techniques are
 inherently better, nor that they are the ones that you should
 use. This series is meant as a small à la carte of event-driven state
 machine encodings and type safety, where you can choose from the menu
@@ -27,12 +28,12 @@ techniques in a linear form. Also, note that these posts do not claim
 to exhaust all options for state machine encodings.
 
 There are many trade-offs, including type safety and strictness,
-implementation complexity, and the effect to language choices in your
-team. Taking one step towards *explicit state*, in an area where it
-leverages your project doing so, can be the best choice. You don't
-have to go nuts with type systems to use explicit states in your
-program! Furthermore, most mainstream languages today let you encode
-states as data types in some way.
+implementation complexity, and how language, techinique, and library
+choices affect your team. Taking one step towards *explicit state*, in
+an area where it leverages your project in doing so, can be the best
+choice. You don't have to go nuts with type systems to use explicit
+states in your program! Furthermore, most mainstream languages today
+let you encode states as data types in some way.
 
 ![Our journey begins in the Valley of Programmer Death, deep in the
  lands of Implicit State. Follow along for as long as you like, and
@@ -42,6 +43,38 @@ This is the introductory post, in which I'll show the first step on
 our way from implicit state and despair to writing stateful and
 effectful programs with great confidence. We will use Haskell and
 *algebraic data types* (ADTs) to encode possible states as data types.
+You should be able to read and understand this post without knowing
+much Haskell. If not, tell me, and I will try to explain better.
+
+Finite-State Machines
+=====================
+
+First, we should have a clear understanding of what a finite-state
+machine is. There are many variations and definitions, and I'm sure
+you, especially if coming from an engineering background, have some
+relation to state machines.
+
+In general, a finite-state machine can be described as an abstract
+machine with a finite set of states, being is in one state at a time.
+*Events* trigger state transitions; that is, the machine changes from
+being in one state to being in another state. The machine defines a
+set of legal transitions, often expressed as associations from the
+current state and an event to another state.
+
+For the domains we will be exploring, the [Erlang documentation's
+definition](http://erlang.org/documentation/doc-4.8.2/doc/design_principles/fsm.html)
+of a finite-state machine is simple and useful:
+
+<blockquote>
+<p>*State(S) &times; Event(E) &rarr; Actions (A), State(S')*</p>
+<p>If we are in state S and the event E occurs, we should perform the
+actions A and make a transition to the state S'.</p>
+</blockquote>
+
+That is the basis for the coming posts. I will not categorize as Mealy
+or Moore machines, or use UML state charts, at least not to any
+greater extent. Some diagrams will use the notation for hierarchical
+state machines for convenience.
 
 Example: Shopping Cart Checkout
 ===============================
@@ -117,8 +150,15 @@ event. The non-nullary constructors carry some data with the event.
 >   | Cancel
 >   deriving (Show, Eq)
 
+We have now translated the diagram to Haskell and data types, and we
+can implement the state transitions and actions.
+
+A Pure State Reducer Function
+=============================
+
 Now, we might consider the simplest possible implementation of a state
-machine a function from state and event to the next state. Such a
+machine a function from state and event to the next state, very much
+like the definition from Erlang's documentation quoted above. Such a
 function could have the following type:
 
 ```{.haskell}
@@ -132,11 +172,14 @@ transitions. We might want to validate that the selected items exist
 using external database queries, and send requests to a third-party
 payment provider when placing the order.
 
-Some systems built around the concept of a *state transducer*, such as
-[The Elm Architecture][elm-effects] or [Pux][pux], support a way of
-specifying the side effects together with the next state. A starting
-point to achieve this for our checkout state machine is the following
-type signature:
+Reaching for IO
+===============
+
+Some systems built around the concept of a state reducer function,
+such as [The Elm Architecture][elm-effects] or [Pux][pux], support a
+way of specifying the side effects together with the next state. A
+starting point to achieve this in Haskell, for our checkout state
+machine, is the following type signature:
 
 ```{.haskell}
 checkout
@@ -145,7 +188,9 @@ checkout
   -> IO CheckoutState
 ```
 
-We create a type alias for such a function type, named `FSM`.
+A state transition then returns `IO` of the next state, meaning that
+we can interleave side effects with transitions. We create a type
+alias for such a function type, named `FSM`.
 
 > type FSM s e =
 >   s -> e -> IO s
@@ -160,7 +205,8 @@ the event. The first five cases simply builds up the state values
 based on the events, and transitions appropriately. We could add
 validation of selected items, and validation of the selected credit
 card, but we would then need explicit error states, or terminate the
-entire state machine on such invalid inputs.
+entire state machine on such invalid inputs. I'll err on the side of
+keeping this example simple.
 
 > checkout NoItems (Select item) =
 >   return (HasItems (item :| []))
@@ -190,8 +236,8 @@ remaining in the current state.
 >     _                     -> return state
 
 To demonstrate how an interleaved side effect is performed, we use the
-qualified imported `chargeCard` and `calculatePrice` to charge the
-card. The implementations of `chargeCard` and `calculatePrice` are not
+imported `chargeCard` and `calculatePrice` to charge the card. The
+implementations of `chargeCard` and `calculatePrice` are not
 important.
 
 > checkout (CardConfirmed items card) PlaceOrder = do
@@ -204,6 +250,11 @@ state.
 
 > checkout state _ = return state
 
+That is it for `checkout`, our state reducer function using `IO`.
+
+Running the State Machine
+=========================
+
 To run our machine, we can rely on `foldM`. Given a machine, an
 initial state, and a foldable sequence of events, we get back the
 terminal state inside `IO`.
@@ -213,7 +264,9 @@ terminal state inside `IO`.
 
 Just getting back the terminal state might be too much of a black
 box. To see what happens as we run a machine, we can *decorate* it
-with logging.
+with logging. The `withLogging` function runs the state machine it
+receives as an argument, logs its transition, and returns the next
+state.
 
 > withLogging
 >   :: (Show s, Show e)
@@ -253,8 +306,8 @@ OrderPlaced
 Yes, the logging is somewhat verbose, but there we have it; a
 simplified event-driven state machine using ADTs for states and
 events. The data types protect us from constructing illegal values,
-bring the code closer to our conceptual model, and make state
-transitions explicit.
+they bring the code closer to our conceptual model, and they make
+state transitions explicit.
 
 This is a great starting point, and as I argued in the introduction of
 this post, probably the leg on our journey with the highest *return of
@@ -263,9 +316,12 @@ transitions! We would not get any compile-time error bringing our
 attention to such mistakes. Another concern is that the state machine
 implementation is tightly coupled with IO, making it hard to test.
 
-In the next post we will tackle both these concerns, using MTL-style
-abstraction together with associated type aliases, also known as open
-type families. Stay tuned!
+We could factor out the side effects in `checkout` using MTL-style
+typeclasses, free monads, or
+[extensible-effects](https://hackage.haskell.org/package/extensible-effects-1.11.1.0). That
+said, in the next post I will show you a technique to tackle both
+the side effect and testability concerns, using MTL-style abstraction
+of the state machine itself. Stay tuned!
 
 [elm-effects]: https://guide.elm-lang.org/architecture/effects/
 [pux]: http://purescript-pux.org/docs/events/#Effectful_computations
