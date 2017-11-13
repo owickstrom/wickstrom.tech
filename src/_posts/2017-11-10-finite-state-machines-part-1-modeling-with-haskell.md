@@ -11,7 +11,7 @@ excerpt: |
     and state transitions in our programs.
 ---
 
-Stateful programs often become complex beasts as they grow. Program state incohesively spread across a bunch of variables, spuriously guarded by even more variables, is what I refer to as *implicit state*. When working with such code, we have to reconstruct a model mentally, identifying possible states and transitions between them, to modify the program with any certainty. That process is tedious and error-prone, and I insist we should have our tools do the heavy lifting instead.
+Stateful programs often become complex beasts as they grow. Program state incohesively spread across a bunch of variables, spuriously guarded by even more variables, is what I refer to as *implicit state*. When working with such code, we have to reconstruct a model mentally, identifying possible states and transitions between them, to modify the program with confidence. Even if a test suite can help, the process is tedious and error-prone, and I insist we should have our tools do the heavy lifting instead.
 
 By teaching the type system about possible states and state transitions in our program, it can verify that we follow our own business rules, both when we write new code, and when we modify existing code. It is not merely a process of asking the compiler "did I do okay?" Our workflow can be a conversation with the compiler, a process known as *type-driven development.* Moreover, the program *encodes* the state machine as living machine-verified documentation.
 

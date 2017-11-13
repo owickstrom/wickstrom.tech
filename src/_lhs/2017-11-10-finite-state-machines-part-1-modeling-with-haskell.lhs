@@ -3,9 +3,9 @@ state incohesively spread across a bunch of variables, spuriously
 guarded by even more variables, is what I refer to as *implicit
 state*. When working with such code, we have to reconstruct a model
 mentally, identifying possible states and transitions between them, to
-modify the program with any certainty. That process is tedious and
-error-prone, and I insist we should have our tools do the heavy
-lifting instead.
+modify the program with confidence. Even if a test suite can help, the
+process is tedious and error-prone, and I insist we should have our
+tools do the heavy lifting instead.
 
 By teaching the type system about possible states and state
 transitions in our program, it can verify that we follow our own
