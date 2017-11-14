@@ -17,7 +17,7 @@ By teaching the type system about possible states and state transitions in our p
 
 After having given my talk at Code Mesh on this topic, and having spent a lot of time researching and preparing examples, I want to share the material in the form of a blog post series. Each post will cover increasingly advanced techniques that give greater static safety guarantees. That is not to say that the latter techniques are inherently better, nor that they are the ones that you should use. This series is meant as a small à la carte of event-driven state machine encodings and type safety, where you can choose from the menu based on your taste and budget. I will, however, present the techniques in a linear form. Also, note that these posts do not claim to exhaust all options for state machine encodings.
 
-There are many trade-offs, including type safety and strictness, implementation complexity, and how language, techinique, and library choices affect your team. Taking one step towards *explicit state*, in an area where it leverages your project in doing so, can be the best choice. You don't have to go nuts with type systems to use explicit states in your program! Furthermore, most mainstream languages today let you encode states as data types in some way.
+There are many trade-offs, including type safety and strictness, implementation complexity, and how language, technique, and library choices affect your team. Taking one step towards *explicit state*, in an area where it leverages your project in doing so, can be the best choice. You don't have to go nuts with type systems to use explicit states in your program! Furthermore, most mainstream languages today let you encode states as data types in some way.
 
 ![Our journey begins in the Valley of Programmer Death, deep in the lands of Implicit State. Follow along for as long as you like, and settle down in a place of your choice.](/assets/fsm-map.png)
 
@@ -28,7 +28,7 @@ Finite-State Machines
 
 First, we should have a clear understanding of what a finite-state machine is. There are many variations and definitions, and I'm sure you, especially if coming from an engineering background, have some relation to state machines.
 
-In general, a finite-state machine can be described as an abstract machine with a finite set of states, being is in one state at a time. *Events* trigger state transitions; that is, the machine changes from being in one state to being in another state. The machine defines a set of legal transitions, often expressed as associations from the current state and an event to another state.
+In general, a finite-state machine can be described as an abstract machine with a finite set of states, being in one state at a time. *Events* trigger state transitions; that is, the machine changes from being in one state to being in another state. The machine defines a set of legal transitions, often expressed as associations from a state and event pair to a state.
 
 For the domains we will be exploring, the [Erlang documentation's definition](http://erlang.org/documentation/doc-4.8.2/doc/design_principles/fsm.html) of a finite-state machine is simple and useful:
 
@@ -102,7 +102,7 @@ data CheckoutEvent
   deriving (Show, Eq)
 ```
 
-We have now translated the diagram to Haskell and data types, and we can implement the state transitions and actions.
+We have now translated the diagram to Haskell data types, and we can implement the state transitions and actions.
 
 A Pure State Reducer Function
 -----------------------------
@@ -231,6 +231,9 @@ Combining these building blocks and running them in GHCi, with a list of events 
     OrderPlaced
 
 Yes, the logging is somewhat verbose, but there we have it; a simplified event-driven state machine using ADTs for states and events. The data types protect us from constructing illegal values, they bring the code closer to our conceptual model, and they make state transitions explicit.
+
+Side Effects and Illegal Transitions
+------------------------------------
 
 This is a great starting point, and as I argued in the introduction of this post, probably the leg on our journey with the highest *return of investment*. It is, however, still possible to implement illegal state transitions! We would not get any compile-time error bringing our attention to such mistakes. Another concern is that the state machine implementation is tightly coupled with IO, making it hard to test.
 

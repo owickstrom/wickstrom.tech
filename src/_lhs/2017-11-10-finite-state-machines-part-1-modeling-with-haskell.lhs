@@ -28,7 +28,7 @@ techniques in a linear form. Also, note that these posts do not claim
 to exhaust all options for state machine encodings.
 
 There are many trade-offs, including type safety and strictness,
-implementation complexity, and how language, techinique, and library
+implementation complexity, and how language, technique, and library
 choices affect your team. Taking one step towards *explicit state*, in
 an area where it leverages your project in doing so, can be the best
 choice. You don't have to go nuts with type systems to use explicit
@@ -55,11 +55,11 @@ you, especially if coming from an engineering background, have some
 relation to state machines.
 
 In general, a finite-state machine can be described as an abstract
-machine with a finite set of states, being is in one state at a time.
+machine with a finite set of states, being in one state at a time.
 *Events* trigger state transitions; that is, the machine changes from
 being in one state to being in another state. The machine defines a
-set of legal transitions, often expressed as associations from the
-current state and an event to another state.
+set of legal transitions, often expressed as associations from a state
+and event pair to a state.
 
 For the domains we will be exploring, the [Erlang documentation's
 definition](http://erlang.org/documentation/doc-4.8.2/doc/design_principles/fsm.html)
@@ -150,8 +150,8 @@ event. The non-nullary constructors carry some data with the event.
 >   | Cancel
 >   deriving (Show, Eq)
 
-We have now translated the diagram to Haskell and data types, and we
-can implement the state transitions and actions.
+We have now translated the diagram to Haskell data types, and we can
+implement the state transitions and actions.
 
 A Pure State Reducer Function
 =============================
@@ -308,6 +308,9 @@ simplified event-driven state machine using ADTs for states and
 events. The data types protect us from constructing illegal values,
 they bring the code closer to our conceptual model, and they make
 state transitions explicit.
+
+Side Effects and Illegal Transitions
+====================================
 
 This is a great starting point, and as I argued in the introduction of
 this post, probably the leg on our journey with the highest *return of

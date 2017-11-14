@@ -47,7 +47,7 @@ body {
 p, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
-  margin-bottom: ($base-line-height * 1rem);
+  margin-bottom: 1em;
 }
 
 
@@ -97,7 +97,7 @@ li {
  */
 h1, h2, h3, h4, h5, h6 {
   line-height: inherit;
-  margin-bottom: ($base-line-height * 1rem);
+  margin: 1.5em 0 .75em;
   font-weight: 600;
 }
 
@@ -136,6 +136,7 @@ blockquote {
   padding-left: $spacing-unit / 2;
   font-size: 125%;
   font-style: italic;
+  margin: 1.25em 0;
 
   > :last-child {
     margin-bottom: 0;
