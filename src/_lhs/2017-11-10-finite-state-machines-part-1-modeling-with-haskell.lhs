@@ -319,12 +319,14 @@ transitions! We would not get any compile-time error bringing our
 attention to such mistakes. Another concern is that the state machine
 implementation is tightly coupled with IO, making it hard to test.
 
-We could factor out the side effects in `checkout` using MTL-style
-typeclasses, free monads, or
+We could factor out the side effects in `checkout` using [MTL-style
+typeclasses or free
+monads](https://ocharles.org.uk/blog/posts/2016-01-26-transformers-free-monads-mtl-laws.html),
+, or perhaps using
 [extensible-effects](https://hackage.haskell.org/package/extensible-effects-1.11.1.0). That
-said, in the next post I will show you a technique to tackle both
-the side effect and testability concerns, using MTL-style abstraction
-of the state machine itself. Stay tuned!
+said, in the next post I will show you a technique to tackle both the
+side effect and testability concerns, using MTL-style abstraction of
+the state machine itself. Stay tuned!
 
 [elm-effects]: https://guide.elm-lang.org/architecture/effects/
 [pux]: http://purescript-pux.org/docs/events/#Effectful_computations
