@@ -1,31 +1,18 @@
 div.home {
   background: $brand-color;
-  height: 100%;
   color: #fff;
   text-align: center;
-
-  display: -webkit-flex;
-  display: flex;
-
-  -webkit-flex-direction: column;
-  flex-direction: column;
-
-  -webkit-align-items: center;
-  align-items: center;
-
-  -webkit-justify-content: center;
-  justify-content: center;
 
   .wrapper {
     padding: $spacing-unit;
   }
 }
 .home .page {
-  font-family: $secondary-font-family;
   max-width: 500px;
   margin: 0 auto;
 
   .site-title {
+    font-family: $secondary-font-family;
     position: absolute;
     text-indent: -9999px;
     font-size: 52px;
@@ -37,13 +24,15 @@ div.home {
   }
 
   .site-description {
-    margin: $spacing-unit auto $spacing-unit*4;
+    font-family: $secondary-font-family;
+    margin: $spacing-unit auto $spacing-unit*2;
     font-size: 150%;
     text-align: justify;
     color: #fff;
   }
 
   .nav {
+    font-family: $secondary-font-family;
     font-size: 125%;
   }
   .nav ul {
@@ -57,10 +46,13 @@ div.home {
 
       &:after {
         color: darken($brand-color, 10%);
-        content: ' | ';
+        border-right: 2px solid darken($brand-color, 10%);
+        padding-right: .5em;
+        margin-right: .5em;
+        content: '';
       }
       &:last-child:after {
-        content: '';
+        border: none;
       }
     }
   }
@@ -75,6 +67,42 @@ div.home {
     }
   }
 
+  .latest-posts {
+    margin: $spacing-unit*2 auto;
+    padding: $spacing-unit 0;
+    border-top: 2px solid darken($brand-color, 10%);
+    border-bottom: 2px solid darken($brand-color, 10%);
+
+    h2 {
+      font-family: $secondary-font-family;
+      margin-top: 0;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    li {
+      margin: 1em 0;
+      text-align: left;
+    }
+
+    time {
+      font-family: $secondary-font-family;
+      font-weight: bold;
+      margin-right: .5em;
+    }
+
+    a {
+      color: #fff;
+    }
+    .draft a {
+      color: red;
+      background: #ffea33;
+    }
+  }
 }
 
 @include media-query($on-very-big-screen) {
