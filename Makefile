@@ -9,7 +9,7 @@ build: $(LHS_TARGETS) $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cd src && bundle exec jekyll build --destination ../target
 
-serve: $(LHS_TARGETS) $(PLANTUML) $(UMLS)
+serve: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cd src && bundle exec jekyll serve --destination ../target --unpublished
 
@@ -37,17 +37,6 @@ generate-music-symbols:
 $(PLANTUML):
 	mkdir -p deps
 	wget http://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O $@
-
-LHS_SOURCES=$(shell find src/_lhs -name '*.lhs')
-LHS_TARGETS=$(LHS_SOURCES:src/_lhs/%.lhs=src/_posts/%.md)
-
-src/_posts/%.md: src/_lhs/%.lhs src/_lhs/%.md
-	cp $(word 2,$^) $@
-	echo "" >> $@
-	pandoc $< -f markdown+lhs -t markdown_github --base-header-level=2 | sed 's/sourceCode/haskell/' >> $@
-
-.PHONY: lhs
-lhs: $(LHS_TARGETS)
 
 src/generated/uml/%.svg: src/_uml/%.uml.txt src/_uml/styles.iuml $(PLANTUML)
 	mkdir -p $(shell dirname $@)
