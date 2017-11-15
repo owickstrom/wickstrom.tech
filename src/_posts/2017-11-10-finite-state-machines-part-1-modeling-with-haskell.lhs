@@ -112,7 +112,7 @@ States and Events as Data Types
 ===============================
 
 As this blog post is written as [a Literate Haskell
-program](https://github.com/owickstrom/func-da-world/blob/master/src/_lhs/2017-11-10-finite-state-machines-part-1-modeling-with-haskell.lhs),
+program](https://github.com/owickstrom/func-da-world/blob/master/src/_posts/2017-11-10-finite-state-machines-part-1-modeling-with-haskell.lhs),
 we begin with the module declaration and imports. We will use `Text`
 instead of `String`, and `NonEmpty` lists. The two modules
 `PaymentProvider` and `Checkout` hide some implementation detail of
