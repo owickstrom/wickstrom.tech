@@ -10,19 +10,60 @@ excerpt: |
   TODO!
 ---
 
+
+In [the first part of this
+series](/finite-state-machines/2017/11/10/finite-state-machines-part-1-modeling-with-haskell.html),
+we left off with having made states explicit using Haskell data
+types. We concluded that state transitions were implicit, and that a
+mistake in implementation, making an erroneous state transition, would
+not be caught by the type system. We also noted that side effects
+performed at state transitions complicated testing of the state
+machine, as we were tied to `IO`.
+
+Before addressing those problems, let's remind ourselves of the
+example state machine diagram. If you haven't read the previous post,
+I recommend you go do that first.
+
 ![](/generated/uml/checkout.svg)
+
+As before, this post is a runnable Literate Haskell program. We begin
+with the language extensions we'll need, along with the module
+declaration.
 
 > {-# LANGUAGE OverloadedStrings          #-}
 > {-# LANGUAGE GADTs                      #-}
 > {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 > {-# LANGUAGE TypeFamilies               #-}
 > module EnforcingLegalStateTransision where
->
+
+Let me quickly explain the GHC language extensions used:
+
+* `OverloadedStrings` converts string literals in Haskell source code
+  to `Text` values, in our case.
+* `GADTs` enables the use of *generalized algebraic data types*, an extension to
+  GHC that lets us specify different type signatures for each constructor in
+  data type. This is useful to parameterize constructors with
+  different types, something we'll use for state data types.
+* We use `GeneralizedNewtypeDeriving` to have our implementation
+  newtype derive instances for `Functor`, `Applicative`, and
+  `MonadIO`. I'll explain this later in this post.
+* `TypeFamilies` extends GHC Haskell with what you can consider
+  type-level functions. We'll use this extension to associate a concrete state
+  data type with our instance of the state machine.
+
+In addition to `Control.Monad.IO.Class`, we import the same modules as
+in the previous post.
+
 > import           Control.Monad.IO.Class
 > import           Data.List.NonEmpty
 > import           Data.Semigroup
 > import qualified Data.Text.IO             as T
->
+
+From the modules specific to the blog post series we import some
+functions and data types. As before, their exact implementations are not
+important. The `Prompt` module provides helpers for retrieving input from
+the terminal.
+
 > import qualified PaymentProvider
 > import           Checkout        ( Card(..)
 >                                  , CartItem(..)
@@ -31,7 +72,14 @@ excerpt: |
 >                                  , calculatePrice
 >                                  , newOrderId
 >                                  )
-> import           Prompt
+> import           Prompt          ( prompt
+>                                  , confirmPrompt
+>                                  )
+
+Enough imports, let's go build our state machine!
+
+The State Machine Protocol
+==========================
 
 > data NoItems
 > data HasItems
