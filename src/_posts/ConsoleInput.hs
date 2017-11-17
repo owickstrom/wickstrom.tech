@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 -- | Utilities for command line prompts and confirmations.
-module Prompt where
+module ConsoleInput where
 
 import           Control.Monad.IO.Class
 import           Data.Semigroup
@@ -13,7 +13,7 @@ prompt t = liftIO $ do
   T.putStrLn t
   T.getLine
 
-confirmPrompt :: MonadIO m => Text -> m Bool
-confirmPrompt t = liftIO $ do
+confirm :: MonadIO m => Text -> m Bool
+confirm t = liftIO $ do
   l <- prompt (t <> " (y/N)")
   return (T.strip l == "y")

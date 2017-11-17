@@ -61,25 +61,50 @@ in the previous post.
 
 From the modules specific to the blog post series we import some
 functions and data types. As before, their exact implementations are not
-important. The `Prompt` module provides helpers for retrieving input from
-the terminal.
+important. The `Prompt` module provides helpers for retrieving text input and
+confirmation from the terminal.
 
 > import qualified PaymentProvider
 > import           Checkout        ( Card(..)
->                                  , CartItem(..)
+>                                  , CartItem
 >                                  , OrderId(..)
 >                                  , mkItem
 >                                  , calculatePrice
 >                                  , newOrderId
 >                                  )
-> import           Prompt          ( prompt
->                                  , confirmPrompt
->                                  )
+> import qualified ConsoleInput
 
 Enough imports, let's go build our state machine!
 
 The State Machine Protocol
 ==========================
+
+In contrast to the the transition function from [Part
+1](http://localhost:4000/finite-state-machines/2017/11/10/finite-state-machines-part-1-modeling-with-haskell.html#finite-state-machines),
+where a single function had the responsibility of deciding which state
+transitions were legal, performing associated side effects on
+transitions, and transitioning to the next state, we will now separate
+the _protocol_ from the _program_. In other words, the set of states,
+and the associated state transitions for certain events, will be
+encoded separately from the implementation of the
+automaton. Conceptually, it still follows the definition we borrowed
+from Erlang:
+
+<blockquote>
+<p>*State(S) &times; Event(E) &rarr; Actions (A), State(S')*</p>
+</blockquote>
+
+In this style, our states are no longer represented by a single data
+type with constructors for each state. Instead, we create an _empty
+data type_ for each state. Such a type has no constructors, and
+therefore is not inhabited by any value. We will use them solely as
+*markers* in GADT constructors, a technique in general known as
+ [phantom types](https://stackoverflow.com/a/28250226).
+
+I know that all this can be scary at first, but please hang in there,
+as I'll explain the practical use of our empty state data types
+throughout this post, and hopefully give you a sense of why we are
+using such techniques.
 
 > data NoItems
 > data HasItems
@@ -119,7 +144,7 @@ The State Machine Protocol
 >   => State m NoItems
 >   -> m (State m HasItems)
 > fillCart noItems =
->   mkItem <$> prompt "First item:"
+>   mkItem <$> ConsoleInput.prompt "First item:"
 >   >>= select (NoItemsSelect noItems)
 >   >>= selectMoreItems
 
@@ -128,10 +153,10 @@ The State Machine Protocol
 >   => State m HasItems
 >   -> m (State m HasItems)
 > selectMoreItems s = do
->   more <- confirmPrompt "More items?"
+>   more <- ConsoleInput.confirm "More items?"
 >   if more
 >     then
->       mkItem <$> prompt "Next item:"
+>       mkItem <$> ConsoleInput.prompt "Next item:"
 >       >>= select (HasItemsSelect s)
 >       >>= selectMoreItems
 >     else return s
@@ -142,9 +167,9 @@ The State Machine Protocol
 >   -> m (State m OrderPlaced)
 > startCheckout hasItems = do
 >   noCard <- checkout hasItems
->   card <- prompt "Card:"
+>   card <- ConsoleInput.prompt "Card:"
 >   cardSelected <- selectCard noCard (Card card)
->   useCard <- confirmPrompt ("Confirm use of '" <> card <> "'?")
+>   useCard <- ConsoleInput.confirm ("Confirm use of '" <> card <> "'?")
 >   if useCard
 >     then confirm cardSelected >>= placeOrder
 >     else cancel (CardSelectedCancel cardSelected) >>=
