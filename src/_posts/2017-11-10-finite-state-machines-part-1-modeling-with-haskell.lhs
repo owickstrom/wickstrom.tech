@@ -335,7 +335,7 @@ attention to such mistakes. Another concern is that the state machine
 implementation is tightly coupled with IO, making it hard to test.
 
 We could factor out the side effects in `checkout` using [MTL-style
-typeclasses or free
+type classes or free
 monads](https://ocharles.org.uk/blog/posts/2016-01-26-transformers-free-monads-mtl-laws.html),
 , or perhaps using
 [extensible-effects](https://hackage.haskell.org/package/extensible-effects-1.11.1.0). That

@@ -61,8 +61,8 @@ in the previous post.
 
 From the modules specific to the blog post series we import some
 functions and data types. As before, their exact implementations are not
-important. The `Prompt` module provides helpers for retrieving text input and
-confirmation from the terminal.
+important. The `ConsoleInput` module provides helpers for retrieving
+text input and confirmation from the terminal.
 
 > import qualified PaymentProvider
 > import           Checkout        ( Card(..)
@@ -79,8 +79,8 @@ Enough imports, let's go build our state machine!
 The State Machine Protocol
 ==========================
 
-In contrast to the the transition function from [Part
-1](http://localhost:4000/finite-state-machines/2017/11/10/finite-state-machines-part-1-modeling-with-haskell.html#finite-state-machines),
+In contrast to the transition function in [the previous
+post](http://localhost:4000/finite-state-machines/2017/11/10/finite-state-machines-part-1-modeling-with-haskell.html#finite-state-machines),
 where a single function had the responsibility of deciding which state
 transitions were legal, performing associated side effects on
 transitions, and transitioning to the next state, we will now separate
@@ -94,17 +94,21 @@ from Erlang:
 <p>*State(S) &times; Event(E) &rarr; Actions (A), State(S')*</p>
 </blockquote>
 
-In this style, our states are no longer represented by a single data
-type with constructors for each state. Instead, we create an _empty
-data type_ for each state. Such a type has no constructors, and
-therefore is not inhabited by any value. We will use them solely as
-*markers* in GADT constructors, a technique in general known as
- [phantom types](https://stackoverflow.com/a/28250226).
+With the risk of stretching a metaphor too thin, I like to think of
+the split representation as taking the single-function approach and
+turning it inside-out. Our program is separate from our state machine
+protocol, and we can implement it however we like, as long as we
+follow the protocol.
 
-I know that all this can be scary at first, but please hang in there,
-as I'll explain the practical use of our empty state data types
-throughout this post, and hopefully give you a sense of why we are
-using such techniques.
+Empty Data Types for States
+---------------------------
+
+Our states are no longer represented by a single data type with
+constructors for each state. Instead, we create an _empty data type_
+for each state. Such a type has no constructors, and is therefore not
+inhabited by any value. We will use them solely as *markers* in GADT
+constructors, a technique in general known as [phantom
+types](https://stackoverflow.com/a/28250226).
 
 > data NoItems
 > data HasItems
@@ -112,6 +116,106 @@ using such techniques.
 > data CardSelected
 > data CardConfirmed
 > data OrderPlaced
+
+I know that phantom types and GADTs sound scary at first, but please
+hang in there, as I'll explain their practical use throughout this
+post, and hopefully give you a sense of why we are using them.
+
+State Machine Protocol as a Type Class
+--------------------------------------
+
+We encode our state machine protocol, separate from the program, using
+a *type class*.
+
+> class Checkout m where
+
+In our protocol, we do not want to be specific about what data
+type is used to represent the current state; we only care about the
+state type it is parameterized by. Therefore we use an associated type
+alias, also known as an open type family, with kind `* -> *` to
+represent states.
+
+>   type State m :: * -> *
+
+The signature `* -> *` can be thought of as a type-level function, or
+a type constructor, from type to type (the star is the kind of types).
+The parameter `m` to state means we are associating the state type
+with the instance of `m`, so that different instances can specify
+their own concrete state types.
+
+In our case, the parameter will always be one of our empty data types
+declared for states. As an example, `(State m NoItems)` has kind `*`,
+and is used to represent the "NoItems" state abstractly.
+
+Note that `m` *also* has kind `* -> *`, but not for the same reason;
+the `m` is going to be the monadic type we use for our implementation,
+and is therefore *higher-kinded* as well.
+
+Events as Type Class Methods
+----------------------------
+
+`Checkout` specifies the state machine events as type class *methods*,
+where method type signatures describe state transitions. The `initial`
+method creates a new checkout, returning a "NoItems" state.
+
+>   initial
+>     :: m (State m NoItems)
+
+The value returned, of type `(State m NoItems)`, is the first state.
+We use this value as a parameter to the subsequent event,
+transitioning to another state. Events that transition state from one
+to another take the current state as an argument, and return the
+resulting state.
+
+The `select` event is a bit tricky, as it accepted from both "NoItems"
+and "HasItems". We use the union data type `SelectState`, analogous to
+`Either`, that represents the possibility of either "NoItems" or
+"HasItems". The definition of `SelectState` is included further down
+this post.
+
+>   select
+>     :: SelectState m
+>     -> CartItem
+>     -> m (State m HasItems)
+
+The `checkout` event is simpler than `select`, as it transitions from
+exactly one state to another.
+
+Worth noting is that the resulting state is returned inside `m`. We do
+that to enable the instance of `Checkout` to perform computations
+available in `m` at the state transition.
+
+Does this ring a bell? If so, *then you are awake!*
+
+Just as in the previous post, we want the possibility to interleave
+side effects on state transitions, and using a monadic return value
+gives the instance that flexibility.
+
+>   checkout
+>     :: State m HasItems
+>     -> m (State m NoCard)
+>
+>   selectCard
+>     :: State m NoCard
+>     -> Card
+>     -> m (State m CardSelected)
+>
+>   confirm
+>      :: State m CardSelected
+>      -> m (State m CardConfirmed)
+>
+>   placeOrder
+>     :: State m CardConfirmed
+>     -> m (State m OrderPlaced)
+>
+>   cancel
+>     :: CancelState m
+>     -> m (State m HasItems)
+>
+>   end
+>     :: State m OrderPlaced
+>     -> m OrderId
+
 
 > data SelectState m
 >   = NoItemsSelect (State m NoItems)
@@ -122,22 +226,6 @@ using such techniques.
 >   | CardSelectedCancel (State m CardSelected)
 >   | CardConfirmedCancel (State m CardConfirmed)
 
-> class Checkout m where
->   type State m :: * -> *
->   initial :: m (State m NoItems)
->   select ::
->        SelectState m
->     -> CartItem
->     -> m (State m HasItems)
->   checkout :: State m HasItems -> m (State m NoCard)
->   selectCard ::
->        State m NoCard -> Card -> m (State m CardSelected)
->   confirm ::
->        State m CardSelected -> m (State m CardConfirmed)
->   placeOrder ::
->        State m CardConfirmed -> m (State m OrderPlaced)
->   cancel :: CancelState m -> m (State m HasItems)
->   end :: State m OrderPlaced -> m OrderId
 
 > fillCart ::
 >      (Checkout m, MonadIO m)
@@ -260,9 +348,9 @@ Next item:
 More items? (y/N)
 <strong>n</strong>
 Card:
-<strong>1290312093213</strong>
-Confirm use of '1290312093213'? (y/N)
+<strong>0000-0000-0000-0000</strong>
+Confirm use of '0000-0000-0000-0000'? (y/N)
 <strong>y</strong>
-Charging card 1290312093213 $200
+Charging card 0000-0000-0000-0000 $200
 Completed with order ID: foo
 </pre>

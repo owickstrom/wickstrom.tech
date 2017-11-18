@@ -4,13 +4,14 @@ PLANTUML=deps/plantuml.jar
 UML_SRCS=$(shell find src/_uml -name '*.uml.txt')
 UMLS=$(UML_SRCS:src/_uml/%.uml.txt=src/generated/uml/%.svg)
 
-
-build: $(LHS_TARGETS) $(PLANTUML) $(UMLS)
+build: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
+	stack build --fast
 	cd src && bundle exec jekyll build --destination ../target
 
 serve: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
+	stack build --fast
 	cd src && bundle exec jekyll serve --destination ../target --unpublished
 
 deploy: build
