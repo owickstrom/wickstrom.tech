@@ -156,7 +156,8 @@ Events as Type Class Methods
 
 `Checkout` specifies the state machine events as type class *methods*,
 where method type signatures describe state transitions. The `initial`
-method creates a new checkout, returning a "NoItems" state.
+method creates a new checkout, returning a "NoItems" state. It can be
+thought of as a *constructor*, in object-oriented programming terms.
 
 >   initial
 >     :: m (State m NoItems)
@@ -185,11 +186,15 @@ Worth noting is that the resulting state is returned inside `m`. We do
 that to enable the instance of `Checkout` to perform computations
 available in `m` at the state transition.
 
-Does this ring a bell? If so, *then you are awake!*
+*Does this ring a bell?*
 
 Just as in the previous post, we want the possibility to interleave
 side effects on state transitions, and using a monadic return value
 gives the instance that flexibility.
+
+Some events, like `selectCard`, carry data in the form of arguments,
+corresponding to how some event data constructors had arguments. Most
+of the events in `Checkout` follow the patterns described so far.
 
 >   checkout
 >     :: State m HasItems
@@ -207,15 +212,28 @@ gives the instance that flexibility.
 >   placeOrder
 >     :: State m CardConfirmed
 >     -> m (State m OrderPlaced)
->
+
+Similarly to `select`, the `cancel` event is accepted from more than
+one state. In fact, it is accepted from *three* states: "NoCard",
+"CardSelected", and "CardConfirmed". Like with `select`, we use a
+union data type representating the ternary alternative.
+
 >   cancel
 >     :: CancelState m
 >     -> m (State m HasItems)
->
+
+Finally, we have the `end` method as a way of ending the state machine
+in its terminal state, similar to a *destructor* in object-oriented
+programming terms. Instances of `Checkout` can have `end` clean up
+resources associated with the machine.
+
 >   end
 >     :: State m OrderPlaced
 >     -> m OrderId
 
+As promised, I will show you the definitions of `SelectState` and
+`CancelState`, the data types that represent alterative source states
+for the `select` and `cancel` events, respectively.
 
 > data SelectState m
 >   = NoItemsSelect (State m NoItems)
@@ -226,6 +244,11 @@ gives the instance that flexibility.
 >   | CardSelectedCancel (State m CardSelected)
 >   | CardConfirmedCancel (State m CardConfirmed)
 
+Each constructor takes a specific state as argument, thus creating a
+union type wrapping the alternatives.
+
+A Program using the State Machine Protocol
+==========================================
 
 > fillCart ::
 >      (Checkout m, MonadIO m)
