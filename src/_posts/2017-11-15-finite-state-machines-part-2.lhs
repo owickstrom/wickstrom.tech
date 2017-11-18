@@ -250,14 +250,63 @@ union type wrapping the alternatives.
 A Program using the State Machine Protocol
 ==========================================
 
+Now that we have a state machine protocol, the `Checkout` type class,
+we can write a program with it. This is the automaton part of our
+implementation, i.e. the part that *drives* the state machine forward.
+
+As long as the program follows the protocol, it can be structured
+however we like; we can drive it using user input from a console, by
+listening to a queue of commands, or by incoming HTTP requests from a
+web server. In the interest of this post, however, we will keep to
+reading user input from the console.
+
+The type signature of `fillCart` constrains `m` to be an instance of
+both `Checkout` and `MonadIO`. Moreover, it is a function from a
+"NoItems" state to a "HasItems" state. The type is similiar to the
+event methods' type signatures in the `Checkout` protocol, and
+similarly describes a state transition with a type.
+
 > fillCart ::
 >      (Checkout m, MonadIO m)
 >   => State m NoItems
 >   -> m (State m HasItems)
+
+This is where we are starting to use the [MTL
+style](https://ocharles.org.uk/blog/posts/2016-01-26-transformers-free-monads-mtl-laws.html)
+of abstracting effects, and combining different effects by
+constraining the monadic type with multiple type classes.
+
+The critical reader might object to using `MonadIO`, and claim that we
+have not separated all side effects, and failed in making the program
+testable. They wouldn't be wrong. I have deliberately kept the direct
+use of `MonadIO` to keep the example somewhat concrete. We could
+refactor it to depend on, say, a `UserInput` type class for collecting
+more abtract user commands. By using `MonadIO`, though, the example
+highlights particularly how the state machine protocol has been
+abstracted, and how the effects of state transitions are guarded by
+the type system, rather than making everything abstract. I encourage
+you to try out both approaches in your code!
+
+The definition of `fillCart` takes a "NoItems" state value as an
+argument, prompts the user for the first cart item, selects it, and
+hands off to `selectMoreItems`.
+
 > fillCart noItems =
 >   mkItem <$> ConsoleInput.prompt "First item:"
 >   >>= select (NoItemsSelect noItems)
 >   >>= selectMoreItems
+
+The event methods of the `Checkout` protocol,
+and functions like `fillCart` and `selectMoreItems`, are functions
+from one state to a monadic return value of another state, and thus
+compose using `(>>=)`.
+
+The `selectMoreItems` function remains in a "HasItems" state. It asks
+the user if they want to add more items. If so, it asks for the next
+item, selects that and recurses to possibly add even more items; if
+not, it returns the current "HasItems" state. Note how we need to wrap
+the "HasItems" state in `HasItemsSelect` to create a `SelectState`
+value.
 
 > selectMoreItems ::
 >      (Checkout m, MonadIO m)
@@ -272,10 +321,21 @@ A Program using the State Machine Protocol
 >       >>= selectMoreItems
 >     else return s
 
+When all items have been added, we are ready to start the checkout
+part. The type signature of `startCheckout` tells us that is
+transitions from a "HasItems" state to an "OrderPlaced" state.
+
 > startCheckout ::
 >      (Checkout m, MonadIO m)
 >   => State m HasItems
 >   -> m (State m OrderPlaced)
+
+The function starts the checkout, prompts for a card, and selects
+it. It asks the user to confirm the use of the selected card, and ends
+by placing the order. If the user did not confirm, the checkout is
+cancelled, and we go back to selecting more items, followed by
+attempting a new checkout.
+
 > startCheckout hasItems = do
 >   noCard <- checkout hasItems
 >   card <- ConsoleInput.prompt "Card:"
@@ -287,11 +347,27 @@ A Program using the State Machine Protocol
 >          selectMoreItems >>=
 >          startCheckout
 
+Note that the protocol allows for cancellation in all three checkout
+states, but that the program only gives the user a possibility to
+cancel in the end of the process. Again, the program must follow the
+rules of the protocol, but it is not required to trigger all events
+the protocol allows for.
+
+The definition of `checkoutProgram` is a composition of what we have
+so far. It creates the state machine in its initial state, fills the
+shopping cart, starts the checkout, and eventually ends the checkout.
+
 > checkoutProgram ::
 >      (Checkout m, MonadIO m)
 >   => m OrderId
 > checkoutProgram =
 >   initial >>= fillCart >>= startCheckout >>= end
+
+We now have a complete, albeit simple, program using the `Checkout`
+state machine protocol. All we need now is an instance of `Checkout`.
+
+Defining an Instance for Checkout
+=================================
 
 > newtype CheckoutT m a = CheckoutT
 >   { runCheckoutT :: m a
@@ -350,6 +426,9 @@ A Program using the State Machine Protocol
 >       CardConfirmedCancel (CardConfirmed items _) ->
 >         return (HasItems items)
 >   end (OrderPlaced orderId) = return orderId
+
+Putting the Pieces Together
+===========================
 
 > example :: IO ()
 > example = do
