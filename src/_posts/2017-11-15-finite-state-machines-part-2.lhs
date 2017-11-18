@@ -143,6 +143,16 @@ The parameter `m` to state means we are associating the state type
 with the instance of `m`, so that different instances can specify
 their own concrete state types.
 
+There are two benefits of using an associated type for state:
+
+1. Different instances of `Checkout` can provide different concrete
+  state data types, hiding whatever nasty implementation details they
+  need to operate, such as database connections, web sessions, or file
+  handles.
+2. The concrete state type is not known when using the state machine
+  protocol, and it is therefore impossible to create a state
+  "manually"; the program would not typecheck.
+
 In our case, the parameter will always be one of our empty data types
 declared for states. As an example, `(State m NoItems)` has kind `*`,
 and is used to represent the "NoItems" state abstractly.
@@ -363,24 +373,88 @@ shopping cart, starts the checkout, and eventually ends the checkout.
 > checkoutProgram =
 >   initial >>= fillCart >>= startCheckout >>= end
 
-We now have a complete, albeit simple, program using the `Checkout`
-state machine protocol. All we need now is an instance of `Checkout`.
+We now have a complete program using the `Checkout` state machine
+protocol. To run it, however, we need an instance of `Checkout`.
 
 Defining an Instance for Checkout
 =================================
 
+To define an instance for `Checkout`, we need a type to define it
+for. A common way of defining such types, especially in MTL style, is
+using `newtype` around a monadic value. The type name often ends with
+`T` to denote that it's a transformer. Also by convention, the
+constructor takes a single-field record, where the field accessor
+follows the naming scheme `run<TypeName>`; in our case `runCheckoutT`.
+
 > newtype CheckoutT m a = CheckoutT
 >   { runCheckoutT :: m a
->   } deriving ( Monad
->              , Functor
+>   } deriving ( Functor
+>              , Monad
 >              , Applicative
 >              , MonadIO
 >              )
 
+Note that we derive the `MonadIO` instance automatically, along with
+the standard `Functor`, `Applicative`, and `Monad` hierarchy.
+
+Monad Transformer Stacks and Instance Coupling
+----------------------------------------------
+
+Had we not derived `MonadIO`, the program from before, with
+constraints on both `Checkout` and `MonadIO`, would not have
+compiled. Therein lies a subtle dependency that is hard to see at
+first, but that might cause you a lot of headache. Data types used to
+instantiate MTL style type classes, when stacked, need to implement
+all type classes in use. This is caused by the *stacking* aspect of
+monad transformers, and is a common critique of MTL style.
+
+Other techniques for separating side effects, such as free monads or
+extensible effects, have other tradeoffs. I have chosen to focus on
+MTL style as it is widely used, and in my opinion, a decent starting
+point. If anyone choses to rewrite these examples using another
+technique, please drop a comment!
+
+A Concrete State Data Type
+--------------------------
+
+Remember how we have, so far, only been talking about state values
+abstractly, in terms of the associated type alias `State` in the
+`Checkout` class? It is time to provide the concrete data type for
+state that we will use in our instance.
+
+As discussed earlier, the type we associate for `State` need to have
+kind `(* -> *)`. The argument is the state marker type, i.e. one of the
+empty data types for states. We define the data type `CheckoutState`
+using a GADT, where `s` is the state type.
+
 > data CheckoutState s where
+
+With `GADTs`, data constructors specify their own type signatures,
+allowing the use of phantom types, and differently typed values
+resulting from the constructors. Each constructor parameterize the
+`CheckoutState` with a different state type.
+
+The `NoItems` constructor is nullary, and constructs a value of type
+`CheckoutState NoItems`.
+
 >   NoItems
 >     :: CheckoutState NoItems
->
+
+Note that the constructor `NoItems` is defined here, that the type
+`NoItems` is defined in the beginning of the program, and they are not
+directly related.
+
+There is, however, a relation between them in terms of the
+`CheckoutState` data type. If we have a value of type `CheckoutState
+NoItems`, and we pattern match on it, GHC knows that there is only one
+constructor for such a value. This will become very handy when
+defining our instance.
+
+The other constructors are defined similarly, but some have arguments,
+in the same way the `State` data type for the previous post had. They
+accumulate the extended state needed by the state machine, up until
+the order is placed.
+
 >   HasItems
 >     :: NonEmpty CartItem -> CheckoutState HasItems
 >
@@ -397,43 +471,101 @@ Defining an Instance for Checkout
 >     -> Card
 >     -> CheckoutState CardConfirmed
 >
->   OrderPlaced :: OrderId -> CheckoutState OrderPlaced
+>   OrderPlaced
+>     :: OrderId -> CheckoutState OrderPlaced
+
+We have a concrete state data type, defined as a GADT, and we can go
+ahead defining the instance of `Checkout` for our `CheckoutT` newtype.
+We need `MonadIO` to perform `IO` on state transisions, such as
+charging the customer card.
 
 > instance (MonadIO m) => Checkout (CheckoutT m) where
+
+Next, we can finally tie the knot, associating the state type for
+`CheckoutT` with `CheckoutState`.
+
 >   type State (CheckoutT m) = CheckoutState
+
+We continue by definining the methods. The `initial` method creates
+the state machine by returning the initial state, the `NoItems`
+constructor.
+
 >   initial = return NoItems
+
+In `select`, we receive the current state, which can be either one
+of the constructors of `SelectState`. Unwrapping those gives us the
+`CheckoutState` value. We return the `HasItems` state with the selected
+item prepended to a non-empty list.
+
 >   select state item =
 >     case state of
 >       NoItemsSelect NoItems ->
 >         return (HasItems (item :| []))
 >       HasItemsSelect (HasItems items) ->
 >         return (HasItems (item <| items))
->   checkout (HasItems items) = return (NoCard items)
+
+As emphasized in the beginning of this post, GHC knows which
+constructors of `CheckoutState` can occur in the `SelectState`
+wrappers, and we can pattern match exhaustively on only the possible
+state constructors.
+
+The `checkout`, `selectCard`, and `confirm` methods accumulate the
+extended state, and returns the appropriate state constructor.
+
+>   checkout (HasItems items) =
+>     return (NoCard items)
 >   selectCard (NoCard items) card =
 >     return (CardSelected items card)
 >   confirm (CardSelected items card) =
 >     return (CardConfirmed items card)
+
+Now for `placeOrder`, where we want to perform a side effect. We have
+constrained `m` to be an instance of `MonadIO`, and we can thus use
+the effectful `newOrderId` and `PaymentProvider.chargeCard` in our
+definition.
+
 >   placeOrder (CardConfirmed items card) = do
 >     orderId <- newOrderId
 >     let price = calculatePrice items
 >     PaymentProvider.chargeCard card price
 >     return (OrderPlaced orderId)
+
+Similarly to `select`, `cancel` switches on the alternatives of the
+`CancelState` data type. In all cases it returns the `HasItems` state
+with the current list of items.
+
 >   cancel cancelState =
 >     case cancelState of
->       NoCardCancel (NoCard items) -> return (HasItems items)
+>       NoCardCancel (NoCard items) ->
+>         return (HasItems items)
 >       CardSelectedCancel (CardSelected items _) ->
 >         return (HasItems items)
 >       CardConfirmedCancel (CardConfirmed items _) ->
 >         return (HasItems items)
+
+Finally, the definition of `end` returns the generated order
+identifier.
+
 >   end (OrderPlaced orderId) = return orderId
+
+The instance `CheckoutT` instance of `Checkout` is complete, and we
+are ready to stitch everything together into a running program.
 
 Putting the Pieces Together
 ===========================
+
+To run `checkoutProgram`, we need an instance of `Checkout`, and an
+instance of `MonadIO`. There is already an instance `MonadIO IO`. To
+select our `CheckoutT` instance for `Checkout`, we use `runCheckoutT`.
 
 > example :: IO ()
 > example = do
 >   OrderId orderId <- runCheckoutT checkoutProgram
 >   T.putStrLn ("Completed with order ID: " <> orderId)
+
+The complete checkout program is run, using the `CheckoutT` instance,
+and an `OrderId` is returned, which we print at the end. A sample
+execution of this program could look like this:
 
 <pre>
 λ> <strong>example</strong>
@@ -456,3 +588,18 @@ Confirm use of '0000-0000-0000-0000'? (y/N)
 Charging card 0000-0000-0000-0000 $200
 Completed with order ID: foo
 </pre>
+
+Cool, we have a console implementation running!
+
+Parting Thoughts
+================
+
+Using a sort of *extended MTL style*, with conventions for state
+machine encodings, enable more type safety in terms of state
+transitions. In addition to have turned our state machine program
+*inside-out*, into a protocol separated from the automaton, we have
+guarded side effects with types in the form of type class methods.
+Abstract state values, impossible to create outside the instance, are
+now passed explicitly in state transitions.
+
+But we still have a rather loud elephant in the room.
