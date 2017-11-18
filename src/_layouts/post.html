@@ -17,6 +17,7 @@ layout: default
           <span class="category">
             <a href="{{ site.baseurl }}/{{ category }}">{{category | replace: '-', ' ' | capitalize_all }}</a>
           </span>
+          {% include read_time.html %}
           {% endif %}
         </p>
       </header>
