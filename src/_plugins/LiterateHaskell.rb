@@ -14,7 +14,7 @@ module Jekyll
     end
 
     def convert(content)
-      stdout, stderr, status = Open3.capture3("pandoc -f markdown+lhs -t html5 --base-header-level=2", :stdin_data => content)
+      stdout, stderr, status = Open3.capture3("pandoc -f markdown+lhs -t html5 --smart --base-header-level=2", :stdin_data => content)
       raise "Failed to convert Literate Haskell source file to HTML: " + stderr unless status == 0
       stdout
     end

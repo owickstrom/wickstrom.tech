@@ -7,18 +7,21 @@ categories: finite-state-machines
 tags: ["haskell", "functional", "type-systems"]
 published: false
 excerpt: |
-  TODO!
+  In the second post of the Finite-State Machines series, we improve
+  type safety around state transitions and their side effects, and
+  make testing state machines without side effects easier, using an
+  extended MTL style encoding.
 ---
 
 
 In [the first part of this
 series](/finite-state-machines/2017/11/10/finite-state-machines-part-1-modeling-with-haskell.html),
-we left off with having made states explicit using Haskell data
-types. We concluded that state transitions were implicit, and that a
-mistake in implementation, making an erroneous state transition, would
-not be caught by the type system. We also noted that side effects
-performed at state transitions complicated testing of the state
-machine, as we were tied to `IO`.
+we left off having made states explicit using Haskell data types. We
+concluded that state transitions were implicit, and that a mistake in
+implementation, making an erroneous state transition, would not be
+caught by the type system. We also noted that side effects performed
+at state transitions complicated testing of the state machine, as we
+were tied to `IO`.
 
 Before addressing those problems, let's remind ourselves of the
 example state machine diagram. If you haven't read the previous post,
@@ -131,7 +134,7 @@ a *type class*.
 
 In our protocol, we do not want to be specific about what data
 type is used to represent the current state; we only care about the
-state type it is parameterized by. Therefore we use an associated type
+state type it is parameterized by. Therefore, we use an associated type
 alias, also known as an open type family, with kind `* -> *` to
 represent states.
 
@@ -159,7 +162,7 @@ and is used to represent the "NoItems" state abstractly.
 
 Note that `m` *also* has kind `* -> *`, but not for the same reason;
 the `m` is going to be the monadic type we use for our implementation,
-and is therefore *higher-kinded* as well.
+and is therefore higher-kinded.
 
 Events as Type Class Methods
 ----------------------------
@@ -223,7 +226,7 @@ of the events in `Checkout` follow the patterns described so far.
 >     :: State m CardConfirmed
 >     -> m (State m OrderPlaced)
 
-Similarly to `select`, the `cancel` event is accepted from more than
+Similar to `select`, the `cancel` event is accepted from more than
 one state. In fact, it is accepted from *three* states: "NoCard",
 "CardSelected", and "CardConfirmed". Like with `select`, we use a
 union data type representating the ternary alternative.
@@ -242,7 +245,7 @@ resources associated with the machine.
 >     -> m OrderId
 
 As promised, I will show you the definitions of `SelectState` and
-`CancelState`, the data types that represent alterative source states
+`CancelState`, the data types that represent alternative source states
 for the `select` and `cancel` events, respectively.
 
 > data SelectState m
@@ -272,7 +275,7 @@ reading user input from the console.
 
 The type signature of `fillCart` constrains `m` to be an instance of
 both `Checkout` and `MonadIO`. Moreover, it is a function from a
-"NoItems" state to a "HasItems" state. The type is similiar to the
+"NoItems" state to a "HasItems" state. The type is similar to the
 event methods' type signatures in the `Checkout` protocol, and
 similarly describes a state transition with a type.
 
@@ -291,7 +294,7 @@ have not separated all side effects, and failed in making the program
 testable. They wouldn't be wrong. I have deliberately kept the direct
 use of `MonadIO` to keep the example somewhat concrete. We could
 refactor it to depend on, say, a `UserInput` type class for collecting
-more abtract user commands. By using `MonadIO`, though, the example
+more abstract user commands. By using `MonadIO`, though, the example
 highlights particularly how the state machine protocol has been
 abstracted, and how the effects of state transitions are guarded by
 the type system, rather than making everything abstract. I encourage
@@ -343,7 +346,7 @@ transitions from a "HasItems" state to an "OrderPlaced" state.
 The function starts the checkout, prompts for a card, and selects
 it. It asks the user to confirm the use of the selected card, and ends
 by placing the order. If the user did not confirm, the checkout is
-cancelled, and we go back to selecting more items, followed by
+canceled, and we go back to selecting more items, followed by
 attempting a new checkout.
 
 > startCheckout hasItems = do
@@ -411,8 +414,8 @@ monad transformers, and is a common critique of MTL style.
 Other techniques for separating side effects, such as free monads or
 extensible effects, have other tradeoffs. I have chosen to focus on
 MTL style as it is widely used, and in my opinion, a decent starting
-point. If anyone choses to rewrite these examples using another
-technique, please drop a comment!
+point. If anyone rewrites these examples using another technique,
+please drop a comment!
 
 A Concrete State Data Type
 --------------------------
@@ -476,7 +479,7 @@ the order is placed.
 
 We have a concrete state data type, defined as a GADT, and we can go
 ahead defining the instance of `Checkout` for our `CheckoutT` newtype.
-We need `MonadIO` to perform `IO` on state transisions, such as
+We need `MonadIO` to perform `IO` on state transitions, such as
 charging the customer card.
 
 > instance (MonadIO m) => Checkout (CheckoutT m) where
@@ -486,7 +489,7 @@ Next, we can finally tie the knot, associating the state type for
 
 >   type State (CheckoutT m) = CheckoutState
 
-We continue by definining the methods. The `initial` method creates
+We continue by defining the methods. The `initial` method creates
 the state machine by returning the initial state, the `NoItems`
 constructor.
 
@@ -530,7 +533,7 @@ definition.
 >     PaymentProvider.chargeCard card price
 >     return (OrderPlaced orderId)
 
-Similarly to `select`, `cancel` switches on the alternatives of the
+Similar to `select`, `cancel` switches on the alternatives of the
 `CancelState` data type. In all cases it returns the `HasItems` state
 with the current list of items.
 
@@ -591,15 +594,81 @@ Completed with order ID: foo
 
 Cool, we have a console implementation running!
 
+Instances Without Side Effects
+------------------------------
+
+A benefit of using MTL style, in addition to have effects explicit, is
+that we can write alternative instances. We might write an instance
+that only logs the effects, using a `Writer` monad transformer,
+collecting them as pure values in a list, and use that instance when
+testing the state machine.
+
 Parting Thoughts
 ================
 
 Using a sort of *extended MTL style*, with conventions for state
-machine encodings, enable more type safety in terms of state
-transitions. In addition to have turned our state machine program
+machine encodings, enables more type safety in terms of state
+transitions. In addition to having turned our state machine program
 *inside-out*, into a protocol separated from the automaton, we have
 guarded side effects with types in the form of type class methods.
 Abstract state values, impossible to create outside the instance, are
 now passed explicitly in state transitions.
 
 But we still have a rather loud elephant in the room.
+
+Suppose I'd write the following function, wherein I place the order
+*twice*. Do you think it would typecheck?
+
+```{.haskell}
+doBadThings ::
+     (Checkout m, MonadIO m)
+  => State m CardConfirmed
+  -> m (State m OrderPlaced)
+doBadThings cardConfirmed = do
+  _ <- placeOrder cardConfirmed
+  placeOrder cardConfirmed
+```
+
+The answer is yes, it would typecheck. With the `Checkout` instance we
+have, the customer's card would be *charged twice*, without doubt
+departing from our business model, and likely hurting our brand.
+
+The problem is that we are allowed to discard the state transitioned
+to, a value of type `(State m OrderPlaced)`, returned by the first
+`placeOrder` expression. Then, we can place the order again, using the
+old state value of type `(State m CardConfirmed)`. The ability to
+reuse, or never use, state values is the *Achilles' heel* of this
+post's state machine encoding.
+
+We could venture into the land of *linear types*, a feature [recently
+proposed to be added to
+GHC](https://github.com/ghc-proposals/ghc-proposals/pull/91/files). With
+linear types, we could ensure state values are used *exactly once*,
+making our current approach safer.
+
+I'd like to step back for a moment, however, and remind you that the
+techniques we encounter along this journey are not ordered as
+increasingly "better", in terms of what you should apply in your
+work. I show more and more advanced encodings, using various GHC
+language extensions, but it doesn't mean you should necessarily use
+the most advanced one. Simplicity is powerful, something [Tim
+Humphries tweet thread reminded me about this
+morning](https://twitter.com/thumphriees/status/932137942222385153),
+and I recommend you start out simple.
+
+As demonstrated, the extended MTL style for encoding state machines
+presented in this post has a type safety flaw. That doesn't mean the
+technique is useless and should be forever rejected. At least not in
+my opinion. It gives additional type safety around state transitions,
+it composes well with MTL style programs in general, and it uses a
+modest amount of type system features and language extensions. We can
+write alternative instances, without any IO, and use them to test our
+state machines programs in a pure setting.
+
+If you still feel that all hope is lost, then I'm happy to announce
+that there will be more posts coming in this series! To demonstrate a
+possible next step, in terms of even greater type safety, in the next
+post we will be exploring *indexed monads* and *row kinds* as a way of
+armoring the Achilles heel.
+
+Happy hacking!

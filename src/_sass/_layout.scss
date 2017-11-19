@@ -159,6 +159,13 @@ body {
   }
 }
 
+.follow-twitter {
+  text-align: center;
+  font-style: italic;
+  max-width: 500px;
+  margin: 1.5em auto;
+}
+
 .post-comments {
   padding: 0 0 $spacing-unit;
 }
@@ -184,9 +191,12 @@ body {
  * Site footer
  */
 .site-footer {
-  margin-top: $spacing-unit;
+  margin-top: $spacing-unit*2;
+  padding: $spacing-unit;
   text-align: center;
   font-size: $small-font-size;
+  background: #eee;
+  color: #666;
 }
 
 /**
