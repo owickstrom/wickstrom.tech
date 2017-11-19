@@ -5,7 +5,6 @@ date: 2017-11-19 06:00 +01:00
 author: Oskar Wickström
 categories: finite-state-machines
 tags: ["haskell", "functional", "type-systems"]
-published: false
 excerpt: |
   In the second post of the Finite-State Machines series, we improve
   type safety around state transitions and their side effects, and
