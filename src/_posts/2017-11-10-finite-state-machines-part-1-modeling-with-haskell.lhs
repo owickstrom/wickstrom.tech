@@ -341,7 +341,9 @@ monads](https://ocharles.org.uk/blog/posts/2016-01-26-transformers-free-monads-m
 [extensible-effects](https://hackage.haskell.org/package/extensible-effects-1.11.1.0). That
 said, in the next post I will show you a technique to tackle both the
 side effect and testability concerns, using MTL-style abstraction of
-the state machine itself. Stay tuned!
+the state machine itself.
+
+Why don't you go on and [read part 2](https://wickstrom.tech/finite-state-machines/2017/11/19/finite-state-machines-part-2.html) next!
 
 [elm-effects]: https://guide.elm-lang.org/architecture/effects/
 [pux]: http://purescript-pux.org/docs/events/#Effectful_computations
