@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Finite-State Machines, Part 2: Explicit Typed State Transitions"
-date: 2017-11-15 06:00 +01:00
+date: 2017-11-19 06:00 +01:00
 author: Oskar Wickström
 categories: finite-state-machines
 tags: ["haskell", "functional", "type-systems"]
@@ -29,15 +29,14 @@ I recommend you go do that first.
 
 ![](/generated/uml/checkout.svg)
 
-As before, this post is a runnable Literate Haskell program. We begin
-with the language extensions we'll need, along with the module
-declaration.
+Again, the post is a runnable Literate Haskell program. We begin with
+the language extensions we'll need, along with the module declaration.
 
 > {-# LANGUAGE OverloadedStrings          #-}
 > {-# LANGUAGE GADTs                      #-}
 > {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 > {-# LANGUAGE TypeFamilies               #-}
-> module EnforcingLegalStateTransision where
+> module EnforcingLegalStateTransitions where
 
 Let me quickly explain the GHC language extensions used:
 
@@ -45,8 +44,8 @@ Let me quickly explain the GHC language extensions used:
   to `Text` values, in our case.
 * `GADTs` enables the use of *generalized algebraic data types*, an extension to
   GHC that lets us specify different type signatures for each constructor in
-  data type. This is useful to parameterize constructors with
-  different types, something we'll use for state data types.
+  a data type. This is useful to parameterize constructors with
+  different types, something we will use for state data types.
 * We use `GeneralizedNewtypeDeriving` to have our implementation
   newtype derive instances for `Functor`, `Applicative`, and
   `MonadIO`. I'll explain this later in this post.
@@ -170,7 +169,7 @@ Events as Type Class Methods
 `Checkout` specifies the state machine events as type class *methods*,
 where method type signatures describe state transitions. The `initial`
 method creates a new checkout, returning a "NoItems" state. It can be
-thought of as a *constructor*, in object-oriented programming terms.
+thought of as a *constructor* in object-oriented programming terms.
 
 >   initial
 >     :: m (State m NoItems)
@@ -181,19 +180,16 @@ transitioning to another state. Events that transition state from one
 to another take the current state as an argument, and return the
 resulting state.
 
-The `select` event is a bit tricky, as it accepted from both "NoItems"
-and "HasItems". We use the union data type `SelectState`, analogous to
-`Either`, that represents the possibility of either "NoItems" or
-"HasItems". The definition of `SelectState` is included further down
-this post.
+The `select` event is a bit tricky, as it is accepted from both
+"NoItems" and "HasItems". We use the union data type `SelectState`,
+analogous to `Either`, that represents the possibility of either
+"NoItems" or "HasItems". The definition of `SelectState` is included
+further down this post.
 
 >   select
 >     :: SelectState m
 >     -> CartItem
 >     -> m (State m HasItems)
-
-The `checkout` event is simpler than `select`, as it transitions from
-exactly one state to another.
 
 Worth noting is that the resulting state is returned inside `m`. We do
 that to enable the instance of `Checkout` to perform computations
@@ -205,14 +201,17 @@ Just as in the previous post, we want the possibility to interleave
 side effects on state transitions, and using a monadic return value
 gives the instance that flexibility.
 
-Some events, like `selectCard`, carry data in the form of arguments,
-corresponding to how some event data constructors had arguments. Most
-of the events in `Checkout` follow the patterns described so far.
+The `checkout` event is simpler than `select`, as it transitions from
+exactly one state to another.
 
 >   checkout
 >     :: State m HasItems
 >     -> m (State m NoCard)
->
+
+Some events, like `selectCard`, carry data in the form of arguments,
+corresponding to how some event data constructors had arguments. Most
+of the events in `Checkout` follow the patterns described so far.
+
 >   selectCard
 >     :: State m NoCard
 >     -> Card
@@ -279,8 +278,8 @@ both `Checkout` and `MonadIO`. Moreover, it is a function from a
 event methods' type signatures in the `Checkout` protocol, and
 similarly describes a state transition with a type.
 
-> fillCart ::
->      (Checkout m, MonadIO m)
+> fillCart
+>   :: (Checkout m, MonadIO m)
 >   => State m NoItems
 >   -> m (State m HasItems)
 
@@ -291,8 +290,8 @@ constraining the monadic type with multiple type classes.
 
 The critical reader might object to using `MonadIO`, and claim that we
 have not separated all side effects, and failed in making the program
-testable. They wouldn't be wrong. I have deliberately kept the direct
-use of `MonadIO` to keep the example somewhat concrete. We could
+testable. They wouldn't be wrong. I have deliberately left the direct
+use of `MonadIO` in to keep the example somewhat concrete. We could
 refactor it to depend on, say, a `UserInput` type class for collecting
 more abstract user commands. By using `MonadIO`, though, the example
 highlights particularly how the state machine protocol has been
@@ -321,8 +320,8 @@ not, it returns the current "HasItems" state. Note how we need to wrap
 the "HasItems" state in `HasItemsSelect` to create a `SelectState`
 value.
 
-> selectMoreItems ::
->      (Checkout m, MonadIO m)
+> selectMoreItems
+>   :: (Checkout m, MonadIO m)
 >   => State m HasItems
 >   -> m (State m HasItems)
 > selectMoreItems s = do
@@ -335,11 +334,11 @@ value.
 >     else return s
 
 When all items have been added, we are ready to start the checkout
-part. The type signature of `startCheckout` tells us that is
+part. The type signature of `startCheckout` tells us that it
 transitions from a "HasItems" state to an "OrderPlaced" state.
 
-> startCheckout ::
->      (Checkout m, MonadIO m)
+> startCheckout
+>   :: (Checkout m, MonadIO m)
 >   => State m HasItems
 >   -> m (State m OrderPlaced)
 
@@ -370,8 +369,8 @@ The definition of `checkoutProgram` is a composition of what we have
 so far. It creates the state machine in its initial state, fills the
 shopping cart, starts the checkout, and eventually ends the checkout.
 
-> checkoutProgram ::
->      (Checkout m, MonadIO m)
+> checkoutProgram
+>   :: (Checkout m, MonadIO m)
 >   => m OrderId
 > checkoutProgram =
 >   initial >>= fillCart >>= startCheckout >>= end
@@ -443,9 +442,9 @@ The `NoItems` constructor is nullary, and constructs a value of type
 >   NoItems
 >     :: CheckoutState NoItems
 
-Note that the constructor `NoItems` is defined here, that the type
-`NoItems` is defined in the beginning of the program, and they are not
-directly related.
+Note that the *data constructor* `NoItems` is defined here, that the
+*type* `NoItems` is defined in the beginning of the program, and they
+are *not directly related*.
 
 There is, however, a relation between them in terms of the
 `CheckoutState` data type. If we have a value of type `CheckoutState
@@ -454,15 +453,17 @@ constructor for such a value. This will become very handy when
 defining our instance.
 
 The other constructors are defined similarly, but some have arguments,
-in the same way the `State` data type for the previous post had. They
+in the same way the `State` data type in the previous post had. They
 accumulate the extended state needed by the state machine, up until
 the order is placed.
 
 >   HasItems
->     :: NonEmpty CartItem -> CheckoutState HasItems
+>     :: NonEmpty CartItem
+>     -> CheckoutState HasItems
 >
 >   NoCard
->     :: NonEmpty CartItem -> CheckoutState NoCard
+>     :: NonEmpty CartItem
+>     -> CheckoutState NoCard
 >
 >   CardSelected
 >     :: NonEmpty CartItem
@@ -475,7 +476,8 @@ the order is placed.
 >     -> CheckoutState CardConfirmed
 >
 >   OrderPlaced
->     :: OrderId -> CheckoutState OrderPlaced
+>     :: OrderId
+>     -> CheckoutState OrderPlaced
 
 We have a concrete state data type, defined as a GADT, and we can go
 ahead defining the instance of `Checkout` for our `CheckoutT` newtype.
@@ -507,18 +509,19 @@ item prepended to a non-empty list.
 >       HasItemsSelect (HasItems items) ->
 >         return (HasItems (item <| items))
 
-As emphasized in the beginning of this post, GHC knows which
-constructors of `CheckoutState` can occur in the `SelectState`
-wrappers, and we can pattern match exhaustively on only the possible
-state constructors.
+As emphasized before, GHC knows which constructors of `CheckoutState`
+can occur in the `SelectState` wrappers, and we can pattern match
+exhaustively on only the possible state constructors.
 
 The `checkout`, `selectCard`, and `confirm` methods accumulate the
 extended state, and returns the appropriate state constructor.
 
 >   checkout (HasItems items) =
 >     return (NoCard items)
+>
 >   selectCard (NoCard items) card =
 >     return (CardSelected items card)
+>
 >   confirm (CardSelected items card) =
 >     return (CardConfirmed items card)
 
@@ -551,15 +554,16 @@ identifier.
 
 >   end (OrderPlaced orderId) = return orderId
 
-The instance `CheckoutT` instance of `Checkout` is complete, and we
-are ready to stitch everything together into a running program.
+The `CheckoutT` instance of `Checkout` is complete, and we are ready
+to stitch everything together into a running program.
 
 Putting the Pieces Together
 ===========================
 
 To run `checkoutProgram`, we need an instance of `Checkout`, and an
-instance of `MonadIO`. There is already an instance `MonadIO IO`. To
-select our `CheckoutT` instance for `Checkout`, we use `runCheckoutT`.
+instance of `MonadIO`. There is already an instance `(MonadIO IO)`
+available. To select our `CheckoutT` instance for `Checkout`, we use
+`runCheckoutT`.
 
 > example :: IO ()
 > example = do
@@ -568,7 +572,7 @@ select our `CheckoutT` instance for `Checkout`, we use `runCheckoutT`.
 
 The complete checkout program is run, using the `CheckoutT` instance,
 and an `OrderId` is returned, which we print at the end. A sample
-execution of this program could look like this:
+execution of this program looks like this:
 
 <pre>
 λ> <strong>example</strong>
@@ -597,22 +601,22 @@ Cool, we have a console implementation running!
 Instances Without Side Effects
 ------------------------------
 
-A benefit of using MTL style, in addition to have effects explicit, is
-that we can write alternative instances. We might write an instance
-that only logs the effects, using a `Writer` monad transformer,
-collecting them as pure values in a list, and use that instance when
-testing the state machine.
+A benefit of using MTL style, in addition to have effects be explicit,
+is that we can write alternative instances. We might write an instance
+that only logs the effects, using a `Writer` monad , collecting them
+as pure values in a list, and use that instance when testing the state
+machine.
 
 Parting Thoughts
 ================
 
 Using a sort of *extended MTL style*, with conventions for state
-machine encodings, enables more type safety in terms of state
-transitions. In addition to having turned our state machine program
-*inside-out*, into a protocol separated from the automaton, we have
-guarded side effects with types in the form of type class methods.
-Abstract state values, impossible to create outside the instance, are
-now passed explicitly in state transitions.
+machine encodings, gives us more type safety in state transitions. In
+addition to having turned our state machine program *inside-out*, into
+a protocol separated from the automaton, we have guarded side effects
+with types in the form of type class methods.  Abstract state values,
+impossible to create outside the instance, are now passed explicitly
+in state transitions.
 
 But we still have a rather loud elephant in the room.
 
@@ -661,9 +665,9 @@ presented in this post has a type safety flaw. That doesn't mean the
 technique is useless and should be forever rejected. At least not in
 my opinion. It gives additional type safety around state transitions,
 it composes well with MTL style programs in general, and it uses a
-modest amount of type system features and language extensions. We can
-write alternative instances, without any IO, and use them to test our
-state machines programs in a pure setting.
+modest collection of type system features and language extensions. We
+can write alternative instances, without any IO, and use them to test
+our state machines programs in a pure setting.
 
 If you still feel that all hope is lost, then I'm happy to announce
 that there will be more posts coming in this series! To demonstrate a
