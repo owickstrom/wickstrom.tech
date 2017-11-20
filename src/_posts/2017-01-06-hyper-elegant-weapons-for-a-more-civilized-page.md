@@ -56,7 +56,7 @@ heavily inspired by other middleware libraries, like *Plug* in Elixir and
 *connect* in NodeJS. The Conn represents the entirety of an HTTP connection, both
 the request and response.
 
-```haskell
+```{.haskell .purescript}
 type Conn req res components =
   { request :: req
   , response :: res
@@ -80,7 +80,7 @@ The following type requires the request to have *at least* a body of type
 fields, this type does not care. The response and components are not
 constrained at all by this type.
 
-```haskell
+```{.haskell .purescript}
 forall req res c.
 Conn { body :: String
      , headers :: StrMap String
@@ -94,14 +94,14 @@ The second building block, middleware, are simply functions transforming
 connection values. They take a pure connection, and return another connection
 inside some type `m`, where `m` is usually an Applicative or a Monad.
 
-```haskell
+```{.haskell .purescript}
 type Middleware m c c' = c -> m c'
 ```
 
 As middleware are monadic functions, just as the computations used with
 [Bind][bind], they compose using [Kleisli composition][kleisli-composition].
 
-```haskell
+```{.haskell .purescript}
 -- Compose three middleware functions sequentially,
 -- from left to right:
 authenticateUser >=> parseForm >=> saveTodo
@@ -125,7 +125,7 @@ implementations.
 To safe a few keystrokes, and your innocent eyes, let us begin by looking at
 the type alias for middleware transitioning between response states.
 
-```haskell
+```{.haskell .purescript}
 type ResponseStateTransition m rw from to =
   forall req res c.
   Middleware
@@ -136,7 +136,7 @@ type ResponseStateTransition m rw from to =
 
 Now, on to the encoding of state transitions, the `ResponseWriter` type class.
 
-```haskell
+```{.haskell .purescript}
 class ResponseWriter rw m b | rw -> b where
   writeStatus
     :: Status
@@ -183,7 +183,7 @@ ResponseEnded -right-> [*]
 We can write a middleware, based on the state transition functions of the type
 class, that responds friendly to all requests.
 
-``` haskell
+```{.haskell .purescript}
 writeStatus (Tuple 200 "OK")
 >=> writeHeader (Tuple "Content-Type" "text/plain")
 >=> closeHeaders
@@ -194,7 +194,7 @@ writeStatus (Tuple 200 "OK")
 Say we forget the line with `closeHeaders`. What do we get? An informative type
 error, of course!
 
-```haskell
+```{.haskell .purescript}
 Could not match type
 
   HeadersOpen
@@ -207,7 +207,7 @@ with type
 There are easier-to-use functions written on top of the response API so that
 you do not have to write out all state transitions explicitly.
 
-``` haskell
+```{.haskell .purescript}
 writeStatus statusOK
 >=> contentType textHTML
 >=> closeHeaders

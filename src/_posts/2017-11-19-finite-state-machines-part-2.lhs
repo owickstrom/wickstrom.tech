@@ -224,6 +224,15 @@ of the events in `Checkout` follow the patterns described so far.
 >     :: State m CardConfirmed
 >     -> m (State m OrderPlaced)
 
+<div class="note">
+We are *not doing any error handling*. All operations return
+state values. In a real-world system you might need to handle error
+cases, like `selectCard` not accepting the entered card number. I have
+deliberately excluded error handling from this already lengthy post,
+but I will probably write a post about different ways of handling
+errors in this style of state machine encoding.
+</div>
+
 Similar to `select`, the `cancel` event is accepted from more than
 one state. In fact, it is accepted from *three* states: "NoCard",
 "CardSelected", and "CardConfirmed". Like with `select`, we use a
@@ -358,11 +367,13 @@ attempting a new checkout.
 >          selectMoreItems >>=
 >          startCheckout
 
-Note that the protocol allows for cancellation in all three checkout
+<div class="note">
+The protocol allows for cancellation in all three checkout
 states, but that the program only gives the user a possibility to
 cancel in the end of the process. Again, the program must follow the
 rules of the protocol, but it is not required to trigger all events
 the protocol allows for.
+</div>
 
 The definition of `checkoutProgram` is a composition of what we have
 so far. It creates the state machine in its initial state, fills the
@@ -395,8 +406,8 @@ follows the naming scheme `run<TypeName>`; in our case `runCheckoutT`.
 >              , MonadIO
 >              )
 
-Note that we derive the `MonadIO` instance automatically, along with
-the standard `Functor`, `Applicative`, and `Monad` hierarchy.
+We derive the `MonadIO` instance automatically, along with the
+standard `Functor`, `Applicative`, and `Monad` hierarchy.
 
 Monad Transformer Stacks and Instance Coupling
 ----------------------------------------------
@@ -441,9 +452,11 @@ The `NoItems` constructor is nullary, and constructs a value of type
 >   NoItems
 >     :: CheckoutState NoItems
 
-Note that the *data constructor* `NoItems` is defined here, that the
-*type* `NoItems` is defined in the beginning of the program, and they
-are *not directly related*.
+<div class="note">
+The *data constructor* `NoItems` is defined here, whereas the *type*
+`NoItems` is defined in the beginning of the program, and they are
+*not directly related*.
+</div>
 
 There is, however, a relation between them in terms of the
 `CheckoutState` data type. If we have a value of type `CheckoutState
@@ -675,3 +688,10 @@ post we will be exploring *indexed monads* and *row kinds* as a way of
 armoring the Achilles heel.
 
 Happy hacking!
+
+Revisions
+=========
+
+**November 20, 2017:** Based on a Reddit comment, on the lack of error
+handling in event type class methods, I added a small note about that
+below the `selectCard` type signature.

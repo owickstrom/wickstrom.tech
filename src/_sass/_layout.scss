@@ -120,6 +120,34 @@ body {
   }
 }
 
+.note {
+  position: relative;
+  padding: $base-line-height*1.5rem $base-line-height*.5rem $base-line-height*.5rem;
+  margin: ($base-line-height * 1rem) 0;
+  background: #eee;
+  box-shadow: 1px 1px 1px desaturate(darken(#eee, 20%), 30%);
+  color: #444;
+
+  &:before {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    line-height: $base-line-height * 1rem;
+    padding: 0 $base-line-height * .5rem;
+    background: #ddd;
+    content: 'NOTE';
+    font-weight: bold;
+    font-size: 75%;
+    color: #888;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
 @media screen and (orientation: portrait) and (max-width: $on-big-screen) {
   .title-pane {
     position: static;
@@ -301,6 +329,69 @@ pre {
 
   &.pgp {
     font-size: 90%;
+  }
+}
+
+div.sourceCode {
+  position: relative;
+
+  pre {
+    padding-top: $base-line-height * 1.5rem;
+  }
+
+  pre:before {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    line-height: $base-line-height * 1rem;
+    padding: 0 $base-line-height * .5rem;
+    background: desaturate(darken($code-background-color, 10%), 25%);
+    font-weight: bold;
+    font-size: 75%;
+    color: desaturate(darken($code-background-color, 50%), 50%);
+    text-transform: uppercase;
+  }
+
+  pre.haskell:before {
+    content: 'Haskell';
+  }
+
+  pre.purescript:before {
+    content: 'PureScript';
+  }
+
+  pre.markdown:before {
+    content: 'Markdown';
+  }
+
+  pre.javascript:before {
+    content: 'Javascript';
+  }
+
+  pre.clojure:before {
+    content: 'Clojure';
+  }
+
+  pre.html:before {
+    content: 'HTML';
+  }
+
+  pre.dot:before {
+    content: 'Dot';
+  }
+
+  pre.makefile:before {
+    content: 'Makefile';
+  }
+
+  pre.yaml:before {
+    content: 'YAML';
+  }
+
+  pre.bash:before {
+    content: 'Bash';
   }
 }
 

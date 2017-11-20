@@ -24,11 +24,11 @@ Using this filter, I can write code listings in separate files, using a small
 subset of HTML. Here's an example of a shell command listing source file from
 the User Guide:
 
-```html
+<pre>
 $ <strong>GOPATH=PWD/target/go:$GOPATH go build -o hello hello/main</strong>
 $ <strong>./hello</strong>
 Hello, world!
-```
+</pre>
 
 The `strong` tags in the listing are part of the HTML subset I use. To include
 listings in the Pandoc Markdown source I use regular code block syntax and add
@@ -48,13 +48,13 @@ be typeset in italic text. Where the language supports a sequence of forms I
 want to express that using placeholder expressions with subscripts. The
 following listing source file explains the *let binding* syntax of Oden.
 
-{% highlight html %}
+```html
 let <em>identifier<sub>1</sub></em> = <em>expression<sub>1</sub></em>
     <em>identifier<sub>2</sub></em> = <em>expression<sub>2</sub></em>
     ...
     <em>identifier<sub>n</sub></em> = <em>expression<sub>n</sub></em>
 in <em>body-expression</em>
-{% endhighlight %}
+```
 
 When included in the document, just like in the example before, the output
 looks like this:
