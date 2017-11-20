@@ -395,6 +395,13 @@ div.sourceCode {
   }
 }
 
+@include media-query($on-palm) {
+  div.sourceCode {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+}
+
 .index-heading {
   position: absolute;
   text-indent: -9999px;
