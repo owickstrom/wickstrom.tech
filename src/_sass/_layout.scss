@@ -4,6 +4,7 @@ body {
   position: relative;
   min-width: 300px;
   min-height: 360px;
+  background: #eee;
 }
 
 .nav ul {
@@ -219,7 +220,6 @@ body {
  * Site footer
  */
 .site-footer {
-  margin-top: $spacing-unit*2;
   padding: $spacing-unit;
   text-align: center;
   font-size: $small-font-size;
@@ -227,22 +227,23 @@ body {
   color: #666;
 }
 
+.page-content {
+  padding: $spacing-unit*2 0;
+  background: #fff;
+}
+
 /**
  * Page content
  */
-.page-content {
-  margin-bottom: $spacing-unit 0;
-}
-
 
 .page-header {
-  margin: $spacing-unit*2 0;
+  margin: 0 0 $spacing-unit*2;
   text-align: center;
 }
 
 .page-title {
   font-size: 275%;
-  margin: ($spacing-unit * 2) 0 $spacing-unit;
+  margin: 0 0 $spacing-unit;
   font-weight: 600;
   font-family: $secondary-font-family;
 
