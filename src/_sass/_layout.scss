@@ -195,27 +195,6 @@ body {
   margin: 1.5em auto;
 }
 
-.post-comments {
-  padding: 0 0 $spacing-unit;
-}
-
-#post-comments-link {
-  display: block;
-  text-align: center;
-}
-
-#post-comments-link.hidden,
-.hidden {
-  display: none;
-}
-
-.no-javascript {
-  font-style: italic;
-  font-size: $small-font-size;
-  color: $grey-color;
-  text-align: center;
-}
-
 /**
  * Site footer
  */
