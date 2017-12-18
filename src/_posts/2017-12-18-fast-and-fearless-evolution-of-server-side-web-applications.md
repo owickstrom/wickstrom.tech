@@ -161,4 +161,4 @@ GitHub][slides-code], and the talk will be uploaded to YouTube in a week or
 two. By the way, f(by) was a really well-organized and welcoming conference,
 and I met a lot of interesting and nice people!
 
-[slides-code]: github.com/owickstrom/fast-and-fearless-evolution-of-server-side-webapps](https://github.com/owickstrom/fast-and-fearless-evolution-of-server-side-webapps
+[slides-code]: https://github.com/owickstrom/fast-and-fearless-evolution-of-server-side-webapps
