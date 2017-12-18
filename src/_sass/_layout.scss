@@ -488,6 +488,24 @@ figure.two-images {
   }
 }
 
+.takeaway {
+  margin: 4em 0;
+  padding: 0 3em;
+  text-align: center;
+}
+.takeaway figure {
+  min-width: 200px;
+  margin: 0 auto;
+}
+.takeaway h3 {
+  margin: 1em 0;
+  font-size: 150%;
+  font-weight: 400;
+}
+.takeaway p {
+  font-style: italic;
+}
+
 @media print {
   .home-page .title-pane {
     position: static;
