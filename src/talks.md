@@ -3,12 +3,33 @@ title: Talks
 layout: page
 ---
 
+## Fast and Fearless Evolution of Server-Side Web Applications
+
+### Events
+
+* [f(by)](https://fby.by/), December 17, 2017
+    - [Slides](https://github.com/owickstrom/fast-and-fearless-evolution-of-server-side-webapps)
+    - [Video Recording](https://www.youtube.com/watch?list=PLpVeA1tdgfCCUuAtFl0N5wzatXx0gWLKM&v=JKRkR_ZQSBc)
+
+### Abstract
+
+When evolving web applications, in most programming languages and frameworks,
+we risk introducing programming errors. Undefined values, parsing
+failures, broken links, invalid markup, and good old null pointers, are
+all things that can break our applications. Manually writing and
+maintaining tests to catch programming errors is a time consuming effort,
+and we would rather spend that time testing our application logic. This
+talk takes you on a whirlwind tour of mature technologies that offer
+static guarantees for modern web applications.
+
 ## Finite-state machines? Your compiler wants in!
 
 ### Events
 
 * [Foo Cafe](http://www.foocafe.org/malmoe/events/1596-finite-state-machines-your-compiler-wants-in), November 1, 2017, Malmö
 * [CodeMesh](http://www.codemesh.io/codemesh2017/oskar-wickstrom), 7-9 November, 2017, London
+    - [Slides](http://s3.amazonaws.com/erlang-conferences-production/media/files/000/000/756/original/Oskar_Wickstrom_-_Finite-state_machines__Your_compiler_wants_in!.pdf?1510133482)
+    - [Video Recording](https://www.youtube.com/watch?v=GWqsmzRpao8)
 
 ### Abstract
 
@@ -27,12 +48,12 @@ languages.
 ### Events
 
 * [flatMap(Oslo)](http://2017.flatmap.no/talks/wickstrom/), 2-3 May 2017, Oslo, Norway
- 	- [Slides](https://wickstrom.tech/talks/flatmap-oslo-2017-05-02.pdf)
+    - [Slides](https://wickstrom.tech/talks/flatmap-oslo-2017-05-02.pdf)
     - [Video Recording](https://vimeo.com/216464016)
 * [GOTO Nights CPH](https://www.meetup.com/GOTO-Nights-CPH/), February 22, 2017, Copenhagen, Denmark
- 	- [Slides](https://wickstrom.tech/talks/kats-conf-2017-02-18.pdf)
+    - [Slides](https://wickstrom.tech/talks/kats-conf-2017-02-18.pdf)
 * [Kats Conf 2](http://www.katsconf.com/), February 18, 2017, Dublin, Ireland
-	- [Slides](https://wickstrom.tech/talks/kats-conf-2017-02-18.pdf)
+    - [Slides](https://wickstrom.tech/talks/kats-conf-2017-02-18.pdf)
 
 ### Abstract
 
@@ -51,11 +72,11 @@ correctness guarantees.
 ### Events
 
 * [PolyConf 2016, Poznan, Poland](https://16.polyconf.com/)
-	- [Slides](https://speakerdeck.com/owickstrom/oden-a-functional-programming-language-for-the-go-ecosystem-polyconf-2016)
-	- [Video Recording](https://www.youtube.com/watch?v=qRm_58RA9ns)
+    - [Slides](https://speakerdeck.com/owickstrom/oden-a-functional-programming-language-for-the-go-ecosystem-polyconf-2016)
+    - [Video Recording](https://www.youtube.com/watch?v=qRm_58RA9ns)
 * [Curry On 2016, Rome, Italy](http://curry-on.org/2016/)
-	- [Slides](https://speakerdeck.com/owickstrom/oden-a-functional-programming-language-for-the-go-ecosystem-curry-on-2016)
-	- [Video Recording](https://www.youtube.com/watch?v=t_bR2UBEmp0&t=1s)
+    - [Slides](https://speakerdeck.com/owickstrom/oden-a-functional-programming-language-for-the-go-ecosystem-curry-on-2016)
+    - [Video Recording](https://www.youtube.com/watch?v=t_bR2UBEmp0&t=1s)
 
 ### Abstract
 
@@ -70,8 +91,8 @@ higher-level abstractions, generics and a safer yet more flexible type system.
 ### Events
 
 * [Foo Cafe, April 13, 2016](http://www.foocafe.org/malmoe/events/1115-designing-and-building-the-oden-programming-language)
-	- [Slides](https://speakerdeck.com/owickstrom/designing-and-building-the-oden-programming-language)
-	- [Video Recording](https://www.youtube.com/watch?v=XEaWpHqgpsI)
+    - [Slides](https://speakerdeck.com/owickstrom/designing-and-building-the-oden-programming-language)
+    - [Video Recording](https://www.youtube.com/watch?v=XEaWpHqgpsI)
 
 ### Abstract
 
