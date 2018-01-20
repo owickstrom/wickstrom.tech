@@ -3,9 +3,17 @@ title: Projects
 layout: page
 ---
 
-These are some of the open-source programming projects I am, or have been,
-working on. All projects listed below, and many more, are available at [my
-GitHub profile page](https://github.com/owickstrom).
+These are some of the projects I am, or have been, working on. All open-source
+programming projects listed below, and many more, are available at [my GitHub
+profile page](https://github.com/owickstrom).
+
+## CODA &mdash; Haskell Programming Screencasts
+
+[CODA](https://coda.wickstrom.tech/) is a screencast focused on practical
+Haskell programming. Viewers should have a basic understanding of Haskell, and
+be eager to learn new ways of working with Haskell. Check out the site and
+subscribe to the YouTube channel if you want to learn more about Haskell in the
+wild!
 
 ## Hyper
 
