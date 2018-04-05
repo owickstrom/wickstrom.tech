@@ -1,3 +1,4 @@
+CLOUDFRONT_DISTRIBUTION_ID=E372HNY0DNX3PN
 TOOLS=src/tools
 PLANTUML=deps/plantuml.jar
 
@@ -16,7 +17,7 @@ serve: $(PLANTUML) $(UMLS)
 
 deploy: build
 	aws s3 sync --region=eu-west-1 target s3://wickstrom.tech --acl=public-read
-
+	aws cloudfront create-invalidation --distribution-id $(CLOUDFRONT_DISTRIBUTION_ID) --paths '/*'
 
 .PHONY: generate-music-symbols
 generate-music-symbols:

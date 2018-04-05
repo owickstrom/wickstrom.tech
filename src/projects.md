@@ -7,13 +7,13 @@ These are some of the projects I am, or have been, working on. All open-source
 programming projects listed below, and many more, are available at [my GitHub
 profile page](https://github.com/owickstrom).
 
-## CODA &mdash; Haskell Programming Screencasts
+## Haskell at Work Screencasts
 
-[CODA](https://coda.wickstrom.tech/) is a screencast focused on practical
-Haskell programming. Viewers should have a basic understanding of Haskell, and
-be eager to learn new ways of working with Haskell. Check out the site and
-subscribe to the YouTube channel if you want to learn more about Haskell in the
-wild!
+[Haskell at Work](https://haskell-at-work.com/) is a screencast focused on
+practical Haskell programming. Viewers should have a basic understanding of
+Haskell, and be eager to learn new ways of working with Haskell. Check out the
+site and subscribe to the YouTube channel if you want to learn more about
+Haskell in the wild!
 
 ## Hyper
 
@@ -27,11 +27,12 @@ information.
 
 ## PureScript Spec
 
-[PureScript Spec](http://purescript-spec.wickstrom.tech/) is a testing framework
-for PureScript, which I have maintained since April, 2015. It is inspired by
-the Haskell testing frame [hspec](http://hspec.github.io/), and supports
-synchronous and asynchronous tests using a simple DSL, interoperability with
-other testing tools, and test output in various formats.
+[PureScript Spec](http://owickstrom.github.io/purescript-spec/) is a testing
+framework for PureScript, which I have maintained since April, 2015. It is
+inspired by the Haskell testing frame [hspec](http://hspec.github.io/), and
+supports synchronous and asynchronous tests using a simple DSL,
+interoperability with other testing tools, and test output in various
+formats.
 
 ## The Oden Programming Language
 
