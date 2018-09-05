@@ -128,7 +128,7 @@ myListBox =
 ```
 
 In regular GTK+, containers often accept any type of widget to be added to the
-container, and if they container requires its children to be of a specific
+container, and if the container requires its children to be of a specific
 type, it will automatically insert the in-between widget implicitly. An example
 of such a container is `ListBox`, which automatically wraps added children in
 `ListBoxRow` bins, if needed.
