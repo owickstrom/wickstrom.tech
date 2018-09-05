@@ -104,11 +104,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h2 {
-  font-size: 130%;
+  font-size: 150%;
 }
 
 h3, h4, h5, h6 {
-  font-size: 100%;
+  font-size: 120%;
 }
 
 /**
@@ -159,6 +159,7 @@ strong {
 pre,
 code {
   font-family: $monospace-font-family;
+  font-size: 0.925rem;
   line-height: inherit;
 }
 
@@ -166,6 +167,10 @@ pre {
   padding: ($base-line-height * 0.5rem);
   margin: ($base-line-height * 1rem) 0;
   overflow-x: auto;
+}
+
+p code, li code {
+  background: #eee;
 }
 
 @include media-query($on-laptop) {

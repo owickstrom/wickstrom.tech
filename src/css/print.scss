@@ -15,7 +15,7 @@ a {
   }
 
 }
-.post-content a:after{
+.post-content p a:after{
   content: " (" attr(href) ")";
   /*font-size: 80%;*/
   font-style: italic;
