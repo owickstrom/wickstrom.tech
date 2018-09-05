@@ -50,7 +50,7 @@ make the first phase declarative. You still need to find all widgets in the
 instantiated GUI, attach event handlers, and start mutating state, to handle
 the second phase.
 
-Afer having experienced these pains and getting repeatedly stuck when building
+After having experienced these pains and getting repeatedly stuck when building
 FastCut with the imperative GTK+ APIs, I started exploring what a declarative
 GTK+ programming model could look like.
 
