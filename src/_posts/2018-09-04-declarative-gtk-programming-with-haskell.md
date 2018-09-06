@@ -304,7 +304,7 @@ instance.
 
 ## Declarative "Hello, world!"
 
-The [haskell-gi] README includes an "Hello, world!" example, written in
+The [haskell-gi] README includes an "Hello, world!" example, written in an
 imperative style:
 
 ```haskell
@@ -347,7 +347,7 @@ an "insensitive" button and a label thanking the user for clicking.
   </tr>
 </table>
 
-Let's rewrite this application in declarative style, using gi-gtk-declarative
+Let's rewrite this application in a declarative style, using gi-gtk-declarative
 and gi-gtk-declarative-app-simple, and see how that works out! Our state and
 event datatypes describe what states the application can be in, and what events
 can be emitted, respectively:
@@ -500,7 +500,7 @@ gi-gtk-declarative.
 All smart constructors --- `widget`, `bin`, and `container` --- can return
 either a `Widget` value, such that you can use it in a context where the inner
 widget type needs to be hidden, or a `MarkupOf` with a type specifically needed
-in the contexts in which the widget is used, for example a bin or container
+in the contexts in which the widget is used, for example, a bin or container
 with a requirement on what child widget it can contain.
 
 Here are some possible specializations of smart constructor return types:
