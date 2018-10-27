@@ -120,59 +120,57 @@ Finally, Komposition is built for keyboard-driven editing, currently with
 Vim-like bindings, and commands transforming the hierarchical timeline,
 inspired by Paredit for Emacs.
 
+![Keybinding help dialog](/assets/writing-a-screencast-video-editor-in-haskell/keybindings.png){width=345px}
+
 There are corresponding menu items for most commands, and there's limited
 support for using the mouse in the timeline. If you need help with keybindings,
 press the question mark key, and you will be presented with a help dialog
 showing the bindings available in the current mode.
 
-![Keybinding help dialog](/assets/writing-a-screencast-video-editor-in-haskell/keybindings.png){width=345px}
+### The Hierarchical Timeline
 
-### Hierarchical Timeline{background=#dddddd}
+The hiearchical timeline is a tree structure with a fixed depth.  At the leafs
+of the tree there are _clips_. Clips are placed in the video and audio tracks
+of a _parallel_. It's named that way because the video and audio tracks play in
+parallel. Clips within a track play in sequence.
 
-## Clips
+![Video and audio tracks play in parallel](/assets/writing-a-screencast-video-editor-in-haskell/timeline1.svg)
 
-![Clips](images/timeline1.svg){width=80%}
+If the audio track is longer than the video track, the remaning part of the
+video track is padded with still frames from an adjacent clip.
 
-<aside class="notes">
-Clips are put in video and audio tracks within parallels
-</aside>
+![Shorter video tracks are automatically padded with still frames](/assets/writing-a-screencast-video-editor-in-haskell/timeline2.svg)
 
-## Video Still Frames
+Explicit _gaps_ can be to the video and audio tracks. Video gaps are padded with
+still frames, and audio gaps are silent. When you add the gap you specify its
+duration.
 
-![Video Still Frames](images/timeline2.svg){width=80%}
+![Gaps can be added in video and audio tracks](/assets/writing-a-screencast-video-editor-in-haskell/timeline3.svg)
 
-<aside class="notes">
-If the video track is shorter, it will be padded with still frames
-</aside>
+Parallels are put in _sequences_, and they are played in sequence. The first
+parallel is played until its end, then the next is played, and so on.
+Parallels and sequences are used to group cohesive parts of your screencast,
+and to synchronize the start of related video and audio clips.
 
-## Adding Gaps
 
-![Adding Gaps](images/timeline3.svg){width=100%}
+![Parallels are played in sequence](/assets/writing-a-screencast-video-editor-in-haskell/timeline4.svg)
 
-<aside class="notes">
-- You can add explicit gaps in video and audio tracks
-- These are also filled with still frames for video
-</aside>
+When editing within a sequence or parallel, for example when deleting or adding
+clips, you will not affect the synchronization of other sequences or parallels.
+If there were only audio and video tracks in Komposition, deleting an audio
+clip would possibly shift many other audio clips, causing them to get out of
+sync with their related video clips. This is why the timeline structure is
+built up using sequences and parallels.
 
-## Sequences
+Finally, the _timeline_ is the top-level structure that contains sequences.
+This is merely for organizing larger parts of a screencast. You can comfortably
+build up your screencast with a single sequence containing parallels.
 
-![Sequences](images/timeline4.svg){width=100%}
+![](/assets/writing-a-screencast-video-editor-in-haskell/timeline5.svg)
 
-<aside class="notes">
-- Parallels are put in sequences
-- Each parallel is played until its end, then the next, and so on
-- Multiple parallels can be used to synchronize clips
-</aside>
-
-## Timeline
-
-![Timeline](images/timeline5.svg){width=100%}
-
-<aside class="notes">
-- The top level is the timeline
-- The timeline contain sequences
-- It's useful for organizing the parts of your screencast
-</aside>
+Note that the timeline always contains at least one sequence, and that all
+sequences contain at least one parallel. The tracks within a parallel can be
+empty, though.
 
 ### Documentation
 
@@ -190,8 +188,6 @@ around to making an updated version when doing the next release.
 I can assure you, editing a screencast, that is about editing screencasts
 using your screencast editor, in your screencast editor, is _quite the
 mind-bender_. And I thought I had recursion down.
-
-# Demo{background=#000000 background-video=images/demo.gif background-video-loop=true .dark}
 
 # Implementation{background=images/cogs.jpg .dark}
 
