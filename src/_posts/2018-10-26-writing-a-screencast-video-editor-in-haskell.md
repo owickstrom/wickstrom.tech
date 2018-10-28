@@ -166,7 +166,7 @@ Finally, the _timeline_ is the top-level structure that contains sequences.
 This is merely for organizing larger parts of a screencast. You can comfortably
 build up your screencast with a single sequence containing parallels.
 
-![](/assets/writing-a-screencast-video-editor-in-haskell/timeline5.svg)
+![The timeline contains sequences that are played in sequence](/assets/writing-a-screencast-video-editor-in-haskell/timeline5.svg)
 
 Note that the timeline always contains at least one sequence, and that all
 sequences contain at least one parallel. The tracks within a parallel can be
@@ -229,9 +229,10 @@ imperative APIs of `gi-gtk`, but they are well-isolated and few in numbers.
 ### Type-Indexed State Machines
 
 I had a curiousity itching when starting this project, that I decided to
-scratch. Last year I worked on porting [the Idris ST library](), providing a
-way to encode type-indexed state machines in GHC Haskell. The library is called
-[Motor]().
+scratch. Last year I worked on porting [the Idris ST
+library](http://docs.idris-lang.org/en/latest/st/), providing a way to encode
+type-indexed state machines in GHC Haskell. The library is called
+[Motor](http://hackage.haskell.org/package/motor).
 
 Just to give some short examples, the following type signatures, used in the
 main application control flow, operate on the application state machine
@@ -339,21 +340,24 @@ these techniques.
 ### Automatic Scene Classification
 
 The automatic classification of scenes in video is implemented using the
-[Pipes]() and [ffmpeg-light]() libraries, mainly. It begins with the
-`readVideoFile`, that given a video file path will give us a `Pipes.Producer`
-of timed frames, which are basically pixel arrays tagged with their time in the
-original video. The producer will stream the video file, and yield timed frames
-as they are consumed.
+[Pipes](http://hackage.haskell.org/package/pipes) and
+[ffmpeg-light](http://hackage.haskell.org/package/ffmpeg-light) libraries,
+mainly. It begins with the `readVideoFile`, that given a video file path will
+give us a `Pipes.Producer` of timed frames, which are basically pixel arrays
+tagged with their time in the original video. The producer will stream the
+video file, and yield timed frames as they are consumed.
 
 ```haskell
 readVideoFile :: MonadIO m => FilePath -> Producer (Timed Frame) m ()
 ```
 
-The frames are converted from [JuicyPixels]() frames to [massiv]() frames, and
-then the producer is passed to the `classifyMovement` function. Given a minimum
-segment duration (such that segments cannot be shorter than *N* seconds) and a
-producer of timed frames, it returns a producer of `Classified` frames, tagging
-each frame as being either moving or still.
+The frames are converted from
+[JuicyPixels](http://hackage.haskell.org/package/JuicyPixels) frames to
+[massiv](http://hackage.haskell.org/package/massiv) frames, and then the
+producer is passed to the `classifyMovement` function. Given a minimum segment
+duration (such that segments cannot be shorter than *N* seconds) and a producer
+of timed frames, it returns a producer of `Classified` frames, tagging each
+frame as being either moving or still.
 
 ```haskell
 classifyMovement
@@ -491,7 +495,8 @@ some of them.
 
 ### haskell-gi
 
-The [haskell-gi]() family of packages are used extensively:
+The [haskell-gi](https://github.com/haskell-gi/haskell-gi) family of packages
+are used extensively:
 
 - gi-gobject
 - gi-glib
@@ -507,36 +512,32 @@ in Haskell, these bindings have been crucial to the development of Komposition.
 
 ## massiv & massiv-io
 
-The [massiv]() package is an array library that uses function composition to
-accomplish a sort of fusion. It's used to do parallel pixel comparison in the
-video classifier. A huge thanks to [Alexey](), the author and maintainer of
+The [massiv](http://hackage.haskell.org/package/massiv) package is an array
+library that uses function composition to accomplish a sort of fusion. It's
+used to do parallel pixel comparison in the video classifier. A huge thanks to
+[Alexey Kuleshevich](https://github.com/lehins), the author and maintainer of
 massiv, for helping me implement the first version!
 
 ## Pipes
 
-The [Pipes]() library is used extensively in Komposition:
+The [Pipes](http://hackage.haskell.org/package/pipes) library is used
+extensively in Komposition:
 
-- The streaming video reader from [ffmpeg-light]() is wrapped in a `Pipes.Producer`
-  to provide composable streaming.
-- In general, effectful operations with progress notifications are producers
-	that yield `ProgressUpdate` values as they perform their work.
-- [pipes-safe]() is used for handling resources and processes.
-- [pipes-parse]() is used in stateful transformations in the video classifier.
+* The streaming video reader from [ffmpeg-light](http://hackage.haskell.org/package/ffmpeg-light) is wrapped in a `Pipes.Producer` to provide composable streaming.
+* In general, effectful operations with progress notifications are producers that yield `ProgressUpdate` values as they perform their work.
+* [pipes-safe](http://hackage.haskell.org/package/pipes-safe) is used for handling resources and processes.
+* [pipes-parse](http://hackage.haskell.org/package/pipes-parse) is used in stateful transformations in the video classifier.
 
-A huge thanks to [Gabriel Gonzales](), the author of Pipes, and the other
-maintainers for working on these packages!
+A big thanks to [Gabriel Gonzales](https://twitter.com/GabrielG439), the author
+of Pipes and the related packages!
 
 ## Others
 
 To name a few more:
 
-- I've used [protolude]() with some additions as a prelude.
-- The [lens]() library is used for working with nested data structures, positional
-	updates in lists, and monadic transformations.
-- [typed-process]() is used where together with pipes-safe, in a situation where
-	I couldn't use the regular [process]() package because of version constraint
-	issues. The typed-process API turned out to be really nice, so I think it will
-	be used more in the future.
+- I've used [protolude](http://hackage.haskell.org/package/protolude) as the basis for a custom prelude.
+- The [lens](http://hackage.haskell.org/package/lens) library is used for working with nested data structures, positional updates in lists, and monadic transformations.
+- [typed-process](http://hackage.haskell.org/package/typed-process) is used where together with pipes-safe, in a situation where I couldn't use the regular [process](http://hackage.haskell.org/package/process) package because of version constraint issues. The typed-process API turned out to be really nice, so I think it will be used more in the future.
 
 ## Summary
 
@@ -549,7 +550,7 @@ been great!
 Also, it's been working on an application that can be considered outside of
 GHC's and Haskell's comfort zone, namely a multimedia and GUI application.
 Komposition is not the first application to explore this space --- see
-[MovieMonad]() and [GifCurry]() for other examples --- but it is exciting,
+[Movie Monad](https://lettier.github.io/movie-monad/) and [Gifcurry](https://lettier.github.io/gifcurry/) for other examples --- but it is exciting,
 nonetheless.
 
 Speaking of using Haskell, the strive to keep complex domain logic free of
