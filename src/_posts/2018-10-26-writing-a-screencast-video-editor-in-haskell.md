@@ -3,7 +3,6 @@ layout: post
 title: Writing a Screencast Video Editor in Haskell
 author: Oskar Wickström
 categories: programming
-draft: true
 tags: ["haskell", "video", "screencast", "editor", "gtk", "functional"]
 excerpt: |
   In dire need of better tools when producing screencasts for *Haskell at

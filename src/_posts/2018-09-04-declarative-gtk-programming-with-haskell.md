@@ -3,7 +3,6 @@ layout: post
 title: Declarative GTK+ Programming with Haskell
 author: Oskar Wickström
 categories: programming
-draft: true
 tags: ["haskell", "gtk", "gui", "declarative", "functional"]
 excerpt: |
   Born out of the need in FastCut, a screencast video editor that I'm writing,
