@@ -31,7 +31,7 @@ My workflow for producing screencasts looks like this:
 
 1. Write a very detailed script. The script usually gets uploaded to the website as-is, being used as the show notes for the screencast.
 2. Record video separately, including all mistakes and retries, in a single video file. Each little part of editing or running commands in the terminal is separated by a rest, where I don't type anything at all for a few seconds.
-3. Record audio separately, where the voiceover is based on the script. A mistake or mispronounciation is corrected by taking a small break and then trying the same sentence or paragraph again.
+3. Record audio separately, where the voice-over audio is based on the script. A mistake or mispronunciation is corrected by taking a small break and then trying the same sentence or paragraph again.
 4. Cut and arrange all parts of the screencast using a video editor. This is the most painful and time-consuming part of the process.
 
 I've found this workflow beneficial for me, partly because of being a
@@ -39,7 +39,7 @@ non-native English speaker and not being keen on coding and talking
 simultaneously, but also because I think it helps with organizing the content
 into a cohesive narrative. I can write the script almost as a text-based
 tutorial, read it through to make sure it flows well, and then go into
-recording. Having to redo the recording phase is _very_ time consuming, so I'm
+recording. Having to redo the recording phase is _very_ time-consuming, so I'm
 putting a lot of effort into the script phase to catch mistakes early.
 
 ### Video Editors
@@ -50,7 +50,7 @@ effects available were a bit disappointing. I use, at a minimum, normalization a
 a noise gate. Having a good compressor is a plus.
 
 More importantly, these applications are built for general video editing,
-like movies shot with a camera, and they are optimized for that purpose. I'm
+like film shot with a camera, and they are optimized for that purpose. I'm
 using a very small subset of their feature set, which is not suited to my
 editing workflow. It works, but the tasks are repetitive and time-consuming.
 
@@ -92,7 +92,7 @@ frameworks that could've been used, but this combination fit me well.
 About five months later, after many hours of hacking, _Komposition_ was
 [released open-source under the Mozilla Public License
 2.0](https://github.com/owickstrom/komposition). The project working name was
-"FastCut," but when making it open source I renamed it to the the Swedish
+"FastCut," but when making it open source I renamed it to the Swedish
 word for "composition." It has nothing to do with KDE.
 
 Komposition is a modal, cross-platform, GUI application. The modality means
@@ -100,20 +100,20 @@ that you're always in exactly one mode, and that only certain actions can be
 taken depending on the mode. It currently runs on Linux, Windows, and macOS,
 if you compile and install it from source.
 
-At the heart of the editing model lies the hiearchical timeline, which we'll
+At the heart of the editing model lies the hierarchical timeline, which we'll
 dive into shortly. Other central features of Komposition include the
 automatic video and audio classification tools. They automate the tedious
 task of working through your recorded video and audio files to cut out the
 interesting parts. After importing, you'll have a collection of classified
 video scenes, and a collection of classified audio parts. The audio parts are
 usually sentences, but it depends on how you take rests when recording your
-voiceover.
+voice-over audio.
 
 ### Keyboard-Driven Editing
 
 Komposition is built for keyboard-driven editing, currently with Vim-like
 bindings, and commands transforming the hierarchical timeline, inspired by
-Paredit for Emacs.
+[Paredit for Emacs](https://www.emacswiki.org/emacs/ParEdit).
 
 ![The help dialog shows the current mode's key bindings](/assets/writing-a-screencast-video-editor-in-haskell/keybindings.png){width=345px}
 
@@ -124,20 +124,20 @@ showing the bindings available in the current mode.
 
 ### The Hierarchical Timeline
 
-The hiearchical timeline is a tree structure with a fixed depth. At the leaves
+The hierarchical timeline is a tree structure with a fixed depth. At the leaves
 of the tree there are _clips_. Clips are placed in the video and audio tracks
 of a _parallel_. It's named that way because the video and audio tracks play in
 parallel. Clips within a track play in sequence.
 
 ![Video and audio tracks play in parallel](/assets/writing-a-screencast-video-editor-in-haskell/timeline1.svg)
 
-If the audio track is longer than the video track, the remaning part of the
+If the audio track is longer than the video track, the remaining part of the
 video track is padded with still frames from an adjacent clip.
 
 ![Shorter video tracks are automatically padded with still frames](/assets/writing-a-screencast-video-editor-in-haskell/timeline2.svg)
 
 Explicit _gaps_ can be added to the video and audio tracks. Video gaps are
-padded with still frames, and audio gaps are silent. When you add the gap you
+padded with still frames, and audio gaps are silent. When adding the gap, you
 specify its duration.
 
 ![Gaps can be added in video and audio tracks](/assets/writing-a-screencast-video-editor-in-haskell/timeline3.svg)
@@ -187,19 +187,20 @@ mind-bender_. And I thought I had recursion down.
 
 ## Implementation
 
-I've strived to keep the core domain code in Komposition pure. That is, only
+I've striven to keep the core domain code in Komposition pure. That is, only
 pure function and data structures. Currently, the timeline and focus, command
 and event handling, key bindings, and the video classification algorithm are
 all pure. There are still impure parts, like audio and video import, audio
 classification, preview frame rendering, and the main application control flow.
 
-Some parts are inheritely effectful, so it doesn't make sense to try writing
-them as pure functions, but as soon as the complexity increases it's worth
+Some parts are inherently effectful, so it doesn't make sense to try writing
+them as pure functions, but as soon as the complexity increases, it's worth
 considering what can be separated out as pure functions. The approach of
-"Functional core, imperative shell" (Boundaries, Gary Bernhardt) describes this
-style very well. If you can do this for the complex parts of your program, you
-have a great starting point for automated testing, something I'll cover later in
-this post.
+["Functional core, imperative
+shell"](https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell/)
+describes this style very well. If you can do this for the complex parts of
+your program, you have a great starting point for automated testing,
+something I'll cover later in this post.
 
 ### GTK+
 
@@ -223,7 +224,7 @@ of `gi-gtk`, but they are well-isolated and few in numbers.
 
 ### Type-Indexed State Machines
 
-I had a curiousity itching when starting this project that I decided to
+I had a curiosity itching when starting this project that I decided to
 scratch. Last year I worked on porting [the Idris ST
 library](http://docs.idris-lang.org/en/latest/st/), providing a way to encode
 type-indexed state machines in GHC Haskell. The library is called
@@ -234,7 +235,7 @@ Just to give some short examples, the following type signatures, used in the
 main application control flow, operate on the application state machine
 that's parameterized by its mode.
 
-The `start` function takes a name and keymaps, and creates a new application
+The `start` function takes a name and key maps, and creates a new application
 state machine associated with the name, and in the state of
 `WelcomeScreenMode`:
 
@@ -330,8 +331,9 @@ keymaps =
 In the spirit of calling out usage of advanced GHC features, I think
 singletons and GADTs are one more such instance. However, I find them very
 useful in this context, and worth the added cognitive load. You don't have to
-go full "Dependent Haskell" or bring in the singletons library to leverage
-some of these techniques.
+go full "Dependent Haskell" or bring in the
+[singletons](http://hackage.haskell.org/package/singletons) library to
+leverage some of these techniques.
 
 ### Automatic Scene Classification
 
@@ -370,7 +372,7 @@ data Classified f
 
 Finally, the `classifyMovingScenes` function, given a full duration of the
 original video and a producer of classified frames, returns a producer that
-yields `ProgressUpdate` values and a returns a list `TimeSpan` values.
+yields `ProgressUpdate` values and returns a list of time spans.
 
 ```haskell
 classifyMovingScenes ::
@@ -380,29 +382,29 @@ classifyMovingScenes ::
 	-> Producer ProgressUpdate m [TimeSpan]
 ```
 
-The timespans describe which parts of the original video are considered moving
+The time spans describe which parts of the original video are considered moving
 scenes, and the progress update values are used to render a progress bar in
 the GUI as the classification makes progress.
 
 ### Automatic Sentence Classification
 
 Similar to the video classification, Komposition also classifies audio files
-to find sentences or paragraphs in voiceover audio. The implementation relies
-on the `sox` tool, a separate executable that's used to
+to find sentences or paragraphs in voice-over audio. The implementation relies
+on the `sox` tool, a separate executable that's used to:
 
 1. normalize the audio,
 2. apply a noise gate, and
-3. auto-splitting by silence.
+3. auto-split by silence.
 
 One problem with `sox` is that it, as far as I can tell, can only write the
-split audio files to disk. I haven't found a way to retrieve the timespans in
+split audio files to disk. I haven't found a way to retrieve the time spans in
 the original audio file, so that information is unfortunately lost. This will
-become more appearent when Komposition supports editing the start and end
+become more apparent when Komposition supports editing the start and end
 position of clips, as it can't be supported for audio clips produced by
 `sox`.
 
 I hope to find some way around this, by extending or parsing output from `sox`
-somehow, by using `sox` as a library and writing bindings, or by implementing
+somehow, by using `libsox` through FFI bindings, or by implementing
 the audio classification in Haskell. I'm trying to avoid the last alternative.
 
 ### Rendering
@@ -448,7 +450,7 @@ this application, is the color-tinting video classifier.
 ![Output of the color-tinting video classifier](/assets/writing-a-screencast-video-editor-in-haskell/color-tinting.gif)
 
 It uses the same classification functions as described before, but instead of
-returning timespans, it creates a new video file where moving frames are tinted
+returning time spans, it creates a new video file where moving frames are tinted
 green and still frames are tinted red. This tool made it much easier to tweak
 the classifier and test it on real recordings.
 
@@ -460,9 +462,9 @@ in the implementation. The functionality tested with Hedgehog and properties
 includes:
 
 - **Timeline commands and movement:** It generates a sequence of commands, together with a consistent timeline and focus. It folds over the commands, applying each one to the current timeline and focus, and asserts that the resulting timeline and focus are still consistent. The tested property ensures that there's no possibility of out-of-bounds movement, and that deleting or otherwise transforming the timeline doesn't cause an inconsistent timeline and focus pair.
-- **Video scene classification:** It generates known test scenes of random durations, that are either scenes of only still frames, or scenes with moving frames. It translates the test scenes, which are just descriptions, to real frames, and runs the classifier on the frames. Finally, it checks that the classified scenes are the same as the generated test scenes.
-- **Flattening of hierchical timeline:** The flattening process converts the hierarchical timeline to a flat representation. The tested property ensures that hierarchical and flat timelines are always of the same total duration. There are other properties that could be added, e.g. that all clips in the original timeline are present in the flat timeline.
-- **Roundtrip properties of FFmpeg format printers and parsers:** This is a conventional use of property-based tests. It ensures that parsing an FFmpeg-format timestamp string, produced by the FFmpeg-format timestamp printer, gives you back the same timestamp as you started with.
+- **Video scene classification:** It generates known test scenes of random duration, that are either scenes of only still frames, or scenes with moving frames. It translates the test scenes, which are just descriptions, to real frames, and runs the classifier on the frames. Finally, it checks that the classified scenes are the same as the generated test scenes.
+- **Flattening of hierarchical timeline:** The flattening process converts the hierarchical timeline to a flat representation. The tested property ensures that hierarchical and flat timelines are always of the same total duration. There are other properties that could be added, e.g. that all clips in the original timeline are present in the flat timeline.
+- **Round-trip properties of FFmpeg format printers and parsers:** This is a conventional use of property-based tests. It ensures that parsing an FFmpeg-format timestamp string, produced by the FFmpeg-format timestamp printer, gives you back the same timestamp as you started with.
 
 There are also cases of example-based testing, but I won't cover them in this
 report.
@@ -494,9 +496,9 @@ in Haskell, these bindings have been crucial to the development of Komposition.
 
 The [massiv](http://hackage.haskell.org/package/massiv) package is an array
 library that uses function composition to accomplish a sort of fusion. It's
-used to do parallel pixel comparison in the video classifier. A huge thanks to
-[Alexey Kuleshevich](https://github.com/lehins), the author and maintainer of
-massiv, for helping me implement the first version!
+used to do parallel pixel comparison in the video classifier. Thank you,
+[Alexey Kuleshevich](https://github.com/lehins) (author and maintainer of
+the massiv packages) for helping me implement the first version!
 
 ## Pipes
 
@@ -534,15 +536,15 @@ Monad](https://lettier.github.io/movie-monad/) and
 [Gifcurry](https://lettier.github.io/gifcurry/) for other examples --- but it
 is exciting, nonetheless.
 
-Speaking of using Haskell, the strive to keep complex domain logic free of
+Speaking of using Haskell, the effort to keep complex domain logic free of
 effects, and the use of property-based testing with Hedgehog to lure out
-nasty bugs, has been incredibly satisfying and a great learning experience.
+nasty bugs, has been incredibly satisfactory and a great learning experience.
 
 ### The Problematic Parts
 
 It's not been all fun and games, though. I've spent many hours struggling with
 FFmpeg, video and audio codecs, containers, and streaming. Executing external
-programs and parsing their output has been time consuming and very hard to
+programs and parsing their output has been time-consuming and very hard to
 test. GTK+ has been very valuable, but also difficult to work with in Haskell.
 Finally, management of non-Haskell dependencies, in combination with trying to
 be cross-platform, is painful. Nix has helped with my own setup, but everyone
@@ -556,9 +558,9 @@ There are many features that I'd like to add in the near future.
 - More Vim-like movement commands.
 - Previewing of any timeline part. Currently you can only preview the entire
 timeline, a sequence, or a parallel.
-- Adjustable clips, meaning that you can change the timespan of a clip. This
+- Adjustable clips, meaning that you can change the time span of a clip. This
 is useful if the automatic classification generated slightly incorrect clip
-timespans.
+time spans.
 - Content-addressed project files, to enable reuse of generated files, and to
 avoid collision. This includes most files involved in importing, and generated
 preview frames.
@@ -582,11 +584,12 @@ Some of these I've already started on.
 ## Wrap-Up
 
 I hope you enjoyed reading this report, and that you now have got a clearer
-picture of Komposition, its implementation, and where it's going. If you're
-interested in using it, let me know how it works out by posting in the
-[Gitter channel](https://gitter.im/owickstrom/komposition), or reaching out
-on Twitter. If you want to contribute by reporting bugs or sending pull
-requests, there's [the issue tracker on
+picture of [Komposition](https://owickstrom.github.io/komposition/), its
+implementation, and where it's going. If you're interested in using it, let
+me know how it works out, either by posting in the [Gitter
+channel](https://gitter.im/owickstrom/komposition) or by reaching out [on
+Twitter](https://twitter.com/owickstrom). If you want to contribute by
+reporting bugs or sending pull requests, there's [the issue tracker on
 GitHub](github.com/owickstrom/komposition/issues).
 
 Thanks for reading!
