@@ -589,6 +589,6 @@ me know how it works out, either by posting in the [Gitter
 channel](https://gitter.im/owickstrom/komposition) or by reaching out [on
 Twitter](https://twitter.com/owickstrom). If you want to contribute by
 reporting bugs or sending pull requests, there's [the issue tracker on
-GitHub](github.com/owickstrom/komposition/issues).
+GitHub](https://github.com/owickstrom/komposition/issues).
 
 Thanks for reading!
