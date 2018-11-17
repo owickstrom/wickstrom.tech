@@ -14,4 +14,4 @@ href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons
 Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
 
 The Jekyll code and configuration, CSS, Javascript, and other build-related
-code, is licensed under [Mozilla Public License Version 2.0](LICENSE).
+code, is licensed under [The Unlicense](LICENSE).
