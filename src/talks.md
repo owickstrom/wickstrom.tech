@@ -3,8 +3,23 @@ title: Talks
 layout: page
 ---
 
-## Writing a Screencast Video Editor in Haskell
+## Domain Modeling with Haskell Data Structures
 
+### Events
+
+* [Øredev](http://oredev.org/2018/sessions/domain-modeling-with-haskell-data-structures), November 19-22, 2018, Malmö
+    - [Slides](https://owickstrom.github.io/domain-modeling-with-haskell-data-structures-oredev/#/title-slide)
+
+### Abstract
+
+Haskell is an amazing language for domain modeling, with its purely
+functional foundation, expressive type system, and highly reusable
+abstractions. With Haskell data types as a starting point, this talk
+will explore how we can leverage this power when building and
+maintaining "bread and butter" business applications.
+
+
+## Writing a Screencast Video Editor in Haskell
 
 ### Events
 
@@ -14,9 +29,17 @@ layout: page
 
 ### Abstract
 
-In dire need of better tools when producing screencasts for Haskell at Work, I started building Komposition, the video editor for screencasters. This desktop application automatically detects scenes in screen capture video, detects sentences in audio parts, and features and a high-productivity editing workflow keyboard-driven navigation.
+In dire need of better tools when producing screencasts for Haskell at
+Work, I started building Komposition, the video editor for
+screencasters. This desktop application automatically detects scenes
+in screen capture video, detects sentences in audio parts, and
+features and a high-productivity editing workflow keyboard-driven
+navigation.
 
-I’ll talk about why I started this project, and share my experiences building Komposition using Haskell. I’ll describe its architecture, what packages and techniques I’ve used, and outline the plans for its future.
+I’ll talk about why I started this project, and share my experiences
+building Komposition using Haskell. I’ll describe its architecture,
+what packages and techniques I’ve used, and outline the plans for its
+future.
 
 ## Declarative GTK+ Programming in Haskell
 
@@ -28,7 +51,11 @@ I’ll talk about why I started this project, and share my experiences building 
 
 ### Abstract
 
-Functional programming has made a substantial impact on user interface programming for the web, with virtual DOM technologies and unidirectional data flow. Can the same be done in Haskell without compiling to Javascript and Electron? In this talk you will learn about declarative programming of GTK interfaces with Haskell.
+Functional programming has made a substantial impact on user interface
+programming for the web, with virtual DOM technologies and
+unidirectional data flow. Can the same be done in Haskell without
+compiling to Javascript and Electron? In this talk you will learn
+about declarative programming of GTK interfaces with Haskell.
 
 https://lambdale.org/
 
