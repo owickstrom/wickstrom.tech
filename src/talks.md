@@ -59,6 +59,9 @@ static guarantees for modern web applications.
 * [CodeMesh](http://www.codemesh.io/codemesh2017/oskar-wickstrom), November 7-9, 2017, London
     - [Slides](http://s3.amazonaws.com/erlang-conferences-production/media/files/000/000/756/original/Oskar_Wickstrom_-_Finite-state_machines__Your_compiler_wants_in!.pdf?1510133482)
     - [Video Recording](https://www.youtube.com/watch?v=GWqsmzRpao8)
+* [Lambda Days](http://www.lambdadays.org/lambdadays2018/oskar-wickstrom), February 22, 2018, Krakow
+    - [Slides](http://www.lambdadays.org/static/upload/media/1519637389130819oskarwickstromfinitestatemachines_.pdf)
+    - [Video Recording](https://youtu.be/qwaw3sdkbwM)
 * [BOB konferenz](https://bobkonf.de/2018/wickstroem.html), February 23, 2018, Berlin
     - [Video Recording](https://www.youtube.com/watch?v=5KvsuwspXZI)
 
