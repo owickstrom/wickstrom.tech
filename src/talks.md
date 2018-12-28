@@ -3,6 +3,35 @@ title: Talks
 layout: page
 ---
 
+## Writing a Screencast Video Editor in Haskell
+
+
+### Events
+
+* [Lambda World](http://cadiz.lambda.world), October 25-26, 2018, Cádiz
+  - [Slides](https://owickstrom.github.io/writing-a-screencast-video-editor-in-haskell/)
+  - [Video Recording](https://www.youtube.com/watch?v=psasUATsjQw)
+
+### Abstract
+
+In dire need of better tools when producing screencasts for Haskell at Work, I started building Komposition, the video editor for screencasters. This desktop application automatically detects scenes in screen capture video, detects sentences in audio parts, and features and a high-productivity editing workflow keyboard-driven navigation.
+
+I’ll talk about why I started this project, and share my experiences building Komposition using Haskell. I’ll describe its architecture, what packages and techniques I’ve used, and outline the plans for its future.
+
+## Declarative GTK+ Programming in Haskell
+
+### Events
+
+* [LambdAle](https://lambdale.org/), September 1, 2018, London
+    - [Slides](https://owickstrom.github.io/declarative-gtk-programming-in-haskell/)
+    - [Video Recording](https://www.youtube.com/watch?v=mdQRffXBn0s)
+
+### Abstract
+
+Functional programming has made a substantial impact on user interface programming for the web, with virtual DOM technologies and unidirectional data flow. Can the same be done in Haskell without compiling to Javascript and Electron? In this talk you will learn about declarative programming of GTK interfaces with Haskell.
+
+https://lambdale.org/
+
 ## Fast and Fearless Evolution of Server-Side Web Applications
 
 ### Events
@@ -27,9 +56,11 @@ static guarantees for modern web applications.
 ### Events
 
 * [Foo Cafe](http://www.foocafe.org/malmoe/events/1596-finite-state-machines-your-compiler-wants-in), November 1, 2017, Malmö
-* [CodeMesh](http://www.codemesh.io/codemesh2017/oskar-wickstrom), 7-9 November, 2017, London
+* [CodeMesh](http://www.codemesh.io/codemesh2017/oskar-wickstrom), November 7-9, 2017, London
     - [Slides](http://s3.amazonaws.com/erlang-conferences-production/media/files/000/000/756/original/Oskar_Wickstrom_-_Finite-state_machines__Your_compiler_wants_in!.pdf?1510133482)
     - [Video Recording](https://www.youtube.com/watch?v=GWqsmzRpao8)
+* [BOB konferenz](https://bobkonf.de/2018/wickstroem.html), February 23, 2018, Berlin
+    - [Video Recording](https://www.youtube.com/watch?v=5KvsuwspXZI)
 
 ### Abstract
 
