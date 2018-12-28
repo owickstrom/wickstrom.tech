@@ -7,12 +7,12 @@ UMLS=$(UML_SRCS:src/_uml/%.uml.txt=src/generated/uml/%.svg)
 
 build: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
-	stack build --fast
+	cabal new-build
 	cd src && bundle exec jekyll build --destination ../target
 
 serve: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
-	stack build --fast
+	cabal new-build
 	cd src && bundle exec jekyll serve --destination ../target --unpublished
 
 deploy: build
