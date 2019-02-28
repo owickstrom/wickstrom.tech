@@ -5,15 +5,41 @@ PLANTUML=deps/plantuml.jar
 UML_SRCS=$(shell find src/_uml -name '*.uml.txt')
 UMLS=$(UML_SRCS:src/_uml/%.uml.txt=src/generated/uml/%.svg)
 
+DRAFT_SRCS=$(shell find src/_drafts -name '*.md')
+DRAFTS_PDF=$(DRAFT_SRCS:src/_drafts/%.md=target/drafts/%.pdf)
+DRAFTS_HTML=$(DRAFT_SRCS:src/_drafts/%.md=target/drafts/%.html)
+
+PANDOC_DRAFT_OPTS = -V date:'$(shell date --iso-8601) (draft)'
+PANDOC_DRAFT_PDF_OPTS = -V header-includes:'\usepackage[T1]{fontenc}' \
+												-V header-includes:'\usepackage[lf]{Baskervaldx}' \
+												-V header-includes:'\usepackage{inconsolata}' \
+												-V urlcolor:blue \
+												-V geometry:paperwidth=4in \
+												-V geometry:paperheight=8in \
+												-V geometry:margin=.25in
+
 build: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cabal new-build
-	cd src && bundle exec jekyll build --destination ../target
+	cd src && bundle exec jekyll build --destination ../target/html
 
 serve: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cabal new-build
-	cd src && bundle exec jekyll serve --destination ../target --unpublished
+	cd src && bundle exec jekyll serve --drafts --destination ../target/html --unpublished
+
+target/drafts/%.pdf: src/_drafts/%.md
+	mkdir -p $(shell dirname $@)
+	pandoc --resource-path=.:src $(PANDOC_DRAFT_OPTS) $(PANDOC_DRAFT_PDF_OPTS) $< -o $@
+
+target/drafts/%.html: src/_drafts/%.md
+	mkdir -p $(shell dirname $@)
+	pandoc -s --resource-path=.:src $(PANDOC_DRAFT_OPTS) $< -o $@
+
+drafts: $(DRAFTS_PDF) $(DRAFTS_HTML)
+
+clean:
+	rm -rf target
 
 deploy: build
 	aws s3 sync --region=eu-west-1 target s3://wickstrom.tech --acl=public-read
