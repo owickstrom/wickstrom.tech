@@ -4,7 +4,6 @@ title: "Property-Based Testing in a Screencast Editor: Introduction"
 author: Oskar Wickström
 categories: programming
 tags: ["property", "testing", "quality", "correctness", "haskell"]
-draft: true
 excerpt: |
   This is the first in a series of posts about using property-based
   testing within Komposition, a screencast editor that I've been
@@ -55,7 +54,7 @@ If you are curious about Komposition and want to learn more right
 away, check out its
 [documentation](https://owickstrom.github.io/komposition/).
 
-![Komposition's timeline mode.](assets/property-based-testing-the-ugly-parts/komposition-light.png){width=100%}
+![Komposition's timeline mode.](/assets/property-based-testing-the-ugly-parts/komposition-light.png){width=100%}
 
 Some of the most complex parts of Komposition include focus and
 timeline transformations, video classification, video rendering, and

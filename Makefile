@@ -42,7 +42,7 @@ clean:
 	rm -rf target
 
 deploy: build
-	aws s3 sync --region=eu-west-1 target s3://wickstrom.tech --acl=public-read
+	aws s3 sync --region=eu-west-1 target/html s3://wickstrom.tech --acl=public-read
 	aws cloudfront create-invalidation --distribution-id $(CLOUDFRONT_DISTRIBUTION_ID) --paths '/*'
 
 .PHONY: generate-music-symbols
