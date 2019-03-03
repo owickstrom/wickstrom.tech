@@ -14,8 +14,8 @@ PANDOC_DRAFT_PDF_OPTS = -V header-includes:'\usepackage[T1]{fontenc}' \
 												-V header-includes:'\usepackage[lf]{Baskervaldx}' \
 												-V header-includes:'\usepackage{inconsolata}' \
 												-V urlcolor:blue \
-												-V geometry:paperwidth=4in \
-												-V geometry:paperheight=8in \
+												-V geometry:paperwidth=6.125in \
+												-V geometry:paperheight=9.25in \
 												-V geometry:margin=.25in
 
 build: $(PLANTUML) $(UMLS)
