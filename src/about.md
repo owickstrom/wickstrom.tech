@@ -33,6 +33,46 @@ post some of my stuff at [SoundCloud][soundcloud] and [YouTube][youtube].
 
 ## Public Key
 
+For my current email:
+
+```pgp
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: OpenPGP.js v4.4.6
+Comment: https://openpgpjs.org
+
+xsBNBFx76AIBCAC0GOmgwobniedcFSS+fGS8yzuX8+enLN8+MGm2NHLJBmvE
+CkrFGpwjDe7zxDCHnPkC2vx1nciAED3bICzEfQ377OBDW/l8EtA6W68WL8fY
+yrjUO/dt/OyiKc7kUW6HH/iIivf6FMsCYidGqQBJslxXEJVdeEGb7icomH8B
+6yQWUuomWpyzS2T00A2+VF6i8c3FcAGHviyWShkIrxCKcot2N6IPn5i3PBck
+d+oNlU/osqvn4ZDKtcbea75Kkjt6DZOp7hRS6H67FqbGUS47DPD61gUraGNz
+ClQqlyyttw+AzRclOzN/FXZnaflxvyKkYPhD/jtd/x9xPVYGzcGdVpKjABEB
+AAHNLSJvc2thckB3aWNrc3Ryb20udGVjaCIgPG9za2FyQHdpY2tzdHJvbS50
+ZWNoPsLAdQQQAQgAHwUCXHvoAgYLCQcIAwIEFQgKAgMWAgECGQECGwMCHgEA
+CgkQmwJPImjPoSJZggf/cB1cYiEmdS7Uj1+icdEGDxdRbRAAnsT47Ep1Hzir
+hvDYW1B1S5JOmxH8RVXe2u7nIVa890f4R2zrO2NePQ6NeLnjcUoegRKh0y7n
+O0ZT546HrVuFZUvhpYbx+b86F6fhXyQc2I3xxYFY2drXGrYKEhz+Yz5meF20
+q2G8tniQwXr+ws0vxQfH9mPHWjjaFAC6hP6/8DzXNH9KctjaGpiHc3hEqcr4
+SgSDTK+D7LATiuHPvw+RmjT3ACOTfcrjFd/QX9k5SyYJWmNYwsddrQh9dfGj
+gxJrGpOl4W+BCvv7pZB2k0B6e+cZiwVPUAIJVgXA1n6Ng4NpH182OADuvn8C
+A87ATQRce+gCAQgA68ATkSd30WwGg5J9dJt3vMTGZiiaRisVwQUISpC3rsNk
+xRUjwudm2+9ulBpNVyeHnfDLGLMzflWgfALEnTK5s+Qu/+wYCUsRXp6wdTe3
+1r2zb/tjfqGL1lSvwtjmod2mIM+pVQiBoEr8ON8TTGDnAuC1eJFhnWBW1Ofs
+ru3soGcYo83no+q347BjcEg/uzc9mhrasUO9FX/gIdtgjYPiC7BXkN/Ba7ZA
+GIfjA96qL55umaaQILRfQMs4oRl3GjV+ti6JnaBbt4Bsw7V18CxjaLMZEj/d
+k2sC5u5YdfELgeA6lkbumVipx0SFyfAQ3BN3B1bJex5zES0apkjjVQ/rhQAR
+AQABwsBfBBgBCAAJBQJce+gCAhsMAAoJEJsCTyJoz6EiaTQIAKrtuw3uCX/h
+Yt6aqwrsupuU7K0OjXQermhhiqG9WgCOOUi7z9i6dBA66uFsulsv6OwP4Ix5
+0hygiGOm1E21x/3kuOPD3Qb6mXxYzfuQ5PuZ1YAqYZtkq1DIZ2Aq5gyaud9g
+OEdaoXSkGGAAnfeyK/q7zmFxD3Tt4V/cBYa2k5ZWKs9L5FClsOXrEXKzhYmV
+sYiSOZfR74/WmsZyqP/M2TLrNVJ+b2RQtzyktkMpV0bHVrjnXDlWmJkXrFgV
+fm9PmIEAA0pK4gZNapd1wkXFtZbLpeBirceRXsX2D8GWnVSGq8MTJinS1Kr5
+c7rPResTLynlF5oRoP+ApHkfSww3t3w=
+=yRv9
+-----END PGP PUBLIC KEY BLOCK-----
+```
+
+For my old GPG key used for GMail:
+
 ```pgp
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG/MacGPG2 v2
