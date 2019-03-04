@@ -8,6 +8,56 @@ draft: true
 excerpt: |
 ---
 
+* Intro
+  - Last part introduced:
+    - Komposition
+    - PBT
+    - Writing testable code
+    - How PBT can be hard to in integration testing
+  - This post:
+    - First case study "Timeline flattening"
+    - Warm-up
+    - A collection of pure functions
+* Hierarchical timeline
+  - The timeline is hierarchical
+    - Most NLEs have nested sequences support, but are centered around
+      flat tracks
+    - Parts
+        - Sequences
+        - Parallels
+        - Tracks
+        - Clips and gaps
+    - Organizational
+    - Use to synchronize
+* Timeline Flattening
+  - Motivation
+    - Komposition uses FFmpeg to render the final video file
+    - FFmpeg does not know about timeline hierarchy, only flat video and
+      audio tracks
+    - Flattening converts the hierarchical timeline to a flat timeline:
+      - Video track
+      - Audio track
+  - Tests
+    - Duration
+    - Clip Occurence
+  - Missing properties
+    - How are video gaps padded with still frames?
+      - TODO: How could this be tested?
+    - Same flat result regardless of grouping
+      - split/join sequences, then flatten
+  - Missing feature
+    - Padding with frames from other parallels
+    - Frames are only picked from video clips within the parallel
+    - Should pick from _any_ video clip within the timeline
+    - Write properties to guide my work
+- Wrapping up
+  - We've looked at timeline flattening, the simplest case study in this series
+  - Not an integration test or stubbing out complicated effectful computation
+  - A good warmup
+  - Next up is testing the video classifier
+    - Also a pure function
+    - More complicated and harder to test logic
+
 # Hierarchical Timeline{background=#dddddd}
 
 ## Clips
@@ -57,17 +107,6 @@ If the video track is shorter, it will be padded with still frames
 </aside>
 
 # Case Study 1: Timeline Flattening
-
-## Timeline Flattening
-
-* Timeline is hierarchical
-  - Sequences
-  - Parallels
-  - Tracks
-  - Clips and gaps
-* FFmpeg render knows only about two flat tracks
-  - Video track
-  - Audio track
   
 ## Timeline Flattening (Graphical)
 
