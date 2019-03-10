@@ -39,10 +39,10 @@ excerpt: |
       - Audio track
   - Tests
     - Duration
-    - Clip Occurence
+    - Clip occurence
+    - Still frames used in gaps
+    - Flattening equivalences
   - Missing properties
-    - How are video gaps padded with still frames?
-      - TODO: How could this be tested?
     - Same flat result regardless of grouping
       - split/join sequences, then flatten
   - Missing feature
