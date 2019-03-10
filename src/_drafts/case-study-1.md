@@ -8,17 +8,24 @@ draft: true
 excerpt: |
 ---
 
-* Intro
-  - Last part introduced:
-    - Komposition
-    - PBT
-    - Writing testable code
-    - How PBT can be hard to in integration testing
-  - This post:
-    - First case study "Timeline flattening"
-    - Warm-up
-    - A collection of pure functions
-* Hierarchical timeline
+In the first post of this series I introduced the Komposition
+screencast editor, and briefly explained the fundamentals of
+property-based testing (PBT). Furthermore, I covered how to write
+testable code, regardless of _how_ you check your code with automated
+tests. Lastly, I highlighted some difficulties in using properties to
+perform component and integration testing.
+
+This post is the first case study in the series, covering the
+_timeline flattening_ process in Komposition and how its tested using
+PBT. The property tests aren't integration level tests, but rather
+unit tests. This case study serves as a warm-up to the coming, more
+advanced, ones.
+
+Before we look at the tests, we need to learn more about Komposition's
+hierarchical timeline and how the flattening process works.
+
+## The Hierarchical Timeline
+
   - The timeline is hierarchical
     - Most NLEs have nested sequences support, but are centered around
       flat tracks
@@ -29,28 +36,37 @@ excerpt: |
         - Clips and gaps
     - Organizational
     - Use to synchronize
-* Timeline Flattening
-  - Motivation
-    - Komposition uses FFmpeg to render the final video file
-    - FFmpeg does not know about timeline hierarchy, only flat video and
-      audio tracks
-    - Flattening converts the hierarchical timeline to a flat timeline:
-      - Video track
-      - Audio track
-  - Tests
-    - Duration
-    - Clip occurence
-    - Still frames used in gaps
-    - Flattening equivalences
-  - Missing properties
+
+### Timeline Flattening
+
+- Motivation
+  - Komposition uses FFmpeg to render the final video file
+  - FFmpeg does not know about timeline hierarchy, only flat video and
+    audio tracks
+  - Flattening converts the hierarchical timeline to a flat timeline:
+    - Video track
+    - Audio track
+
+## Property Tests
+
+- Duration
+- Clip occurence
+- Still frames used in gaps
+- Flattening equivalences
+
+### Missing properties
     - Same flat result regardless of grouping
       - split/join sequences, then flatten
-  - Missing feature
-    - Padding with frames from other parallels
-    - Frames are only picked from video clips within the parallel
-    - Should pick from _any_ video clip within the timeline
-    - Write properties to guide my work
-- Wrapping up
+
+## A Missing Feature
+
+- Padding with frames from other parallels
+- Frames are only picked from video clips within the parallel
+- Should pick from _any_ video clip within the timeline
+- Write properties to guide my work
+
+## Summary
+
   - We've looked at timeline flattening, the simplest case study in this series
   - Not an integration test or stubbing out complicated effectful computation
   - A good warmup
