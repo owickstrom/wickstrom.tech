@@ -115,31 +115,29 @@ If the video track is shorter, it will be padded with still frames
 ## Testing Duration
 
 ```{.haskell emphasize=5:5-5:99}
-hprop_flat_timeline_has_same_duration_as_hierarchical =
-  property $ do
-    t <- forAll $ Gen.timeline (Range.exponential 0 20) Gen.parallelWithClips
-    let Just flat = Render.flattenTimeline t
-    durationOf AdjustedDuration t === durationOf AdjustedDuration flat
+hprop_flat_timeline_has_same_duration_as_hierarchical = property $ do
+  timeline' <- forAll $
+    Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
+  let Just flat = Render.flattenTimeline timeline'
+  durationOf AdjustedDuration timeline' === durationOf AdjustedDuration flat
 ````
 
 ## Testing Clip Occurence
 
 ```{.haskell emphasize=5:5-5:99,6:5-6:99}
-hprop_flat_timeline_has_same_clips_as_hierarchical =
-  property $ do
-    t <- forAll $ Gen.timeline (Range.exponential 0 20) Gen.parallelWithClips
-    let Just flat = Render.flattenTimeline t
-    timelineVideoClips t === flatVideoClips flat
-    timelineAudioClips t === flatAudioClips flat
+hprop_flat_timeline_has_same_clips_as_hierarchical = property $ do
+  -- Generate a timeline with clips in each parallel
+  timeline' <- forAll $
+    Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
+
+  -- Flatten the timeline
+  let flat = Render.flattenTimeline timeline'
+
+  -- Check that all video clips occur in the flat timeline
+  flat ^.. _Just . Render.videoParts . each . Render._VideoClipPart
+    === timelineVideoClips timeline'
+
+  -- Check that all audio clips occur in the flat timeline
+  flat ^.. _Just . Render.audioParts . each . Render._AudioClipPart
+    === timelineAudioClips timeline'
 ```
-
-## Further Improvements
-
-* Missing properties
-  - How are video gaps padded with still frames?
-  - Same flat result regardless of grouping (split/join sequences, then flatten)
-* Padding with frames from other parallels
-  - Frames are only picked from video clips within the parallel
-  - Should pick from _any_ video clip within the timeline
-  - Write properties to guide my work
-
