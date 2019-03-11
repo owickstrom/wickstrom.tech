@@ -26,16 +26,29 @@ hierarchical timeline and how the flattening process works.
 
 ## The Hierarchical Timeline
 
-  - The timeline is hierarchical
-    - Most NLEs have nested sequences support, but are centered around
-      flat tracks
-    - Parts
-        - Sequences
-        - Parallels
-        - Tracks
-        - Clips and gaps
-    - Organizational
-    - Use to synchronize
+Komposition's timeline is hierarchical. While many non-linear editing
+systems have support for some form of nesting (Final Cut Pro has
+[compound clips](https://support.apple.com/kb/PH12631?locale=en_US),
+and Adobe Premiere Pro has [nested
+sequences](https://www.premiumbeat.com/blog/nesting-in-adobe-premiere-pro/))
+they are primarily focused on flat timeline workflows. The timeline
+structure and the keyboard-driven editing in Komposition is optimized
+for the screencast editing workflow I use.
+
+It's worth emphasizing that Komposition is _not_ a general video
+editor. In addition to its specific editing workflow, you may need to
+adjust your recording workflow to use it effectively. See the
+[documentation on
+workflow](https://owickstrom.github.io/komposition/user-guide/workflow/)
+for more details.
+
+- Parts
+    - Sequences
+    - Parallels
+    - Tracks
+    - Clips and gaps
+- Organizational
+- Use to synchronize
 
 ### Timeline Flattening
 
