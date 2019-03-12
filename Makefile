@@ -10,9 +10,7 @@ DRAFTS_PDF=$(DRAFT_SRCS:src/_drafts/%.md=target/drafts/%.pdf)
 DRAFTS_HTML=$(DRAFT_SRCS:src/_drafts/%.md=target/drafts/%.html)
 
 PANDOC_DRAFT_OPTS = -V date:'$(shell date --iso-8601) (draft)'
-PANDOC_DRAFT_PDF_OPTS = -V header-includes:'\usepackage[T1]{fontenc}' \
-												-V header-includes:'\usepackage[lf]{Baskervaldx}' \
-												-V header-includes:'\usepackage{inconsolata}' \
+PANDOC_DRAFT_PDF_OPTS = -H src/draft-header.tex \
 												-V urlcolor:blue \
 												-V geometry:paperwidth=6.125in \
 												-V geometry:paperheight=9.25in \

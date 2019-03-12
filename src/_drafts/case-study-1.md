@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Property-Based Testing the Ugly Parts, Case Study 1: Timeline Flattening"
+title: "Property-Based Testing in a Screencast Editor, Case Study 1: Timeline Flattening"
 author: Oskar Wickström
 categories: programming
 tags: ["property", "testing", "quality", "correctness", "haskell"]
@@ -42,15 +42,74 @@ adjust your recording workflow to use it effectively. See the
 workflow](https://owickstrom.github.io/komposition/user-guide/workflow/)
 for more details.
 
-- Parts
-    - Sequences
-    - Parallels
-    - Tracks
-    - Clips and gaps
-- Organizational
-- Use to synchronize
+### Video and Audio in Parallels
 
-### Timeline Flattening
+At the lowest level of the timeline are _clips_ and _gaps_. Those are
+put within the video and audio _tracks_ of _parallels_. The following diagram
+shows a parallel consisting of two video clips and one audio clip. 
+
+![Clips and gaps are placed in video and audio tracks](assets/property-based-testing-the-ugly-parts/timeline1.svg){width=80%}
+
+The tracks of a parallel are played simultaneously (in parallel), as
+indicated by the arrows in the above diagram. The tracks start playing
+at the same time. This makes parallels useful to synchronize the
+playback of specific parts of a screencast, and to group closely
+related clips.
+
+### Gaps
+
+When editing screencasts made up of separate video and audio recording
+you often end up with differing clip durations. The voice-over audio
+clip might be longer than the corresponding video clip, or vice versa.
+A useful default behavior is to extend the short clips. For audio,
+this is easy. Just pad with silence. For video, it's not so clear what
+to do. In Komposition, shorter video tracks are padded with repeated
+still frame sections called _gaps_.
+
+The following diagram shows a parallel with a short video clips and a
+longer audio clip. The dashed area represents the automatically
+inserted gap.
+
+![Still frames are automatically inserted to match track durations](assets/property-based-testing-the-ugly-parts/timeline2.svg){width=80%}
+
+You can also add gaps manually, specifying a duration of the gap and
+inserting it into a video or audio track. The following diagram shows
+a parallel with manually added gaps in both video and audio
+tracks.
+
+![Adding Gaps](assets/property-based-testing-the-ugly-parts/timeline3.svg){width=100%}
+
+Manually added gaps are padded with still frames or silence,
+just as gaps added automatically to match track durations.
+
+### Sequences
+
+Parallels are put in _sequences_. The parallels within a sequence are
+played sequentially; the first one is played in its entirety, then the
+next one, and so on. This behavior is different from how parallels
+play their tracks. Parallels and sequences, with their different
+playback behaviors, make up the fundamental building blocks of the
+compositional editing in Komposition.
+
+The following diagram shows a sequence of two parallels, playing
+sequentially:
+
+![A sequence containing two parallels](assets/property-based-testing-the-ugly-parts/timeline4.svg){width=100%}
+
+### The Timeline
+
+Finally, at the top level, we have the _timeline_. Effectively, the
+timeline is a sequence of sequences; it plays every child sequence in
+sequence. The reason for this level to exist is for the ability to
+group larger chunks of a screencast within separate sequences.
+
+![Timeline](assets/property-based-testing-the-ugly-parts/timeline5.svg){width=100%}
+
+I use separate sequences within the timeline to delimit distinct parts
+of a screencast, such as the introduction, the different chapters, and
+the summary.
+
+## Timeline Flattening
 
 - Motivation
   - Komposition uses FFmpeg to render the final video file
@@ -86,54 +145,6 @@ for more details.
   - Next up is testing the video classifier
     - Also a pure function
     - More complicated and harder to test logic
-
-# Hierarchical Timeline{background=#dddddd}
-
-## Clips
-
-![Clips](assets/property-based-testing-the-ugly-parts/timeline1.svg){width=80%}
-
-<aside class="notes">
-- Clips are put in video and audio tracks within parallels
-- Tracks are played in parallel, hence the name
-</aside>
-
-## Video Still Frames
-
-![Video Still Frames](assets/property-based-testing-the-ugly-parts/timeline2.svg){width=80%}
-
-<aside class="notes">
-If the video track is shorter, it will be padded with still frames
-</aside>
-
-## Adding Gaps
-
-![Adding Gaps](assets/property-based-testing-the-ugly-parts/timeline3.svg){width=100%}
-
-<aside class="notes">
-- You can add explicit gaps in video and audio tracks
-- These are also filled with still frames for video
-</aside>
-
-## Sequences
-
-![Sequences](assets/property-based-testing-the-ugly-parts/timeline4.svg){width=100%}
-
-<aside class="notes">
-- Parallels are put in sequences
-- Each parallel is played until its end, then the next, and so on
-- Multiple parallels can be used to synchronize clips
-</aside>
-
-## Timeline
-
-![Timeline](assets/property-based-testing-the-ugly-parts/timeline5.svg){width=100%}
-
-<aside class="notes">
-- The top level is the timeline
-- The timeline contain sequences
-- It's useful for organizing the parts of your screencast
-</aside>
 
 # Case Study 1: Timeline Flattening
   
