@@ -48,7 +48,7 @@ At the lowest level of the timeline are _clips_ and _gaps_. Those are
 put within the video and audio _tracks_ of _parallels_. The following diagram
 shows a parallel consisting of two video clips and one audio clip. 
 
-![Clips and gaps are placed in video and audio tracks](assets/property-based-testing-the-ugly-parts/timeline1.svg){width=80%}
+![Clips and gaps are placed in video and audio tracks](assets/property-based-testing-the-ugly-parts/timeline1.svg){width=50%}
 
 The tracks of a parallel are played simultaneously (in parallel), as
 indicated by the arrows in the above diagram. The tracks start playing
@@ -70,14 +70,14 @@ The following diagram shows a parallel with a short video clips and a
 longer audio clip. The dashed area represents the automatically
 inserted gap.
 
-![Still frames are automatically inserted to match track durations](assets/property-based-testing-the-ugly-parts/timeline2.svg){width=80%}
+![Still frames are automatically inserted to match track durations](assets/property-based-testing-the-ugly-parts/timeline2.svg){width=50%}
 
 You can also add gaps manually, specifying a duration of the gap and
 inserting it into a video or audio track. The following diagram shows
 a parallel with manually added gaps in both video and audio
 tracks.
 
-![Adding Gaps](assets/property-based-testing-the-ugly-parts/timeline3.svg){width=100%}
+![Adding Gaps](assets/property-based-testing-the-ugly-parts/timeline3.svg){width=50%}
 
 Manually added gaps are padded with still frames or silence,
 just as gaps added automatically to match track durations.
@@ -111,24 +111,107 @@ the summary.
 
 ## Timeline Flattening
 
-- Motivation
-  - Komposition uses FFmpeg to render the final video file
-  - FFmpeg does not know about timeline hierarchy, only flat video and
-    audio tracks
-  - Flattening converts the hierarchical timeline to a flat timeline:
-    - Video track
-    - Audio track
+Komposition currently uses [FFmpeg](https://ffmpeg.org/) to render the
+final media. This is done by constructing an `ffmpeg` command
+invocation with a [filter
+graph](https://ffmpeg.org/ffmpeg-filters.htmL) describing how to fit
+together all clips, still frames, and silent audio parts.
+
+FFmpeg doesn't know about hierarchical timelines; it only cares about
+video and audio streams. To convert the hierarchical timeline into a
+suitable representation to build the FFmpeg filter graph from,
+Komposition performs _timeline flattening_.
+
+The flat representation of a timeline contains only two tracks; audio
+and video. All gaps are _explicitly_ represented in those tracks. The
+following graphs shows how a hierarhical timeline is flattened into
+two tracks.
+
+![Timeline flattening](assets/property-based-testing-the-ugly-parts/komposition-flattening.svg){width=100%}
+
+Notice in the graphic above how the implicit gaps at the ends of video
+and audio tracks get represented with explicit gaps in the flat
+timeline. This is because FFmpeg does not know how to render implicit
+gaps. All gaps are represented explicitly, and are converted to clips
+of still frames or silent audio when rendered with FFmpeg.
 
 ## Property Tests
 
-- Duration
-- Clip occurence
-- Still frames used in gaps
-- Flattening equivalences
+To test the timeline flattening, there are a number of properties that
+are checked. I'll go through each one and their property test code.
 
-### Missing properties
-    - Same flat result regardless of grouping
-      - split/join sequences, then flatten
+### Duration Equality
+
+Given a timeline $t$, where all parallels have at least one video clip,
+the total duration of the flattened $t$ must be equal to the
+total duration of $t$. Or, in a more dense notation,
+
+$$\forall t \in T \to duration(flatten(t)) = duration(t)$$
+
+where $T$ is the set of timelines with at least one video clip in each
+parallel.
+
+The reason that all parallels must have at least one video clip is
+because currently the flattening algorithm can only locate still
+frames for video gaps from within the same parallel. If it encounters
+a parallel with no video clips, the timeline flattening fails. This
+limitation is discussed in greater detail at the end of this article.
+
+The test for the duration equality property is written using Hedgehog,
+and looks like this:
+
+```{.haskell emphasize=5:5-5:99}
+hprop_flat_timeline_has_same_duration_as_hierarchical = property $ do
+  -- Generate a timeline with video clips in each parallel
+  timeline' <- forAll $
+      Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
+
+  -- Flatten the timeline and extract the result
+  let Just flat = Render.flattenTimeline timeline'
+  
+  -- Check that hierarchical and flat timeline durations are equal
+  durationOf AdjustedDuration timeline' === durationOf AdjustedDuration flat
+```
+
+It generates a timeline using `forAll` and the custom generators
+`Gen.timeline` and `Gen.parallelWithClips`. Instead of generating
+timelines of _any_ shape and filtering out only the ones with video
+clips in each parallel, which would be very inefficient, these tests
+use custom generators to only obtain inputs that satisfy the
+invariants of the system.
+
+The range passed to `Gen.timeline` is used as the bounds of the
+generator, such that each level in the generated hierarhical timeline
+will have at most 5 children.
+
+### Clip Occurence
+
+```{.haskell emphasize=5:5-5:99,6:5-6:99}
+hprop_flat_timeline_has_same_clips_as_hierarchical = property $ do
+  -- Generate a timeline with video clips in each parallel
+  timeline' <- forAll $
+      Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
+  
+  -- Flatten the timeline
+  let flat = Render.flattenTimeline timeline'
+  
+  -- Check that all video clips occur in the flat timeline
+  flat ^.. _Just . Render.videoParts . each . Render._VideoClipPart
+      === timelineVideoClips timeline'
+  
+  -- Check that all audio clips occur in the flat timeline
+  flat ^.. _Just . Render.audioParts . each . Render._AudioClipPart
+      === timelineAudioClips timeline'
+```
+
+### Still Frames Used
+
+### Flattening Equivalences
+
+## Missing Properties
+
+- Same flat result regardless of grouping
+  - split/join sequences, then flatten
 
 ## A Missing Feature
 
@@ -145,39 +228,3 @@ the summary.
   - Next up is testing the video classifier
     - Also a pure function
     - More complicated and harder to test logic
-
-# Case Study 1: Timeline Flattening
-  
-## Timeline Flattening (Graphical)
-
-![Timeline flattening](assets/property-based-testing-the-ugly-parts/komposition-flattening.svg){width=100%}
-
-## Testing Duration
-
-```{.haskell emphasize=5:5-5:99}
-hprop_flat_timeline_has_same_duration_as_hierarchical = property $ do
-  timeline' <- forAll $
-    Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
-  let Just flat = Render.flattenTimeline timeline'
-  durationOf AdjustedDuration timeline' === durationOf AdjustedDuration flat
-````
-
-## Testing Clip Occurence
-
-```{.haskell emphasize=5:5-5:99,6:5-6:99}
-hprop_flat_timeline_has_same_clips_as_hierarchical = property $ do
-  -- Generate a timeline with clips in each parallel
-  timeline' <- forAll $
-    Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
-
-  -- Flatten the timeline
-  let flat = Render.flattenTimeline timeline'
-
-  -- Check that all video clips occur in the flat timeline
-  flat ^.. _Just . Render.videoParts . each . Render._VideoClipPart
-    === timelineVideoClips timeline'
-
-  -- Check that all audio clips occur in the flat timeline
-  flat ^.. _Just . Render.audioParts . each . Render._AudioClipPart
-    === timelineAudioClips timeline'
-```
