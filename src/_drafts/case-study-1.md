@@ -173,18 +173,47 @@ hprop_flat_timeline_has_same_duration_as_hierarchical = property $ do
   durationOf AdjustedDuration timeline' === durationOf AdjustedDuration flat
 ```
 
-It generates a timeline using `forAll` and the custom generators
-`Gen.timeline` and `Gen.parallelWithClips`. Instead of generating
-timelines of _any_ shape and filtering out only the ones with video
-clips in each parallel, which would be very inefficient, these tests
-use custom generators to only obtain inputs that satisfy the
-invariants of the system.
+It generates a timeline using `forAll` and custom generators. Instead
+of generating timelines of _any_ shape and filtering out only the ones
+with video clips in each parallel, which would be very inefficient,
+these tests use custom generators to only obtain inputs that satisfy
+the invariants of the system.
 
-The range passed to `Gen.timeline` is used as the bounds of the
-generator, such that each level in the generated hierarhical timeline
-will have at most 5 children.
+The range passed as the first argument to `Gen.timeline` is used as
+the bounds of the generator, such that each level in the generated
+hierarhical timeline will have at most 5 children.
+
+`Gen.timeline` takes as its second argument _another generator_, the
+one used to generate parallels, which in this case is
+`Gen.parallelWithClips`.  With Hedgehog generators being regular
+values, it's practical to compose them like this. A "higher-order
+generator" can be a regular function taking other generators as
+arguments.
+
+As you might have noticed, `durationOf` takes as its first argument a
+value `AdjustedDuration`. What's that about? Well, Komposition
+supports adjusting the playback speed of video media for individual
+clips. To calculate the final duration of a clip, the playback speed
+needs to taken into account. By passing `AdjustedDuration` we take
+playback speed into account for all video clips.
+
+Let's say I had introduced a bug in timeline flattening, in which all
+video gaps weren't added correctly to the flat video tracks. The
+flattening is implemented as a fold, and it would not be unthinkable
+that the accumulator was incorrectly constructed in a case. The test
+would catch this quickly and present us with a minimal
+counter-example:
+
+![Hedgehog presenting a minimal counter-example](assets/property-based-testing-the-ugly-parts/timeline-duration-failure.png){width=100%}
 
 ### Clip Occurence
+
+Slightly more complicated, the next property checks that all clips
+from the hierarchical timeline, and no other clips, occur within the
+flat timeline. As discussed in the introduction on timeline
+flattening, implicit gaps get converted to explicit gaps and thereby
+adding more gaps, but no video or audio clips should be added or
+removed.
 
 ```{.haskell emphasize=5:5-5:99,6:5-6:99}
 hprop_flat_timeline_has_same_clips_as_hierarchical = property $ do
@@ -203,6 +232,12 @@ hprop_flat_timeline_has_same_clips_as_hierarchical = property $ do
   flat ^.. _Just . Render.audioParts . each . Render._AudioClipPart
       === timelineAudioClips timeline'
 ```
+
+The hierarchical timeline is generated and flattened like before. The
+two assertions check that the respective video clips and audio clips
+are equal. It's using lenses to extract clips from the flat timeline,
+and the helper functions `timelineVideoClips` and `timelineAudioClips`
+to extract clips from the original hierarhical timeline.
 
 ### Still Frames Used
 
