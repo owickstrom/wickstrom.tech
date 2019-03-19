@@ -206,6 +206,23 @@ counter-example:
 
 ![Hedgehog presenting a minimal counter-example](assets/property-based-testing-the-ugly-parts/timeline-duration-failure.png){width=100%}
 
+Hedgehog prints the source code for the failing property. Below the
+`forAll` line the generated value is printed. The difference between
+the expected and actual value is printed below the failing
+assertion. In this case it's a simple expression of type
+`Duration`. In case you're comparing large tree-like structures, this
+diff will highlight only the differing expressions. Finally, it prints
+the following:
+
+```
+This failure can be reproduced by running:
+> recheck (Size 23) (Seed 16495576598183007788 5619008431246301857) <property>
+```
+
+When working on finding and fixing the fold bug, we can use the
+printed _size_ and _seed_ values to deterministically run the exact
+same test case over and over.
+
 ### Clip Occurence
 
 Slightly more complicated, the next property checks that all clips
