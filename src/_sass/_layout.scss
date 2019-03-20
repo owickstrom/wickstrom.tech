@@ -506,6 +506,16 @@ figure.two-images {
   font-style: italic;
 }
 
+p br:first-child,
+p br:last-child {
+    display: none;
+}
+
+p .math.display {
+    display: block;
+    text-align: center;
+}
+
 @media print {
   .home-page .title-pane {
     position: static;
