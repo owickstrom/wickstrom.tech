@@ -160,24 +160,24 @@ limitation is discussed in greater detail at the end of this article.
 The test for the duration equality property is written using Hedgehog,
 and looks like this:
 
-```{.haskell emphasize=5:5-5:99}
+```{.haskell}
 hprop_flat_timeline_has_same_duration_as_hierarchical = property $ do
-  -- Generate a timeline with video clips in each parallel
+  -- 1. Generate a timeline with video clips in each parallel
   timeline' <- forAll $
       Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
 
-  -- Flatten the timeline and extract the result
+  -- 2. Flatten the timeline and extract the result
   let Just flat = Render.flattenTimeline timeline'
   
-  -- Check that hierarchical and flat timeline durations are equal
+  -- 3. Check that hierarchical and flat timeline durations are equal
   durationOf AdjustedDuration timeline' === durationOf AdjustedDuration flat
 ```
 
-It generates a timeline using `forAll` and custom generators. Instead
-of generating timelines of _any_ shape and filtering out only the ones
-with video clips in each parallel, which would be very inefficient,
-these tests use custom generators to only obtain inputs that satisfy
-the invariants of the system.
+In step 1, it generates a timeline using `forAll` and custom
+generators. Instead of generating timelines of _any_ shape and
+filtering out only the ones with video clips in each parallel, which
+would be very inefficient, these tests use custom generators to only
+obtain inputs that satisfy the invariants of the system.
 
 The range passed as the first argument to `Gen.timeline` is used as
 the bounds of the generator, such that each level in the generated
@@ -190,12 +190,14 @@ values, it's practical to compose them like this. A "higher-order
 generator" can be a regular function taking other generators as
 arguments.
 
-As you might have noticed, `durationOf` takes as its first argument a
-value `AdjustedDuration`. What's that about? Well, Komposition
+As you might have noticed in step 3, `durationOf` takes as its first
+argument a value `AdjustedDuration`. What's that about?  Komposition
 supports adjusting the playback speed of video media for individual
 clips. To calculate the final duration of a clip, the playback speed
 needs to taken into account. By passing `AdjustedDuration` we take
 playback speed into account for all video clips.
+
+#### Sidetrack: Finding a Bug
 
 Let's say I had introduced a bug in timeline flattening, in which all
 video gaps weren't added correctly to the flat video tracks. The
@@ -232,44 +234,52 @@ flattening, implicit gaps get converted to explicit gaps and thereby
 adding more gaps, but no video or audio clips should be added or
 removed.
 
-```{.haskell emphasize=5:5-5:99,6:5-6:99}
+```{.haskell}
 hprop_flat_timeline_has_same_clips_as_hierarchical = property $ do
-  -- Generate a timeline with video clips in each parallel
+  -- 1. Generate a timeline with video clips in each parallel
   timeline' <- forAll $
       Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
   
-  -- Flatten the timeline
+  -- 2. Flatten the timeline
   let flat = Render.flattenTimeline timeline'
   
-  -- Check that all video clips occur in the flat timeline
+  -- 3. Check that all video clips occur in the flat timeline
   flat ^.. _Just . Render.videoParts . each . Render._VideoClipPart
       === timelineVideoClips timeline'
   
-  -- Check that all audio clips occur in the flat timeline
+  -- 4. Check that all audio clips occur in the flat timeline
   flat ^.. _Just . Render.audioParts . each . Render._AudioClipPart
       === timelineAudioClips timeline'
 ```
 
-The hierarchical timeline is generated and flattened like before. The
-two assertions check that the respective video clips and audio clips
-are equal. It's using lenses to extract clips from the flat timeline,
-and the helper functions `timelineVideoClips` and `timelineAudioClips`
-to extract clips from the original hierarhical timeline.
+The hierarchical timeline is generated and flattened like before (1,
+2). The two assertions check that the respective video clips (3) and
+audio clips (4) are equal. It's using lenses to extract clips from the
+flat timeline, and the helper functions `timelineVideoClips` and
+`timelineAudioClips` to extract clips from the original hierarhical
+timeline.
 
 ### Still Frames Used
 
 ```{.haskell}
 hprop_flat_timeline_uses_still_frame_from_single_clip = property $ do
+  -- 1. Generate a video track generator where the first video part
+  --    is always a clip
   let genVideoTrack = do
         v1 <- Gen.videoClip
         vs <- Gen.list (Range.linear 0 1) Gen.videoPart
         pure (VideoTrack () (v1 : vs))
+
+  -- 2. Generate a timeline with the custom video track generator
   timeline' <- forAll $ Gen.timeline
     (Range.exponential 0 5)
     (Parallel () <$> genVideoTrack <*> Gen.audioTrack)
 
-  flat <- annotateShowId (Render.flattenTimeline timeline')
+  -- 3. Flatten the timeline
+  let flat = Render.flattenTimeline timeline'
 
+  -- 4. Check that any video gaps will use the last frame of a 
+  --    preceding video clip
   flat
     ^.. ( _Just
         . Render.videoParts
@@ -282,8 +292,8 @@ hprop_flat_timeline_uses_still_frame_from_single_clip = property $ do
 
 ```{.haskell}
 hprop_flat_timeline_uses_still_frames_from_subsequent_clips = property $ do
-  -- Generate a parallel where the video track ends with a video clip,
-  -- and where the audio track is shorter.
+  -- 1. Generate a parallel where the video track ends with a video clip,
+  --    and where the audio track is shorter.
   let
     genParallel = do
       vt <-
@@ -299,10 +309,13 @@ hprop_flat_timeline_uses_still_frames_from_subsequent_clips = property $ do
         )
       pure (Parallel () vt at)
 
+  -- 2. Generate a timeline with the custom parallel generator
   timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) genParallel
 
-  flat      <- annotateShowId (Render.flattenTimeline timeline')
+  -- 3. Flatten the timeline
+  let flat = Render.flattenTimeline timeline'
 
+  -- 4. Check that all gaps use the first frame of subsequent clips
   flat
     ^.. ( _Just
         . Render.videoParts
@@ -315,8 +328,8 @@ hprop_flat_timeline_uses_still_frames_from_subsequent_clips = property $ do
 
 ```{.haskell}
 hprop_flat_timeline_uses_last_frame_for_automatic_video_padding = property $ do
-  -- Generate a parallel where the video track only contains a video
-  -- clip, and where the audio track is longer.
+  -- 1. Generate a parallel where the video track only contains a video
+  --    clip, and where the audio track is longer
   let
     genParallel = do
       vt <- VideoTrack () . pure <$> Gen.videoClip
@@ -327,9 +340,14 @@ hprop_flat_timeline_uses_last_frame_for_automatic_video_padding = property $ do
         )
       pure (Parallel () vt at)
 
+  -- 2. Generate a timeline with the custom parallel generator
   timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) genParallel
 
-  flat      <- annotateShowId (Render.flattenTimeline timeline')
+  -- 3. Flatten the timeline
+  let flat = Render.flattenTimeline timeline'
+
+  -- 4. Check that video gaps (which should be a single gap at the
+  --    end of the video track) use the last frame of preceding clips
   flat
     ^.. ( _Just
         . Render.videoParts
