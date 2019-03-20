@@ -220,8 +220,8 @@ This failure can be reproduced by running:
 ```
 
 When working on finding and fixing the fold bug, we can use the
-printed _size_ and _seed_ values to deterministically run the exact
-same test case over and over.
+printed _size_ and _seed_ values to deterministically rerun the test
+with the exact same inputs.
 
 ### Clip Occurence
 
@@ -258,10 +258,96 @@ to extract clips from the original hierarhical timeline.
 
 ### Still Frames Used
 
+```{.haskell}
+hprop_flat_timeline_uses_still_frame_from_single_clip = property $ do
+  let genVideoTrack = do
+        v1 <- Gen.videoClip
+        vs <- Gen.list (Range.linear 0 1) Gen.videoPart
+        pure (VideoTrack () (v1 : vs))
+  timeline' <- forAll $ Gen.timeline
+    (Range.exponential 0 5)
+    (Parallel () <$> genVideoTrack <*> Gen.audioTrack)
+
+  flat <- annotateShowId (Render.flattenTimeline timeline')
+
+  flat
+    ^.. ( _Just
+        . Render.videoParts
+        . each
+        . Render._StillFramePart
+        . Render.stillFrameMode
+        )
+    &   traverse_ (Render.LastFrame ===)
+```
+
+```{.haskell}
+hprop_flat_timeline_uses_still_frames_from_subsequent_clips = property $ do
+  -- Generate a parallel where the video track ends with a video clip,
+  -- and where the audio track is shorter.
+  let
+    genParallel = do
+      vt <-
+        VideoTrack ()
+          <$> (   snoc
+              <$> Gen.list (Range.linear 1 10) Gen.videoPart
+              <*> Gen.videoClip
+              )
+      at <- AudioTrack () . pure . AudioGap () <$> Gen.duration'
+        (Range.linearFrac
+          0
+          (durationToSeconds (durationOf AdjustedDuration vt) - 0.1)
+        )
+      pure (Parallel () vt at)
+
+  timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) genParallel
+
+  flat      <- annotateShowId (Render.flattenTimeline timeline')
+
+  flat
+    ^.. ( _Just
+        . Render.videoParts
+        . each
+        . Render._StillFramePart
+        . Render.stillFrameMode
+        )
+    &   traverse_ (Render.FirstFrame ===)
+```
+
+```{.haskell}
+hprop_flat_timeline_uses_last_frame_for_automatic_video_padding = property $ do
+  -- Generate a parallel where the video track only contains a video
+  -- clip, and where the audio track is longer.
+  let
+    genParallel = do
+      vt <- VideoTrack () . pure <$> Gen.videoClip
+      at <- AudioTrack () . pure . AudioGap () <$> Gen.duration'
+        (Range.linearFrac
+          (durationToSeconds (durationOf AdjustedDuration vt) + 0.1)
+          10
+        )
+      pure (Parallel () vt at)
+
+  timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) genParallel
+
+  flat      <- annotateShowId (Render.flattenTimeline timeline')
+  flat
+    ^.. ( _Just
+        . Render.videoParts
+        . each
+        . Render._StillFramePart
+        . Render.stillFrameMode
+        )
+    &   traverse_ (Render.LastFrame ===)
+```
+
 ### Flattening Equivalences
 
 ## Missing Properties
 
+- Checking the timestamps in which the clips occurs within in the
+  timeline are the same
+  - Technique: annotate clips with their playback timestamp first
+    (needed anyway), then extract and compare
 - Same flat result regardless of grouping
   - split/join sequences, then flatten
 
