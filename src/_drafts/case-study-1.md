@@ -229,7 +229,7 @@ with the exact same inputs.
 ## Property: Clip Occurence
 
 Slightly more complicated than the duration equality property, the
-clip occurence property checks that all clips from the hierarchical
+clip occurrence property checks that all clips from the hierarchical
 timeline, and no other clips, occur within the flat timeline. As
 discussed in the introduction on timeline flattening, implicit gaps
 get converted to explicit gaps and thereby add more gaps, but no
@@ -271,12 +271,12 @@ pure function, and thus easier to test. Another processing step runs
 the effectful action that extracts still frames from video files on
 disk.
 
-The decision of still frame mode and and source is made by the
-flattening algorithm based on the parallel in which each gap occurs
-in, and what video clips are present before or after. It favours using
-clips occuring after the gap. It only uses frames from clips before
-the gap in case there are no clips following it. To test this
-behaviour, I've defined three properties.
+The decision of still frame mode and source is made by the flattening
+algorithm based on the parallel in which each gap occur, and what
+video clips are present before or after. It favours using clips
+occuring after the gap. It only uses frames from clips before the gap
+in case there are no clips following it. To test this behaviour, I've
+defined three properties.
 
 ### Property: Single Initial Video Clip
 
@@ -420,8 +420,7 @@ be one at the end.
 
 ## Missing Properties
 
-- Checking the timestamps in which the clips occurs within in the
-  timeline are the same
+- Checking the timestamps at which the clips occurs are the same
   - Technique: annotate clips with their playback timestamp first
     (needed anyway), then extract and compare
 - Checking the source assets used as still frame sources, not only the still frame mode
