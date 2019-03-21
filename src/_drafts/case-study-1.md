@@ -226,7 +226,7 @@ When working on finding and fixing the fold bug, we can use the
 printed _size_ and _seed_ values to deterministically rerun the test
 with the exact same inputs.
 
-### Clip Occurence
+## Property: Clip Occurence
 
 Slightly more complicated than the duration equality property, the
 clip occurence property checks that all clips from the hierarchical
@@ -260,7 +260,7 @@ flat timeline, and the helper functions `timelineVideoClips` and
 `timelineAudioClips` to extract clips from the original hierarhical
 timeline.
 
-### Still Frames Used
+## Still Frames Used
 
 In the process of flattening, the still frame source for each gap is
 selected. It doesn't assign the actual pixel data to the gap, but a
@@ -278,7 +278,7 @@ clips occuring after the gap. It only uses frames from clips before
 the gap in case there are no clips following it. To test this
 behaviour, I've defined three properties.
 
-#### Single Initial Video Clip
+### Property: Single Initial Video Clip
 
 The following property checks that an initial single video clip,
 followed by one or more gaps, is used as a the still frame source for
@@ -321,7 +321,7 @@ end of the video track. In either case, all video gaps should use the
 initial video clip as their still frame source, which is checked in
 the assertion (4).
 
-#### Ending with a Video Clip
+### Property: Ending with a Video Clip
 
 In case the video track ends with a video clip, and is longer than the
 audio track, all video gaps within the track should use the first
@@ -370,7 +370,7 @@ video gap at the end of the video track. Generating (2) and flattening
 (3) is otherwise the same as before. The assertion (4) checks that all
 video gaps uses the first frame of a following clip.
 
-#### Ending with an Implicit Video Gap
+### Property: Ending with an Implicit Video Gap
 
 The last property on still frame usage covers the case where the video
 track is shorter than the audio track. This leaves an implicit gap
@@ -416,7 +416,7 @@ property tests. The assertion (4) checks that all video gaps use the
 last frame of preceeding clips, even if we know that there should only
 be one at the end.
 
-### Flattening Equivalences
+## Property: Flattening Equivalences
 
 ## Missing Properties
 
