@@ -173,11 +173,11 @@ hprop_flat_timeline_has_same_duration_as_hierarchical = property $ do
   durationOf AdjustedDuration timeline' === durationOf AdjustedDuration flat
 ```
 
-In step 1, it generates a timeline using `forAll` and custom
-generators. Instead of generating timelines of _any_ shape and
-filtering out only the ones with video clips in each parallel, which
-would be very inefficient, these tests use custom generators to only
-obtain inputs that satisfy the invariants of the system.
+It generates a timeline using `forAll` and custom generators
+(1). Instead of generating timelines of _any_ shape and filtering out
+only the ones with video clips in each parallel, which would be very
+inefficient, this test uses a custom generator to only obtain inputs
+that satisfy the invariants of the system under test.
 
 The range passed as the first argument to `Gen.timeline` is used as
 the bounds of the generator, such that each level in the generated
@@ -190,12 +190,13 @@ values, it's practical to compose them like this. A "higher-order
 generator" can be a regular function taking other generators as
 arguments.
 
-As you might have noticed in step 3, `durationOf` takes as its first
-argument a value `AdjustedDuration`. What's that about?  Komposition
-supports adjusting the playback speed of video media for individual
-clips. To calculate the final duration of a clip, the playback speed
-needs to taken into account. By passing `AdjustedDuration` we take
-playback speed into account for all video clips.
+As you might have noticed in the assertion (3), `durationOf` takes as
+its first argument a value `AdjustedDuration`. What's that about?
+Komposition supports adjusting the playback speed of video media for
+individual clips. To calculate the final duration of a clip, the
+playback speed needs to taken into account. By passing
+`AdjustedDuration` we take playback speed into account for all video
+clips.
 
 #### Sidetrack: Finding a Bug
 
@@ -227,12 +228,12 @@ with the exact same inputs.
 
 ### Clip Occurence
 
-Slightly more complicated, the next property checks that all clips
-from the hierarchical timeline, and no other clips, occur within the
-flat timeline. As discussed in the introduction on timeline
-flattening, implicit gaps get converted to explicit gaps and thereby
-adding more gaps, but no video or audio clips should be added or
-removed.
+Slightly more complicated than the duration equality property, the
+clip occurence property checks that all clips from the hierarchical
+timeline, and no other clips, occur within the flat timeline. As
+discussed in the introduction on timeline flattening, implicit gaps
+get converted to explicit gaps and thereby add more gaps, but no
+video or audio clips should be added or removed.
 
 ```{.haskell}
 hprop_flat_timeline_has_same_clips_as_hierarchical = property $ do
@@ -261,13 +262,35 @@ timeline.
 
 ### Still Frames Used
 
+In the process of flattening, the still frame source for each gap is
+selected. It doesn't assign the actual pixel data to the gap, but a
+value describing which asset the still frame should be extracted from,
+and whether to pick the first or the last frame (known as _still frame
+mode_.) This representation lets the flattening algorithm remain a
+pure function, and thus easier to test. Another processing step runs
+the effectful action that extracts still frames from video files on
+disk.
+
+The decision of still frame mode and and source is made by the
+flattening algorithm based on the parallel in which each gap occurs
+in, and what video clips are present before or after. It favours using
+clips occuring after the gap. It only uses frames from clips before
+the gap in case there are no clips following it. To test this
+behaviour, I've defined three properties.
+
+#### Single Initial Video Clip
+
+The following property checks that an initial single video clip,
+followed by one or more gaps, is used as a the still frame source for
+those gaps.
+
 ```{.haskell}
 hprop_flat_timeline_uses_still_frame_from_single_clip = property $ do
   -- 1. Generate a video track generator where the first video part
   --    is always a clip
   let genVideoTrack = do
         v1 <- Gen.videoClip
-        vs <- Gen.list (Range.linear 0 1) Gen.videoPart
+        vs <- Gen.list (Range.linear 1 5) Gen.videoGap
         pure (VideoTrack () (v1 : vs))
 
   -- 2. Generate a timeline with the custom video track generator
@@ -289,6 +312,16 @@ hprop_flat_timeline_uses_still_frame_from_single_clip = property $ do
         )
     &   traverse_ (Render.LastFrame ===)
 ```
+
+The custom video track generator (1) always produces tracks with an
+initial video clip followed by one or more video gaps. The generated
+timeline (2) can contain parallels with any audio track shape, which
+may result in a _longer_ audio track and thus an implicit gap at the
+end of the video track. In either case, all video gaps should use the
+initial video clip as their still frame source, which is checked in
+the assertion (4).
+
+#### Ending with a Video Clip
 
 ```{.haskell}
 hprop_flat_timeline_uses_still_frames_from_subsequent_clips = property $ do

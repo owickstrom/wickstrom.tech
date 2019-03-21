@@ -12,6 +12,8 @@ DRAFTS_HTML=$(DRAFT_SRCS:src/_drafts/%.md=target/drafts/%.html)
 PANDOC_DRAFT_OPTS = -V date:'$(shell date --iso-8601) (draft)'
 PANDOC_DRAFT_PDF_OPTS = -H src/draft-header.tex \
 												-V urlcolor:blue \
+												--highlight-style=kate \
+												--number-sections \
 												-V geometry:paperwidth=6.125in \
 												-V geometry:paperheight=9.25in \
 												-V geometry:margin=.25in
@@ -26,7 +28,7 @@ serve: $(PLANTUML) $(UMLS)
 	cabal new-build
 	cd src && bundle exec jekyll serve --drafts --destination ../target/html --unpublished
 
-target/drafts/%.pdf: src/_drafts/%.md
+target/drafts/%.pdf: src/_drafts/%.md src/draft-header.tex
 	mkdir -p $(shell dirname $@)
 	pandoc --resource-path=.:src $(PANDOC_DRAFT_OPTS) $(PANDOC_DRAFT_PDF_OPTS) $< -o $@
 
