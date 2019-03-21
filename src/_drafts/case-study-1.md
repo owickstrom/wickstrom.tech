@@ -323,10 +323,14 @@ the assertion (4).
 
 #### Ending with a Video Clip
 
+In case the video track ends with a video clip, and is longer than the
+audio track, all video gaps within the track should use the first
+frame of a following clip.
+
 ```{.haskell}
 hprop_flat_timeline_uses_still_frames_from_subsequent_clips = property $ do
   -- 1. Generate a parallel where the video track ends with a video clip,
-  --    and where the audio track is shorter.
+  --    and where the audio track is shorter
   let
     genParallel = do
       vt <-
@@ -359,6 +363,20 @@ hprop_flat_timeline_uses_still_frames_from_subsequent_clips = property $ do
     &   traverse_ (Render.FirstFrame ===)
 ```
 
+The custom generator (1) produces parallels where the video track is
+guaranteed to end with a clip, and where the audio track is 100 ms
+shorter than the video track. This ensures that there's no implicit
+video gap at the end of the video track. Generating (2) and flattening
+(3) is otherwise the same as before. The assertion (4) checks that all
+video gaps uses the first frame of a following clip.
+
+#### Ending with an Implicit Video Gap
+
+The last property on still frame usage covers the case where the video
+track is shorter than the audio track. This leaves an implicit gap
+which, just like explicit gaps inserted by the user, are padded with
+still frames.
+
 ```{.haskell}
 hprop_flat_timeline_uses_last_frame_for_automatic_video_padding = property $ do
   -- 1. Generate a parallel where the video track only contains a video
@@ -380,7 +398,7 @@ hprop_flat_timeline_uses_last_frame_for_automatic_video_padding = property $ do
   let flat = Render.flattenTimeline timeline'
 
   -- 4. Check that video gaps (which should be a single gap at the
-  --    end of the video track) use the last frame of preceding clips
+  --    end of the video track) use the last frame of preceeding clips
   flat
     ^.. ( _Just
         . Render.videoParts
@@ -391,6 +409,13 @@ hprop_flat_timeline_uses_last_frame_for_automatic_video_padding = property $ do
     &   traverse_ (Render.LastFrame ===)
 ```
 
+The custom generator (1) generates a video track consisting of video
+clips only, and an audio track that is 100ms longer. Generating the
+timeline (2) and flattening (3) are again similar to the previous
+property tests. The assertion (4) checks that all video gaps use the
+last frame of preceeding clips, even if we know that there should only
+be one at the end.
+
 ### Flattening Equivalences
 
 ## Missing Properties
@@ -399,6 +424,9 @@ hprop_flat_timeline_uses_last_frame_for_automatic_video_padding = property $ do
   timeline are the same
   - Technique: annotate clips with their playback timestamp first
     (needed anyway), then extract and compare
+- Checking the source assets used as still frame sources, not only the still frame mode
+  - Technique: Calculate _asset to part index_ mapping and use that to
+    ensure asset is pulled from clip before or after a gap
 - Same flat result regardless of grouping
   - split/join sequences, then flatten
 
