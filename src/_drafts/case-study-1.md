@@ -418,6 +418,16 @@ be one at the end.
 
 ## Properties: Flattening Equivalences
 
+The last property I want to show in this case study checks flattening
+at the sequence and parallel levels. While rendering a full project
+always flattens at the timeline, the _preview_ feature in Komposition
+can be used to render and preview a single sequence or parallel.
+
+There should be no difference between flattening an entire timeline
+and flattening all of its sequences or parallels and folding those
+results into a single flat timeline. This is what the _flattening
+equivalences_ properties are about.
+
 ```haskell
 hprop_flat_timeline_is_same_as_all_its_flat_sequences = property $ do
   -- 1. Generate a timeline
@@ -430,6 +440,9 @@ hprop_flat_timeline_is_same_as_all_its_flat_sequences = property $ do
   -- 3. Flatten the entire timeline and compare to the flattened sequences
   Render.flattenTimeline timeline' === flat
 ```
+
+The first property generates a timeline (1) with the regular
+`Gen.parallel` generator.
 
 ```haskell
 hprop_flat_timeline_is_same_as_all_its_flat_parallels = property $ do
