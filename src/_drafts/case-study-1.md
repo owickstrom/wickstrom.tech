@@ -431,31 +431,58 @@ equivalences_ properties are about.
 ```haskell
 hprop_flat_timeline_is_same_as_all_its_flat_sequences = property $ do
   -- 1. Generate a timeline
-  timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) Gen.parallel
+  timeline' <- forAll $
+    Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
 
   -- 2. Flatten all sequences and fold the resulting flat timelines together
   let flat = timeline' ^.. sequences . each
              & foldMap Render.flattenSequence
+
+  -- 3. Make sure we successfully flattened the timeline
+  flat /== Nothing
              
-  -- 3. Flatten the entire timeline and compare to the flattened sequences
+  -- 4. Flatten the entire timeline and compare to the flattened sequences
   Render.flattenTimeline timeline' === flat
 ```
 
-The first property generates a timeline (1) with the regular
-`Gen.parallel` generator.
+The first property generates a timeline (1) where all parallels have
+at least one video clip. It flattens all sequences within the timeline
+and folds the results together (2). Folding flat timelines together
+means appending their clips and gaps sequentially.
+
+Before the final assertion, it checks that we got a result (3) and not
+`Nothing`. As it's using the `Gen.parallelWithClips` generator there
+should always be video clips in each parallel, and we should always
+successfully flatten and get a result. The final assertion (4) checks
+that rendering the original timeline gives the same result as the
+folded-together results of rendering each sequence.
+
+The other property is very similar, but operates on parallels rather
+than sequences:
 
 ```haskell
-hprop_flat_timeline_is_same_as_all_its_flat_parallels = property $ do
-  -- 1. Generate a timeline
-  timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) Gen.parallel
-
-  -- 2. Flatten all parallels and fold the resulting flat timelines together
-  let flat = timeline' ^.. sequences . each . parallels . each
-             & foldMap Render.flattenParallel
-
-  -- 3. Flatten the entire timeline and compare to the flattened parallels
-  Render.flattenTimeline timeline' === flat
+hprop_flat_timeline_is_same_as_all_its_flat_parallels =
+  property $ do
+    -- 1. Generate a timeline
+    timeline' <- forAll $
+      Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
+  
+    -- 2. Flatten all parallels and fold the resulting flat
+    --    timelines together
+    let flat = timeline' ^.. sequences . each . parallels . each
+               & foldMap Render.flattenParallel
+  
+    -- 3. Make sure we successfully flattened the timeline
+    flat /== Nothing
+  
+    -- 4. Flatten the entire timeline and compare to the flattened 
+    --    parallels
+    Render.flattenTimeline timeline' === flat
 ```
+
+The only difference is in the traversal (2), where we apply
+`Render.flattenParallel` to each parallel instead of applying
+`Render.flattenSequence` to each sequence.
 
 
 ## Missing Properties
