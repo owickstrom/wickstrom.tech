@@ -68,6 +68,17 @@ body {
     font-style: italic;
   }
 }
+.footnote-ref {
+  text-decoration: none;
+  sup {
+    text-decoration: underline;
+  }
+  &:hover {
+    sup {
+      text-decoration: none;
+    }
+  }
+}
 
 @media screen and (max-width: $on-palm) {
   .top-nav .nav ul a {
