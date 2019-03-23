@@ -3,5 +3,6 @@ _site
 .jekyll-metadata
 /target
 /deps
+/src/vendor/bundle
 .stack-work
 .tmp

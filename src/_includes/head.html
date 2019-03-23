@@ -35,4 +35,8 @@
   {% else %}
   <meta name="twitter:description" content="{{ site.description }}">
   {% endif %}
+
+  {% if site.local %}
+  <script src="http://localhost:35729/livereload.js"></script>
+  {% endif %}
 </head>

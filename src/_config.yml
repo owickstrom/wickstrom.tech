@@ -43,3 +43,5 @@ pandoc:
 plantuml:
   plantuml_jar: ../deps/plantuml.jar     # path to plantuml jar
   tmp_folder: generated
+
+local: true
