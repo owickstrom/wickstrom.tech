@@ -31,13 +31,13 @@ body {
 
 @include media-query($on-laptop) {
   html {
-    font-size: $base-font-size - 2;
+    font-size: $base-font-size - 1;
   }
 }
 
 @include media-query($on-palm) {
   html {
-    font-size: $base-font-size - 4;
+    font-size: $base-font-size - 2;
   }
 }
 
@@ -48,11 +48,11 @@ body {
 blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
-  margin-bottom: $spacing-unit;
+  margin-bottom: $spacing-unit/2;
 }
 
 p {
-  margin-bottom: 1em;
+  margin-bottom: $spacing-unit/2;
 }
 
 /**
@@ -156,12 +156,10 @@ pre,
 code {
   font-family: $monospace-font-family;
   font-size: 0.85rem;
-  line-height: inherit;
+  line-height: 1.4;
 }
 
 pre {
-  padding: ($base-line-height * 0.5rem);
-  margin: ($base-line-height * 1rem) 0;
   overflow-x: auto;
 }
 
