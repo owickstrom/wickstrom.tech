@@ -103,7 +103,8 @@ timeline is a sequence of sequences; it plays every child sequence in
 sequence. The reason for this level to exist is for the ability to
 group larger chunks of a screencast within separate sequences.
 
-![Timeline](/assets/property-based-testing-the-ugly-parts/timeline5.svg){width=100%}
+![A timeline containing two sequences, with two parallels
+each](/assets/property-based-testing-the-ugly-parts/timeline5.svg){width=100%}
 
 I use separate sequences within the timeline to delimit distinct parts
 of a screencast, such as the introduction, the different chapters, and
@@ -127,7 +128,7 @@ and video. All gaps are _explicitly_ represented in those tracks. The
 following graphs shows how a hierarhical timeline is flattened into
 two tracks.
 
-![Timeline flattening](/assets/property-based-testing-the-ugly-parts/komposition-flattening.svg){width=100%}
+![Timeline flattening transforming a hierarchical timeline](/assets/property-based-testing-the-ugly-parts/komposition-flattening.svg){width=100%}
 
 Notice in the graphic above how the implicit gaps at the ends of video
 and audio tracks get represented with explicit gaps in the flat
@@ -161,16 +162,18 @@ The test for the duration equality property is written using Hedgehog,
 and looks like this:
 
 ```{.haskell}
-hprop_flat_timeline_has_same_duration_as_hierarchical = property $ do
-  -- 1. Generate a timeline with video clips in each parallel
-  timeline' <- forAll $
-      Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
-
-  -- 2. Flatten the timeline and extract the result
-  let Just flat = Render.flattenTimeline timeline'
+hprop_flat_timeline_has_same_duration_as_hierarchical =
+  property $ do
+    -- 1. Generate a timeline with video clips in each parallel
+    timeline' <- forAll $
+        Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
   
-  -- 3. Check that hierarchical and flat timeline durations are equal
-  durationOf AdjustedDuration timeline' === durationOf AdjustedDuration flat
+    -- 2. Flatten the timeline and extract the result
+    let Just flat = Render.flattenTimeline timeline'
+    
+    -- 3. Check that hierarchical and flat timeline durations are equal
+    durationOf AdjustedDuration timeline'
+      === durationOf AdjustedDuration flat
 ```
 
 It generates a timeline using `forAll` and custom generators
@@ -236,21 +239,22 @@ get converted to explicit gaps and thereby add more gaps, but no
 video or audio clips should be added or removed.
 
 ```{.haskell}
-hprop_flat_timeline_has_same_clips_as_hierarchical = property $ do
-  -- 1. Generate a timeline with video clips in each parallel
-  timeline' <- forAll $
-      Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
-  
-  -- 2. Flatten the timeline
-  let flat = Render.flattenTimeline timeline'
-  
-  -- 3. Check that all video clips occur in the flat timeline
-  flat ^.. _Just . Render.videoParts . each . Render._VideoClipPart
-      === timelineVideoClips timeline'
-  
-  -- 4. Check that all audio clips occur in the flat timeline
-  flat ^.. _Just . Render.audioParts . each . Render._AudioClipPart
-      === timelineAudioClips timeline'
+hprop_flat_timeline_has_same_clips_as_hierarchical =
+  property $ do
+    -- 1. Generate a timeline with video clips in each parallel
+    timeline' <- forAll $
+        Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
+    
+    -- 2. Flatten the timeline
+    let flat = Render.flattenTimeline timeline'
+    
+    -- 3. Check that all video clips occur in the flat timeline
+    flat ^.. _Just . Render.videoParts . each . Render._VideoClipPart
+        === timelineVideoClips timeline'
+    
+    -- 4. Check that all audio clips occur in the flat timeline
+    flat ^.. _Just . Render.audioParts . each . Render._AudioClipPart
+        === timelineAudioClips timeline'
 ```
 
 The hierarchical timeline is generated and flattened like before (1,
@@ -285,32 +289,33 @@ followed by one or more gaps, is used as a the still frame source for
 those gaps.
 
 ```{.haskell}
-hprop_flat_timeline_uses_still_frame_from_single_clip = property $ do
-  -- 1. Generate a video track generator where the first video part
-  --    is always a clip
-  let genVideoTrack = do
-        v1 <- Gen.videoClip
-        vs <- Gen.list (Range.linear 1 5) Gen.videoGap
-        pure (VideoTrack () (v1 : vs))
-
-  -- 2. Generate a timeline with the custom video track generator
-  timeline' <- forAll $ Gen.timeline
-    (Range.exponential 0 5)
-    (Parallel () <$> genVideoTrack <*> Gen.audioTrack)
-
-  -- 3. Flatten the timeline
-  let flat = Render.flattenTimeline timeline'
-
-  -- 4. Check that any video gaps will use the last frame of a 
-  --    preceding video clip
-  flat
-    ^.. ( _Just
-        . Render.videoParts
-        . each
-        . Render._StillFramePart
-        . Render.stillFrameMode
-        )
-    &   traverse_ (Render.LastFrame ===)
+hprop_flat_timeline_uses_still_frame_from_single_clip =
+  property $ do
+    -- 1. Generate a video track generator where the first video part
+    --    is always a clip
+    let genVideoTrack = do
+          v1 <- Gen.videoClip
+          vs <- Gen.list (Range.linear 1 5) Gen.videoGap
+          pure (VideoTrack () (v1 : vs))
+  
+    -- 2. Generate a timeline with the custom video track generator
+    timeline' <- forAll $ Gen.timeline
+      (Range.exponential 0 5)
+      (Parallel () <$> genVideoTrack <*> Gen.audioTrack)
+  
+    -- 3. Flatten the timeline
+    let flat = Render.flattenTimeline timeline'
+  
+    -- 4. Check that any video gaps will use the last frame of a 
+    --    preceding video clip
+    flat
+      ^.. ( _Just
+          . Render.videoParts
+          . each
+          . Render._StillFramePart
+          . Render.stillFrameMode
+          )
+      &   traverse_ (Render.LastFrame ===)
 ```
 
 The custom video track generator (1) always produces tracks with an
@@ -328,39 +333,40 @@ audio track, all video gaps within the track should use the first
 frame of a following clip.
 
 ```{.haskell}
-hprop_flat_timeline_uses_still_frames_from_subsequent_clips = property $ do
-  -- 1. Generate a parallel where the video track ends with a video clip,
-  --    and where the audio track is shorter
-  let
-    genParallel = do
-      vt <-
-        VideoTrack ()
-          <$> (   snoc
-              <$> Gen.list (Range.linear 1 10) Gen.videoPart
-              <*> Gen.videoClip
-              )
-      at <- AudioTrack () . pure . AudioGap () <$> Gen.duration'
-        (Range.linearFrac
-          0
-          (durationToSeconds (durationOf AdjustedDuration vt) - 0.1)
-        )
-      pure (Parallel () vt at)
-
-  -- 2. Generate a timeline with the custom parallel generator
-  timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) genParallel
-
-  -- 3. Flatten the timeline
-  let flat = Render.flattenTimeline timeline'
-
-  -- 4. Check that all gaps use the first frame of subsequent clips
-  flat
-    ^.. ( _Just
-        . Render.videoParts
-        . each
-        . Render._StillFramePart
-        . Render.stillFrameMode
-        )
-    &   traverse_ (Render.FirstFrame ===)
+hprop_flat_timeline_uses_still_frames_from_subsequent_clips =
+  property $ do
+    -- 1. Generate a parallel where the video track ends with a video clip,
+    --    and where the audio track is shorter
+    let
+      genParallel = do
+        vt <-
+          VideoTrack ()
+            <$> (   snoc
+                <$> Gen.list (Range.linear 1 10) Gen.videoPart
+                <*> Gen.videoClip
+                )
+        at <- AudioTrack () . pure . AudioGap () <$> Gen.duration'
+          (Range.linearFrac
+            0
+            (durationToSeconds (durationOf AdjustedDuration vt) - 0.1)
+          )
+        pure (Parallel () vt at)
+  
+    -- 2. Generate a timeline with the custom parallel generator
+    timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) genParallel
+  
+    -- 3. Flatten the timeline
+    let flat = Render.flattenTimeline timeline'
+  
+    -- 4. Check that all gaps use the first frame of subsequent clips
+    flat
+      ^.. ( _Just
+          . Render.videoParts
+          . each
+          . Render._StillFramePart
+          . Render.stillFrameMode
+          )
+      &   traverse_ (Render.FirstFrame ===)
 ```
 
 The custom generator (1) produces parallels where the video track is
@@ -378,35 +384,36 @@ which, just like explicit gaps inserted by the user, are padded with
 still frames.
 
 ```{.haskell}
-hprop_flat_timeline_uses_last_frame_for_automatic_video_padding = property $ do
-  -- 1. Generate a parallel where the video track only contains a video
-  --    clip, and where the audio track is longer
-  let
-    genParallel = do
-      vt <- VideoTrack () . pure <$> Gen.videoClip
-      at <- AudioTrack () . pure . AudioGap () <$> Gen.duration'
-        (Range.linearFrac
-          (durationToSeconds (durationOf AdjustedDuration vt) + 0.1)
-          10
-        )
-      pure (Parallel () vt at)
-
-  -- 2. Generate a timeline with the custom parallel generator
-  timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) genParallel
-
-  -- 3. Flatten the timeline
-  let flat = Render.flattenTimeline timeline'
-
-  -- 4. Check that video gaps (which should be a single gap at the
-  --    end of the video track) use the last frame of preceeding clips
-  flat
-    ^.. ( _Just
-        . Render.videoParts
-        . each
-        . Render._StillFramePart
-        . Render.stillFrameMode
-        )
-    &   traverse_ (Render.LastFrame ===)
+hprop_flat_timeline_uses_last_frame_for_automatic_video_padding =
+  property $ do
+    -- 1. Generate a parallel where the video track only contains a video
+    --    clip, and where the audio track is longer
+    let
+      genParallel = do
+        vt <- VideoTrack () . pure <$> Gen.videoClip
+        at <- AudioTrack () . pure . AudioGap () <$> Gen.duration'
+          (Range.linearFrac
+            (durationToSeconds (durationOf AdjustedDuration vt) + 0.1)
+            10
+          )
+        pure (Parallel () vt at)
+  
+    -- 2. Generate a timeline with the custom parallel generator
+    timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) genParallel
+  
+    -- 3. Flatten the timeline
+    let flat = Render.flattenTimeline timeline'
+  
+    -- 4. Check that video gaps (which should be a single gap at the
+    --    end of the video track) use the last frame of preceeding clips
+    flat
+      ^.. ( _Just
+          . Render.videoParts
+          . each
+          . Render._StillFramePart
+          . Render.stillFrameMode
+          )
+      &   traverse_ (Render.LastFrame ===)
 ```
 
 The custom generator (1) generates a video track consisting of video
@@ -429,20 +436,23 @@ results into a single flat timeline. This is what the _flattening
 equivalences_ properties are about.
 
 ```haskell
-hprop_flat_timeline_is_same_as_all_its_flat_sequences = property $ do
-  -- 1. Generate a timeline
-  timeline' <- forAll $
-    Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
-
-  -- 2. Flatten all sequences and fold the resulting flat timelines together
-  let flat = timeline' ^.. sequences . each
-             & foldMap Render.flattenSequence
-
-  -- 3. Make sure we successfully flattened the timeline
-  flat /== Nothing
-             
-  -- 4. Flatten the entire timeline and compare to the flattened sequences
-  Render.flattenTimeline timeline' === flat
+hprop_flat_timeline_is_same_as_all_its_flat_sequences =
+  property $ do
+    -- 1. Generate a timeline
+    timeline' <- forAll $
+      Gen.timeline (Range.exponential 0 5) Gen.parallelWithClips
+  
+    -- 2. Flatten all sequences and fold the resulting flat
+    --    timelines together
+    let flat = timeline' ^.. sequences . each
+               & foldMap Render.flattenSequence
+  
+    -- 3. Make sure we successfully flattened the timeline
+    flat /== Nothing
+               
+    -- 4. Flatten the entire timeline and compare to the flattened 
+    --    sequences
+    Render.flattenTimeline timeline' === flat
 ```
 
 The first property generates a timeline (1) where all parallels have
@@ -487,14 +497,30 @@ The only difference is in the traversal (2), where we apply
 
 ## Missing Properties
 
-- Checking the timestamps at which the clips occurs are the same
-  - Technique: annotate clips with their playback timestamp first
-    (needed anyway), then extract and compare
-- Checking the source assets used as still frame sources, not only the still frame mode
-  - Technique: Calculate _asset to part index_ mapping and use that to
-    ensure asset is pulled from clip before or after a gap
-- Same flat result regardless of grouping
-  - split/join sequences, then flatten
+Whew! That was quite a lot of properties and code, especially for a
+warm-up. But timeline flattening could be tested even better. I
+haven't yet written the following properties, but I'm hoping to find
+some time to add them:
+
+- **Checking that the clip playback timestamps are the same.** The
+  "clip occurrence" property only checks that the hierarchical
+  timeline's clips occur in the flat timeline. It doesn't check _when_
+  in the flat timeline they occur. One way to test this would be to
+  first annotate each clip in original timeline with its playback
+  timestamp, and transfer this information through to the flat
+  timeline. Then the timestamps could be included in the assertion.
+  
+- **Checking the source assets used as still frame sources.** The
+  "still frames used" properties only check the still frame _mode_ of
+  gaps, not their still frame _sources_. The algorithm could have a
+  bug where it always uses the first video clip's asset as a frame
+  source, and the current property tests would not catch it.
+  
+- **Same flat result is produced regardless of sequence grouping.**
+  Sequences can be split or joined in any way without affecting the
+  final rendered media. They are merely ways of organizing parallels
+  in logical groups. A property could check that however you split or
+  join sequences within a timeline, the flattened result is the same.
 
 ## A Missing Feature
 

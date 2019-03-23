@@ -12,7 +12,7 @@ DRAFTS_HTML=$(DRAFT_SRCS:src/_drafts/%.md=target/drafts/%.html)
 PANDOC_DRAFT_OPTS = -V date:'$(shell date --iso-8601) (draft)'
 PANDOC_DRAFT_PDF_OPTS = -H src/draft-header.tex \
 												-V urlcolor:blue \
-												--highlight-style=kate \
+												--highlight-style=monochrome \
 												--number-sections \
 												-V geometry:paperwidth=6.125in \
 												-V geometry:paperheight=9.25in \
@@ -30,11 +30,11 @@ serve: $(PLANTUML) $(UMLS)
 
 target/drafts/%.pdf: src/_drafts/%.md src/draft-header.tex
 	mkdir -p $(shell dirname $@)
-	pandoc --resource-path=.:src $(PANDOC_DRAFT_OPTS) $(PANDOC_DRAFT_PDF_OPTS) $< -o $@
+	cat $< | sed 's/\/assets/assets/g' | pandoc -f markdown --resource-path=.:src $(PANDOC_DRAFT_OPTS) $(PANDOC_DRAFT_PDF_OPTS) -o $@
 
 target/drafts/%.html: src/_drafts/%.md
 	mkdir -p $(shell dirname $@)
-	pandoc -s --resource-path=.:src $(PANDOC_DRAFT_OPTS) $< -o $@
+	cat $< | sed 's/\/assets/assets/g' | pandoc -s --resource-path=.:src $(PANDOC_DRAFT_OPTS) -o $@
 
 drafts: $(DRAFTS_PDF) $(DRAFTS_HTML)
 
