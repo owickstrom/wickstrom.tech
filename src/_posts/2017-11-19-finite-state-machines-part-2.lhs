@@ -224,14 +224,14 @@ of the events in `Checkout` follow the patterns described so far.
 >     :: State m CardConfirmed
 >     -> m (State m OrderPlaced)
 
-<div class="note">
-We are *not doing any error handling*. All operations return
+
+Note that we are *not doing any error handling*. All operations return
 state values. In a real-world system you might need to handle error
 cases, like `selectCard` not accepting the entered card number. I have
 deliberately excluded error handling from this already lengthy post,
 but I will probably write a post about different ways of handling
 errors in this style of state machine encoding.
-</div>
+
 
 Similar to `select`, the `cancel` event is accepted from more than
 one state. In fact, it is accepted from *three* states: "NoCard",
@@ -367,13 +367,11 @@ attempting a new checkout.
 >          selectMoreItems >>=
 >          startCheckout
 
-<div class="note">
 The protocol allows for cancellation in all three checkout
 states, but that the program only gives the user a possibility to
 cancel in the end of the process. Again, the program must follow the
 rules of the protocol, but it is not required to trigger all events
 the protocol allows for.
-</div>
 
 The definition of `checkoutProgram` is a composition of what we have
 so far. It creates the state machine in its initial state, fills the

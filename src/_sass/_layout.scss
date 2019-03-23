@@ -125,34 +125,6 @@ body {
   }
 }
 
-.note {
-  position: relative;
-  font-family: $secondary-font-family;
-  padding: $base-line-height*1.5rem $base-line-height*.5rem $base-line-height*.5rem;
-  margin: ($base-line-height * 1rem) 0;
-  background: #eee;
-  box-shadow: 1px 1px 1px desaturate(darken(#eee, 20%), 30%);
-  color: #444;
-
-  &:before {
-    position: absolute;
-    display: block;
-    top: 0;
-    left: 0;
-    right: 0;
-    line-height: $base-line-height * 1rem;
-    padding: 0 $base-line-height * .5rem;
-    background: #ddd;
-    content: 'NOTE';
-    font-weight: bold;
-    font-size: 75%;
-    color: #888;
-  }
-
-  p:last-child {
-    margin-bottom: 0;
-  }
-}
 
 @media screen and (orientation: portrait) and (max-width: $on-big-screen) {
   .title-pane {

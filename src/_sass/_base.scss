@@ -31,13 +31,13 @@ body {
 
 @include media-query($on-laptop) {
   html {
-    font-size: $base-font-size - 1;
+    font-size: $base-font-size - 2;
   }
 }
 
 @include media-query($on-palm) {
   html {
-    font-size: $base-font-size - 2;
+    font-size: $base-font-size - 3;
   }
 }
 
