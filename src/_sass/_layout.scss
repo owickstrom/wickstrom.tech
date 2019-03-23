@@ -4,7 +4,6 @@ body {
   position: relative;
   min-width: 300px;
   min-height: 360px;
-  background: #eee;
 }
 
 .nav ul {
@@ -27,30 +26,29 @@ body {
 
 .top-nav {
   background: $brand-color;
-  box-shadow: 0px 1px 1px desaturate(darken($brand-color, 10%), 30%);
+  box-shadow: 0px 1px 1px #aaa;
   font-family: $secondary-font-family;
 
   .wrapper {
     height: 48px;
   }
-  .home {
-    display: block;
-    height: 100%;
-    float: left;
-    padding: 8px;
-
-    img {
-      display: block;
-      height: 100%;
-      margin: 0;
-      color: #fff;
-      line-height: 32px;
+  a {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
     }
+  }
+  a.home {
+    display: block;
+    float: left;
+    height: 64px;
+    line-height: 48px;
+    font-weight: bold;
+    color: #fff;
   }
   .nav ul {
     float: right;
     padding-right: 0;
-
     a {
       padding: 8px 16px;
       height: 64px;
@@ -101,9 +99,15 @@ body {
   }
 }
 
-.post-list .title {
-  font-size: 125%;
-  margin-top: 0;
+.post-list {
+  .title {
+    font-size: 125%;
+    margin-top: 0;
+  }
+
+  time a {
+    text-decoration: none;
+  }
 }
 
 .tags {
@@ -123,6 +127,7 @@ body {
 
 .note {
   position: relative;
+  font-family: $secondary-font-family;
   padding: $base-line-height*1.5rem $base-line-height*.5rem $base-line-height*.5rem;
   margin: ($base-line-height * 1rem) 0;
   background: #eee;
@@ -188,27 +193,19 @@ body {
   }
 }
 
-.follow-twitter {
-  text-align: center;
-  font-style: italic;
-  max-width: 500px;
-  margin: 1.5em auto;
-}
-
 /**
  * Site footer
  */
 .site-footer {
   padding: $spacing-unit;
   text-align: center;
+  font-family: $secondary-font-family;
   font-size: $small-font-size;
-  background: #eee;
   color: #666;
 }
 
 .page-content {
   padding: $spacing-unit*2 0;
-  background: #fff;
 }
 
 /**
@@ -221,10 +218,9 @@ body {
 }
 
 .page-title {
-  font-size: 275%;
+  font-size: 250%;
   margin: 0 0 $spacing-unit;
   font-weight: 600;
-  font-family: $secondary-font-family;
 
   @include media-query($on-laptop) {
   }
@@ -249,7 +245,6 @@ body {
 .post-meta {
   margin: $spacing-unit 0 ($spacing-unit * 2);
   color: $grey-color;
-  font-family: $secondary-font-family;
 
   a {
     color: inherit;
@@ -284,7 +279,6 @@ body {
     flex: 0 0 auto;
     text-align: right;
     padding-left: 1em;
-    font-family: $secondary-font-family;
 
     a {
         color: $text-color;
@@ -447,35 +441,6 @@ figcaption,
 
 .twitter-tweet {
   max-width: 500px;
-}
-
-.contact-form {
-  .form-row {
-    margin: 0 0 1em 0;
-  }
-  label {
-    display: block;
-    font-family: $secondary-font-family;
-    font-size: 80%;
-    font-weight: 500;
-    margin: 0 0 .25em;
-  }
-  input,
-  textarea {
-    padding: .5em;
-    font-family: $secondary-font-family;
-    border: 1px solid #ccc;
-    color: #888;
-  }
-  input[type=submit] {
-    padding: .75em 1em;
-    text-transform: uppercase;
-    color: $text-color;
-    background: #eee;
-  }
-  textarea {
-    width: 100%;
-  }
 }
 
 figure.two-images {

@@ -26,6 +26,7 @@ dl, dd, ol, ul, figure {
  */
 body {
   height: 100%;
+  min-height: 100%;
 }
 
 @include media-query($on-laptop) {
@@ -116,14 +117,9 @@ h3, h4, h5, h6 {
  */
 a {
   color: $brand-color;
-  text-decoration: none;
 
   &:visited {
-    color: #701ce8;
-  }
-
-  &:hover {
-    text-decoration: underline;
+    color: #777;
   }
 }
 
@@ -159,7 +155,7 @@ strong {
 pre,
 code {
   font-family: $monospace-font-family;
-  font-size: 0.925rem;
+  font-size: 0.85rem;
   line-height: inherit;
 }
 
@@ -170,7 +166,6 @@ pre {
 }
 
 p code, li code {
-  background: #eee;
 }
 
 @include media-query($on-laptop) {

@@ -6,24 +6,7 @@ layout: default
   <div class="wrapper">
     <article class="page" itemscope itemtype="http://schema.org/WebPage">
       <h1 class="site-title" itemprop="name headline">{{ site.title }}</h1>
-      <img src="{{ site.baseurl }}/assets/logo.png"
-          srcset="{{ site.baseurl }}/assets/logo.png 1x,
-          {{ site.baseurl }}/assets/logo@2x.png 2x"
-          alt="FUNC DA WORLD">
       <p class="site-description">{{ site.description }}</p>
-      <div class="latest-posts">
-        <h2>Latest Posts</h2>
-        <ul>
-        {% for post in site.posts limit:3 %}
-          <li{% if post.published == false %} class="draft"{% endif %}>
-            <a href="{{ post.url | prepend: site.baseurl }}">
-              <time>{{ post.date | date: '%b %d, %Y'}}</time>
-              {{ post.title }}
-            </a>
-          </li>
-        {% endfor %}
-        </ul>
-      </div>
       <div class="nav">
         <ul>
           {% include nav-items.html %}
