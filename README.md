@@ -1,4 +1,4 @@
-# FUNC DA WORLD
+# wickstom.tech
 
 Source for my blog.
 

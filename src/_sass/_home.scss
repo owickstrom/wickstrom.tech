@@ -9,15 +9,12 @@ div.home {
   }
 }
 .home .page {
-  max-width: 500px;
   margin: 0 auto;
 
   .site-title {
     font-family: $secondary-font-family;
-    position: absolute;
-    text-indent: -9999px;
     font-size: 52px;
-    color: $text-color;
+    margin: 0 0 $spacing-unit/2;
   }
 
   img {
@@ -25,10 +22,9 @@ div.home {
   }
 
   .site-description {
-    font-family: $secondary-font-family;
-    margin: $spacing-unit auto $spacing-unit*2;
+    max-width: 20em;
+    margin: 0 auto $spacing-unit*3;
     font-size: 150%;
-    text-align: justify;
     color: #fff;
   }
 
@@ -43,6 +39,10 @@ div.home {
 
       a {
         color: #fff;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
       }
 
       &:after {
@@ -65,43 +65,6 @@ div.home {
       font-size: 100%;
     }
     .nav {
-    }
-  }
-
-  .latest-posts {
-    margin: $spacing-unit*2 auto;
-    padding: $spacing-unit 0;
-    border-top: 2px solid darken($brand-color, 10%);
-    border-bottom: 2px solid darken($brand-color, 10%);
-
-    h2 {
-      font-family: $secondary-font-family;
-      margin-top: 0;
-    }
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 1rem 0;
-    }
-
-    li {
-      margin: 1em 0;
-      text-align: left;
-    }
-
-    time {
-      font-family: $secondary-font-family;
-      font-weight: bold;
-      margin-right: .5em;
-    }
-
-    a {
-      color: #fff;
-    }
-    .draft a {
-      color: red;
-      background: #ffea33;
     }
   }
 }
