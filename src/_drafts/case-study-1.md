@@ -48,7 +48,7 @@ At the lowest level of the timeline are _clips_ and _gaps_. Those are
 put within the video and audio _tracks_ of _parallels_. The following diagram
 shows a parallel consisting of two video clips and one audio clip. 
 
-![Clips and gaps are placed in video and audio tracks](assets/property-based-testing-the-ugly-parts/timeline1.svg){width=50%}
+![Clips and gaps are placed in video and audio tracks](/assets/property-based-testing-the-ugly-parts/timeline1.svg){width=50%}
 
 The tracks of a parallel are played simultaneously (in parallel), as
 indicated by the arrows in the above diagram. The tracks start playing
@@ -70,14 +70,14 @@ The following diagram shows a parallel with a short video clips and a
 longer audio clip. The dashed area represents the automatically
 inserted gap.
 
-![Still frames are automatically inserted to match track durations](assets/property-based-testing-the-ugly-parts/timeline2.svg){width=50%}
+![Still frames are automatically inserted to match track durations](/assets/property-based-testing-the-ugly-parts/timeline2.svg){width=50%}
 
 You can also add gaps manually, specifying a duration of the gap and
 inserting it into a video or audio track. The following diagram shows
 a parallel with manually added gaps in both video and audio
 tracks.
 
-![Adding Gaps](assets/property-based-testing-the-ugly-parts/timeline3.svg){width=50%}
+![Adding Gaps](/assets/property-based-testing-the-ugly-parts/timeline3.svg){width=50%}
 
 Manually added gaps are padded with still frames or silence,
 just as gaps added automatically to match track durations.
@@ -94,7 +94,7 @@ compositional editing in Komposition.
 The following diagram shows a sequence of two parallels, playing
 sequentially:
 
-![A sequence containing two parallels](assets/property-based-testing-the-ugly-parts/timeline4.svg){width=100%}
+![A sequence containing two parallels](/assets/property-based-testing-the-ugly-parts/timeline4.svg){width=100%}
 
 ### The Timeline
 
@@ -103,7 +103,7 @@ timeline is a sequence of sequences; it plays every child sequence in
 sequence. The reason for this level to exist is for the ability to
 group larger chunks of a screencast within separate sequences.
 
-![Timeline](assets/property-based-testing-the-ugly-parts/timeline5.svg){width=100%}
+![Timeline](/assets/property-based-testing-the-ugly-parts/timeline5.svg){width=100%}
 
 I use separate sequences within the timeline to delimit distinct parts
 of a screencast, such as the introduction, the different chapters, and
@@ -127,7 +127,7 @@ and video. All gaps are _explicitly_ represented in those tracks. The
 following graphs shows how a hierarhical timeline is flattened into
 two tracks.
 
-![Timeline flattening](assets/property-based-testing-the-ugly-parts/komposition-flattening.svg){width=100%}
+![Timeline flattening](/assets/property-based-testing-the-ugly-parts/komposition-flattening.svg){width=100%}
 
 Notice in the graphic above how the implicit gaps at the ends of video
 and audio tracks get represented with explicit gaps in the flat
@@ -207,7 +207,7 @@ that the accumulator was incorrectly constructed in a case. The test
 would catch this quickly and present us with a minimal
 counter-example:
 
-![Hedgehog presenting a minimal counter-example](assets/property-based-testing-the-ugly-parts/timeline-duration-failure.png){width=100%}
+![Hedgehog presenting a minimal counter-example](/assets/property-based-testing-the-ugly-parts/timeline-duration-failure.png){width=100%}
 
 Hedgehog prints the source code for the failing property. Below the
 `forAll` line the generated value is printed. The difference between
