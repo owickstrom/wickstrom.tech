@@ -73,7 +73,7 @@ code span.fl { color: inherit; } /* Float */
 code span.cn { color: inherit; } /* Constant */
 code span.ch { color: inherit; } /* Char */
 code span.sc { color: inherit; } /* SpecialChar */
-code span.st { color: inherit; } /* String */
+code span.st { color: #666; } /* String */
 code span.vs { color: inherit; } /* VerbatimString */
 code span.ss { color: inherit; } /* SpecialString */
 code span.im { color: inherit; } /* Import */
@@ -81,7 +81,7 @@ code span.co { color: #999999; font-style: italic; } /* Comment */
 code span.do { color: #666666; font-style: italic; } /* Documentation */
 code span.an { color: inherit; } /* Annotation */
 code span.cv { color: inherit; } /* CommentVar */
-code span.ot { color: inherit; } /* Other */
+code span.ot { color: inherit; font-style: italic; } /* Other */
 code span.fu { color: inherit; } /* Function */
 code span.va { color: inherit; } /* Variable */
 code span.cf { color: inherit; font-weight: bold; } /* ControlFlow */
