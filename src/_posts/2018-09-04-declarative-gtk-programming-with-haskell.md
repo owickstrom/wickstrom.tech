@@ -96,10 +96,8 @@ myButton = widget Button []
 myCheckButton = widget CheckButton []
 ```
 
-<div class="note">
-[Button] and [CheckButton] are constructors from gi-gtk. They are
-not defined by gi-gtk-declarative.
-</div>
+Note that [Button] and [CheckButton] are constructors from
+gi-gtk. They are not defined by gi-gtk-declarative.
 
 ### Bins
 

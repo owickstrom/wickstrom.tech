@@ -15,7 +15,7 @@ github_username:  owickstrom
 
 navigation:
   - text: Blog
-    url: /archive.html
+    url: /blog.html
   - text: Projects
     url: /projects.html
   - text: Talks

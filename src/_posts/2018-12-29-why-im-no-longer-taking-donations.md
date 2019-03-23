@@ -5,7 +5,10 @@ author: Oskar Wickström
 categories: programming
 tags: ["haskell", "screencast", "general"]
 excerpt: |
-  TODO
+  Haskell at Work, the screencast
+  focused on Haskell in practice, is approaching its one year
+  birthday. Today, I decided to stop taking donations through Patreon
+  due to the negative stress I've been experiencing.
 ---
 
 [Haskell at Work](https://haskell-at-work.com/), the screencast

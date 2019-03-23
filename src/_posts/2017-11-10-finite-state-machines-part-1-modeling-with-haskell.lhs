@@ -151,9 +151,7 @@ Looking at the state constructors in the definition of
 `CheckoutState`, we can see how they accumulate state as the machine
 makes progress, right up until the order is placed.
 
-<div class="note">
-`CartItem` and `Card` are imported from the shared `Checkout` module.
-</div>
+Note that `CartItem` and `Card` are imported from the shared `Checkout` module.
 
 Similar to the data type for states, the data type for events,
 called `CheckoutEvent`, defines one constructor for each valid
