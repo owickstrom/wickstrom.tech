@@ -416,7 +416,34 @@ property tests. The assertion (4) checks that all video gaps use the
 last frame of preceeding clips, even if we know that there should only
 be one at the end.
 
-## Property: Flattening Equivalences
+## Properties: Flattening Equivalences
+
+```haskell
+hprop_flat_timeline_is_same_as_all_its_flat_sequences = property $ do
+  -- 1. Generate a timeline
+  timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) Gen.parallel
+
+  -- 2. Flatten all sequences and fold the resulting flat timelines together
+  let flat = timeline' ^.. sequences . each
+             & foldMap Render.flattenSequence
+             
+  -- 3. Flatten the entire timeline and compare to the flattened sequences
+  Render.flattenTimeline timeline' === flat
+```
+
+```haskell
+hprop_flat_timeline_is_same_as_all_its_flat_parallels = property $ do
+  -- 1. Generate a timeline
+  timeline' <- forAll $ Gen.timeline (Range.exponential 0 5) Gen.parallel
+
+  -- 2. Flatten all parallels and fold the resulting flat timelines together
+  let flat = timeline' ^.. sequences . each . parallels . each
+             & foldMap Render.flattenParallel
+
+  -- 3. Flatten the entire timeline and compare to the flattened parallels
+  Render.flattenTimeline timeline' === flat
+```
+
 
 ## Missing Properties
 
