@@ -22,7 +22,7 @@ for this case study to make sense.
 
 This post is the first case study in the series, covering the
 _timeline flattening_ process in Komposition and how it's tested using
-PBT. The property tests aren't integration level tests, but rather
+PBT. The property tests aren't integration-level tests, but rather
 unit tests. This case study serves as a warm-up to the coming, more
 advanced, ones.
 
@@ -564,13 +564,21 @@ much like conventional example-based testing to drive development.
 In this post we've looked at timeline flattening, the simplest case
 study in the "Property-Based Testing in a Screencast Editor" series.
 The system under test was a module of pure functions, with complex
-enough behaviour to showcase PBT as a valuable tool.
+enough behaviour to showcase PBT as a valuable tool. The tests are
+more closely related to the design choices and concrete
+representations of the implementation.
 
-The coming case studies will dive deeper into the more complex
-subsystems of Komposition, and finally we'll see how PBT can be used
-for integration testing. Next up is property tests for the _video
-classifier_. It's also implemented a pure function, but with slightly
-more complicated logic, and it's trickier to test.
+Coming case studies will dive deeper into the more complex subsystems
+of Komposition, and finally we'll see how PBT can be used for
+integration testing. At that level, the property tests are less tied
+to the implementation, and focus on describing the higher-level
+outcomes of the interaction between subsystems.
+
+Next up is property tests for the _video classifier_. It's also
+implemented a pure function, but with slightly more complicated logic
+that is trickier to test. We're going to look at an interesting
+technique where we generate the _expected output_ instead of the
+input.
 
 Thanks for reading! See you next time.
 
