@@ -9,6 +9,15 @@ html {
   box-sizing: inherit;
 }
 
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+
+
 /**
  * Reset some basic elements
  */

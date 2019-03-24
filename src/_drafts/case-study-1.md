@@ -8,12 +8,17 @@ draft: true
 excerpt: |
 ---
 
-In the first post of this series I introduced the Komposition
-screencast editor, and briefly explained the fundamentals of
-property-based testing (PBT). Furthermore, I covered how to write
-testable code, regardless of _how_ you check your code with automated
-tests. Lastly, I highlighted some difficulties in using properties to
-perform component and integration testing.
+In [the first post of this
+series](https://wickstrom.tech/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html)
+I introduced the Komposition screencast editor, and briefly explained
+the fundamentals of property-based testing (PBT). Furthermore, I
+covered how to write testable code, regardless of _how_ you check your
+code with automated tests. Lastly, I highlighted some difficulties in
+using properties to perform component and integration testing.
+
+If you haven't read the introductory post, I suggest doing so before
+continuing with this one. You'll need an understanding of what PBT is
+for this case study to make sense.
 
 This post is the first case study in the series, covering the
 _timeline flattening_ process in Komposition and how its tested using
@@ -58,19 +63,19 @@ related clips.
 
 ### Gaps
 
-When editing screencasts made up of separate video and audio recording
-you often end up with differing clip durations. The voice-over audio
-clip might be longer than the corresponding video clip, or vice versa.
-A useful default behavior is to extend the short clips. For audio,
-this is easy. Just pad with silence. For video, it's not so clear what
-to do. In Komposition, shorter video tracks are padded with repeated
-still frame sections called _gaps_.
+When editing screencasts made up of separate video and audio
+recordings you often end up with differing clip duration. The
+voice-over audio clip might be longer than the corresponding video
+clip, or vice versa.  A useful default behaviour is to extend the
+short clips. For audio, this is easy. Just pad with silence. For
+video, it's not so clear what to do. In Komposition, shorter video
+tracks are padded with repeated still frame sections called _gaps_.
 
 The following diagram shows a parallel with a short video clips and a
 longer audio clip. The dashed area represents the automatically
 inserted gap.
 
-![Still frames are automatically inserted to match track durations](/assets/property-based-testing-the-ugly-parts/timeline2.svg){width=50%}
+![Still frames are automatically inserted to match track duration](/assets/property-based-testing-the-ugly-parts/timeline2.svg){width=50%}
 
 You can also add gaps manually, specifying a duration of the gap and
 inserting it into a video or audio track. The following diagram shows
@@ -80,13 +85,13 @@ tracks.
 ![Adding Gaps](/assets/property-based-testing-the-ugly-parts/timeline3.svg){width=50%}
 
 Manually added gaps are padded with still frames or silence,
-just as gaps added automatically to match track durations.
+just as gaps added automatically to match track duration.
 
 ### Sequences
 
 Parallels are put in _sequences_. The parallels within a sequence are
 played sequentially; the first one is played in its entirety, then the
-next one, and so on. This behavior is different from how parallels
+next one, and so on. This behaviour is different from how parallels
 play their tracks. Parallels and sequences, with their different
 playback behaviors, make up the fundamental building blocks of the
 compositional editing in Komposition.
@@ -125,7 +130,7 @@ Komposition performs _timeline flattening_.
 
 The flat representation of a timeline contains only two tracks; audio
 and video. All gaps are _explicitly_ represented in those tracks. The
-following graphs shows how a hierarhical timeline is flattened into
+following graph shows how a hierarchical timeline is flattened into
 two tracks.
 
 ![Timeline flattening transforming a hierarchical timeline](/assets/property-based-testing-the-ugly-parts/komposition-flattening.svg){width=100%}
@@ -171,7 +176,7 @@ hprop_flat_timeline_has_same_duration_as_hierarchical =
     -- 2. Flatten the timeline and extract the result
     let Just flat = Render.flattenTimeline timeline'
     
-    -- 3. Check that hierarchical and flat timeline durations are equal
+    -- 3. Check that hierarchical and flat timeline duration are equal
     durationOf AdjustedDuration timeline'
       === durationOf AdjustedDuration flat
 ```
@@ -184,7 +189,7 @@ that satisfy the invariants of the system under test.
 
 The range passed as the first argument to `Gen.timeline` is used as
 the bounds of the generator, such that each level in the generated
-hierarhical timeline will have at most 5 children.
+hierarchical timeline will have at most 5 children.
 
 `Gen.timeline` takes as its second argument _another generator_, the
 one used to generate parallels, which in this case is
@@ -261,7 +266,7 @@ The hierarchical timeline is generated and flattened like before (1,
 2). The two assertions check that the respective video clips (3) and
 audio clips (4) are equal. It's using lenses to extract clips from the
 flat timeline, and the helper functions `timelineVideoClips` and
-`timelineAudioClips` to extract clips from the original hierarhical
+`timelineAudioClips` to extract clips from the original hierarchical
 timeline.
 
 ## Still Frames Used
@@ -277,15 +282,15 @@ disk.
 
 The decision of still frame mode and source is made by the flattening
 algorithm based on the parallel in which each gap occur, and what
-video clips are present before or after. It favours using clips
-occuring after the gap. It only uses frames from clips before the gap
+video clips are present before or after. It favors using clips
+occurring after the gap. It only uses frames from clips before the gap
 in case there are no clips following it. To test this behaviour, I've
 defined three properties.
 
 ### Property: Single Initial Video Clip
 
 The following property checks that an initial single video clip,
-followed by one or more gaps, is used as a the still frame source for
+followed by one or more gaps, is used as the still frame source for
 those gaps.
 
 ```{.haskell}
@@ -405,7 +410,7 @@ hprop_flat_timeline_uses_last_frame_for_automatic_video_padding =
     let flat = Render.flattenTimeline timeline'
   
     -- 4. Check that video gaps (which should be a single gap at the
-    --    end of the video track) use the last frame of preceeding clips
+    --    end of the video track) use the last frame of preceding clips
     flat
       ^.. ( _Just
           . Render.videoParts
@@ -420,7 +425,7 @@ The custom generator (1) generates a video track consisting of video
 clips only, and an audio track that is 100ms longer. Generating the
 timeline (2) and flattening (3) are again similar to the previous
 property tests. The assertion (4) checks that all video gaps use the
-last frame of preceeding clips, even if we know that there should only
+last frame of preceding clips, even if we know that there should only
 be one at the end.
 
 ## Properties: Flattening Equivalences
@@ -498,11 +503,11 @@ The only difference is in the traversal (2), where we apply
 ## Missing Properties
 
 Whew! That was quite a lot of properties and code, especially for a
-warm-up. But timeline flattening could be tested even better. I
+warm-up. But timeline flattening could be tested more thoroughly! I
 haven't yet written the following properties, but I'm hoping to find
 some time to add them:
 
-- **Checking that the clip playback timestamps are the same.** The
+- **Clip playback timestamps are the same.** The
   "clip occurrence" property only checks that the hierarchical
   timeline's clips occur in the flat timeline. It doesn't check _when_
   in the flat timeline they occur. One way to test this would be to
@@ -510,11 +515,11 @@ some time to add them:
   timestamp, and transfer this information through to the flat
   timeline. Then the timestamps could be included in the assertion.
   
-- **Checking the source assets used as still frame sources.** The
-  "still frames used" properties only check the still frame _mode_ of
-  gaps, not their still frame _sources_. The algorithm could have a
-  bug where it always uses the first video clip's asset as a frame
-  source, and the current property tests would not catch it.
+- **Source assets used as still frame sources.** The "still frames
+  used" properties only check the still frame _mode_ of gaps, not
+  the still frame _sources_. The algorithm could have a bug where it
+  always uses the first video clip's asset as a frame source, and the
+  current property tests would not catch it.
   
 - **Same flat result is produced regardless of sequence grouping.**
   Sequences can be split or joined in any way without affecting the
@@ -524,16 +529,35 @@ some time to add them:
 
 ## A Missing Feature
 
-- Padding with frames from other parallels
-- Frames are only picked from video clips within the parallel
-- Should pick from _any_ video clip within the timeline
-- Write properties to guide my work
+As pointed out earlier, parallels must have at least one video
+clip. The flattening algorithm can only locate still frame sources for
+video gaps from within the same parallel. This is an annoying
+limitation when working with Komposition, and the algorithm should be
+improved.
 
-## Summary
+As the existing set of properties describe timeline flattening fairly
+well, changing the algorithm could be done with a TDD-like
+workflow:
 
-  - We've looked at timeline flattening, the simplest case study in this series
-  - Not an integration test or stubbing out complicated effectful computation
-  - A good warmup
-  - Next up is testing the video classifier
-    - Also a pure function
-    - More complicated and harder to test logic
+1. Modify the property tests to capture the intended behaviour
+2. Tests will fail, with the errors showing how the existing
+   implementation fails to find still frame sources as expected
+3. Change the implementation to make the tests pass
+
+PBT is not only an after-the-fact testing technique. It can be used
+much like conventional example-based testing to drive development.
+
+## Obligatory Cliff-Hanger
+
+In this post we've looked at timeline flattening, the simplest case
+study in the "Property-Based Testing in a Screencast Editor" series.
+The system under test was a module of pure functions, with complex
+enough behaviour to showcase PBT as a valuable tool.
+
+The coming case studies will dive deeper into the more complex
+subsystems of Komposition, and finally we'll see how PBT can be used
+for integration testing. Next up is property tests for the _video
+classifier_. It's also implemented a pure function, but with slightly
+more complicated logic, and it's trickier to test.
+
+Thanks for reading! See you next time.
