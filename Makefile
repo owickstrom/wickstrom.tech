@@ -82,5 +82,5 @@ analytics-report:
 		rm -rf $(ANALYTICS_DIR)
 		aws s3 sync s3://wickstrom-tech-access-logs/wickstrom.tech "$(ANALYTICS_DIR)"
 		gunzip "$(ANALYTICS_DIR)"/*.gz
-	  goaccess "$(ANALYTICS_DIR)"/* --log-format=CLOUDFRONT -o "$(ANALYTICS_DIR)"/report.html
+	  goaccess "$(ANALYTICS_DIR)"/* --log-format=CLOUDFRONT --ignore-referer=wickstrom.tech -o "$(ANALYTICS_DIR)"/report.html
 		firefox "$(ANALYTICS_DIR)"/report.html
