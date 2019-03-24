@@ -4,8 +4,10 @@ title: "Property-Based Testing in a Screencast Editor, Case Study 1: Timeline Fl
 author: Oskar Wickström
 categories: programming
 tags: ["property", "testing", "quality", "correctness", "haskell"]
-draft: true
 excerpt: |
+  This post is the first case study in the "Property-Based Testing in a
+  Screencast Editor", covering the timeline flattening process in
+  Komposition and how it's tested using PBT.
 ---
 
 In [the first post of this
@@ -581,6 +583,11 @@ technique where we generate the _expected output_ instead of the
 input.
 
 Thanks for reading! See you next time.
+
+## Credits
+
+Thank you Chris Ford and Ulrik Sandberg for proof-reading and giving
+valuable feedback on drafts of this post.
 
 ## Footnotes
 
