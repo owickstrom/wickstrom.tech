@@ -180,19 +180,6 @@ pre {
 p code, li code {
 }
 
-@include media-query($on-laptop) {
-  pre {
-    padding-left: .8rem;
-    padding-right: .8rem;
-  }
-}
-@include media-query($on-palm) {
-  pre {
-    padding-left: .8rem;
-    padding-right: .8rem;
-  }
-}
-
 table {
     border-spacing: 0;
     border-collapse: separate;

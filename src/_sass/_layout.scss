@@ -292,6 +292,19 @@ div.sourceCode {
   div.sourceCode {
     margin-left: -1rem;
     margin-right: -1rem;
+    padding: 0;
+    background: #fffbe7;
+  }
+}
+
+@include media-query($on-laptop) {
+  pre {
+    padding: .5rem;
+  }
+}
+@include media-query($on-palm) {
+  pre {
+    padding: .5rem;
   }
 }
 
@@ -398,6 +411,7 @@ p br:last-child {
 p .math.display {
     display: block;
     text-align: center;
+    overflow-x: auto;
 }
 
 @media print {
