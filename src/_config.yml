@@ -37,7 +37,7 @@ gems:
 
 pandoc:
   extensions:
-    - mathml
+    - mathjax
     - highlight-style: pygments
     - filter: pandoc-include-code
 
