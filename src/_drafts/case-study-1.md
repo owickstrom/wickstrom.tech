@@ -21,7 +21,7 @@ continuing with this one. You'll need an understanding of what PBT is
 for this case study to make sense.
 
 This post is the first case study in the series, covering the
-_timeline flattening_ process in Komposition and how its tested using
+_timeline flattening_ process in Komposition and how it's tested using
 PBT. The property tests aren't integration level tests, but rather
 unit tests. This case study serves as a warm-up to the coming, more
 advanced, ones.
@@ -32,13 +32,10 @@ hierarchical timeline and how the flattening process works.
 ## The Hierarchical Timeline
 
 Komposition's timeline is hierarchical. While many non-linear editing
-systems have support for some form of nesting (Final Cut Pro has
-[compound clips](https://support.apple.com/kb/PH12631?locale=en_US),
-and Adobe Premiere Pro has [nested
-sequences](https://www.premiumbeat.com/blog/nesting-in-adobe-premiere-pro/))
-they are primarily focused on flat timeline workflows. The timeline
-structure and the keyboard-driven editing in Komposition is optimized
-for the screencast editing workflow I use.
+systems have support for some form of nesting[^1] they are primarily
+focused on flat timeline workflows. The timeline structure and the
+keyboard-driven editing in Komposition is optimized for the screencast
+editing workflow I use.
 
 It's worth emphasizing that Komposition is _not_ a general video
 editor. In addition to its specific editing workflow, you may need to
@@ -71,11 +68,10 @@ short clips. For audio, this is easy. Just pad with silence. For
 video, it's not so clear what to do. In Komposition, shorter video
 tracks are padded with repeated still frame sections called _gaps_.
 
-The following diagram shows a parallel with a short video clips and a
-longer audio clip. The dashed area represents the automatically
-inserted gap.
+The following diagram shows a parallel with a short video clip and a
+longer audio clip. The dashed area represents the implicit gap.
 
-![Still frames are automatically inserted to match track duration](/assets/property-based-testing-the-ugly-parts/timeline2.svg){width=50%}
+![Still frames are automatically inserted at implicit gaps to match track duration](/assets/property-based-testing-the-ugly-parts/timeline2.svg){width=50%}
 
 You can also add gaps manually, specifying a duration of the gap and
 inserting it into a video or audio track. The following diagram shows
@@ -84,8 +80,9 @@ tracks.
 
 ![Adding Gaps](/assets/property-based-testing-the-ugly-parts/timeline3.svg){width=50%}
 
-Manually added gaps are padded with still frames or silence,
-just as gaps added automatically to match track duration.
+Manually added gaps (called _explicit_ gaps) are padded with still
+frames or silence, just as implicit gaps that are added automatically
+to match track duration.
 
 ### Sequences
 
@@ -327,9 +324,9 @@ The custom video track generator (1) always produces tracks with an
 initial video clip followed by one or more video gaps. The generated
 timeline (2) can contain parallels with any audio track shape, which
 may result in a _longer_ audio track and thus an implicit gap at the
-end of the video track. In either case, all video gaps should use the
-initial video clip as their still frame source, which is checked in
-the assertion (4).
+end of the video track. In either case, all video gaps should padded
+with the last frame of the initial video clip, which is checked in the
+assertion (4).
 
 ### Property: Ending with a Video Clip
 
@@ -463,7 +460,8 @@ hprop_flat_timeline_is_same_as_all_its_flat_sequences =
 The first property generates a timeline (1) where all parallels have
 at least one video clip. It flattens all sequences within the timeline
 and folds the results together (2). Folding flat timelines together
-means appending their clips and gaps sequentially.
+means concatenating their video and audio tracks, resulting in a
+single flat timeline.
 
 Before the final assertion, it checks that we got a result (3) and not
 `Nothing`. As it's using the `Gen.parallelWithClips` generator there
@@ -561,3 +559,12 @@ classifier_. It's also implemented a pure function, but with slightly
 more complicated logic, and it's trickier to test.
 
 Thanks for reading! See you next time.
+
+---
+
+
+[^1]: Final Cut Pro has [compound
+clips](https://support.apple.com/kb/PH12631?locale=en_US), and Adobe
+Premiere Pro has [nested
+sequences](https://www.premiumbeat.com/blog/nesting-in-adobe-premiere-pro/).
+
