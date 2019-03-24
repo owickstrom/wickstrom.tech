@@ -69,3 +69,18 @@ $(PLANTUML):
 src/generated/uml/%.svg: src/_uml/%.uml.txt src/_uml/styles.iuml $(PLANTUML)
 	mkdir -p $(shell dirname $@)
 	cat $< | java -jar $(PLANTUML) -tsvg -pipe > $@
+
+
+###############################################################
+# ANALYTICS 													
+###############################################################
+
+ANALYTICS_DIR=/tmp/wickstrom-tech-analytics
+
+.PHONY: analytics-report
+analytics-report:
+		rm -rf $(ANALYTICS_DIR)
+		aws s3 sync s3://wickstrom-tech-access-logs/wickstrom.tech "$(ANALYTICS_DIR)"
+		gunzip "$(ANALYTICS_DIR)"/*.gz
+	  goaccess "$(ANALYTICS_DIR)"/* --log-format=CLOUDFRONT -o "$(ANALYTICS_DIR)"/report.html
+		firefox "$(ANALYTICS_DIR)"/report.html
