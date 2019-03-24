@@ -6,7 +6,7 @@ categories: programming
 tags: ["property", "testing", "quality", "correctness", "haskell"]
 excerpt: |
   This post is the first case study in the "Property-Based Testing in a
-  Screencast Editor", covering the timeline flattening process in
+  Screencast Editor" series, covering the timeline flattening process in
   Komposition and how it's tested using PBT.
 ---
 
