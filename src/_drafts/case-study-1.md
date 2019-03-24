@@ -138,10 +138,26 @@ of still frames or silent audio when rendered with FFmpeg.
 
 ## Property Tests
 
-To test the timeline flattening, there are a number of properties that
+To test the timeline flattening, there's a number of properties that
 are checked. I'll go through each one and their property test code.
 
-### Duration Equality
+These properties were primarily written after I already had an
+implementation. They capture some general properties of flattening
+that I've come up with. In other cases, I've written properties before
+beginning on an implementation, or to uncover an existing bug that
+I've observed.
+
+Thinking about your system's general behaviour and expressing that as
+executable property tests is hard. I believe, like with any other
+skill, that it requires a lot of practice. Finding general patterns
+for properties, like the ones Scott Wlaschin describe in [Choosing
+properties for property-based
+testing](https://fsharpforfunandprofit.com/posts/property-based-testing-2/),
+is a great place to start. When you struggle with finding properties
+of your system under test, try applying these patterns and see which
+work for you.
+
+### Property: Duration Equality
 
 Given a timeline $t$, where all parallels have at least one video clip,
 the total duration of the flattened $t$ must be equal to the
