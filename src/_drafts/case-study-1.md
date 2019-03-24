@@ -37,18 +37,16 @@ focused on flat timeline workflows. The timeline structure and the
 keyboard-driven editing in Komposition is optimized for the screencast
 editing workflow I use.
 
-It's worth emphasizing that Komposition is _not_ a general video
+It's worth emphasizing that Komposition is not a general video
 editor. In addition to its specific editing workflow, you may need to
-adjust your recording workflow to use it effectively. See the
-[documentation on
-workflow](https://owickstrom.github.io/komposition/user-guide/workflow/)
-for more details.
+adjust your recording workflow to use it effectively[^2].
 
 ### Video and Audio in Parallels
 
 At the lowest level of the timeline are _clips_ and _gaps_. Those are
-put within the video and audio _tracks_ of _parallels_. The following diagram
-shows a parallel consisting of two video clips and one audio clip. 
+put within the video and audio _tracks_ of _parallels_. The following
+diagram shows a parallel consisting of two video clips and one audio
+clip.
 
 ![Clips and gaps are placed in video and audio tracks](/assets/property-based-testing-the-ugly-parts/timeline1.svg){width=50%}
 
@@ -560,11 +558,13 @@ more complicated logic, and it's trickier to test.
 
 Thanks for reading! See you next time.
 
----
-
+## Footnotes
 
 [^1]: Final Cut Pro has [compound
 clips](https://support.apple.com/kb/PH12631?locale=en_US), and Adobe
 Premiere Pro has [nested
 sequences](https://www.premiumbeat.com/blog/nesting-in-adobe-premiere-pro/).
-
+[^2]: The [section on
+workflow](https://owickstrom.github.io/komposition/user-guide/workflow/)
+in Komposition's documentation describes how to plan, record, and edit
+your screencast in way compatible with Komposition.
