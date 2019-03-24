@@ -23,7 +23,7 @@ on what I've learned in each case, what bugs the tests have found, and
 what still remains to be improved.
 
 For example, I'll explain how using PBT helped me find and fix bugs in
-the specification and implementatoin of Komposition's video
+the specification and implementation of Komposition's video
 classifier. Those were bugs that would be very hard to find using
 example-based tests or using a static type system!
 
