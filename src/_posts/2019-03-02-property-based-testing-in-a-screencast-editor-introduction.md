@@ -208,10 +208,15 @@ surprise, and joy!
 
 With a basic understanding of PBT, how we can write testable code, and
 how to write properties for our system under test, we're getting ready
-to dive into the case studies. Next up is "timeline flattening."
+to dive into the case studies:
 
-Stayed tuned!
+1. [Timeline Flattening](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
+1. Video Scene Classification
+1. Focus and Timeline Consistency
+1. Undo/Redo Symmetry
 
-_Thank you Chris Ford, Alejandro Serrano Mena, Tobias Pflug, Hillel
+## Credits
+
+Thank you Chris Ford, Alejandro Serrano Mena, Tobias Pflug, Hillel
 Wayne, and Ulrik Sandberg for kindly providing your feedback on my
-drafts!_
+drafts!
