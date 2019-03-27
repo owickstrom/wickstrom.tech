@@ -5,11 +5,11 @@
 {-# OPTIONS_GHC -Wno-missing-signatures #-}
 module Main where
 
-import           Data.List                      (intercalate)
-import           Data.List.NonEmpty             (NonEmpty (..), toList)
+import           Data.List                    (intercalate)
+import           Data.List.NonEmpty           (NonEmpty (..), toList)
 import           Data.Typeable
--- import           Diagrams.Backend.SVG.CmdLine
-import           Diagrams.Backend.Cairo.CmdLine
+import           Diagrams.Backend.SVG.CmdLine
+-- import           Diagrams.Backend.Cairo.CmdLine
 import           Diagrams.Prelude
 
 data Id = Id [Int]
@@ -83,14 +83,20 @@ renderTrack (Track mt parts') = map renderPart parts' # hcat # alignL
   gapStyle Implicit = bg implicitGapBg . lc gapLc . dashingN [0.005, 0.005] 1
   gapStyle Explicit = bg explicitGapBg . lc gapLc
 
-renderParallel :: Id -> Parallel -> Diagram B
-renderParallel id' parallel = alignL lblText === alignL boxedTracks
+data ParallelRenderMode = ParallelRenderSimple | ParallelRenderDetailed
+
+renderParallel :: ParallelRenderMode -> Id -> Parallel -> Diagram B
+renderParallel renderMode id' parallel = alignL lblText === alignL boxedTracks
  where
   vtBox  = renderTrack (videoTrack parallel)
   atBox  = renderTrack (audioTrack parallel)
+  trackArrow trackBox = arrowV' (with & arrowHead .~ tri & headLength .~ small) (5 ^& 0) -- (width trackBox ^& 0)
   tracks =
-    vsep 1 [vtBox, atBox]
-    # frame 1
+    let children =
+          case renderMode of
+            ParallelRenderSimple   -> [vtBox, atBox]
+            ParallelRenderDetailed -> [vtBox, trackArrow vtBox, atBox, trackArrow atBox]
+    in vsep 1 children # frame 1
   bgBox       =
     boundingRect tracks
     # lc parallelLc
@@ -115,7 +121,7 @@ renderSequence id' (Sequence parallels) = alignL lblText === alignL boxedParalle
   parallels' =
     parallels
     # toList
-    # zipWith renderParallel ids
+    # zipWith (renderParallel ParallelRenderDetailed) ids
     # hsep defaultSpacing
     # padLRB defaultSpacing
   bgBox =
@@ -144,19 +150,26 @@ renderTimeline (Timeline sequences) = padLRB
   boxedSequences = (sequences' <> bgBox) # center
   lblText        = renderLabel "Timeline" (width boxedSequences)
 
-timeline =
-  Timeline (s1 :| [s1])
-  where
-    s1 =
-      Sequence
-       (  Parallel
-         (Track Video [Clip 2, Gap Explicit 0.5, Clip 1, Gap Implicit 1.5])
-         (Track Audio [Clip 4, Gap Explicit 1])
-
-         :| [ Parallel (Track Video [Gap Explicit 1, Clip 4.5])
-              (Track Audio [Clip 1.2, Gap Implicit 4.3])
-            ]
-       )
-
 main :: IO ()
-main = multiMain [("timeline", renderTimeline timeline)]
+main = multiMain
+  [ ("timeline", renderTimeline timeline)
+  , ("sequence", renderSequence (Id [1]) s1)
+  , ("parallel", renderParallel ParallelRenderDetailed (Id [1]) p1)
+  , ("test", test)
+  ]
+ where
+  timeline = Timeline (s1 :| [s2])
+  s1       = Sequence (p1 :| [p2])
+  s2       = Sequence (p2 :| [p1])
+  p1       = Parallel
+    (Track Video [Clip 2, Gap Explicit 0.5, Clip 1, Gap Implicit 1.5])
+    (Track Audio [Clip 4, Gap Explicit 1])
+  p2 = Parallel (Track Video [Gap Explicit 1, Clip 4.5])
+                (Track Audio [Clip 1.2, Gap Implicit 4.3])
+
+test :: Diagram B
+test =
+  let x :: Diagram B
+      x = arrowV (2 ^& 0) <> (rect 2 1)
+      wrap d' = d' <> frame 1 (boundingRect d' # bg lightgrey # lc pink)
+  in  wrap x ||| wrap x ||| x ||| x ||| x
