@@ -39,6 +39,8 @@ data Part = Clip PartDuration | Gap Implicitness PartDuration
 
 data MediaType = Video | Audio
 
+pairs xs = zip xs (tail xs)
+
 textHeight = 1
 
 lineHeight = textHeight * 1.2
@@ -61,7 +63,6 @@ renderLabel lbl w =
   strutY (defaultSpacing - lineHeight)
   ===
   (text' <> alignBL (strutX w <> strutY lineHeight))
-
   where
     text' =
       alignedText 0 0 lbl
@@ -100,15 +101,21 @@ renderParallel id' parallel = alignL lblText === alignL boxedTracks
     # named id'
   lblText = renderLabel ("Parallel " <> prettyPrintId id') (width boxedTracks)
 
-padLRB pad' dia= strutX pad' ||| (dia === strutY pad') ||| strutX pad'
+padLRB pad' dia = strutX pad' ||| (dia === strutY pad') ||| strutX pad'
+
+connectArr = connectOutside' (with & arrowHead .~ tri & headLength .~ small)
+
+addArrows ids = foldl (\f (i1, i2) -> connectArr i1 i2 . f) id (pairs ids)
 
 renderSequence :: Id -> Sequence -> Diagram B
-renderSequence id' (Sequence parallels) = alignL lblText === alignL boxedParallels
+renderSequence id' (Sequence parallels) = alignL lblText === alignL boxedParallels # addArrows ids
  where
+  ids =
+    map (addToId id') [1..length parallels]
   parallels' =
     parallels
     # toList
-    # zipWith (renderParallel . addToId id') [1..]
+    # zipWith renderParallel ids
     # hsep defaultSpacing
     # padLRB defaultSpacing
   bgBox =
@@ -122,25 +129,23 @@ renderSequence id' (Sequence parallels) = alignL lblText === alignL boxedParalle
   lblText = renderLabel ("Sequence " <> prettyPrintId id') (width boxedParallels)
 
 renderTimeline :: Timeline -> Diagram B
-renderTimeline (Timeline sequences) = padLRB defaultSpacing (alignL lblText === alignL boxedSequences)
+renderTimeline (Timeline sequences) = padLRB
+  defaultSpacing
+  (alignL lblText === alignL boxedSequences # addArrows ids)
  where
+  ids = [Id [n] | n <- [1..length sequences]]
   sequences' =
     sequences
-    # toList
-    # zipWith (renderSequence . Id . pure ) [1..]
-    # hsep defaultSpacing
-    # padLRB defaultSpacing
-  bgBox =
-    boundingRect sequences'
-    # bg timelineBg
-    # lc darkgrey
-  boxedSequences =
-    (sequences' <> bgBox)
-    # center
-  lblText = renderLabel "Timeline" (width boxedSequences)
+      # toList
+      # zipWith renderSequence ids
+      # hsep defaultSpacing
+      # padLRB defaultSpacing
+  bgBox          = boundingRect sequences' # bg timelineBg # lc darkgrey
+  boxedSequences = (sequences' <> bgBox) # center
+  lblText        = renderLabel "Timeline" (width boxedSequences)
 
-timeline = renderTimeline
-  (Timeline (s1 :| [s1]))
+timeline =
+  Timeline (s1 :| [s1])
   where
     s1 =
       Sequence
@@ -153,17 +158,5 @@ timeline = renderTimeline
             ]
        )
 
-
-timelineWithArrows =
-  -- TODO: Automate this
-  timeline
-  # connectArr (Id [1]) (Id [2])
-  # connectArr (Id [1, 1]) (Id [1, 2])
-  # connectArr (Id [2, 1]) (Id [2, 2])
-  where
-    connectArr =
-      connectOutside' (with & arrowHead .~ tri
-                            & headLength .~ small)
-
 main :: IO ()
-main = multiMain [("timeline", timelineWithArrows)]
+main = multiMain [("timeline", renderTimeline timeline)]

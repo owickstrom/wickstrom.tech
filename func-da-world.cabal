@@ -20,9 +20,9 @@ library
                      , text
   default-language:    Haskell2010
 
-executable diagrams-square
-  hs-source-dirs: src/_diagrams
-  main-is: Square.hs
+executable timeline-diagrams
+  hs-source-dirs:      src/_diagrams
+  main-is:             TimelineDiagrams.hs
   build-depends:       base >= 4.7 && < 5
                      , diagrams-lib
                      , diagrams-cairo
