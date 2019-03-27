@@ -39,11 +39,23 @@ data Part = Clip PartDuration | Gap Implicitness PartDuration
 
 data MediaType = Video | Audio
 
-textHeight = 0.3
+textHeight = 1
 
-lineHeight = textHeight * 1.5
+lineHeight = textHeight * 1.2
 
-defaultSpacing = lineHeight * 2
+defaultSpacing = 2.5
+
+timelineBg    = sRGB24 250 250 250
+sequenceBg    = sRGB24 240 240 240
+parallelBg    = white
+parallelLc    = sRGB24 100 100 100
+videoClipBg   = sRGB24 68  208 98
+videoClipLc   = darken 0.2 videoClipBg
+audioClipBg   = sRGB24 252 214 22
+audioClipLc   = darken 0.2 audioClipBg
+explicitGapBg = sRGB24 150 150 150
+implicitGapBg = sRGB24 200 200 200
+gapLc = darken 0.2 explicitGapBg
 
 renderLabel lbl w =
   strutY (defaultSpacing - lineHeight)
@@ -53,19 +65,22 @@ renderLabel lbl w =
   where
     text' =
       alignedText 0 0 lbl
-      # fontSizeL textHeight
       # font "Linux Biolinum"
 
 renderTrack :: Track -> Diagram B
 renderTrack (Track _ []) = strut 1
-renderTrack (Track mt parts) = map renderPart parts # hcat # alignL
+renderTrack (Track mt parts') = map renderPart parts' # hcat # alignL
  where
-  renderPart (Clip dur)     = rect dur 1 # fc (partColor mt) # lc black # lw 1
-  renderPart (Gap impl dur) = rect dur 1 # fc darkgrey # lineStyle impl
-  partColor Video = springgreen
-  partColor Audio = gold
-  lineStyle Implicit = dashingN [0.02,0.02] 0 # lc black # lw 1
-  lineStyle Explicit = lc black # lw 1
+  renderPart (Clip dur) =
+    rect (dur * 2) 3 # bg (partColor mt) # lc (partLineColor mt)
+  renderPart (Gap impl dur) =
+    rect (dur * 2) 3 # gapStyle impl
+  partColor Video = videoClipBg
+  partColor Audio = audioClipBg
+  partLineColor Video = videoClipLc
+  partLineColor Audio = audioClipLc
+  gapStyle Implicit = bg implicitGapBg . lc gapLc . dashingN [0.005, 0.005] 1
+  gapStyle Explicit = bg explicitGapBg . lc gapLc
 
 renderParallel :: Id -> Parallel -> Diagram B
 renderParallel id' parallel = alignL lblText === alignL boxedTracks
@@ -73,9 +88,12 @@ renderParallel id' parallel = alignL lblText === alignL boxedTracks
   vtBox  = renderTrack (videoTrack parallel)
   atBox  = renderTrack (audioTrack parallel)
   tracks =
-    vsep 0.2 [sized (mkHeight 1) vtBox, sized (mkHeight 1) atBox]
-    # frame 0.2
-  bgBox       = boundingRect tracks # fc lightgrey # lc black # lw 1
+    vsep 1 [vtBox, atBox]
+    # frame 1
+  bgBox       =
+    boundingRect tracks
+    # lc parallelLc
+    # bg parallelBg
   boxedTracks =
     (tracks <> bgBox)
     # center
@@ -91,12 +109,12 @@ renderSequence id' (Sequence parallels) = alignL lblText === alignL boxedParalle
     parallels
     # toList
     # zipWith (renderParallel . addToId id') [1..]
-    # hsep 1.2
+    # hsep defaultSpacing
     # padLRB defaultSpacing
   bgBox =
     boundingRect parallels'
+    # bg sequenceBg
     # lc darkgrey
-    # lw 1
   boxedParallels =
     (parallels' <> bgBox)
     # center
@@ -110,12 +128,12 @@ renderTimeline (Timeline sequences) = padLRB defaultSpacing (alignL lblText === 
     sequences
     # toList
     # zipWith (renderSequence . Id . pure ) [1..]
-    # hsep 1.2
+    # hsep defaultSpacing
     # padLRB defaultSpacing
   bgBox =
     boundingRect sequences'
+    # bg timelineBg
     # lc darkgrey
-    # lw 1
   boxedSequences =
     (sequences' <> bgBox)
     # center
@@ -139,9 +157,13 @@ timeline = renderTimeline
 timelineWithArrows =
   -- TODO: Automate this
   timeline
-  # connectOutside (Id [1]) (Id [2])
-  # connectOutside (Id [1, 1]) (Id [1, 2])
-  # connectOutside (Id [2, 1]) (Id [2, 2])
+  # connectArr (Id [1]) (Id [2])
+  # connectArr (Id [1, 1]) (Id [1, 2])
+  # connectArr (Id [2, 1]) (Id [2, 2])
+  where
+    connectArr =
+      connectOutside' (with & arrowHead .~ tri
+                            & headLength .~ small)
 
 main :: IO ()
 main = multiMain [("timeline", timelineWithArrows)]
