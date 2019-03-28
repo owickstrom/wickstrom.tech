@@ -5,11 +5,11 @@
 {-# OPTIONS_GHC -Wno-missing-signatures #-}
 module Main where
 
-import           Data.List                    (intercalate)
-import           Data.List.NonEmpty           (NonEmpty (..), toList)
+import           Data.List                      (intercalate)
+import           Data.List.NonEmpty             (NonEmpty (..), toList)
 import           Data.Typeable
-import           Diagrams.Backend.SVG.CmdLine
--- import           Diagrams.Backend.Cairo.CmdLine
+-- import           Diagrams.Backend.SVG.CmdLine
+import           Diagrams.Backend.Cairo.CmdLine
 import           Diagrams.Prelude
 
 data Id = Id [Int]
@@ -43,8 +43,6 @@ pairs xs = zip xs (tail xs)
 
 textHeight = 1
 
-lineHeight = textHeight * 1.2
-
 defaultSpacing = 2.5
 
 timelineBg    = sRGB24 250 250 250
@@ -60,13 +58,9 @@ implicitGapBg = sRGB24 200 200 200
 gapLc = darken 0.2 explicitGapBg
 
 renderLabel lbl w =
-  strutY (defaultSpacing - lineHeight)
-  ===
-  (text' <> alignBL (strutX w <> strutY lineHeight))
-  where
-    text' =
-      alignedText 0 0 lbl
-      # font "Linux Biolinum"
+  alignedText 0 0 lbl #fontSizeL textHeight # font "Linux Biolinum"
+  <>
+  alignBL (strutX w <> strutY defaultSpacing)
 
 renderTrack :: Track -> Diagram B
 renderTrack (Track _ []) = strut 1
@@ -90,7 +84,7 @@ renderParallel renderMode id' parallel = alignL lblText === alignL boxedTracks
  where
   vtBox  = renderTrack (videoTrack parallel)
   atBox  = renderTrack (audioTrack parallel)
-  trackArrow trackBox = arrowV' (with & arrowHead .~ tri & headLength .~ small) (5 ^& 0) -- (width trackBox ^& 0)
+  trackArrow trackBox = arrowV' (with & arrowHead .~ tri & headLength .~ local 0.5) (width trackBox ^& 0)
   tracks =
     let children =
           case renderMode of
@@ -109,7 +103,7 @@ renderParallel renderMode id' parallel = alignL lblText === alignL boxedTracks
 
 padLRB pad' dia = strutX pad' ||| (dia === strutY pad') ||| strutX pad'
 
-connectArr = connectOutside' (with & arrowHead .~ tri & headLength .~ small)
+connectArr = connectOutside' (with & arrowHead .~ tri & headLength .~ local 0.5 & shaftStyle %~ dashingN [0.005, 0.005] 1)
 
 addArrows ids = foldl (\f (i1, i2) -> connectArr i1 i2 . f) id (pairs ids)
 
@@ -122,7 +116,7 @@ renderSequence id' (Sequence parallels) = alignL lblText === alignL boxedParalle
     parallels
     # toList
     # zipWith (renderParallel ParallelRenderDetailed) ids
-    # hsep defaultSpacing
+    # hsep (defaultSpacing * 1.5)
     # padLRB defaultSpacing
   bgBox =
     boundingRect parallels'
@@ -135,16 +129,14 @@ renderSequence id' (Sequence parallels) = alignL lblText === alignL boxedParalle
   lblText = renderLabel ("Sequence " <> prettyPrintId id') (width boxedParallels)
 
 renderTimeline :: Timeline -> Diagram B
-renderTimeline (Timeline sequences) = padLRB
-  defaultSpacing
-  (alignL lblText === alignL boxedSequences # addArrows ids)
+renderTimeline (Timeline sequences) = alignL lblText === alignL boxedSequences # addArrows ids
  where
   ids = [Id [n] | n <- [1..length sequences]]
   sequences' =
     sequences
       # toList
       # zipWith renderSequence ids
-      # hsep defaultSpacing
+      # hsep (defaultSpacing * 1.5)
       # padLRB defaultSpacing
   bgBox          = boundingRect sequences' # bg timelineBg # lc darkgrey
   boxedSequences = (sequences' <> bgBox) # center
@@ -170,6 +162,6 @@ main = multiMain
 test :: Diagram B
 test =
   let x :: Diagram B
-      x = arrowV (2 ^& 0) <> (rect 2 1)
-      wrap d' = d' <> frame 1 (boundingRect d' # bg lightgrey # lc pink)
-  in  wrap x ||| wrap x ||| x ||| x ||| x
+      x = arrowV (2 ^& 0) <> (rect 2 1 # bg lime)
+      wrap d' = d' <> boundingRect d' # bg lightgrey # lc red
+  in hsep 0 (replicate 4 (wrap x))
