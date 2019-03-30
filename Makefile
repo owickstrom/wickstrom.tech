@@ -21,11 +21,13 @@ PANDOC_DRAFT_PDF_OPTS = -H src/draft-header.tex \
 build: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cabal new-build
+	rm -rf src/generated/diagrams
 	cd src && bundle exec jekyll build --destination ../target/html
 
 serve: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cabal new-build
+	rm -rf src/generated/diagrams
 	cd src && (bundle exec jekyll serve --host '0.0.0.0' --drafts --destination ../target/html --unpublished --config=_config.yml,_local_config.yml &) && bundle exec guard --watchdir=../target/html
 
 target/drafts/%.pdf: src/_drafts/%.md src/draft-header.tex

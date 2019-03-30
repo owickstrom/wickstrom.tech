@@ -4,5 +4,6 @@ _site
 /target
 /deps
 /src/vendor/bundle
+/src/generated/diagrams
 .stack-work
 .tmp

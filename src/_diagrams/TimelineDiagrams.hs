@@ -1,18 +1,16 @@
+{-# LANGUAGE ConstraintKinds           #-}
 {-# LANGUAGE FlexibleContexts          #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE TypeFamilies              #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+module TimelineDiagrams where
 
-{-# OPTIONS_GHC -Wno-missing-signatures #-}
-module Main where
-
-import           Data.List                      (intercalate)
-import           Data.List.NonEmpty             (NonEmpty (..), toList)
+import           Data.List          (intercalate)
+import           Data.List.NonEmpty (NonEmpty (..), toList)
 import           Data.Typeable
--- import           Diagrams.Backend.SVG.CmdLine
-import           Diagrams.Backend.Cairo.CmdLine
 import           Diagrams.Prelude
 
-data Id = Id [Int]
+newtype Id = Id [Int]
   deriving (Typeable, Eq, Ord, Show)
 
 instance IsName Id
@@ -41,7 +39,7 @@ data MediaType = Video | Audio
 
 pairs xs = zip xs (tail xs)
 
-textHeight = 1
+textHeight = 1.75
 
 defaultSpacing = 2.5
 
@@ -62,14 +60,13 @@ renderLabel lbl w =
   <>
   alignBL (strutX w <> strutY defaultSpacing)
 
-renderTrack :: Track -> Diagram B
 renderTrack (Track _ []) = strut 1
 renderTrack (Track mt parts') = map renderPart parts' # hcat # alignL
  where
   renderPart (Clip dur) =
-    rect (dur * 2) 3 # bg (partColor mt) # lc (partLineColor mt)
+    rect (dur * 2) 3 # bg (partColor mt) # lc (partLineColor mt) # lwL 0.1
   renderPart (Gap impl dur) =
-    rect (dur * 2) 3 # gapStyle impl
+    rect (dur * 2) 3 # gapStyle impl # lwL 0.1
   partColor Video = videoClipBg
   partColor Audio = audioClipBg
   partLineColor Video = videoClipLc
@@ -77,28 +74,31 @@ renderTrack (Track mt parts') = map renderPart parts' # hcat # alignL
   gapStyle Implicit = bg implicitGapBg . lc gapLc . dashingN [0.005, 0.005] 1
   gapStyle Explicit = bg explicitGapBg . lc gapLc
 
-data ParallelRenderMode = ParallelRenderSimple | ParallelRenderDetailed
+data RenderSettings = RenderSettings
+  { labels         :: Bool
+  , parallelArrows :: Bool
+  }
 
-renderParallel :: ParallelRenderMode -> Id -> Parallel -> Diagram B
-renderParallel renderMode id' parallel = alignL lblText === alignL boxedTracks
+leftAlignedLabelAbove settings lbl d =
+  if labels settings
+    then alignL lbl === alignL d
+    else alignL d
+
+renderParallel settings id' parallel =
+  boxedTracks # leftAlignedLabelAbove settings lblText
  where
-  vtBox  = renderTrack (videoTrack parallel)
-  atBox  = renderTrack (audioTrack parallel)
-  trackArrow trackBox = arrowV' (with & arrowHead .~ tri & headLength .~ local 0.5) (width trackBox ^& 0)
+  vtBox = renderTrack (videoTrack parallel)
+  atBox = renderTrack (audioTrack parallel)
+  trackArrow trackBox = arrowV'
+    (with & arrowHead .~ tri & headLength .~ local 0.5)
+    (width trackBox ^& 0)
   tracks =
-    let children =
-          case renderMode of
-            ParallelRenderSimple   -> [vtBox, atBox]
-            ParallelRenderDetailed -> [vtBox, trackArrow vtBox, atBox, trackArrow atBox]
-    in vsep 1 children # frame 1
-  bgBox       =
-    boundingRect tracks
-    # lc parallelLc
-    # bg parallelBg
-  boxedTracks =
-    (tracks <> bgBox)
-    # center
-    # named id'
+    let children = if parallelArrows settings
+          then [vtBox, trackArrow vtBox, atBox, trackArrow atBox]
+          else [vtBox, atBox]
+    in  vsep 1 children # frame 1
+  bgBox = boundingRect tracks # lc parallelLc # bg parallelBg
+  boxedTracks = (tracks <> bgBox) # center # named id'
   lblText = renderLabel ("Parallel " <> prettyPrintId id') (width boxedTracks)
 
 padLRB pad' dia = strutX pad' ||| (dia === strutY pad') ||| strutX pad'
@@ -107,61 +107,32 @@ connectArr = connectOutside' (with & arrowHead .~ tri & headLength .~ local 0.5 
 
 addArrows ids = foldl (\f (i1, i2) -> connectArr i1 i2 . f) id (pairs ids)
 
-renderSequence :: Id -> Sequence -> Diagram B
-renderSequence id' (Sequence parallels) = alignL lblText === alignL boxedParallels # addArrows ids
+renderSequence settings id' (Sequence parallels) =
+  boxedParallels
+  # addArrows ids
+  # leftAlignedLabelAbove settings lblText
  where
-  ids =
-    map (addToId id') [1..length parallels]
+  ids = map (addToId id') [1 .. length parallels]
   parallels' =
     parallels
-    # toList
-    # zipWith (renderParallel ParallelRenderDetailed) ids
-    # hsep (defaultSpacing * 1.5)
-    # padLRB defaultSpacing
-  bgBox =
-    boundingRect parallels'
-    # bg sequenceBg
-    # lc darkgrey
-  boxedParallels =
-    (parallels' <> bgBox)
-    # center
-    # named id'
-  lblText = renderLabel ("Sequence " <> prettyPrintId id') (width boxedParallels)
+      # toList
+      # zipWith (renderParallel settings) ids
+      # hsep (defaultSpacing * 1.5)
+      # padLRB defaultSpacing
+  bgBox          = boundingRect parallels' # bg sequenceBg # lc darkgrey
+  boxedParallels = (parallels' <> bgBox) # center # named id'
+  lblText =
+    renderLabel ("Sequence " <> prettyPrintId id') (width boxedParallels)
 
-renderTimeline :: Timeline -> Diagram B
-renderTimeline (Timeline sequences) = alignL lblText === alignL boxedSequences # addArrows ids
+renderTimeline settings (Timeline sequences) = alignL lblText === alignL boxedSequences # addArrows ids
  where
   ids = [Id [n] | n <- [1..length sequences]]
   sequences' =
     sequences
       # toList
-      # zipWith renderSequence ids
+      # zipWith (renderSequence settings) ids
       # hsep (defaultSpacing * 1.5)
       # padLRB defaultSpacing
   bgBox          = boundingRect sequences' # bg timelineBg # lc darkgrey
   boxedSequences = (sequences' <> bgBox) # center
   lblText        = renderLabel "Timeline" (width boxedSequences)
-
-main :: IO ()
-main = multiMain
-  [ ("timeline", renderTimeline timeline)
-  , ("sequence", renderSequence (Id [1]) s1)
-  , ("parallel", renderParallel ParallelRenderDetailed (Id [1]) p1)
-  , ("test", test)
-  ]
- where
-  timeline = Timeline (s1 :| [s2])
-  s1       = Sequence (p1 :| [p2])
-  s2       = Sequence (p2 :| [p1])
-  p1       = Parallel
-    (Track Video [Clip 2, Gap Explicit 0.5, Clip 1, Gap Implicit 1.5])
-    (Track Audio [Clip 4, Gap Explicit 1])
-  p2 = Parallel (Track Video [Gap Explicit 1, Clip 4.5])
-                (Track Audio [Clip 1.2, Gap Implicit 4.3])
-
-test :: Diagram B
-test =
-  let x :: Diagram B
-      x = arrowV (2 ^& 0) <> (rect 2 1 # bg lime)
-      wrap d' = d' <> boundingRect d' # bg lightgrey # lc red
-  in hsep 0 (replicate 4 (wrap x))
