@@ -45,7 +45,7 @@ data MediaType = Video | Audio
 
 pairs xs = zip xs (tail xs)
 
-textHeight = 1.5
+textHeight = 1.2
 
 defaultSpacing = 2.5
 
@@ -80,7 +80,7 @@ renderTrack (Track _ []) = strut 1
 renderTrack (Track mt parts') = map renderPart parts' # hcat # alignL
  where
   partLabel dur txt =
-    (text txt # fontSizeL 1 # font "Linux Biolinum")
+    (text txt # fontSizeL (textHeight * 0.6) # font "Linux Biolinum")
     <> strutX (dur * 2) <> strutY 2
   renderPart (Clip dur mLabel) =
     maybe mempty (partLabel dur) mLabel <>

@@ -23,14 +23,14 @@ module Jekyll
 module Main where
 
 import Diagrams.Prelude
-import Diagrams.Backend.SVG.CmdLine
+import Diagrams.Backend.Cairo.CmdLine
 MARKUP
       )
       in_f.write(content)
       in_f.write("\n\nmain = mainWith dia\n")
       in_f.close()
 
-      tmp_out_f = Tempfile.new(["diagram", ".svg"])
+      tmp_out_f = Tempfile.new(["diagram", ".png"])
 
       height_param = @height.nil? ? "" : "-h #{@height}"
       %x[cabal v2-build wickstrom-tech]
@@ -39,7 +39,7 @@ MARKUP
         raise "Failed to generate diagram!"
       end
 
-      out_name = Digest::SHA256.hexdigest(IO.read(tmp_out_f)) + ".svg"
+      out_name = Digest::SHA256.hexdigest(IO.read(tmp_out_f)) + ".png"
       out_file = File.join(out_dir, out_name)
       FileUtils.mv(tmp_out_f, out_file)
 
