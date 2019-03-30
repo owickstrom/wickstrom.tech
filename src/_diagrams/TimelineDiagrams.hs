@@ -101,16 +101,16 @@ leftAlignedLabelAbove settings lbl d =
     else alignL d
 
 renderTracks settings t1 t2 =
-  let box1    = renderTrack t1
-      box2    = renderTrack t2
-      children = if parallelArrows settings
-        then [box1, trackArrow box1, box2, trackArrow box2]
+  let children = if parallelArrows settings
+        then [box1, trackArrow, box2, trackArrow]
         else [box1, box2]
   in  vsep 1 children # frame 1
  where
-  trackArrow trackBox = arrowV'
+  box1 = renderTrack t1
+  box2 = renderTrack t2
+  trackArrow = arrowV'
     (with & arrowHead .~ tri & headLength .~ local 0.5)
-    (width trackBox ^& 0)
+    (max (width box1) (width box2) ^& 0)
 
 renderParallel settings id' parallel =
   boxedTracks # leftAlignedLabelAbove settings lblText
