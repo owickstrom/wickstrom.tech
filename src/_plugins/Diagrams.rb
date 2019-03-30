@@ -13,7 +13,7 @@ module Jekyll
       @caption = attrs[:caption].strip
     end
 
-    def render_diagram(content, out_dir)
+    def render_diagram(content, scale, out_dir)
       Dir.mkdir(out_dir) unless Dir.exists?(out_dir)
 
       in_f = Tempfile.new(["diagram", ".hs"])
@@ -34,12 +34,12 @@ MARKUP
 
       height_param = @height.nil? ? "" : "-h #{@height}"
       %x[cabal v2-build wickstrom-tech]
-      %x[cabal v2-exec -- runhaskell #{in_f.path} -w #{@width} #{height_param} -o #{tmp_out_f.path}]
+      %x[cabal v2-exec -- runhaskell #{in_f.path} -w #{@width * scale} #{height_param} -o #{tmp_out_f.path}]
       unless File.exists?(tmp_out_f)
         raise "Failed to generate diagram!"
       end
 
-      out_name = Digest::SHA256.hexdigest(IO.read(tmp_out_f)) + ".png"
+      out_name = Digest::SHA256.hexdigest(IO.read(tmp_out_f)) + ".#{scale}x.png"
       out_file = File.join(out_dir, out_name)
       FileUtils.mv(tmp_out_f, out_file)
 
@@ -53,17 +53,20 @@ MARKUP
       page = context.registers[:page]
 
       out_dir = "#{site.source}/generated/diagrams"
-      name = render_diagram(super, out_dir)
+      name_1x = render_diagram(super, 1, out_dir)
+      name_2x = render_diagram(super, 2, out_dir)
 
-      site.static_files << Jekyll::StaticFile.new(site, site.source, "/generated/diagrams", name)
+      site.static_files << Jekyll::StaticFile.new(site, site.source, "/generated/diagrams", name_1x)
+      site.static_files << Jekyll::StaticFile.new(site, site.source, "/generated/diagrams", name_2x)
 
-      url = "#{site.baseurl}/generated/diagrams/#{name}"
+      url_1x = "#{site.baseurl}/generated/diagrams/#{name_1x}"
+      url_2x = "#{site.baseurl}/generated/diagrams/#{name_2x}"
 
       height_attr = @height.nil? ? "" : "height=\"#{@height}\""
 
       <<-MARKUP.strip
   <figure class="diagram">
-  <img src="#{url}" alt="#{@caption}" width="#{@width}" #{height_attr} />
+  <img src="#{url_1x}" srcset="#{url_1x} 1x, #{url_2x} 2x" alt="#{@caption}" width="#{@width}" #{height_attr} />
   <figcaption>
   #{@caption}
   </figcaption>
