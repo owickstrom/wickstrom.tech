@@ -28,7 +28,7 @@ serve: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cabal new-build
 	rm -rf src/generated/diagrams
-	cd src && (bundle exec jekyll serve --host '0.0.0.0' --drafts --destination ../target/html --unpublished --config=_config.yml,_local_config.yml &) && bundle exec guard --watchdir=../target/html
+	(cd src && bundle exec jekyll serve --host '0.0.0.0' --drafts --destination ../target/html --unpublished --config=_config.yml,_local_config.yml)
 
 target/drafts/%.pdf: src/_drafts/%.md src/draft-header.tex
 	mkdir -p $(shell dirname $@)

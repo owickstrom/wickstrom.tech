@@ -50,7 +50,17 @@ put within the video and audio _tracks_ of _parallels_. The following
 diagram shows a parallel consisting of two video clips and one audio
 clip.
 
-![Clips and gaps are placed in video and audio tracks](/assets/property-based-testing-the-ugly-parts/timeline1.svg){width=50%}
+{% diagram :width => 350, :caption => "Clips and gaps are placed in video and audio tracks" %}
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = 
+  Parallel
+    (Track Video [Clip 4 (Just "Video Clip 1"), Clip 5 (Just "Video Clip 2")])
+    (Track Audio [Clip 6.5 (Just "Audio Clip 1")])
+  # renderParallel defaultRenderSettings { parallelArrows = True } (Id [])
+{% enddiagram %}
 
 The tracks of a parallel are played simultaneously (in parallel), as
 indicated by the arrows in the above diagram. The tracks start playing
@@ -71,14 +81,35 @@ tracks are padded with repeated still frame sections called _gaps_.
 The following diagram shows a parallel with a short video clip and a
 longer audio clip. The dashed area represents the implicit gap.
 
-![Still frames are automatically inserted at implicit gaps to match track duration](/assets/property-based-testing-the-ugly-parts/timeline2.svg){width=50%}
+{% diagram :width => 350, :caption => "Still frames are automatically inserted at implicit gaps to match track duration" %}
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = 
+  Parallel
+    (Track Video [Clip 4 (Just "Video Clip 1"), Gap Implicit 4 (Just "Implicit Gap")])
+    (Track Audio [Clip 8 (Just "Audio Clip 1")])
+  # renderParallel defaultRenderSettings { parallelArrows = True } (Id [])
+{% enddiagram %}
 
 You can also add gaps manually, specifying a duration of the gap and
 inserting it into a video or audio track. The following diagram shows
 a parallel with manually added gaps in both video and audio
 tracks.
 
-![Adding Gaps](/assets/property-based-testing-the-ugly-parts/timeline3.svg){width=50%}
+{% diagram :width => 350, :caption => "Adding explicit gaps manually" %}
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = 
+  Parallel
+    (Track Video [Clip 4 (Just "Video Clip 1"), Gap Explicit 2 (Just "Gap"), Clip 3 (Just "Video Clip 2")])
+    (Track Audio [Gap Explicit 2 (Just "Gap"), Clip 7 (Just "Audio Clip 1")])
+  # renderParallel defaultRenderSettings { parallelArrows = True } (Id [])
+{% enddiagram %}
+
 
 Manually added gaps (called _explicit_ gaps) are padded with still
 frames or silence, just as implicit gaps that are added automatically
@@ -96,7 +127,24 @@ compositional editing in Komposition.
 The following diagram shows a sequence of two parallels, playing
 sequentially:
 
-![A sequence containing two parallels](/assets/property-based-testing-the-ugly-parts/timeline4.svg){width=100%}
+{% diagram :width => 600, :caption => "A sequence containing two parallels" %}
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = 
+  Sequence (p1 :| [p2])
+  # renderSequence defaultRenderSettings { containerLabels = True } (Id [])
+ where
+  p1 = 
+    Parallel
+      (Track Video [Clip 4 Nothing, Clip 3 Nothing])
+      (Track Audio [Gap Explicit 2 Nothing, Clip 7 Nothing])
+  p2 = 
+    Parallel
+      (Track Video [Gap Explicit 2 Nothing, Clip 8 Nothing])
+      (Track Audio [Clip 7 Nothing])
+{% enddiagram %}
 
 ### The Timeline
 
@@ -105,8 +153,35 @@ timeline is a sequence of sequences; it plays every child sequence in
 sequence. The reason for this level to exist is for the ability to
 group larger chunks of a screencast within separate sequences.
 
-![A timeline containing two sequences, with two parallels
-each](/assets/property-based-testing-the-ugly-parts/timeline5.svg){width=100%}
+{% diagram :width => 750, :caption => "A timeline containing two sequences, with two parallels
+each" %}
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = 
+  Timeline (s1 :| [s2])
+  # renderTimeline defaultRenderSettings { containerLabels = True }
+ where
+  s1 = Sequence (p11 :| [p12])
+  s2 = Sequence (p21 :| [p22])
+  p11 = 
+    Parallel
+      (Track Video [Clip 2 Nothing, Clip 1 Nothing])
+      (Track Audio [Gap Explicit 1 Nothing, Clip 3 Nothing])
+  p12 = 
+    Parallel
+      (Track Video [Gap Explicit 1 Nothing, Clip 4 Nothing])
+      (Track Audio [Clip 3 Nothing])
+  p21 = 
+    Parallel
+      (Track Video [Clip 2 Nothing, Clip 1 Nothing, Clip 1 Nothing])
+      (Track Audio [Gap Explicit 2 Nothing, Clip 1 Nothing])
+  p22 = 
+    Parallel
+      (Track Video [Clip 4 Nothing])
+      (Track Audio [Clip 2 Nothing, Gap Explicit 2 Nothing])
+{% enddiagram %}
 
 I use separate sequences within the timeline to delimit distinct parts
 of a screencast, such as the introduction, the different chapters, and
@@ -130,7 +205,50 @@ and video. All gaps are _explicitly_ represented in those tracks. The
 following graph shows how a hierarchical timeline is flattened into
 two tracks.
 
-![Timeline flattening transforming a hierarchical timeline](/assets/property-based-testing-the-ugly-parts/komposition-flattening.svg){width=100%}
+{% diagram :width => 750, :caption => "Timeline flattening transforming a hierarchical timeline" %}
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = tl === strutY 1 === scaleY 5 (arrowV (0 ^& (-1))) === flat
+ where
+  settings = defaultRenderSettings { containerLabels = True } 
+  tl =
+    renderTimeline settings (Timeline (s1 :| [s2]))
+    # center
+  flat =
+    FlatTimeline
+      (Track Video [ Clip 2 Nothing, Clip 1 Nothing, Gap Implicit 1 Nothing
+                   , Gap Explicit 1 Nothing, Clip 4 Nothing
+                   , Clip 2 Nothing, Clip 1 Nothing, Clip 1 Nothing
+                   , Clip 4 Nothing
+                   ])
+      (Track Audio [ Gap Explicit 1 Nothing , Clip 3 Nothing
+                   , Clip 3 Nothing, Gap Implicit 2 Nothing
+                   , Gap Explicit 2 Nothing, Clip 1 Nothing, Gap Implicit 1 Nothing
+                   , Clip 2 Nothing, Gap Explicit 2 Nothing
+                   ])
+    # renderFlatTimeline settings
+    # center
+  s1 = Sequence (p11 :| [p12])
+  s2 = Sequence (p21 :| [p22])
+  p11 = 
+    Parallel
+      (Track Video [Clip 2 Nothing, Clip 1 Nothing])
+      (Track Audio [Gap Explicit 1 Nothing, Clip 3 Nothing])
+  p12 = 
+    Parallel
+      (Track Video [Gap Explicit 1 Nothing, Clip 4 Nothing])
+      (Track Audio [Clip 3 Nothing])
+  p21 = 
+    Parallel
+      (Track Video [Clip 2 Nothing, Clip 1 Nothing, Clip 1 Nothing])
+      (Track Audio [Gap Explicit 2 Nothing, Clip 1 Nothing])
+  p22 = 
+    Parallel
+      (Track Video [Clip 4 Nothing])
+      (Track Audio [Clip 2 Nothing, Gap Explicit 2 Nothing])
+{% enddiagram %}
 
 Notice in the graphic above how the implicit gaps at the ends of video
 and audio tracks get represented with explicit gaps in the flat
