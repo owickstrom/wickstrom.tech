@@ -76,18 +76,19 @@ renderLabel lbl w =
   <>
   alignBL (strutX w <> strutY defaultSpacing)
 
-renderTrack (Track _ []) = strut 1
-renderTrack (Track mt parts') = map renderPart parts' # hcat # alignL
+renderTrack _ (Track _ []) = strut 1
+renderTrack trackId (Track mt parts') = zipWith renderPart ids parts' # hcat # alignL
  where
+  ids = map (addToId trackId) [1 .. length parts']
   partLabel dur txt =
     (text txt # fontSizeL (textHeight * 0.6) # font "Linux Biolinum")
     <> strutX (dur * 2) <> strutY 2
-  renderPart (Clip dur mLabel) =
+  renderPart id' (Clip dur mLabel) =
     maybe mempty (partLabel dur) mLabel <>
-    rect (dur * 2) 2 # bg (partColor mt) # lc (partLineColor mt) # lwG 0.1
-  renderPart (Gap impl dur mLabel) =
+    rect (dur * 2) 2 # bg (partColor mt) # lc (partLineColor mt) # lwG 0.1 # named id'
+  renderPart id' (Gap impl dur mLabel) =
     maybe mempty (partLabel dur) mLabel <>
-    rect (dur * 2) 2 # gapStyle impl # lwG 0.1
+    rect (dur * 2) 2 # gapStyle impl # lwG 0.1 # named id'
   partColor Video = videoClipBg
   partColor Audio = audioClipBg
   partLineColor Video = videoClipLc
@@ -100,14 +101,14 @@ leftAlignedLabelAbove settings lbl d =
     then alignL lbl === alignL d
     else alignL d
 
-renderTracks settings t1 t2 =
+renderTracks settings id' t1 t2 =
   let children = if parallelArrows settings
         then [box1, trackArrow, box2, trackArrow]
         else [box1, box2]
   in  vsep 1 children # frame 1
  where
-  box1 = renderTrack t1
-  box2 = renderTrack t2
+  box1 = renderTrack (addToId id' 1) t1
+  box2 = renderTrack (addToId id' 2) t2
   trackArrow = arrowV'
     (with & arrowHead .~ tri & headLength .~ local 0.5)
     (max (width box1) (width box2) ^& 0)
@@ -115,7 +116,7 @@ renderTracks settings t1 t2 =
 renderParallel settings id' parallel =
   boxedTracks # leftAlignedLabelAbove settings lblText
  where
-  tracks = renderTracks settings (videoTrack parallel) (audioTrack parallel)
+  tracks = renderTracks settings id' (videoTrack parallel) (audioTrack parallel)
   bgBox = boundingRect tracks # lc parallelLc # bg parallelBg # lwG 0.2
   boxedTracks = (tracks <> bgBox) # center # named id'
   lblText = renderLabel ("Parallel " <> prettyPrintId id') (width boxedTracks)
@@ -161,5 +162,11 @@ renderFlatTimeline settings (FlatTimeline t1 t2) =
  where
   bgBox       = boundingRect tracks # bg timelineBg # lc darkgrey # lwG 0.2
   boxedTracks = (tracks <> bgBox) # center
-  tracks = renderTracks settings t1 t2 # center
+  tracks = renderTracks settings (Id []) t1 t2 # center
   lblText = renderLabel "Flat Timeline" (width tracks)
+
+connectParts rot id1 id2 = connectPerim' (with & arrowShaft .~ arc xDir rot)
+                                         id1
+                                         id2
+                                         (1 / 4 @@ turn)
+                                         (1 / 4 @@ turn)

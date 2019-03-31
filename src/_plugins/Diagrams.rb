@@ -18,6 +18,7 @@ module Jekyll
 
       in_f = Tempfile.new(["diagram", ".hs"])
       in_f.write(<<-MARKUP.strip
+{-# LANGUAGE GADTs                     #-}
 {-# LANGUAGE FlexibleContexts          #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 module Main where

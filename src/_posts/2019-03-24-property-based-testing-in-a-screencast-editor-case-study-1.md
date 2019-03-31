@@ -462,6 +462,24 @@ end of the video track. In either case, all video gaps should padded
 with the last frame of the initial video clip, which is checked in the
 assertion (4).
 
+{% diagram :width => 375, :caption => "Still frames being sourced from the single initial video clip" %}
+import           Diagrams.Direction (dir)
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = 
+  Parallel
+    (Track Video [Clip 4 (Just "Video Clip 1"), Gap Explicit 2 Nothing, Gap Explicit 3 Nothing])
+    (Track Audio [Clip 9 (Just "Audio Clip 1")])
+  # renderParallel defaultRenderSettings { parallelArrows = False } (Id [])
+  # (strutY 1 ===)
+  # connectParts arrowRot (Id [1, 2]) (Id [1, 1])
+  # connectParts arrowRot (Id [1, 3]) (Id [1, 1])
+  where
+    arrowRot = 1/6 @@ turn
+{% enddiagram %}
+
 ### Property: Ending with a Video Clip
 
 In case the video track ends with a video clip, and is longer than the
@@ -512,6 +530,25 @@ video gap at the end of the video track. Generating (2) and flattening
 (3) is otherwise the same as before. The assertion (4) checks that all
 video gaps uses the first frame of a following clip.
 
+{% diagram :width => 600, :caption => "Still frames being sourced from following video clips when possible" %}
+import           Diagrams.Direction (dir)
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = 
+  Parallel
+    (Track Video [Clip 3 (Just "Video Clip 1"), Gap Explicit 1 Nothing, Clip 3 (Just "Video Clip 2"), Gap Explicit 1.5 Nothing, Gap Explicit 2.5 Nothing, Clip 4 (Just "Video Clip 3")])
+    (Track Audio [Clip 10 (Just "Audio Clip 1")])
+  # renderParallel defaultRenderSettings { parallelArrows = False } (Id [])
+  # (strutY 1 ===)
+  # connectParts arrowRot (Id [1, 2]) (Id [1, 3])
+  # connectParts arrowRot (Id [1, 4]) (Id [1, 6])
+  # connectParts arrowRot (Id [1, 5]) (Id [1, 6])
+  where
+    arrowRot = (-1/6) @@ turn
+{% enddiagram %}
+
 ### Property: Ending with an Implicit Video Gap
 
 The last property on still frame usage covers the case where the video
@@ -558,6 +595,23 @@ timeline (2) and flattening (3) are again similar to the previous
 property tests. The assertion (4) checks that all video gaps use the
 last frame of preceding clips, even if we know that there should only
 be one at the end.
+
+{% diagram :width => 350, :caption => "Still frames being sourced from preceding video clip for last implicit gap" %}
+import           Diagrams.Direction (dir)
+import           TimelineDiagrams
+import           Data.List.NonEmpty (NonEmpty (..))
+
+dia :: Diagram B
+dia = 
+  Parallel
+    (Track Video [Clip 5 (Just "Video Clip 1"), Gap Implicit 3 Nothing])
+    (Track Audio [Clip 8 (Just "Audio Clip 1")])
+  # renderParallel defaultRenderSettings { parallelArrows = False } (Id [])
+  # (strutY 1 ===)
+  # connectParts arrowRot (Id [1, 2]) (Id [1, 1])
+  where
+    arrowRot = 1/6 @@ turn
+{% enddiagram %}
 
 ## Properties: Flattening Equivalences
 
