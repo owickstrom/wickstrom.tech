@@ -16,6 +16,8 @@ module Jekyll
     def render_diagram(content, scale, out_dir)
       Dir.mkdir(out_dir) unless Dir.exists?(out_dir)
 
+      # Create a temporary file to hold a common prefix for Haskell
+      # diagram modules, followed by the diagram block contents.
       in_f = Tempfile.new(["diagram", ".hs"])
       in_f.write(<<-MARKUP.strip
 {-# LANGUAGE GADTs                     #-}
@@ -31,19 +33,36 @@ MARKUP
       in_f.write("\n\nmain = mainWith dia\n")
       in_f.close()
 
-      tmp_out_f = Tempfile.new(["diagram", ".png"])
+      # Hacky way of invalidating diagrams by hashing all the local
+      # Haskell libraries. This wouldn't catch all changes (e.g.
+      # dependencies changing), but it is good enough for modifying
+      # libraries and regenerating diagrams in blog posts.
+      lib_hash = %x[tar Pcf - ../*.cabal _diagrams | sha256sum]
 
-      height_param = @height.nil? ? "" : "-h #{@height}"
-      %x[cabal v2-build wickstrom-tech]
-      %x[cabal v2-exec -- runhaskell #{in_f.path} -w #{@width * scale} #{height_param} -o #{tmp_out_f.path}]
-      unless File.exists?(tmp_out_f)
-        raise "Failed to generate diagram!"
+      # Create the final hash file name out of the library hash,
+      # diagram contents, width, and height.
+      hash_key = Digest::SHA256.hexdigest(
+        lib_hash +
+        IO.read(in_f) +
+        @width.to_s +
+        @height.to_s)
+      out_name = hash_key + ".#{scale}x.png"
+      out_file = File.join(out_dir, out_name)
+
+      # Only generate the file in case it doesn't already exist (in
+      # which case nothing should have changed).
+      unless File.exists?(out_file)
+        height_param = @height.nil? ? "" : "-h #{@height * scale}"
+        puts "Generating #{out_name}"
+        %x[cabal v2-build wickstrom-tech]
+        %x[cabal v2-exec --write-ghc-environment-files=never -- runhaskell #{in_f.path} -w #{@width * scale} #{height_param} -o #{out_file}]
+        unless File.exists?(out_file)
+          raise "Failed to generate diagram!"
+        end
       end
 
-      out_name = Digest::SHA256.hexdigest(IO.read(tmp_out_f)) + ".#{scale}x.png"
-      out_file = File.join(out_dir, out_name)
-      FileUtils.mv(tmp_out_f, out_file)
-
+      # Remove the temporary file containing diagram code, used
+      # only during compilation.
       in_f.unlink
       
       return out_name
