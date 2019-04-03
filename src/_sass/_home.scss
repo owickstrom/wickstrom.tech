@@ -36,24 +36,10 @@ div.home {
     li {
       display: inline-block;
       float: none;
+      line-height: 2;
 
       a {
         color: #fff;
-        text-decoration: none;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-
-      &:after {
-        color: darken($brand-color, 10%);
-        border-right: 2px solid darken($brand-color, 10%);
-        padding-right: .5em;
-        margin-right: .5em;
-        content: '';
-      }
-      &:last-child:after {
-        border: none;
       }
     }
   }
@@ -64,7 +50,10 @@ div.home {
     .site-description {
       font-size: 100%;
     }
-    .nav {
+    .nav ul {
+      li {
+        display: block;
+      }
     }
   }
 }

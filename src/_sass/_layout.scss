@@ -88,11 +88,11 @@ body {
     padding: .5rem;
   }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   .top-nav .wrapper {
     height: auto;
   }
-  .top-nav .home {
+  .top-nav a.home {
     display: block;
     height: 48px;
     margin: 0;
@@ -106,6 +106,7 @@ body {
   .top-nav .nav ul,
   .top-nav .nav ul li {
     float: none;
+    text-align: center;
   }
   .top-nav .nav ul {
     margin: 0;
