@@ -192,7 +192,7 @@ the summary.
 Komposition currently uses [FFmpeg](https://ffmpeg.org/) to render the
 final media. This is done by constructing an `ffmpeg` command
 invocation with a [filter
-graph](https://ffmpeg.org/ffmpeg-filters.htmL) describing how to fit
+graph](https://ffmpeg.org/ffmpeg-filters.html) describing how to fit
 together all clips, still frames, and silent audio parts.
 
 FFmpeg doesn't know about hierarchical timelines; it only cares about
