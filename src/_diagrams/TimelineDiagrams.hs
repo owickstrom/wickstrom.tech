@@ -13,6 +13,10 @@ import           Diagrams.Prelude
 newtype Id = Id [Int]
   deriving (Typeable, Eq, Ord, Show)
 
+lastId :: Id -> Maybe Int
+lastId (Id []) = Nothing
+lastId (Id ns) = Just (last ns)
+
 instance IsName Id
 
 addToId :: Id -> Int -> Id

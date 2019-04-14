@@ -14,7 +14,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src/_posts, src/_diagrams
-  exposed-modules:     TimelineDiagrams
+  exposed-modules:     TimelineDiagrams, VideoClassifierDiagrams
   build-depends:       base >= 4.7 && < 5
                      , diagrams-lib
                      , diagrams-cairo
