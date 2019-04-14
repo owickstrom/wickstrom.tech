@@ -8,23 +8,76 @@ excerpt: |
   TODO
 ---
 
+In [the last case
+study](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
+we looked at timeline flattening. This one is not as long, I promise!
+It covers the video classifier, how it was tested before, and the bugs
+I found when I wrote property-based tests for it.
 
-## Video Scene Classification
+## Classifying Scenes in Imported Video
 
-* Komposition can automatically classify "scenes"
-  * **Moving segment:** consecutive non-equal frames
-  * **Still segment:** at least _S_ seconds of consecutive near-equal
-    frames
-* _S_ is a preconfigured threshold for still segment duration
-* Edge cases:
-  - First segment is always a moving segment
-  - Last segment may be shorter
+Komposition can automatically classify _scenes_ when importing video
+files. Scenes are segments that are considered either _still_ or _moving_:
 
-## Visualizing with Color Tinting
+* A still segment is a sequence of at least $S$ seconds of
+  _near-equal_ frames
+* A moving segment is a sequence of _non-equal_ frames, or a sequence
+  of near-equal frames with a duration less than $S$
+
+$S$ is a preconfigured threshold for still segment duration. In the
+future it might be configurable from the user interface, but for now
+it's hardcoded in the application.
+
+In addition to the rules stated above, there are two edge cases:
+
+1. The first segment is always a considered a moving segment (even if
+   it's just a single frame!)
+1. The last segment may be a still segment with a duration less than
+   $S$
+   
+The second edge case is not what I would call a desirable feature, but
+rather a shortcoming due to the classifier not doing any type of
+backtracking. This could be changed in the future.
+
+## Testing Video Classification
+
+The first version of the video classifier had no property
+tests. Instead, I wrote what I thought was a decent classifier
+algorithm, mostly messing around with various pixel buffer
+representations and parallel processing to get decent performance.
+
+The only type of testing I had available, except for general use of
+the application, was a color-tinting utility. This was a separate
+program using the same classifier algorithm. It took as input a video
+file, and produced as output a video file where each frame was tinted
+green or red, for moving and still frames, respectively.
 
 ![Video classification shown with color tinting](/assets/property-based-testing-the-ugly-parts/color-tinting.gif)
 
-## Testing Video Classification
+In the recording above you see the color-tinted output video based on
+a recent version of the classifier. It classifies moving and still
+segments rather accurately.
+
+Before I wrote property tests and fixed the bugs that I found, it did
+not look so pretty, flipping back and forth at seemingly random
+places. Moreover, the feedback loop was horrible, having to record
+video, process it using the slow color-tinting program, and inspecting
+it by eye.
+
+At first, debugging the classifier with the color-tinting tool way
+seemed like a creative and powerful technique. In hindsight, I can
+conclude that property-based testing is more effective for testing the
+classifier.
+
+### Video Classification Properties
+
+Writing properties for video classification turned out harder than an
+initially thought it would be.
+
+I've used a techniques that Hillel Wayne calls _oracle generators_ in
+his recent article.[^1] Instead of generating an input for the system
+under test, and describing a relation between the input and observed
+output, these properties generate the _expected output_.
 
 * Generate high-level representation of _expected_ output segments
  
@@ -186,4 +239,4 @@ TODO...
 
 ## Footnotes
 
-[^1]: ...
+[^1]: See the "Oracle Generators" section in [Finding Property Tests](https://www.hillelwayne.com/post/contract-examples/)
