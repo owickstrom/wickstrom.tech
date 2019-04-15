@@ -24,9 +24,9 @@ files. Scenes are segments that are considered either _still_ or _moving_:
 * A moving segment is a sequence of _non-equal_ frames, or a sequence
   of near-equal frames with a duration less than $S$
 
-$S$ is a preconfigured threshold for still segment duration. In the
-future it might be configurable from the user interface, but for now
-it's hardcoded in the application.
+$S$ is a preconfigured minimum still segment duration in
+Komposition. In the future it might be configurable from the user
+interface, but for now it's hardcoded.
 
 Equality of frames is defined as a function $E(f_1, f_2)$, described
 informally as:
@@ -79,7 +79,7 @@ classifier.
 
 ## Video Classification Properties
 
-Writing properties for video classification turned out harder than an
+Writing properties for video classification turned out harder than I
 initially thought it would be. It's not uncommon in example-based
 testing that tests end up mirroring the structure, and even the full
 implementation complexity, of the system under test. This can happen
@@ -159,7 +159,7 @@ As stated in the beginning of this post, classified still segments
 must have a duration greater than or equal to $S$, where $S$ is the
 mininum still segment duration used as a parameter for the classifier.
 The first property test we'll look at asserts that this invariant
-holds for all classification outputs.
+holds for all classification output.
 
 ```{.haskell}
 hprop_classifies_still_segments_of_min_length = property $ do
@@ -201,8 +201,11 @@ There's a lot going on in this code, and it's using a few helper
 functions that I'm not going to bore you with. At a high level, this
 test:
 
-1. Generates a minimum still segment duration, based on a
-   minimum frame count (let's call it $n$).
+1. Generates a minimum still segment duration, based on a minimum
+   frame count (let's call it $n$) in the range $[2, 20]$. The
+   classifier currently requires that $n \geq 2$, hence the lower
+   bound. The upper bound of 20 frames is an arbitrary number that
+   I've chosen.
 1. Generates valid output segments using the custom generator
    `genSegments`, where
      * moving segments have a frame count in $[1, 2n]$, and
@@ -238,15 +241,15 @@ Cool, it looks like it's working.
 Now, you might wonder why I need to generate output segments first,
 and then convert to pixel frames? Why not generate random pixel frames
 to begin with? The test only checks that the still segments are long
-enough without really caring about the generated outputs.
+enough.
 
-The benefit of generating valid outputs is much more clear in the next
-property test, but there's benefit for these tests too, although more
-subtle. By generating valid outputs and converting to pixel frames, we
-can generate inputs that cover the edge cases of our system under
-test. Using property test statistics and coverage checks, we can even
-fail test runs where the generators don't hit enough of the cases we're
-interested in.[^2]
+The benefit of generating valid output is much more clear in the next
+property test. But there's benefit for this property, too, although
+more subtle. By generating valid output and converting to pixel
+frames, I can generate inputs that cover the edge cases of our system
+under test. Using property test statistics and coverage checks, I
+could even fail test runs where the generators don't hit enough of the
+cases I'm interested in.[^2]
 
 Had I generated random sequences of pixel frames, then perhaps the
 majority of the generated examples would only produce moving segments.
@@ -258,6 +261,8 @@ representation that I could easily convert from and compare with in
 assertions.
 
 ### Testing Moving Segment Timespans
+
+_REST IS TODO!!!_
 
 The second property tests that the moving 
 
@@ -287,8 +292,6 @@ hprop_classifies_same_scenes_as_input = property $ do
 ```
 
 ## Testing Moving Segment Timespans (cont.)
-
-(REST IS TODO...)
 
 ```{.haskell}
   ...
