@@ -10,9 +10,9 @@ excerpt: |
 
 In [the last case
 study](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
-we looked at timeline flattening. This one is not as long, I promise!
-It covers the video classifier, how it was tested before, and the bugs
-I found when I wrote property-based tests for it.
+we looked at timeline flattening. This one is not quite as long, I
+promise! It covers the video classifier, how it was tested before, and
+the bugs I found when I wrote property-based tests for it.
 
 ## Classifying Scenes in Imported Video
 
@@ -27,6 +27,14 @@ files. Scenes are segments that are considered either _still_ or _moving_:
 $S$ is a preconfigured threshold for still segment duration. In the
 future it might be configurable from the user interface, but for now
 it's hardcoded in the application.
+
+Equality of frames is defined as a function $E(f_1, f_2)$, described
+informally as:
+
+* comparing corresponding pixel color values of $f_1$ and $f_2$, with
+  a small epsilon tolerance, and
+* deciding two frames equal when at least 99% of corresponding pixel
+  pairs are considered equal.
 
 In addition to the rules stated above, there are two edge cases:
 
@@ -150,33 +158,41 @@ property tests.
 As stated in the beginning of this post, classified still segments
 must have a duration greater than or equal to $S$, where $S$ is the
 mininum still segment duration used as a parameter for the classifier.
-
 The first property test we'll look at asserts that this invariant
 holds for all classification outputs.
 
 ```{.haskell}
 hprop_classifies_still_segments_of_min_length = property $ do
 
-  -- 1. Generate output segments
-  segments <- forAll $
-    genSegments (Range.linear 1 (frameRate * 2)) resolution
+  -- 1. Generate a minimum still segment length/duration
+  minStillSegmentFrames <- forAll $ Gen.int (Range.linear 2 (2 * frameRate))
+  let minStillSegmentTime = frameCountDuration minStillSegmentFrames
 
-  -- 2. Convert test segments to actual pixel frames
+  -- 2. Generate output segments
+  segments <- forAll $
+    genSegments (Range.linear 1 10)
+                (Range.linear 1
+                              (minStillSegmentFrames * 2))
+                (Range.linear minStillSegmentFrames
+                              (minStillSegmentFrames * 2))
+                resolution
+
+  -- 3. Convert test segments to actual pixel frames
   let pixelFrames = testSegmentsToPixelFrames segments
 
-  -- 3. Run the classifier on the pixel frames, with a minimum
-  -- still segment duration of 1 second
-  let counted = classifyMovement 1.0 (Pipes.each pixelFrames)
+  -- 4. Run the classifier on the pixel frames
+  let counted = classifyMovement minStillSegmentTime (Pipes.each pixelFrames)
                 & Pipes.toList
                 & countSegments
 
-  -- 4. Sanity check
+  -- 5. Sanity check
   countTestSegmentFrames segments === totalClassifiedFrames counted
 
-  -- 5. Ignore last segment and verify all other segments
+  -- 6. Ignore last segment and verify all other segments
   case initMay counted of
-    Just rest -> traverse_ (assertStillLengthAtLeast 1.0) rest
-    Nothing     -> success
+    Just rest ->
+      traverse_ (assertStillLengthAtLeast minStillSegmentTime) rest
+    Nothing -> success
   where
     resolution = 10 :. 10
 ```
@@ -185,26 +201,34 @@ There's a lot going on in this code, and it's using a few helper
 functions that I'm not going to bore you with. At a high level, this
 test:
 
+1. Generates a minimum still segment duration, based on a
+   minimum frame count (let's call it $n$).
 1. Generates valid output segments using the custom generator
-   `genSegments`. Each generated segment will have a length between a
-   single frame and two seconds worth of frames (20 frames at 10 FPS).
-2. Converts the expected output segments to actual pixel frames. This
+   `genSegments`, where
+     * moving segments have a frame count in $[1, 2n]$, and
+     * still segments have a frame count in $[n, 2n]$.
+1. Converts the expected output segments to actual pixel frames. This
    is done using a helper function that returns a list of alternating
    gray and white frames, or all black frames, as described earlier.
-3. Count the number of consecutive frames within each segment, producing
+1. Count the number of consecutive frames within each segment, producing
    a list like `[Moving 18, Still 5, Moving 12, Still 30]`.
-4. Performs a sanity check that the number of frames in the generated
+1. Performs a sanity check that the number of frames in the generated
    expected output as equal to the number of frames in the classified
    output.
-5. Drops the last classified segment, which according to the
-   specification can have a duration less than $S$, and asserts that
-   all other segments have a duration greater than or equal to $S$.
+1. Drops the last classified segment, which according to the
+   specification can have a frame count less than $n$, and asserts
+   that all other still segments have a frame count greater than or
+   equal to $n$.
    
 Let's run some tests.
 
 ```{.text}
-> Hedgehog.check hprop_classifies_still_segments_of_min_length
-  ✓ <interactive> passed 100 tests.
+> :{
+| hprop_classifies_still_segments_of_min_length
+|   & Hedgehog.withTests 10000
+|   & Hedgehog.check
+| :}
+  ✓ <interactive> passed 10000 tests.
 ```
 
 Cool, it looks like it's working.
@@ -263,6 +287,8 @@ hprop_classifies_same_scenes_as_input = property $ do
 ```
 
 ## Testing Moving Segment Timespans (cont.)
+
+(REST IS TODO...)
 
 ```{.haskell}
   ...
