@@ -216,8 +216,8 @@ test:
 1. Count the number of consecutive frames within each segment, producing
    a list like `[Moving 18, Still 5, Moving 12, Still 30]`.
 1. Performs a sanity check that the number of frames in the generated
-   expected output as equal to the number of frames in the classified
-   output.
+   expected output is equal to the number of frames in the classified
+   output. The classifier must not lose or duplicate frames.
 1. Drops the last classified segment, which according to the
    specification can have a frame count less than $n$, and asserts
    that all other still segments have a frame count greater than or
