@@ -30,7 +30,7 @@ opposed to _still_ segments:
 
 $S$ is a preconfigured minimum still segment duration in
 Komposition. In the future it might be configurable from the user
-interface, but for now it's hardcoded.
+interface, but for now it's hard-coded.
 
 Equality of two frames $f_1$ and $f_2$ is defined as a function
 $E(f_1, f_2)$, described informally as:
@@ -43,7 +43,7 @@ $E(f_1, f_2)$, described informally as:
 In addition to the rules stated above, there are two edge cases:
 
 1. The first segment is always a considered a moving segment (even if
-   it's just a single frame!)
+   it's just a single frame)
 1. The last segment may be a still segment with a duration less than
    $S$
    
@@ -125,7 +125,7 @@ actual frames. Frames are two-dimensional arrays of RGB pixel
 values. The conversion is simple: 
 
 * Moving segments are converted to a sequence of alternating frames,
-  flipping between all grey and all white pixels
+  flipping between all gray and all white pixels
 * Still frames are converted to a sequence of frames containing all
   black pixels
   
@@ -160,7 +160,7 @@ property tests.
 
 As stated in the beginning of this post, classified still segments
 must have a duration greater than or equal to $S$, where $S$ is the
-mininum still segment duration used as a parameter for the classifier.
+minimum still segment duration used as a parameter for the classifier.
 The first property test we'll look at asserts that this invariant
 holds for all classification output.
 
@@ -200,7 +200,7 @@ hprop_classifies_still_segments_of_min_length = property $ do
     resolution = 10 :. 10
 ```
 
-There's a lot going on in this code, and it's using a few helper
+This chunk of test code is pretty busy, and it's using a few helper
 functions that I'm not going to bore you with. At a high level, this
 test:
 
@@ -271,7 +271,7 @@ wouldn't then be reusing existing generators, and I wouldn't have a
 high-level representation that I could easily convert from and compare
 with in assertions.
 
-## Testing Moving Segment Timespans
+## Testing Moving Segment Time Spans
 
 The second property states that the classified moving segments must
 start and end at the same timestamps as the moving segments in the
@@ -295,7 +295,7 @@ hprop_classifies_same_scenes_as_input = property $ do
   -- 3. Convert test segments to actual pixel frames
   let pixelFrames = testSegmentsToPixelFrames segments
 
-  -- 4. Convert expected output segments to a list of expected timespans
+  -- 4. Convert expected output segments to a list of expected time spans
   --    and the full duration
   let durations = map segmentWithDuration segments
       expectedSegments = movingSceneTimeSpans durations
@@ -307,7 +307,7 @@ hprop_classifies_same_scenes_as_input = property $ do
         & classifyMovement minStillSegmentTime
         & Pipes.toList
 
-  -- 6. Classify moving scene timespans
+  -- 6. Classify moving scene time spans
   let classified =
         (Pipes.each classifiedFrames
          & classifyMovingScenes fullDuration)
@@ -315,7 +315,7 @@ hprop_classifies_same_scenes_as_input = property $ do
         & Pipes.runEffect
         & runIdentity
 
-  -- 7. Check classified timespan equivalence
+  -- 7. Check classified time span equivalence
   expectedSegments === classified
 
   where
@@ -324,16 +324,16 @@ hprop_classifies_same_scenes_as_input = property $ do
 
 Steps 1–3 are the same as in the previous property test. From there, this test:
 
-4. Converts the generated output segments, the ones we expect the
-   classifier to return, into a list of timespans. Each timespan marks
-   the start and end of an expected moving segment. Furthermore, we need
-   the full duration of the input in step 6, so we compute it here.
+4. Converts the generated output segments into a list of time
+   spans. Each time span marks the start and end of an expected moving
+   segment. Furthermore, it needs the full duration of the input in
+   step 6, so that's computed here.
 5. Classify the movement of each frame, i.e. if it's part of a moving
    or still segment.
 6. Run the second classifier function called `classifyMovingScenes`,
    based on the full duration and the frames with classified movement
-   data, resulting in a list of timespans.
-7. Compare the expected and actual classified list of timespans.
+   data, resulting in a list of time spans.
+7. Compare the expected and actual classified list of time spans.
 
 While this test looks somewhat complicated with its setup and various
 conversions, the core idea is simple. But is it effective?
@@ -341,7 +341,7 @@ conversions, the core idea is simple. But is it effective?
 ### Bugs! Bugs everywhere!
 
 Preparing for a talk on property-based testing, I added the "moving
-segment timespans" property a week or so before the event. At this
+segment time spans" property a week or so before the event. At this
 time, I had used Komposition to edit multiple screencasts. Surely, all
 significant bugs were caught already. Adding property tests should
 only confirm the level of quality the application already had. Right?
@@ -370,7 +370,7 @@ tests. Here's what I got:
 
 ![](/assets/property-based-testing-the-ugly-parts/video-classification-failure.png)
 
-What? Where does 0s–0.6s come from? The classified timespan should've
+What? Where does 0s–0.6s come from? The classified time span should've
 been 0s–1s, as the generated output has a single moving scene of 10
 frames (1 second at 10 FPS). I started digging, using the `annotate`
 function in Hedgehog to inspect the generated and intermediate values
@@ -404,7 +404,7 @@ classifyMovement minStillSegmentTime =
 
 Let's look at what's going on here. In the `InStillState` branch it
 uses the value `minEqualTimeForStill`, instead of always using the
-passed in `minStillSegmentTime`. This is likely a residue from some
+`minStillSegmentTime` argument. This is likely a residue from some
 refactoring where I meant to make the value a parameter instead of
 having it hard-coded in the definition.
 
