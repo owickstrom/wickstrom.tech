@@ -3,7 +3,7 @@
 ---
 @charset "utf-8";
 
-body {
+html {
   font-size: 16px;
 }
 
@@ -22,7 +22,11 @@ a {
   /*vertical-align: super;*/
 }
 
-p {
+.top-nav {
+    display: none
+}
+
+img, figure, p {
   page-break-inside: avoid;
 }
 

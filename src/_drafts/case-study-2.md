@@ -10,14 +10,18 @@ excerpt: |
 
 In [the last case
 study](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
-we looked at timeline flattening. This one is not quite as long, I
-promise! It covers the video classifier, how it was tested before, and
-the bugs I found when I wrote property-based tests for it.
+on property-based testing (PBT) in Komposition we looked at timeline
+flattening. This post covers the video classifier, how it was tested
+before, and the bugs I found when I wrote property tests for it.
 
 ## Classifying Scenes in Imported Video
 
 Komposition can automatically classify _scenes_ when importing video
-files. Scenes are segments that are considered either _still_ or _moving_:
+files. This is a central productivity feature in the application,
+effectively cutting recorded screencast material automatically,
+letting the user focus on arranging the scenes of their
+screencast. Scenes are segments that are considered _moving_, as
+opposed to _still_ segments:
 
 * A still segment is a sequence of at least $S$ seconds of
   _near-equal_ frames
@@ -28,11 +32,11 @@ $S$ is a preconfigured minimum still segment duration in
 Komposition. In the future it might be configurable from the user
 interface, but for now it's hardcoded.
 
-Equality of frames is defined as a function $E(f_1, f_2)$, described
-informally as:
+Equality of two frames $f_1$ and $f_2$ is defined as a function
+$E(f_1, f_2)$, described informally as:
 
 * comparing corresponding pixel color values of $f_1$ and $f_2$, with
-  a small epsilon tolerance, and
+  a small epsilon for tolerance of color variation, and
 * deciding two frames equal when at least 99% of corresponding pixel
   pairs are considered equal.
 
@@ -52,7 +56,8 @@ backtracking. This could be changed in the future.
 The first version of the video classifier had no property
 tests. Instead, I wrote what I thought was a decent classifier
 algorithm, mostly messing around with various pixel buffer
-representations and parallel processing to get decent performance.
+representations and parallel processing to achieve acceptable
+performance.
 
 The only type of testing I had available, except for general use of
 the application, was a color-tinting utility. This was a separate
@@ -64,36 +69,34 @@ green or red, for moving and still frames, respectively.
 
 In the recording above you see the color-tinted output video based on
 a recent version of the classifier. It classifies moving and still
-segments rather accurately.
+segments rather accurately. Before I wrote property tests and fixed
+the bugs that I found, it did not look so pretty, flipping back and
+forth at seemingly random places.
 
-Before I wrote property tests and fixed the bugs that I found, it did
-not look so pretty, flipping back and forth at seemingly random
-places. Moreover, the feedback loop was horrible, having to record
-video, process it using the slow color-tinting program, and inspecting
-it by eye.
 
 At first, debugging the classifier with the color-tinting tool way
-seemed like a creative and powerful technique. In hindsight, I can
-conclude that property-based testing is more effective for testing the
-classifier.
+seemed like a creative and powerful technique.  But the feedback loop
+was horrible, having to record video, process it using the slow
+color-tinting program, and inspecting it by eye.  In hindsight, I can
+conclude that PBT is far more effective for testing the classifier.
 
 ## Video Classification Properties
 
-Writing properties for video classification turned out harder than I
-initially thought it would be. It's not uncommon in example-based
-testing that tests end up mirroring the structure, and even the full
-implementation complexity, of the system under test. This can happen
-in property-based testing, too.
+Figuring out how to write property tests for video classification
+wasn't obvious to me. It's not uncommon in example-based testing that
+tests end up mirroring the structure, and even the full implementation
+complexity, of the system under test. The same can happen in
+property-based testing.
 
 With some complex systems it's very hard to describe the correctness
 as a relation between any valid input and the system's observed
 output. The video classifier is one such case. How do I decide if an
-output classification is correct for any valid input, without
+output classification is correct for a specific input, without
 reimplementing the classification itself in my tests?
 
 The other way around is easy, though! If I have a classification, I
-can easily convert that into video frames. Thus, the solution to the
-testing problem is to not generate the input, but instead generate the
+can convert that into video frames. Thus, the solution to the testing
+problem is to not generate the input, but instead generate the
 _expected output_. Hillel Wayne calls this technique "oracle
 generators" in his recent article.[^1]
 
@@ -123,8 +126,8 @@ values. The conversion is simple:
 
 * Moving segments are converted to a sequence of alternating frames,
   flipping between all grey and all white pixels
-* Still frames converted to a sequence of frames containing all black
-  pixels
+* Still frames are converted to a sequence of frames containing all
+  black pixels
   
 The example sequence in the diagram above, when converted to pixel
 frames with a frame rate of 10 FPS, can be visualized like in the
@@ -153,7 +156,7 @@ writing generators that produce valid output, according to the
 specification of the classifier. In this post I'll show two such
 property tests.
 
-### Testing Still Segment Minimum Length
+## Testing Still Segment Minimum Length
 
 As stated in the beginning of this post, classified still segments
 must have a duration greater than or equal to $S$, where $S$ is the
@@ -210,7 +213,7 @@ test:
    `genSegments`, where
      * moving segments have a frame count in $[1, 2n]$, and
      * still segments have a frame count in $[n, 2n]$.
-1. Converts the expected output segments to actual pixel frames. This
+1. Converts the generated output segments to actual pixel frames. This
    is done using a helper function that returns a list of alternating
    gray and white frames, or all black frames, as described earlier.
 1. Count the number of consecutive frames within each segment, producing
@@ -236,101 +239,233 @@ Let's run some tests.
 
 Cool, it looks like it's working.
 
-### Sidetrack: Why generate the output?
+## Sidetrack: Why generate the output?
 
-Now, you might wonder why I need to generate output segments first,
-and then convert to pixel frames? Why not generate random pixel frames
-to begin with? The test only checks that the still segments are long
-enough.
+Now, you might wonder why I generate output segments first, and then
+convert to pixel frames. Why not generate random pixel frames to begin
+with? The property test above only checks that the still segments are
+long enough!
 
-The benefit of generating valid output is much more clear in the next
-property test. But there's benefit for this property, too, although
-more subtle. By generating valid output and converting to pixel
-frames, I can generate inputs that cover the edge cases of our system
-under test. Using property test statistics and coverage checks, I
-could even fail test runs where the generators don't hit enough of the
-cases I'm interested in.[^2]
+The benefit of generating valid output becomes clearer in the next
+property test, where I use it as the expected output of the
+classifier. Converting the output to a sequence of pixel frames is
+easy, and I don't have to state any complex relation between the input
+and output in my property. When using oracle generators, the
+assertions can often be plain equality checks on generated and actual
+output.
+
+But there's benefit in using the same oracle generator for the
+"minimum still segment length" property, even if it's more subtle. By
+generating valid output and converting to pixel frames, I can generate
+inputs that cover the edge cases of the system under test. Using
+property test statistics and coverage checks, I could inspect
+coverage, and even fail test runs where the generators don't hit
+enough of the cases I'm interested in.[^2]
 
 Had I generated random sequences of pixel frames, then perhaps the
 majority of the generated examples would only produce moving segments.
 I could tweak the generator to get closer to either moving or still
 frames, within some distribution, but wouldn't that just be a
-variation of generating valid scenes? It would be worse, as I wouldn't
-then be reusing existing generators, and I wouldn't have a high-level
-representation that I could easily convert from and compare with in
-assertions.
+variation of generating valid scenes? It would be worse, in fact. I
+wouldn't then be reusing existing generators, and I wouldn't have a
+high-level representation that I could easily convert from and compare
+with in assertions.
 
-### Testing Moving Segment Timespans
+## Testing Moving Segment Timespans
 
-_REST IS TODO!!!_
-
-The second property tests that the moving 
-
-2. Classified moving segments must have correct timespans
-   - Comparing the generated _expected_ output to the classified
-     timespans
-   - (here were bugs!)
-
+The second property states that the classified moving segments must
+start and end at the same timestamps as the moving segments in the
+generated output. Compared to the previous property, the relation
+between generated output and actual classified output is stronger.
 
 ```{.haskell}
 hprop_classifies_same_scenes_as_input = property $ do
+  -- 1. Generate a minimum still still segment duration
+  minStillSegmentFrames <- forAll $ Gen.int (Range.linear 2 (2 * frameRate))
+  let minStillSegmentTime = frameCountDuration minStillSegmentFrames
 
-  -- Generate test segments
-  segments <- forAll
-    genSegments (Range.linear (frameRate * 1) (frameRate * 5)) resolution
+  -- 2. Generate test segments
+  segments <- forAll $ genSegments (Range.linear 1 10)
+                                   (Range.linear 1
+                                                 (minStillSegmentFrames * 2))
+                                   (Range.linear minStillSegmentFrames
+                                                 (minStillSegmentFrames * 2))
+                                   resolution
 
-  -- Convert test segments to timespanned ones, and actual pixel frames
-  let segmentsWithTimespans = segments
-                              & map segmentWithDuration
-                              & segmentTimeSpans
-      pixelFrames = testSegmentsToPixelFrames segments
-      fullDuration = foldMap
-                     (durationOf AdjustedDuration . unwrapSegment)
-                     segmentsWithTimespans
+  -- 3. Convert test segments to actual pixel frames
+  let pixelFrames = testSegmentsToPixelFrames segments
 
-  ...
+  -- 4. Convert expected output segments to a list of expected timespans
+  --    and the full duration
+  let durations = map segmentWithDuration segments
+      expectedSegments = movingSceneTimeSpans durations
+      fullDuration = foldMap unwrapSegment durations
+
+  -- 5. Classify movement of frames
+  let classifiedFrames =
+        Pipes.each pixelFrames
+        & classifyMovement minStillSegmentTime
+        & Pipes.toList
+
+  -- 6. Classify moving scene timespans
+  let classified =
+        (Pipes.each classifiedFrames
+         & classifyMovingScenes fullDuration)
+        >-> Pipes.drain
+        & Pipes.runEffect
+        & runIdentity
+
+  -- 7. Check classified timespan equivalence
+  expectedSegments === classified
+
+  where
+    resolution = 10 :. 10
 ```
 
-## Testing Moving Segment Timespans (cont.)
+Steps 1–3 are the same as in the previous property test. From there, this test:
 
-```{.haskell}
-  ...
+4. Converts the generated output segments, the ones we expect the
+   classifier to return, into a list of timespans. Each timespan marks
+   the start and end of an expected moving segment. Furthermore, we need
+   the full duration of the input in step 6, so we compute it here.
+5. Classify the movement of each frame, i.e. if it's part of a moving
+   or still segment.
+6. Run the second classifier function called `classifyMovingScenes`,
+   based on the full duration and the frames with classified movement
+   data, resulting in a list of timespans.
+7. Compare the expected and actual classified list of timespans.
 
-  -- Run classifier on pixel frames
-  classified <-
-    (Pipes.each pixelFrames
-     & classifyMovement 1.0
-     & classifyMovingScenes fullDuration)
-    >-> Pipes.drain
-    & Pipes.runEffect
+While this test looks somewhat complicated with its setup and various
+conversions, the core idea is simple. But is it effective?
 
-  -- Check classified timespan equivalence
-  unwrapScenes segmentsWithTimespans === classified
+### Bugs! Bugs everywhere!
 
-  where resolution = 10 :. 10
-```
+Preparing for a talk on property-based testing, I added the "moving
+segment timespans" property a week or so before the event. At this
+time, I had used Komposition to edit multiple screencasts. Surely, all
+significant bugs were caught already. Adding property tests should
+only confirm the level of quality the application already had. Right?
 
-## Failure!
+Nope. First, I discovered that my existing tests were fundamentally
+incorrect to begin with. They were not reflecting the specification I
+had in mind, the one I described in the beginning of this post.
+
+Furthermore, I found that the generators had errors. At first, I used
+Hedgehog to generate the pixels used for the classifier input. Moving
+frames were based on a majority of randomly colored pixels and a small
+percentage of equally colored pixels. Still frames were based on a
+random single color.
+
+The problem I had not anticipated was that the colors used in moving
+frames were not guaranteed to be distinct from the color used in still
+frames. In small-sized examples I got black frames at the beginning
+and end of moving segments, and black frames for still segments,
+resulting in different classified output than expected. Hedgehog
+shrinking the failing examples' colors towards 0, which is black,
+highlighted this problem even more.
+
+I made my generators much simpler, using the alternating white/gray
+frames approach described earlier, and went on to running my new shiny
+tests. Here's what I got:
 
 ![](/assets/property-based-testing-the-ugly-parts/video-classification-failure.png)
 
-## What Went Wrong?
+What? Where does 0s–0.6s come from? The classified timespan should've
+been 0s–1s, as the generated output has a single moving scene of 10
+frames (1 second at 10 FPS). I started digging, using the `annotate`
+function in Hedgehog to inspect the generated and intermediate values
+in failing examples.
 
-* There were multiple bugs:
-    - The specificiation was wrong
-    - The generators and tests had errors
-    - The implementation had errors (since its inception)
-* Process:
-  - Think about the specification first
-  - Think about how generators and tests should work, rewrite them
-  - Get minimal examples of failures, fix the implementation
-* Thousands of tests ran successfully
-* Tried importing actual recorded video, had great results!
+I couldn't find anything incorrect in the generated data, so I shifted
+focus to the implementation code. The end timestamp 0.6s was
+consistently showing up in failing examples. Looking at the code, I
+found a curious hard-coded value 0.5 being bound and used locally in
+`classifyMovement`.
 
+The function is essentially a _fold_ over a stream of frames, where
+the accumulator holds vectors of previously seen and
+not-yet-classified frames. Stripping down and simplifying the old code
+to highlight one of the bugs, it looked something like this:
+
+```haskell
+classifyMovement minStillSegmentTime =
+  case ... of
+    InStillState{..} ->
+      if someDiff > minEqualTimeForStill
+        then ...
+        else ...
+    InMovingState{..} ->
+      if someOtherDiff >= minStillSegmentTime
+        then ...
+        else ...
+  where
+    minEqualTimeForStill = 0.5
+```
+
+Let's look at what's going on here. In the `InStillState` branch it
+uses the value `minEqualTimeForStill`, instead of always using the
+passed in `minStillSegmentTime`. This is likely a residue from some
+refactoring where I meant to make the value a parameter instead of
+having it hard-coded in the definition.
+
+Sparing you the gory implementation details, I'll outline two more
+problems that I found. In addition to using the hard-coded value, it
+incorrectly classified frames based on that value. Frames that
+should've been classified as "moving" ended up "still". That's why I
+didn't get 0s–1s in the output.
+
+Why didn't I see 0s–0.5s, given the hard-coded value 0.5? Well, there
+was also an off-by-one bug, in which one frame was classified
+incorrectly together with the accumulated moving frames.
+
+The `classifyMovement` function is 30 lines of Haskell code juggling
+some state, and I managed to mess it up in three separate ways at the
+same time. With these tests in place I quickly found the bugs and
+fixed them. I ran thousands of tests, all passing.
+
+Finally, I ran the application, imported a previously recorded video,
+and edited a short screencast. The classified moving segments where
+_notably_ better than before.
+
+## Summary
+
+A simple streaming fold can hide bugs that are hard to detect with
+manual testing. The consistent result of 0.6, together with the
+hard-coded value 0.5 and a frame rate of 10 FPS, pointed clearly
+towards an off-by-one bug. I consider this is a great showcase of how
+powerful shrinking in PBT is, consistently presenting minimal examples
+that point towards specific problems. It's not just a party trick on
+ideal mathematical functions.
+
+Could these errors have been caught without PBT? I think so, but what
+effort would it require? Manual testing and introspection did not work
+for me. Code review might have revealed the incorrect definition of
+`minEqualTimeForStill`, but perhaps not the off-by-one and incorrect
+state handling bugs. There are of course many other QA techniques, I
+won't evaluate all. But given the low effort that PBT requires in this
+setting, the amount of problems it finds, and the accuracy it provides
+when troubleshooting, I think it's a clear win.
+
+I also want to highlight the iterative process that I find naturally
+emerges when applying PBT:
+
+1. Think about how your system is supposed to
+   work. Write down your _specification_.
+2. Think about how to generate input data and how to test your system,
+   based on your specification. Tune your generators to provide better
+   test data. Try out alternative styles of properties. Perhaps
+   model-based or metamorphic testing fits your system better.
+3. Run tests and analyze the minimal failing examples. Fix your
+   implementation until all tests pass.
+
+This can be done when modifying existing code, or when writing new
+code. You can apply this without having any implementation code yet,
+perhaps just a minimal stub, and the workflow is essentially the same
+as TDD.
 
 ## Credits
 
-TODO...
+Thank you Ulrik Sandberg for reviewing early drafts of this post.
 
 ## Footnotes
 
