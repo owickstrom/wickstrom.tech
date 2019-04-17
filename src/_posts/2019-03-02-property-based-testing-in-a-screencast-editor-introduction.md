@@ -210,10 +210,10 @@ With a basic understanding of PBT, how we can write testable code, and
 how to write properties for our system under test, we're getting ready
 to dive into the case studies:
 
+1. **Introduction**
 1. [Timeline Flattening](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
-1. Video Scene Classification
-1. Focus and Timeline Consistency
-1. Undo/Redo Symmetry
+1. [Video Scene Classification](/programming/2019/04/17/property-based-testing-in-a-screencast-editor-case-study-2.html)
+1. Integration Testing
 
 ## Credits
 

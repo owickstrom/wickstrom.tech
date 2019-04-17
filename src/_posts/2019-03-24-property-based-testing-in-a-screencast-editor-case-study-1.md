@@ -748,11 +748,16 @@ integration testing. At that level, the property tests are less tied
 to the implementation, and focus on describing the higher-level
 outcomes of the interaction between subsystems.
 
-Next up is property tests for the _video classifier_. It's also
+Next up is property tests for the video classifier. It's also
 implemented a pure function, but with slightly more complicated logic
 that is trickier to test. We're going to look at an interesting
 technique where we generate the _expected output_ instead of the
 input.
+
+1. [Introduction](/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html)
+1. **Timeline Flattening**
+1. [Video Scene Classification](/programming/2019/04/17/property-based-testing-in-a-screencast-editor-case-study-2.html)
+1. Integration Testing
 
 Thanks for reading! See you next time.
 

@@ -5,7 +5,9 @@ author: Oskar Wickström
 categories: programming
 tags: ["property", "testing", "quality", "correctness", "haskell"]
 excerpt: |
-  TODO
+  In the last case study on property-based testing (PBT) in Komposition we
+  looked at timeline flattening. This post covers the video classifier, how it
+  was tested before, and the bugs I found when I wrote property tests for it.
 ---
 
 In [the last case
@@ -13,6 +15,12 @@ study](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-cas
 on property-based testing (PBT) in Komposition we looked at timeline
 flattening. This post covers the video classifier, how it was tested
 before, and the bugs I found when I wrote property tests for it.
+
+If you haven't read [the
+introduction](/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html)
+or [the first case
+study](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
+yet, I recommend checking them out!
 
 ## Classifying Scenes in Imported Video
 
@@ -462,6 +470,20 @@ This can be done when modifying existing code, or when writing new
 code. You can apply this without having any implementation code yet,
 perhaps just a minimal stub, and the workflow is essentially the same
 as TDD.
+
+## Coming Up
+
+The final post in this series will cover testing at a higher level of
+the system, with effects and multiple subsystems being integrated to
+form a full application. We will look at property tests that found
+many bugs and that made a substantial refactoring possible.
+
+1. [Introduction](/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html)
+1. [Timeline Flattening](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
+1. **Video Scene Classification**
+1. Integration Testing (up next!)
+
+Until then, thanks for reading!
 
 ## Credits
 
