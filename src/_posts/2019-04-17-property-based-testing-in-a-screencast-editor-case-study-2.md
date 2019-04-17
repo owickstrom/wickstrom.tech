@@ -487,7 +487,7 @@ Until then, thanks for reading!
 
 ## Credits
 
-Thank you Ulrik Sandberg for reviewing early drafts of this post.
+Thank you Ulrik Sandberg for reviewing drafts of this post.
 
 ## Footnotes
 
