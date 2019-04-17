@@ -73,7 +73,7 @@ program using the same classifier algorithm. It took as input a video
 file, and produced as output a video file where each frame was tinted
 green or red, for moving and still frames, respectively.
 
-![Video classification shown with color tinting](/assets/property-based-testing-the-ugly-parts/color-tinting-cropped.gif){width=600 height=468}
+![Video classification shown with color tinting](/assets/property-based-testing-the-ugly-parts/color-tinting.gif){width=600 height=470}
 
 In the recording above you see the color-tinted output video based on
 a recent version of the classifier. It classifies moving and still
