@@ -126,35 +126,22 @@ Haskell.
 The three central ideas I want to emphasize, and which I think should be
 discussed and actively thought through in web application development, are:
 
-<div class="takeaway">
-![](/assets/brain.png){width=50%}
+* **Evolve software fearlessly using better tools for modeling and
+    communication.** Your program is a communication between you, your
+    colleagues, and the computer.  Use tools that support that
+    communication. Use tools that help you evolve your ideas
+    continually.
 
-### Evolve software fearlessly using better tools for modeling and communication.
+* **Spend your complexity budget carefully.** Large parts of your web
+    application has lower value than the core business parts. In those
+    areas, reach for simple tools with less risk. When needed, use
+    more advanced tools, where you get a return on the complexity
+    investment.
 
-Your program is a communication between you, your colleagues, and the computer.
-Use tools that support that communication. Use tools that help you evolve your
-ideas continually.
-</div>
-
-<div class="takeaway">
-![](/assets/tokens.jpeg){width=75%}
-
-### Spend your complexity budget carefully.
-
-Large parts of your web application has lower value than the core business
-parts. In those areas, reach for simple tools with less risk. When needed, use
-more advanced tools, where you get a return on the complexity investment.
-</div>
-
-<div class="takeaway">
-![](/assets/mwa-logo.png){width=20%}
-
-### Explore the wonderful world of functional and statically typed server-side web.
-
-Combine the powers of statically typed functional programming and
-server-side web development, and you have very good toolbox for evolving web
-systems.
-</div>
+* **Explore the wonderful world of functional and statically typed
+    server-side web.** Combine the powers of statically typed
+    functional programming and server-side web development, and you
+    have very good toolbox for evolving web systems.
 
 Again, the slides and code examples for the talk are available [on
 GitHub][slides-code], and the talk will be uploaded to YouTube in a week or
