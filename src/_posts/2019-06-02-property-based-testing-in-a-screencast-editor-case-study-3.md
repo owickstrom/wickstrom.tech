@@ -7,11 +7,11 @@ tags: ["property", "testing", "quality", "correctness", "haskell"]
 excerpt: | TODO
 ---
 
-In the last post we looked at how Komposition automatically classifies
-moving and still segments in imported video media, how I went from
-testing by eye and with examples to testing with properties, and what
-kinds of errors I found in the process. If you haven't read it, or its
-preceding posts, I encourage you to check them out first:
+In the last post we looked at how Komposition automatically classifies moving
+and still segments in imported video media, how I went from testing by eye
+and with examples to property-based testing (PBT), and what kinds of errors I
+found in the process. If you haven't read it, or its preceding posts, I
+encourage you to check them out first:
 
 1. [Introduction](/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html)
 1. [Timeline Flattening](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
@@ -86,91 +86,87 @@ the module describing user commands in abstract.
 To provide a safety net for the refactoring, I decided to cover the undo/redo
 functionality with tests. As the user commands would stay the same throughout
 the modifications, I chose to test at that level, which can be characterized
-as integration-level testing.
+as integration-level testing. The tests run Komposition with a stubbed-out
+user interface and some other effects, but including the entire application
+logic. Making your application testable at this level is hard work, but the
+payoff can be huge.
 
-With close to twenty types of user commands, combined with a complex
-hierarchical timeline and navigation behaviour, the combinatory explosion of
-possible states was daunting. Relying on example-based tests to safeguard my
-work would likely not cut it. While property-based tests couldn't cover the
-entire state space either, I was confident they would improve my chances of
-finding actual bugs.
+With Komposition featuring close to twenty types of user commands, combined
+with a complex hierarchical timeline and navigation behaviour, the
+combinatory explosion of possible states was daunting. Relying on
+example-based tests to safeguard my work would likely not cut it. While PBT
+couldn't cover the entire state space either, I was confident they would
+improve my chances of finding actual bugs.
 
-### Testing Undo
+## Undo/Redo Tests
 
-* Generate an initial state
-* Generate a sequence of undoable commands
-* Run all commands
-* Run undo command for each original command
-* Assert that we end up at the initial state
+Before I began refactoring, I added tests for the involutive property of
+undoable actions. The first test focuses on undoing actions, and is
+structured as follows:
 
-## Actions are Undoable
+1. Generate an initial project and application state
+1. Generate a sequence of undoable commands
+1. Run all commands (wrapped in _events_)
+1. Run an undo command for each original command
+1. Assert that final timeline is equal to the initial timeline
+
+Let's look at the Haskell Hedgehog property test:
 
 ```{.haskell}
 hprop_undo_actions_are_undoable = property $ do
 
-  -- Generate initial timeline and focus
+  -- 1. Generate initial timeline and focus
   timelineAndFocus <- forAllWith showTimelineAndFocus $
     Gen.timelineWithFocus (Range.linear 0 10) Gen.parallel
 
-  -- Generate initial application state
+  -- ... and initial application state
   initialState <- forAll (initializeState timelineAndFocus)
 
-  -- Generate a sequence of undoable/redoable commands
+  -- 2. Generate a sequence of undoable/redoable commands
   events <- forAll $
     Gen.list (Range.exponential 1 100) genUndoableTimelineEvent
 
-  ...
-```
-
-## Actions are Undoable (cont.)
-
-```{.haskell}
-  ...
-
-  -- We begin by running 'events' on the original state
+  -- 3. Run 'events' on the original state
   beforeUndos <- runTimelineStubbedWithExit events initialState
 
-  -- Then we run as many undo commands as undoable commands
+  -- 4. Run as many undo commands as undoable commands
   afterUndos <- runTimelineStubbedWithExit (undoEvent <$ events) beforeUndos
 
-  -- That should result in a timeline equal to the one we at the
-  -- beginning
+  -- 5. That should result in a timeline equal to the one we started
+  -- with
   timelineToTree (initialState ^. currentTimeline)
     === timelineToTree (afterUndos ^. currentTimeline)
 ```
 
-## Testing Redo
+The second test, focusing on redoing actions, is structured very similarly as the previous test:
 
-* Generate an initial state
-* Generate a sequence of undoable/redoable commands
-* Run all commands
-* Run undo _and redo_ commands for each original command
-* Assert that we end up at the state before running undos
+1. Generate an initial state
+1. Generate a sequence of undoable/redoable commands
+1. Run all commands (wrapped in events)
+1. Run undo _and redo_ commands for each original command
+1. Assert that final timeline is equal to the timeline before running
+   undos
 
-## Actions are Redoable
+The test code is also very similar:
 
 ```{.haskell}
 hprop_undo_actions_are_redoable = property $ do
 
-  -- Generate the initial timeline and focus
+  -- 1. Generate the initial timeline and focus
   timelineAndFocus <- forAllWith showTimelineAndFocus $
     Gen.timelineWithFocus (Range.linear 0 10) Gen.parallel
 
-  -- Generate the initial application state
+  -- ... and the initial application state
   initialState <- forAll (initializeState timelineAndFocus)
 
-  -- Generate a sequence of undoable/redoable commands
+  -- 2. Generate a sequence of undoable/redoable commands
   events <- forAll $
     Gen.list (Range.exponential 1 100) genUndoableTimelineEvent
-```
 
-## Actions are Redoable (cont.)
-
-```{.haskell}
-  -- We begin by running 'events' on the original state
+  -- 3. Run 'events' on the original state
   beforeUndos <- runTimelineStubbedWithExit events initialState
 
-  -- Then we undo and redo all of them
+  -- Run undo and redo commands corresponding to all original commands
   afterRedos  <-
     runTimelineStubbedWithExit (undoEvent <$ events) beforeUndos
     >>= runTimelineStubbedWithExit (redoEvent <$ events)
@@ -181,41 +177,65 @@ hprop_undo_actions_are_redoable = property $ do
     === timelineToTree (afterRedos ^. currentTimeline)
 ```
 
+Note that these tests only assert on the equality of timelines, not entire
+project states, as undoable commands only operate on the timeline.
 
-## Undo/Redo Test Summary
+### Tests Pass, Everything Works
 
-* These tests made the refactoring possible
-* Founds _many_ interim bugs
-  - Off-by-one index
-  - Inconsistent focus
-  - Non-invertible actions
-* After the tests passed: ran the GUI, it worked
+The undo/redo tests were written and run on the original stack-based
+implementation, kept around during a refactoring that took me two weeks of
+hacking during late nights and weekends, and finally run and passing on the
+new implementation based on involutive actions. Except for a few _minimal_
+adjustments to data types, these tests stayed untouched during the entire
+process.
 
-## Related Tests
+The confidence I had when refactoring felt like a super power. Two simple
+property tests made the undertaking possible. They found numerous bugs,
+including:
 
-* Focus and Timeline Consistency
-    - The _focus_ is a data structure that "points" to a part of the
-    timeline
-    - The timeline and focus must at all points be consistent
-    - Approach:
-      - Generate a random initial state
-      - Generate a random sequence of user commands
-      - Check consistency after each command
-      - Run all commands until termination
+* Off-by-one index errors in actions modifying the timeline
+* Inconsistent timeline focus:
+  - focus was incorrectly restored on undoing an action
+  - focus got out of bounds
+* Non-invertible actions:
+  - the involution of splitting a sequence is joining sequences, and
+    joining didn't always work 
 
-# Wrapping Up
+After all tests passed, I ran the application with its GUI, edited a
+screencast project, and it all worked flawlessly. It's almost too good to be
+true, right?
 
-## Summary
+Property testing is not a silver bullet, and there might still be bugs
+lurking in my undo/redo history implementation. The tests I run are never
+going to be exhaustive and my generators might be flawed. That said, they
+gave me a confidence in refactoring I've never had before. As a challenge, I
+encourage you to try out Komposition, perhaps even to write some tests, and
+prove me wrong!
 
-* Property-based testing is not only for pure functions!
-  - Effectful actions
-  - Integration tests
-* Process (iterative)
-    - Think about the specification first
-    - Think about how generators and tests should work
-    - Get minimal examples of failures, fix the implementation
-* Using them in Komposition:
-  - Made refactoring and evolving large parts of the system tractable
-    and safer
-  - Found existing errors in my thinking, my tests, my implementation
-  - It's been a joy
+## Why Test With Properties?
+
+This was the last case study in the "Property-Based Testing in a Screencast
+Editor" series, and it's time to summarize and reflect on this journey.
+
+Property-based testing is not only for pure functions; you can use it to test
+effectful actions. It is not only for unit testing; you can write integration
+tests using properties. The iterative process in property-based testing, in
+my experience, comes down to the following steps:
+
+1. Think about the specification of your system under test
+1. Think about how generators and tests should work
+1. Write/modify generators, tests, and implementation, based on steps 1 and 2
+1. Get minimal examples of failures
+1. Repeat
+
+Using PBT within Komposition has made it possible to confidently refactor
+large parts of the application. It has found errors in my own thinking, my
+generators, my tests, and in my implementation code. Testing video scene
+classification went from a time consuming, repetitive, and manual
+verification process to a fast, effective, and automated task.
+
+All in all, it's been a joy, and I look forward to continue using PBT in my
+work and in my own projects. I hope I've convinced you of its value, and
+inspired you to try it out, no matter what kind of project you're working on.
+Involve your colleagues, practice writing property tests together, and enjoy
+finding complicated bugs before your users do!
