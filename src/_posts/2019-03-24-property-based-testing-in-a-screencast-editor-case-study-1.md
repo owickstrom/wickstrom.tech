@@ -757,7 +757,7 @@ input.
 1. [Introduction](/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html)
 1. **Timeline Flattening**
 1. [Video Scene Classification](/programming/2019/04/17/property-based-testing-in-a-screencast-editor-case-study-2.html)
-1. Integration Testing
+1. [Integration Testing](/programming/2019/06/02/property-based-testing-in-a-screencast-editor-case-study-3.html)
 
 Thanks for reading! See you next time.
 

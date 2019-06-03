@@ -481,7 +481,7 @@ many bugs and that made a substantial refactoring possible.
 1. [Introduction](/programming/2019/03/02/property-based-testing-in-a-screencast-editor-introduction.html)
 1. [Timeline Flattening](/programming/2019/03/24/property-based-testing-in-a-screencast-editor-case-study-1.html)
 1. **Video Scene Classification**
-1. Integration Testing (up next!)
+1. [Integration Testing](/programming/2019/06/02/property-based-testing-in-a-screencast-editor-case-study-3.html)
 
 Until then, thanks for reading!
 
