@@ -23,7 +23,7 @@ renderSegments trackId segments' = zipWith renderPart ids segments' # hcat # ali
  where
   ids = map (addToId trackId) [1 .. length segments']
   partLabel dur txt =
-    (text txt # fontSizeL (textHeight * 0.6) # font "Linux Biolinum")
+    (text txt # fontSizeL (textHeight * 0.6) # font "Linux Biolinum O")
     <> strutX (dur * 2) <> strutY 2
   renderPart id' (Segment motion dur mLabel) =
     maybe mempty (partLabel dur) mLabel <>

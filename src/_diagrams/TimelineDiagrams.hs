@@ -76,7 +76,7 @@ defaultRenderSettings = RenderSettings
   }
 
 renderLabel lbl w =
-  alignedText 0 0 lbl #fontSizeL textHeight # font "Linux Biolinum"
+  alignedText 0 0 lbl #fontSizeL textHeight # font "Linux Biolinum O"
   <>
   alignBL (strutX w <> strutY defaultSpacing)
 
@@ -85,7 +85,7 @@ renderTrack trackId (Track mt parts') = zipWith renderPart ids parts' # hcat # a
  where
   ids = map (addToId trackId) [1 .. length parts']
   partLabel dur txt =
-    (text txt # fontSizeL (textHeight * 0.6) # font "Linux Biolinum")
+    (text txt # fontSizeL (textHeight * 0.6) # font "Linux Biolinum O")
     <> strutX (dur * 2) <> strutY 2
   renderPart id' (Clip dur mLabel) =
     maybe mempty (partLabel dur) mLabel <>

@@ -36,10 +36,10 @@ renderBox bgColor suffix x =
   valueLabel (pure x) <> rect 1 1 # bg bgColor # lc black # named (x : suffix)
  where
   valueLabel txt =
-    (text txt # fontSizeG 0.2 # font "Linux Biolinum") <> strutX 1 <> strutY 1
+    (text txt # fontSizeG 0.2 # font "Linux Biolinum O") <> strutX 1 <> strutY 1
 
 topLabelled txt d = alignL lbl === alignL d
-  where lbl = text txt # fontSizeG 0.2 # font "Linux Biolinum" <> strutX 1 <> strutY 0.5
+  where lbl = text txt # fontSizeG 0.2 # font "Linux Biolinum O" <> strutX 1 <> strutY 0.5
 
 renderStack suffix (Stack xs) =
   map (renderBox (sRGB24 220 220 220) suffix) xs # vcat # alignL
