@@ -7,3 +7,4 @@ _site
 /src/generated/diagrams
 .stack-work
 .tmp
+.ruby-version
