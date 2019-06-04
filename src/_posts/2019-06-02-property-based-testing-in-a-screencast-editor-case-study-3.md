@@ -178,12 +178,12 @@ interesting pursuits, but in the end I decided to try something else.
 
 Instead of optimizing the current stack-based implementation, I
 decided to implement the undo/redo history in terms of
-[involutive](https://en.wikipedia.org/wiki/Involution_(mathematics))
-actions. In this model, actions not only modify the project state,
-they also return another action, its involution, that _reverses_ the
-effects of the original action. Instead of recording a new project
-state data structure for each edit, the history only records
-descriptions of the actions themselves.
+[inverse](https://en.wikipedia.org/wiki/Inverse_function) actions. In
+this model, actions not only modify the project state, they also
+return another action, its inverse, that _reverses_ the effects of
+the original action. Instead of recording a new project state data
+structure for each edit, the history only records descriptions of the
+actions themselves.
 
 I realized early that introducing the new undo/redo history implementation in
 Komposition was not going to be a small task. It would touch the majority of
@@ -208,7 +208,7 @@ would improve my chances of finding actual bugs.
 
 ## Undo/Redo Tests
 
-Before I began refactoring, I added tests for the involutive property of
+Before I began refactoring, I added tests for the inverse property of
 undoable/redoable actions. The first test focuses on undoing actions, and is
 structured as follows:
 
@@ -293,11 +293,11 @@ project states, as undoable commands only operate on the timeline.
 ### All Tests Passing, Everything Works
 
 The undo/redo tests were written and run on the original stack-based
-implementation, kept around during a refactoring that took me two weeks of
-hacking during late nights and weekends, and finally run and passing with the
-new implementation based on involutive actions. Except for a few minimal
-adjustments to data types, these tests stayed untouched during the entire
-process.
+implementation, kept around during a refactoring that took me two
+weeks of hacking during late nights and weekends, and finally run and
+passing with the new implementation based on inverse actions. Except
+for a few minimal adjustments to data types, these tests stayed
+untouched during the entire process.
 
 The confidence I had when refactoring felt like a super power. Two simple
 property tests made the undertaking possible. They found numerous bugs,
@@ -307,9 +307,9 @@ including:
 * Inconsistent timeline focus:
   - focus was incorrectly restored on undoing an action
   - focus was outside of the timeline bounds
-* Non-involutive actions:
-  - actions returning incorrectly constructed involutions
-  - the involution of _splitting_ a sequence is _joining_ sequences,
+* Non-inverse actions:
+  - actions returning incorrectly constructed inverses
+  - the inverse of _splitting_ a sequence is _joining_ sequences,
     and joining them back up didn't always work
 
 After all tests passed, I ran the application with its GUI, edited a
