@@ -3,6 +3,26 @@ title: Talks
 layout: page
 ---
 
+## Property-Based Testing The Ugly Parts: Case Studies from Komposition
+
+### Events
+
+* [flatMap(Oslo)](https://2019.flatmap.no/talks/wickstrom), May 8-9, 2019, Oslo
+    - [Video Recording](https://www.youtube.com/watch?v=z2ete8VZnZY)
+    - [Slides](https://owickstrom.github.io/property-based-testing-the-ugly-parts/#/title-slide)
+
+### Abstract
+
+Property-based testing has been praised and explored in both functional and
+object-oriented programming communities. Despite the papers and talks that tell
+inspiring stories of curious bugs being found by random tests, it can be hard
+to see how it applies to your day-to-day work. How do you go beyond testing
+small pure functions?
+
+This talk describes techniques that you can use to test the “ugly” parts of
+your system, and dig deeper into a few case studies from Komposition, a
+screencast video editor written in Haskell.
+
 ## Domain Modeling with Haskell Data Structures
 
 ### Events
