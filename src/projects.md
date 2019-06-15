@@ -7,6 +7,19 @@ These are some of the projects I am, or have been, working on. All open-source
 programming projects listed below, and many more, are available at [my GitHub
 profile page](https://github.com/owickstrom).
 
+## Komposition
+
+[Komposition](https://owickstrom.github.io/komposition/) is the video editor
+built for screencasters. It lets you focus on producing and publishing quality
+content, instead of spending all of your time in complicated video editors.
+Stop wasting time on manually adjusting clip lengths, building still-frame
+segments, and dragging clips around, and enjoy a new screencast editing
+experience.
+
+Komposition is written in GHC Haskell using [GTK](https://www.gtk.org/),
+[GStreamer](https://gstreamer.freedesktop.org/), and
+[FFmpeg](https://ffmpeg.org/).
+
 ## Haskell at Work Screencasts
 
 [Haskell at Work](https://haskell-at-work.com/) is a screencast focused on
