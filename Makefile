@@ -77,12 +77,12 @@ src/generated/uml/%.svg: src/_uml/%.uml.txt src/_uml/styles.iuml $(PLANTUML)
 # ANALYTICS 													
 ###############################################################
 
-ANALYTICS_DIR=/tmp/wickstrom-tech-analytics
-DATE_PATTERN ?= $(shell date "+%Y-%d")
+ANALYTICS_DIR=$(HOME)/opt/wickstrom-tech-analytics
 
 .PHONY: analytics-report
 analytics-report:
-	@echo "Creating analytics report for $(DATE_PATTERN)..."
-	@aws s3 sync s3://wickstrom-tech-access-logs/wickstrom.tech/*$(DATE_PATTERN)*.gz "$(ANALYTICS_DIR)"
-	@find $(ANALYTICS_DIR) -name '*$(DATE_PATTERN)*.gz' | xargs zcat -f | goaccess --log-format=CLOUDFRONT --ignore-referer=wickstrom.tech -o "$(ANALYTICS_DIR)"/report.html
-	@firefox "$(ANALYTICS_DIR)"/report.html
+	@echo "Creating analytics report..."
+	mkdir -p $(ANALYTICS_DIR)
+	aws s3 sync s3://wickstrom-tech-access-logs/wickstrom.tech "$(ANALYTICS_DIR)"
+	find $(ANALYTICS_DIR) -name '*.gz' | xargs zcat -f | goaccess --log-format=CLOUDFRONT --ignore-referer=wickstrom.tech -o "$(ANALYTICS_DIR)"/report.html
+	firefox "$(ANALYTICS_DIR)"/report.html
