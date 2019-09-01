@@ -7,6 +7,25 @@ These are some of the projects I am, or have been, working on. All open-source
 programming projects listed below, and many more, are available at [my GitHub
 profile page](https://github.com/owickstrom).
 
+## Property-Based Testing in a Screencast Editor
+
+<a href="https://leanpub.com/property-based-testing-in-a-screencast-editor"
+   style="float: right; width: 200px; margin: 0 0 0 2em; display: block;">
+    <img src="/assets/property-testing-short-book-cover.jpg"
+         alt="Book cover for Property-Based Testing in a Screencast Editor"
+         style="display: block; margin: 0;">
+</a>
+
+[Property-Based Testing in a Screencast
+Editor](https://leanpub.com/property-based-testing-in-a-screencast-editor)
+is a short book on using property-based testing (PBT) within
+Komposition (described below). It's based on articles published on
+[this site](/writing.html). While the content is mostly the same,
+there are few changes bringing it up-to-date. Also, if you've already
+enjoyed the articles, you might want support my work by purchasing
+this book ($10). Finally, you might enjoy a nicely typeset PDF, or an
+EPUB book, over a web page.
+
 ## Komposition
 
 [Komposition](https://owickstrom.github.io/komposition/) is the video editor
