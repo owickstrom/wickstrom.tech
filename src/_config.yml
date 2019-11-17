@@ -42,6 +42,7 @@ pandoc:
     - filter: unicode-numbers
     - filter: pandoc-include-code
     - syntax-definition: _tools/hedgehog.xml
+    - syntax-definition: _tools/haskell.xml
 
 plantuml:
   plantuml_jar: ../deps/plantuml.jar     # path to plantuml jar

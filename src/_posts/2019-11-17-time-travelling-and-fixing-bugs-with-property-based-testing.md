@@ -47,7 +47,7 @@ we're going to locate and fix the bugs using property tests.
 
 Poking around the codebase, we find the data type representing the form:
 
-``` {.haskell}
+``` {.haskell .numbers}
 data SignupForm = SignupForm
   { formName  :: Text
   , formAge   :: Int
@@ -57,7 +57,7 @@ data SignupForm = SignupForm
 And the existing validation logic, defined as `validateSignup`. We won't
 dig into to the implementation yet, only its type signature:
 
-``` {.haskell}
+``` {.haskell .numbers}
 validateSignup
   :: SignupForm -> Validation (NonEmpty SignupError) Signup
 ```
@@ -67,7 +67,7 @@ returning a `Validation` value. In case the form data is valid, it
 returns a `Signup` data structure. This data type resembles `SignupForm`
 in its structure, but refines the age as a `Natural` when valid:
 
-``` {.haskell}
+``` {.haskell .numbers}
 data Signup = Signup
   { name  :: Text
   , age   :: Natural
@@ -78,7 +78,7 @@ In case the form data is invalid, `validateSignup` returns a non-empty
 list of `SignupError` values. `SignupError` is a union type of the
 possible validation errors:
 
-``` {.haskell}
+``` {.haskell .numbers}
 data SignupError
   = NameTooShort Text
   | NameTooLong Text
@@ -111,7 +111,7 @@ Let's add some property tests for the form validation, and explore the
 existing implementation. We begin in a new test module, and we'll need a
 few imports:
 
-``` {.haskell}
+``` {.haskell .numbers}
 import           Data.List.NonEmpty (NonEmpty (..))
 import           Data.Text          (Text)
 import           Data.Validation
@@ -122,7 +122,7 @@ import qualified Hedgehog.Range     as Range
 
 Also, we'll need to import the implementation module:
 
-``` {.haskell}
+``` {.haskell .numbers}
 import Validation
 ```
 
@@ -135,7 +135,7 @@ using only valid input data. This way, we know the form validation
 should always be successful. We define
 `prop_valid_signup_form_succeeds`:
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_valid_signup_form_succeeds = property $ do
   let genForm = SignupForm <$> validName <*> validAge -- 1
   form <- forAll genForm -- 2
@@ -157,7 +157,7 @@ pattern match on the result ((3)):
 
 The `validName` and `validAge` generators are defined as follows:
 
-``` {.haskell}
+``` {.haskell .numbers}
 validName :: Gen Text
 validName = Gen.text (Range.linear 1 50) Gen.alphaNum
 
@@ -192,7 +192,7 @@ validation to always fail.
 
 First, let's test invalid names.
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_invalid_name_fails = property $ do
   let genForm = SignupForm <$> invalidName <*> validAge -- 1
   form <- forAll genForm
@@ -217,7 +217,7 @@ test fails ((3)).
 The test for invalid age is similar, expect we use the `invalidAge`
 generator, and expect only `InvalidAge` validation failures:
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_invalid_age_fails = property $ do
   let genForm = SignupForm <$> validName <*> invalidAge
   form <- forAll genForm
@@ -232,7 +232,7 @@ The `invalidName` and `invalidAge` generators are also defined in terms
 of the validation rules (eq. 1), but with ranges ensuring no overlap
 with valid data:
 
-``` {.haskell}
+``` {.haskell .numbers}
 invalidName :: Gen Text
 invalidName =
   Gen.choice [mempty, Gen.text (Range.linear 51 100) Gen.alphaNum]
@@ -267,7 +267,7 @@ We define a property test generating form data, where all fields are
 invalid ((1)). It expects the form validation to fail, returning two
 failures ((2)).
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_two_failures_are_returned = property $ do
   let genForm = SignupForm <$> invalidName <*> invalidAge -- 1
   form <- forAll genForm
@@ -287,7 +287,7 @@ validation logic in this test.
 Let's define a slightly stronger property. We pattern match, extract
 the two failures ((1)), and check that they're not equal ((2)).
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_two_different_failures_are_returned = property $ do
   let genForm = SignupForm <$> invalidName <*> invalidAge
   form <- forAll genForm
@@ -348,7 +348,7 @@ the values it generates. For example, if we have a generator `positive`
 that is meant to generate only positive integers, we can define a
 property that asserts that all generated integers are positive:
 
-``` {.haskell}
+``` {.haskell .numbers}
 positive :: Gen Int
 positive = Gen.integral (Range.linear 1 maxBound)
 
@@ -385,7 +385,7 @@ validation rules in eq. 1 . In `prop_invalid_age_fails`, we use `cover`
 to ensure we generate values outside the boundaries of valid ages. 5% is
 enough for each, but realistically they could both get close to 50%.
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_invalid_age_fails = property $ do
   let genForm = SignupForm <$> validName <*> invalidAge
   form <- forAll genForm
@@ -427,7 +427,7 @@ Let's run some tests again.
 100% too young and 0% too old. The `invalidAge` generator is clearly not
 good enough. Let's have a look at its definition again:
 
-``` {.haskell}
+``` {.haskell .numbers}
 invalidAge :: Gen Int
 invalidAge = Gen.integral (Range.linear minBound 0)
 ```
@@ -436,7 +436,7 @@ We're only generating invalid ages between the minimum bound of `Int`
 and `0`. Let's fix that, by using `Gen.choice` and another generator for
 ages greater than 150:
 
-``` {.haskell}
+``` {.haskell .numbers}
 invalidAge :: Gen Int
 invalidAge = Gen.choice
   [ Gen.integral (Range.linear minBound 0)
@@ -475,12 +475,12 @@ deemed valid. It should cause a validation failure. Looking closer at
 the implementation, we see that a pattern guard is missing the upper
 bound check:
 
-``` {.haskell}
+``` {.haskell .numbers}
   validateAge age' | age' > 0  = Success (fromIntegral age')
                    | otherwise = Failure (pure (InvalidAge age'))
 ```
 
-If we change it to `age' > 0 && age' <= 150`{.haskell}, and rerun the
+If we change it to `age' > 0 && age' <= 150`{.haskell .numbers}, and rerun the
 tests, they pass.
 
 ``` {.hedgehog}
@@ -513,14 +513,14 @@ old enough.
 
 First, we import the `Calendar` module from the `time` package:
 
-``` {.haskell}
+``` {.haskell .numbers}
 import           Data.Time.Calendar
 ```
 
 Next, we modify the `SignupForm` data type to carry a `formBirthDate` of
 type `Date`, rather than an `Int`.
 
-``` {.haskell}
+``` {.haskell .numbers}
 data SignupForm = SignupForm
   { formName      :: Text
   , formBirthDate :: Day
@@ -529,7 +529,7 @@ data SignupForm = SignupForm
 
 And we make the corresponding change to the `Signup` data type:
 
-``` {.haskell}
+``` {.haskell .numbers}
 data Signup = Signup
   { name      :: Text
   , birthDate :: Day
@@ -540,7 +540,7 @@ We've also been requested to improve the validation errors. Instead of
 just `InvalidAge`, we define three constructors for various invalid
 birthdates:
 
-``` {.haskell}
+``` {.haskell .numbers}
 data SignupError
   = NameTooShort Text
   | NameTooLong Text
@@ -559,7 +559,7 @@ obtain *today's date*?
 We could make `validateSignup` a non-deterministic action, which in
 Haskell would have the following type signature:
 
-``` {.haskell}
+``` {.haskell .numbers}
 validateSignup
   :: SignupForm -> IO (Validation (NonEmpty SignupError) Signup)
 ```
@@ -582,7 +582,7 @@ function pure: take all the information the function needs as arguments.
 In the case of `validateSignup`, we'll pass today's date as the first
 argument:
 
-``` {.haskell}
+``` {.haskell .numbers}
 validateSignup
   :: Day -> SignupForm -> Validation (NonEmpty SignupError) Signup
 ```
@@ -600,19 +600,19 @@ signatures. The implementations are not very interesting.
 
 The generator, `day`, generates a day within the given range:
 
-``` {.haskell}
+``` {.haskell .numbers}
 day :: Range Day -> Gen Day
 ```
 
 A day range is constructed with `linearDay`:
 
-``` {.haskell}
+``` {.haskell .numbers}
 linearDay :: Day -> Day -> Range Day
 ```
 
 Alternatively, we might use `exponentialDay`:
 
-``` {.haskell}
+``` {.haskell .numbers}
 exponentialDay :: Day -> Day -> Range Day
 ```
 
@@ -622,13 +622,13 @@ Hedgehog's `linear` and `exponential` ranges for integral numbers.
 To use the generator functions from `Data.Time.Gen`, we first add an
 import, qualified as `Time`:
 
-``` {.haskell}
+``` {.haskell .numbers}
 import qualified Data.Time.Gen      as Time
 ```
 
 Next, we define a generator `anyDay`:
 
-``` {.haskell}
+``` {.haskell .numbers}
 anyDay :: Gen Day
 anyDay =
   let low  = fromGregorian 1900 1 1
@@ -645,7 +645,7 @@ the range. But why not make it somewhat realistic?
 Now, it's time to rewrite our existing property tests. Let's begin with
 the one testing that validating a form with all valid data succeeds:
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_valid_signup_form_succeeds = property $ do
   today <- forAll anyDay -- 1
   let genForm = SignupForm <$> validName <*> validBirthDate today
@@ -666,7 +666,7 @@ and running the form validation on that date. This means our
 pick a valid birth date. We pass today's date as a parameter, and
 generate a date within the range of 18 to 150 years earlier:
 
-``` {.haskell}
+``` {.haskell .numbers}
 validBirthDate :: Day -> Gen Day
 validBirthDate today = do
   n <- Gen.integral (Range.linear 18 150)
@@ -676,7 +676,7 @@ validBirthDate today = do
 We define the helper function `yearsBefore` in the test suite. It
 offsets a date backwards in time by a given number of years:
 
-``` {.haskell}
+``` {.haskell .numbers}
 yearsBefore :: Integer -> Day -> Day
 yearsBefore years = addGregorianYearsClip (negate years)
 ```
@@ -696,7 +696,7 @@ Let's move on to the next property, checking that invalid birth dates do
 *not* pass validation. Here, we use the same pattern as before,
 generating today's date, but use `invalidBirthDate` instead:
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_invalid_age_fails = property $ do
   today <- forAll anyDay
   form <- forAll (SignupForm <$> validName <*> invalidBirthDate today)
@@ -756,7 +756,7 @@ define a single property `prop_validates_age` for birth date validation.
 We'll base our new property on `prop_invalid_age_fails`, but generalize
 to cover both positive and negative tests:
 
-``` {.haskell}
+``` {.haskell .numbers}
 prop_validates_age = property $ do
   today <- forAll anyDay
   form  <- forAll (SignupForm <$> validName <*> anyBirthDate today) -- 1
@@ -805,7 +805,7 @@ considered incorrect.
 
 The `anyBirthDate` generator is based on today's date:
 
-``` {.haskell}
+``` {.haskell .numbers}
 anyBirthDate :: Day -> Gen Day
 anyBirthDate today =
   let -- 1
@@ -857,7 +857,7 @@ date.
 For the fun of it, let's run some more tests. We'll crank it up to
 20000.
 
-``` {.hedgehog}
+``` {.hedgehog .numbers}
 λ> check (withTests 20000 prop_validates_age)
   ✗ <interactive> failed at test/Validation/V3Test.hs:141:64
     after 17000 tests and 25 shrinks.
@@ -960,7 +960,7 @@ today's date and as the birth date, even with a low number of tests.
 To generate inputs that cover certain edge cases, we combine specific
 generators using `Gen.frequency`:
 
-``` {.haskell}
+``` {.haskell .numbers}
 (today, birthDate') <- forAll
   (Gen.frequency
     [ (5, anyDayAndBirthDate) -- 1
@@ -996,7 +996,7 @@ any today's date within a wide date range. It also picks a birth date
 from an even wider date range, resulting in some future birth dates and
 some ages above 150.
 
-``` {.haskell}
+``` {.haskell .numbers}
 anyDayAndBirthDate :: Gen (Day, Day)
 anyDayAndBirthDate = do
   today <- Time.day
@@ -1021,7 +1021,7 @@ today's date ((1)). Next, it generates an arbitrary date approximately
 some number of years ago ((2)), where the number of years is an
 argument of the generator.
 
-``` {.haskell}
+``` {.haskell .numbers}
 anyDayAndBirthDateAroundYearsAgo :: Integer -> Gen (Day, Day)
 anyDayAndBirthDateAroundYearsAgo years = do
   today <- Time.day -- 1
@@ -1035,7 +1035,7 @@ anyDayAndBirthDateAroundYearsAgo years = do
 The `addingApproxYearsAgo` generator adds a number of years to a date,
 and offsets it between two days back and two days forward in time.
 
-``` {.haskell}
+``` {.haskell .numbers}
 addingApproxYears :: Integer -> Day -> Gen Day
 addingApproxYears years today = do
   days <- Gen.integral (Range.linearFrom 0 (-2) 2)
@@ -1048,7 +1048,7 @@ day edge cases. First, let's define the
 used as today's date, and a birth date close to the given number of
 years ago.
 
-``` {.haskell}
+``` {.haskell .numbers}
 leapDayAndBirthDateAroundYearsAgo :: Integer -> Gen (Day, Day)
 leapDayAndBirthDateAroundYearsAgo years = do
   today      <- leapDay (Range.linear 1904 2020)
@@ -1062,7 +1062,7 @@ generate valid leap days, though. Years divisible by 100 but not by 400
 are not leap years. To keep the generator simple, we discard those years
 using the already existing `isLeapDay` predicate as a filter.
 
-``` {.haskell}
+``` {.haskell .numbers}
 leapDay :: Range Integer -> Gen Day
 leapDay yearRange = Gen.filter isLeapDay $ do
   year <- Gen.integral yearRange
@@ -1080,7 +1080,7 @@ generator. It first generates a leap day used as the birth date, and
 then a today's date approximately the given number of years after the
 birth date.
 
-``` {.haskell}
+``` {.haskell .numbers}
 commonDayAndLeaplingBirthDateAroundYearsAgo :: Integer -> Gen (Day, Day)
 commonDayAndLeaplingBirthDateAroundYearsAgo years = do
   birthDate' <- leapDay (Range.linear 1904 2020)
@@ -1091,7 +1091,7 @@ commonDayAndLeaplingBirthDateAroundYearsAgo years = do
 That's it for the generators. Now, how do we know that we're covering
 the edge cases well enough? With coverage checks!
 
-``` {.haskell}
+``` {.haskell .numbers}
 
 cover 5 -- 1
       "close to 18, validated on common day"
@@ -1143,7 +1143,7 @@ day-related bugs, if we were to introduce new ones. Digging into the
 implementation, we'll find a boolean expression in a pattern guard being
 the culprit:
 
-``` {.haskell}
+``` {.haskell .numbers}
 birthDate' <= addGregorianYearsRollOver (-18) today
 ```
 
@@ -1152,7 +1152,7 @@ number of years is the problem, rolling over to March 1st instead of
 clipping to February 28th. Instead, we should use
 `addGregorianYearsClip`:
 
-``` {.haskell}
+``` {.haskell .numbers}
 birthDate' <= addGregorianYearsClip (-18) today
 ```
 

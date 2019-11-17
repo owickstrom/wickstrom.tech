@@ -15,7 +15,8 @@ main = toJSONFilter unicodeNumbersBlock
 validFormat fmt = fmt `elem` ["html5", "latex"]
 
 unicodeNumbersBlock :: Maybe Format -> Block -> Block
-unicodeNumbersBlock (Just format) (CodeBlock attrs@(_, classes, _) code) | validFormat format =
+unicodeNumbersBlock (Just format) (CodeBlock attrs@(_, classes, _) code)
+  | validFormat format && "numbers" `elem` classes =
   let replacer = if "haskell" `elem` classes then replaceWithUnicode else replaceWithNothing
   in code
       & Text.pack
