@@ -2,6 +2,8 @@ CLOUDFRONT_DISTRIBUTION_ID=E372HNY0DNX3PN
 TOOLS=src/tools
 PLANTUML=deps/plantuml.jar
 
+UNICODE_NUMBERS_DIR=$(shell find $(PWD)/dist* -wholename '*build/unicode-numbers' -type d)
+
 UML_SRCS=$(shell find src/_uml -name '*.uml.txt')
 UMLS=$(UML_SRCS:src/_uml/%.uml.txt=src/generated/uml/%.svg)
 
@@ -21,14 +23,12 @@ PANDOC_DRAFT_PDF_OPTS = -H src/draft-header.tex \
 build: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cabal new-build
-	rm -rf src/generated/diagrams
-	cd src && bundle exec jekyll build --destination ../target/html
+	cd src && PATH="$(UNICODE_NUMBERS_DIR):$(PATH)" bundle exec jekyll build --destination ../target/html
 
 serve: $(PLANTUML) $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
 	cabal new-build
-	rm -rf src/generated/diagrams
-	(cd src && bundle exec jekyll serve --host '0.0.0.0' --drafts --destination ../target/html --unpublished --config=_config.yml,_local_config.yml)
+	(cd src && PATH="$(UNICODE_NUMBERS_DIR):$(PATH)" bundle exec jekyll serve --host '0.0.0.0' --drafts --destination ../target/html --unpublished --config=_config.yml,_local_config.yml)
 
 target/drafts/%.pdf: src/_drafts/%.md src/draft-header.tex
 	mkdir -p $(shell dirname $@)

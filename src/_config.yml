@@ -39,7 +39,9 @@ pandoc:
   extensions:
     - mathjax
     - highlight-style: pygments
+    - filter: unicode-numbers
     - filter: pandoc-include-code
+    - syntax-definition: _tools/hedgehog.xml
 
 plantuml:
   plantuml_jar: ../deps/plantuml.jar     # path to plantuml jar

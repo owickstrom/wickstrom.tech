@@ -33,16 +33,9 @@ MARKUP
       in_f.write("\n\nmain = mainWith dia\n")
       in_f.close()
 
-      # Hacky way of invalidating diagrams by hashing all the local
-      # Haskell libraries. This wouldn't catch all changes (e.g.
-      # dependencies changing), but it is good enough for modifying
-      # libraries and regenerating diagrams in blog posts.
-      lib_hash = %x[tar Pcf - ../*.cabal _diagrams | sha256sum]
-
       # Create the final hash file name out of the library hash,
       # diagram contents, width, and height.
       hash_key = Digest::SHA256.hexdigest(
-        lib_hash +
         IO.read(in_f) +
         @width.to_s +
         @height.to_s)
