@@ -1,7 +1,7 @@
 @font-face {
 	font-family: 'Iosevka Terminal';
   font-weight: 500;
-	src: url('woff2/iosevka-term-ss09-regular.woff2') format('woff2'), url('woff2/iosevka-term-ss09-regular.woff') format('woff'), url('woff2/iosevka-term-ss09-regular.ttf') format('truetype');
+	src: url('woff2/iosevka-term-ss09-medium.woff2') format('woff2'), url('woff2/iosevka-term-ss09-medium.woff') format('woff'), url('woff2/iosevka-term-ss09-medium.ttf') format('truetype');
 }
 @font-face {
 	font-family: 'Iosevka Terminal';
