@@ -190,7 +190,7 @@ Be careful about distance. Find ways to stay connected.
 
 ## The Amplifier
 
-A major thing I've learned about remote work is that is functions as
+A major thing I've learned about remote work is that it functions as
 an amplifier of my feelings.
 
 In good projects, working part or full-time remote amplifies the good
