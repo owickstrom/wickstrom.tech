@@ -84,5 +84,5 @@ analytics-report:
 	@echo "Creating analytics report..."
 	mkdir -p $(ANALYTICS_DIR)
 	aws s3 sync s3://wickstrom-tech-access-logs/wickstrom.tech "$(ANALYTICS_DIR)"
-	find $(ANALYTICS_DIR) -name '*.gz' | xargs zcat -f | goaccess --log-format=CLOUDFRONT --ignore-referer=wickstrom.tech -o "$(ANALYTICS_DIR)"/report.html
+	find $(ANALYTICS_DIR) -name '*.gz' | xargs zcat -f | grep -v feed.xml | goaccess --log-format=CLOUDFRONT --ignore-referer=wickstrom.tech --ignore-crawlers -o "$(ANALYTICS_DIR)"/report.html
 	firefox "$(ANALYTICS_DIR)"/report.html
