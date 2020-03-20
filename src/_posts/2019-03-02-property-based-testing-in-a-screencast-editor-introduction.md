@@ -220,3 +220,12 @@ to dive into the case studies:
 Thank you Chris Ford, Alejandro Serrano Mena, Tobias Pflug, Hillel
 Wayne, and Ulrik Sandberg for kindly providing your feedback on my
 drafts!
+
+## Buy the Book
+
+This series is now available as an [ebook on
+Leanpub](https://leanpub.com/property-based-testing-in-a-screencast-editor). While
+the content is mostly the same, there are few changes bringing it
+up-to-date. Also, if you've already enjoyed the articles, you might
+want support my work by purchasing this book. Finally, you might enjoy
+a nicely typeset PDF, or an EPUB book, over a web page.

@@ -490,6 +490,15 @@ Until then, thanks for reading!
 Thank you Ulrik Sandberg, Pontus Nagy, and Fredrik Björeman for
 reviewing drafts of this post.
 
+## Buy the Book
+
+This series is now available as an [ebook on
+Leanpub](https://leanpub.com/property-based-testing-in-a-screencast-editor). While
+the content is mostly the same, there are few changes bringing it
+up-to-date. Also, if you've already enjoyed the articles, you might
+want support my work by purchasing this book. Finally, you might enjoy
+a nicely typeset PDF, or an EPUB book, over a web page.
+
 ## Footnotes
 
 [^1]: See the "Oracle Generators" section in [Finding Property Tests](https://www.hillelwayne.com/post/contract-examples/).

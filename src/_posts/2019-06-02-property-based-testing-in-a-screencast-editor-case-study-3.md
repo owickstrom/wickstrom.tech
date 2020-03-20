@@ -361,3 +361,12 @@ inspired you to try it out, no matter what kind of project you're working on
 and what programming language you are using. Involve your colleagues,
 practice writing property tests together, and enjoy finding complicated bugs
 before your users do!
+
+## Buy the Book
+
+This series is now available as an [ebook on
+Leanpub](https://leanpub.com/property-based-testing-in-a-screencast-editor). While
+the content is mostly the same, there are few changes bringing it
+up-to-date. Also, if you've already enjoyed the articles, you might
+want support my work by purchasing this book. Finally, you might enjoy
+a nicely typeset PDF, or an EPUB book, over a web page.
