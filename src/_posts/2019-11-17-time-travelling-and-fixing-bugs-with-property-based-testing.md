@@ -36,8 +36,8 @@ Stated formally, the validation rules are:
 
 [$$
 \begin{aligned}
-0 < \text{length}(\text{name}) \leq 50 \\
-18 < \text{age} \leq 150
+0 \leq \text{length}(\text{name}) \leq 50 \\
+18 \leq \text{age} \leq 150
 \end{aligned}
 \qquad(1)$$]{#eq:validation-rules}
 
@@ -162,7 +162,7 @@ validName :: Gen Text
 validName = Gen.text (Range.linear 1 50) Gen.alphaNum
 
 validAge :: Gen Int
-validAge = Gen.integral (Range.linear 1 150)
+validAge = Gen.integral (Range.linear 18 150)
 ```
 
 Recall the validation rules (eq. 1). The ranges in these generators
@@ -238,7 +238,7 @@ invalidName =
   Gen.choice [mempty, Gen.text (Range.linear 51 100) Gen.alphaNum]
 
 invalidAge :: Gen Int
-invalidAge = Gen.integral (Range.linear minBound 0)
+invalidAge = Gen.integral (Range.linear minBound 17)
 ```
 
 Let's run our new property tests:
@@ -389,7 +389,7 @@ enough for each, but realistically they could both get close to 50%.
 prop_invalid_age_fails = property $ do
   let genForm = SignupForm <$> validName <*> invalidAge
   form <- forAll genForm
-  cover 5 "too young" (formAge form <= 0)
+  cover 5 "too young" (formAge form <= 17)
   cover 5 "too old"   (formAge form >= 151)
   case validateSignup form of
     Failure (InvalidAge{} :| []) -> pure ()
@@ -411,7 +411,7 @@ Let's run some tests again.
     63 ┃ prop_invalid_age_fails = property $ do
     64 ┃   let genForm = SignupForm <$> validName <*> invalidAge
     65 ┃   form <- forAll genForm
-    66 ┃   cover 5 "too young" (formAge form <= 0)
+    66 ┃   cover 5 "too young" (formAge form <= 17)
     67 ┃   cover 5 "too old"   (formAge form >= 151)
        ┃   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
        ┃   │ Failed (0% coverage)
@@ -429,17 +429,17 @@ good enough. Let's have a look at its definition again:
 
 ``` {.haskell .numbers}
 invalidAge :: Gen Int
-invalidAge = Gen.integral (Range.linear minBound 0)
+invalidAge = Gen.integral (Range.linear minBound 17)
 ```
 
 We're only generating invalid ages between the minimum bound of `Int`
-and `0`. Let's fix that, by using `Gen.choice` and another generator for
-ages greater than 150:
+and `17`. Let's fix that, by using `Gen.choice` and another generator
+for ages greater than 150:
 
 ``` {.haskell .numbers}
 invalidAge :: Gen Int
 invalidAge = Gen.choice
-  [ Gen.integral (Range.linear minBound 0)
+  [ Gen.integral (Range.linear minBound 17)
   , Gen.integral (Range.linear 151 maxBound)
   ]
 ```
@@ -459,7 +459,7 @@ another problem:
     67 ┃   let genForm = SignupForm <$> validName <*> invalidAge
     68 ┃   form <- forAll genForm
        ┃   │ SignupForm { formName = "a" , formAge = 151 }
-    69 ┃   cover 5 "too young" (formAge form <= 0)
+    69 ┃   cover 5 "too young" (formAge form <= 17)
     70 ┃   cover 5 "too old"   (formAge form >= 151)
     71 ┃   case validateSignup form of
     72 ┃     Failure (InvalidAge{} :| []) -> pure ()
@@ -476,12 +476,12 @@ the implementation, we see that a pattern guard is missing the upper
 bound check:
 
 ``` {.haskell .numbers}
-  validateAge age' | age' > 0  = Success (fromIntegral age')
-                   | otherwise = Failure (pure (InvalidAge age'))
+  validateAge age' | age' >= 18 = Success (fromIntegral age')
+                   | otherwise  = Failure (pure (InvalidAge age'))
 ```
 
-If we change it to `age' > 0 && age' <= 150`{.haskell .numbers}, and rerun the
-tests, they pass.
+If we change it to `age' >= 18 && age' <= 150`{.haskell .numbers}, and
+rerun the tests, they pass.
 
 ``` {.hedgehog}
 λ> check prop_invalid_age_fails 
