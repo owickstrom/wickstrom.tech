@@ -43,8 +43,7 @@ alone.
 
 Working remotely also supports the way of life I prefer. There's a
 myriad of possibilities opening up when you go remote. However, I'll
-save those for another day. Check out [Chris Herd's twitter
-account](https://twitter.com/chris_herd) for more inspiration.
+save those for another day.
 
 You might be in a remote-working situation for other reasons, perhaps
 because of COVID-19. It might be temporary, something you get through,
