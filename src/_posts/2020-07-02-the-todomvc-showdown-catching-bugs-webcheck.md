@@ -41,8 +41,32 @@ Early on, checking the mainstream framework examples, I found that both the
 Angular and Mithril examples were rejected by my specification, and [I
 submitted an issue](https://github.com/tastejs/todomvc/issues/2116) in the
 TodoMVC issue tracker. Invigorated by the initial success, I decided to check
-the remaining examples and gradually improve my specification. In this post
-I'll share the results I've got so far.
+the remaining examples and gradually improve my specification.
+
+In this post I'll share the results I've got so far.
+
+## The Specification
+
+Before looking at the tests results, you might want to have a look at [the
+specification](
+https://gist.github.com/owickstrom/1a0698ef6a47df07dfc1fe59eda12983). The
+Gist includes a brief introduction to the WebCheck specification language and
+how to write specifications. I've excluded support for the old TodoMVC markup
+(using IDs instead of classes) to keep it as simple as possible.
+
+The specification doesn't cover all of the TodoMVC behavior yet. Most
+notably, it leaves out the [editing
+mode](https://github.com/tastejs/todomvc/blob/master/app-spec.md#editing)
+entirely. I might add it later, but I think I've found enough to motivate
+using WebCheck on TodoMVC applications. Further, this is likely how WebCheck
+would be used in other projects. You specify some things and you leave out
+others.
+
+The astute reader might have noticed that it looks like PureScript. And it
+pretty much is PureScript, with some WebCheck-specific additions for temporal
+modalities and DOM queries.
+
+As for how WebCheck itself works, that's for a future post.
 
 ## Test Results
 
@@ -454,30 +478,10 @@ respect to a new private browser window. In future versions of WebCheck,
 hooks should be added where the tester can clear the system state before
 tests are run.
 
-### Unspecified parts
-
-The specification doesn't cover all of the TodoMVC behavior yet. Most
-notably, it leaves out the [editing
-mode](https://github.com/tastejs/todomvc/blob/master/app-spec.md#editing)
-entirely. I might add it later, but I think I've found enough to motivate
-using WebCheck on TodoMVC applications. Further, this is likely how WebCheck
-would be used in other projects. You specify some things and you leave out
-others.
-
-## How does it work?
-
-If you've read this far, I bet you're interested in the specification. To
-keep this blog post brief, I've uploaded a poorly documented version of the
-specification [as a gist](
-https://gist.github.com/owickstrom/1a0698ef6a47df07dfc1fe59eda12983). Note
-that I've removed support for the old markup (using IDs instead of classes)
-to keep it as simple as possible.
-
-The astute reader might have noticed that it looks like PureScript. And it
-pretty much is PureScript, with some WebCheck-specific additions for temporal
-modalities and DOM queries.
-
-As for how WebCheck itself works, that's for a future post.
+Note that I can't classify any of these problems as _bugs_. That's up to the
+TodoMVC project maintainers. I see them as problems, or disagreements,
+between the implementations and my specification. A good chunk of humility is
+in order when testing systems built by others.
 
 ## The Future is Bright
 
