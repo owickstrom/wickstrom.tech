@@ -473,8 +473,8 @@ https://gist.github.com/owickstrom/1a0698ef6a47df07dfc1fe59eda12983). Note
 that I've removed support for the old markup (using IDs instead of classes)
 to keep it as simple as possible.
 
-The astute reader might notice that this looks like PureScript. And it pretty
-much is PureScript, with some WebCheck-specific additions for temporal
+The astute reader might have noticed that it looks like PureScript. And it
+pretty much is PureScript, with some WebCheck-specific additions for temporal
 modalities and DOM queries.
 
 As for how WebCheck itself works, that's for a future post.
