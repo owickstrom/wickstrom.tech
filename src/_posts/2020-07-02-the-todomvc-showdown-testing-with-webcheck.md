@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The TodoMVC Showdown: Catching Bugs using WebCheck"
+title: "The TodoMVC Showdown: Testing with WebCheck"
 author: Oskar Wickström
 date: 2020-07-01
 categories: programming
@@ -470,13 +470,13 @@ documentation](https://github.com/tastejs/todomvc/blob/master/app-spec.md#counte
 
 State cannot be cleared
 
-: This is not a bug, but an issue where the test implementation makes it hard
-to perform repeated isolated testing. State cannot (to my knowledge) be
-cleared between tests, and so isolation is broken. This points to a key
-requirement currently placed by WebCheck: the SUT is must be stateless, with
-respect to a new private browser window. In future versions of WebCheck,
-hooks should be added where the tester can clear the system state before
-tests are run.
+: This is not an implementation error, but an issue where the test
+implementation makes it hard to perform repeated isolated testing. State
+cannot (to my knowledge) be cleared between tests, and so isolation is
+broken. This points to a key requirement currently placed by WebCheck: the
+SUT is must be stateless, with respect to a new private browser window. In
+future versions of WebCheck, hooks should be added where the tester can clear
+the system state before tests are run.
 
 Note that I can't classify any of these problems as _bugs_. That's up to the
 TodoMVC project maintainers. I see them as problems, or disagreements,
