@@ -22,7 +22,7 @@ combining ideas from:
 
 In WebCheck, you don't write test cases for your web application. Instead,
 you write a _specification_. The specification describes the intended
-behavior as a finite-state machine,, using a logic formula heavily inspired by
+behavior as a finite-state machine, using a logic formula heavily inspired by
 the _temporal logic of actions_ from TLA+.
 
 As opposed to property-based testing with state machine models, you don't
@@ -37,12 +37,12 @@ specification](https://github.com/tastejs/todomvc/blob/master/app-spec.md),
 and they do have a Cypress test suite, but I was curious if I could find
 anything new using WebCheck.
 
-Early on, checking the mainstream framework examples, I found that both
-Angular and Mithril were rejected by my specification, and [I posted as an
-issue](https://github.com/tastejs/todomvc/issues/2116) in the TodoMVC issue
-tracker. Invigorated by the initial success, I decided to check the remaining
-examples and gradually improve my specification. In this post I'll share the
-results I've got so far.
+Early on, checking the mainstream framework examples, I found that both the
+Angular and Mithril examples were rejected by my specification, and [I
+submitted an issue](https://github.com/tastejs/todomvc/issues/2116) in the
+TodoMVC issue tracker. Invigorated by the initial success, I decided to check
+the remaining examples and gradually improve my specification. In this post
+I'll share the results I've got so far.
 
 ## Test Results
 
@@ -391,7 +391,13 @@ further down.
             <td></td>
         </tr>
     </tbody>
+    <tfoot>
+        <tr class="todomvc-legend">
+            <td colspan="3">✓ Passed, ❌ Failed, &ndash; Not testable</td>
+        </tr>
+    </tfoot>
 </table>
+
 
 Filters not implemented
 
@@ -399,8 +405,14 @@ Filters not implemented
 This is specified in the TodoMVC documentation under
 [Routing](https://github.com/tastejs/todomvc/blob/master/app-spec.md#routing).
 
-Race condition in initialization
-: The event listeners are attached some time after the `.new-todo` form is rendered. If you're quick enough, you can focus the input, press <kbd>Return</kbd>, and post the form. This will navigate the user agent to the same page but with a query paremeter, e.g. `index.html?text=`.
+Race condition during initialization
+
+: The event listeners are attached some time after the `.new-todo` form is
+rendered. Although unlikely, if you're quick enough you can focus the input,
+press <kbd>Return</kbd>, and post the form. This will navigate the user agent
+to the same page but with a query paremeter, e.g. `index.html?text=`. In
+TodoMVC it's not the end of the world, but I suspect there are real systems
+where you do not want this to happen.
 
 Inconsistent first render
 : The application briefly shows an inconsistent view, then renders the valid initial state. _KnockoutJS + RequireJS_ shows an empty list items and "0 left" in the bottom, even though the footer [should be hidden when there are no items](https://github.com/tastejs/todomvc/blob/master/app-spec.md#no-todos).
@@ -409,9 +421,9 @@ Needs a custom `readyWhen` condition
 
 : The specification awaits an element matching `.todoapp` (or `#todoapp` for
 the old markup) in the DOM before taking any action. In this case, the
-framework needs a modified specification that instead awaits a
+implementation needs a modified specification that instead awaits a
 framework-specific class, e.g. `.ng-scope`. I wouldn't classify this as a
-bug, just a small inconvenience in testing the implementation using WebCheck.
+bug, just an inconvenience in testing the implementation using WebCheck.
 
 No input field
 
@@ -427,10 +439,10 @@ automatically without a <kbd>Return</kbd> key press.
 
 `.todo-count strong` element is missing
 
-: Previously, the specification required a `.todo-count strong` element to be
-present in the DOM, where the number of active items should be rendered. The
-TodoMVC project documentation [explicitly mentions this
-requirement](https://github.com/tastejs/todomvc/blob/master/app-spec.md#counter).
+: An element matching the selector `.todo-count strong` must be present in
+the DOM when there are items, showing the number of active items, as
+described [in the TodoMVC
+documentation](https://github.com/tastejs/todomvc/blob/master/app-spec.md#counter).
 
 State cannot be cleared
 
@@ -440,36 +452,40 @@ cleared between tests, and so isolation is broken. This points to a key
 requirement currently placed by WebCheck: the SUT is must be stateless, with
 respect to a new private browser window. In future versions of WebCheck,
 hooks should be added where the tester can clear the system state before
-tests.
+tests are run.
 
 ### Unspecified parts
 
 The specification doesn't cover all of the TodoMVC behavior yet. Most
-notably, it leaves out the _editing mode_ entirely. I might add it later, but
-I think I've found enough to motivate using WebCheck on TodoMVC applications.
-Further, this is likely how WebCheck would be used in real projects. You
-specify some things and leave out others.
+notably, it leaves out the [editing
+mode](https://github.com/tastejs/todomvc/blob/master/app-spec.md#editing)
+entirely. I might add it later, but I think I've found enough to motivate
+using WebCheck on TodoMVC applications. Further, this is likely how WebCheck
+would be used in other projects. You specify some things and you leave out
+others.
 
 ## How does it work?
 
-If you've read this far, I bet you're interested in the specification. In the
-interest of keeping this brief, I've uploaded a [not-so-documented version of
-the specification as a gist](
+If you've read this far, I bet you're interested in the specification. To
+keep this blog post brief, I've uploaded a poorly documented version of the
+specification [as a gist](
 https://gist.github.com/owickstrom/1a0698ef6a47df07dfc1fe59eda12983). Note
 that I've removed support for the old markup (using IDs instead of classes)
-to keep it as simple as I could.
+to keep it as simple as possible.
 
 The astute reader might notice that this looks like PureScript. And it pretty
-much is, with some WebCheck-specific additions for temporal modalities and
-DOM queries.
+much is PureScript, with some WebCheck-specific additions for temporal
+modalities and DOM queries.
 
 As for how WebCheck itself works, that's for a future post.
 
 ## The Future is Bright
 
-I'm happy with how effective WebCheck has been so far, after a few months of
-spare-time prototyping. Within a few months I should have something more
-polished that I can make available, I hope. No guarantees.
+I'm happy with how effective WebCheck has been so far, after only a few
+months of spare-time prototyping. Hopefully, I'll have something more
+polished that I can make available soon. When that time comes, maybe WebCheck
+can be part of the TodoMVC project's testing. I'd be very happy about that,
+at least.
 
 If you're interested in WebCheck, please [sign up for the
 newsletter](https://buttondown.email/webcheck). I'll post regular project

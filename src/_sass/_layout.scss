@@ -420,6 +420,12 @@ p .math.display {
   font-style: italic;
   background: #eee;
 }
+.todomvc-legend td {
+  text-align: right;
+  font-style: italic;
+  font-size: 90%;
+  border: none;
+}
 
 @media print {
   .home-page .title-pane {
