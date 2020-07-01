@@ -51,12 +51,12 @@ on the examples listed on the TodoMVC website. I'll use short descriptions of
 the problems (some of which are recurring), and explain more in detail
 further down.
 
-<table style="width: 100%;">
+<table style="width: 100%;" class="todomvc-results">
     <thead>
         <tr>
             <th style="width: 1%;"></th>
             <th>Example</th>
-            <th>Problems</th>
+            <th>Problems/Notes</th>
         </tr>
     </thead>
     <tbody>
@@ -217,7 +217,7 @@ further down.
             <td>AngularJS + RequireJS</td>
             <td>
                 <ul>
-                    <li>Needs custom <code>readyWhen</code> condition</li>
+                    <li>Needs a custom <code>readyWhen</code> condition</li>
                 </ul>
             </td>
         </tr>
@@ -346,7 +346,7 @@ further down.
             <td>SocketStream</td>
             <td>
                 <ul>
-                    <li>Inconclusive, can't clear state between test runs</li>
+                    <li>State cannot be cleared</li>
                 </ul>
             </td>
         </tr>
@@ -359,18 +359,31 @@ further down.
         <tr>
             <td>&ndash;</td>
             <td>Express + gcloud-node</td>
-            <td>404 Not Found</td>
+            <td>
+                <ul>
+                    <li>404 Not Found</li>
+                </ul>
+            </td>
         </tr>
         <tr class="divider"><td colspan="3">Non-framework implementations</td></tr>
         <tr>
             <td>❌</td>
             <td>VanillaJS</td>
-            <td>Adds pending item on other iteraction</td>
+            <td>
+                <ul>
+                    <li>Adds pending item on other iteraction</li>
+                </ul>
+            </td>
         </tr>
         <tr>
             <td>❌</td>
             <td>VanillaJS ES6</td>
-            <td>Adds pending item on other iteraction, minor: <code>.todo-count strong</code> is missing</td>
+            <td>
+                <ul>
+                    <li>Adds pending item on other iteraction</li>
+                    <li><code>.todo-count strong</code> is missing</li>
+                </ul>
+            </td>
         </tr>
         <tr>
             <td>✓</td>
@@ -380,14 +393,89 @@ further down.
     </tbody>
 </table>
 
-1. Filters not implemented
-1. Race condition in initialization: focus input and press Return before 
-   event listeners are attached, results in `index.html?text=` 
-1. Inconsistent first render: Shows an empty list items and "0 left" for a short moment, then renders the valid initial state.
-1. Adds pending item on other iteraction (toggle all, change filter)
+Filters not implemented
 
-1. Needs custom `readyWhen` condition: Needs a modified spec that awaits framework-specific class, e.g. `".ng-scope"`
-1. No input field
+: There's no way of switching between "All", "Active", and "Completed" items.
+This is specified in the TodoMVC documentation under
+[Routing](https://github.com/tastejs/todomvc/blob/master/app-spec.md#routing).
 
-_If you have any comments, please reply to [this Twitter
-thread]()._
+Race condition in initialization
+: The event listeners are attached some time after the `.new-todo` form is rendered. If you're quick enough, you can focus the input, press <kbd>Return</kbd>, and post the form. This will navigate the user agent to the same page but with a query paremeter, e.g. `index.html?text=`.
+
+Inconsistent first render
+: The application briefly shows an inconsistent view, then renders the valid initial state. _KnockoutJS + RequireJS_ shows an empty list items and "0 left" in the bottom, even though the footer [should be hidden when there are no items](https://github.com/tastejs/todomvc/blob/master/app-spec.md#no-todos).
+
+Needs a custom `readyWhen` condition
+
+: The specification awaits an element matching `.todoapp` (or `#todoapp` for
+the old markup) in the DOM before taking any action. In this case, the
+framework needs a modified specification that instead awaits a
+framework-specific class, e.g. `.ng-scope`. I wouldn't classify this as a
+bug, just a small inconvenience in testing the implementation using WebCheck.
+
+No input field
+
+: There's no input field to enter TODO items in. I'd argue this defeats the
+purpose of a TODO list application, and it's [indeed specified in the offical
+documentation](https://github.com/tastejs/todomvc/blob/master/app-spec.md#new-todo).
+
+Adds pending item on other iteraction
+
+: When there's a pending item in the input field, and another action is taken
+(toggle all, change filter, etc), the pending item is submitted
+automatically without a <kbd>Return</kbd> key press.
+
+`.todo-count strong` element is missing
+
+: Previously, the specification required a `.todo-count strong` element to be
+present in the DOM, where the number of active items should be rendered. The
+TodoMVC project documentation [explicitly mentions this
+requirement](https://github.com/tastejs/todomvc/blob/master/app-spec.md#counter).
+
+State cannot be cleared
+
+: This is not a bug, but an issue where the test implementation makes it hard
+to perform repeated isolated testing. State cannot (to my knowledge) be
+cleared between tests, and so isolation is broken. This points to a key
+requirement currently placed by WebCheck: the SUT is must be stateless, with
+respect to a new private browser window. In future versions of WebCheck,
+hooks should be added where the tester can clear the system state before
+tests.
+
+### Unspecified parts
+
+The specification doesn't cover all of the TodoMVC behavior yet. Most
+notably, it leaves out the _editing mode_ entirely. I might add it later, but
+I think I've found enough to motivate using WebCheck on TodoMVC applications.
+Further, this is likely how WebCheck would be used in real projects. You
+specify some things and leave out others.
+
+## How does it work?
+
+If you've read this far, I bet you're interested in the specification. In the
+interest of keeping this brief, I've uploaded a [not-so-documented version of
+the specification as a gist](
+https://gist.github.com/owickstrom/1a0698ef6a47df07dfc1fe59eda12983). Note
+that I've removed support for the old markup (using IDs instead of classes)
+to keep it as simple as I could.
+
+The astute reader might notice that this looks like PureScript. And it pretty
+much is, with some WebCheck-specific additions for temporal modalities and
+DOM queries.
+
+As for how WebCheck itself works, that's for a future post.
+
+## The Future is Bright
+
+I'm happy with how effective WebCheck has been so far, after a few months of
+spare-time prototyping. Within a few months I should have something more
+polished that I can make available, I hope. No guarantees.
+
+If you're interested in WebCheck, please [sign up for the
+newsletter](https://buttondown.email/webcheck). I'll post regular project
+updates, and definitely no spam. You can also follow me [on
+Twitter](https://twitter.com/owickstrom).
+
+## Comments
+
+_If you have any comments, please reply to [this Twitter thread]()._

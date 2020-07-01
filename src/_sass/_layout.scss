@@ -415,6 +415,12 @@ p .math.display {
     overflow-x: auto;
 }
 
+.todomvc-results .divider td {
+  text-align: center;
+  font-style: italic;
+  background: #eee;
+}
+
 @media print {
   .home-page .title-pane {
     position: static;
