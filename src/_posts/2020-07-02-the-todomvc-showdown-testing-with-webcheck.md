@@ -2,7 +2,7 @@
 layout: post
 title: "The TodoMVC Showdown: Testing with WebCheck"
 author: Oskar Wickström
-date: 2020-07-01
+date: 2020-07-02
 categories: programming
 tags: ["testing", "specification", "formal-methods", "browser"]
 excerpt: |
