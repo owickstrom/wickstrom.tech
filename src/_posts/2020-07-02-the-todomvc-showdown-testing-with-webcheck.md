@@ -51,8 +51,8 @@ model should capture the essential complexity of the system under test (SUT).
 It needs to be functionally complete to be a useful oracle. For a system that
 is conceptually simple, e.g. a key-value database engine, this is not a
 problem. But for a system that is inherently complex, e.g. a business
-application with a myriad of seemingly arbitrary rules, a useful model tends
-to grow _as complex_ as the system itself.
+application with a big pile of rules, a useful model tends to grow _as
+complex_ as the system itself.
 
 In WebCheck, the specification is not like such a model. You don't have to
 implement a complete functional model of your system. You can leave out
@@ -69,7 +69,7 @@ benchmark of WebCheck, and developed a general specification for TodoMVC
 implementations. The TodoMVC contribution documentation has [a high-level
 feature
 specification](https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality),
-and they do have a Cypress test suite, but I was curious if I could find
+and the project has a Cypress test suite, but I was curious if I could find
 anything new using WebCheck.
 
 Early on, checking the mainstream framework implementations, I found that
@@ -85,12 +85,16 @@ IDs instead of classes for most elements, so I had to support both variants.
 
 ## The Specification
 
-Before looking at the tests results, you might want to have a look at [the
-specification](
-https://gist.github.com/owickstrom/1a0698ef6a47df07dfc1fe59eda12983). If not,
-scroll down! The gist includes a brief introduction to the WebCheck
-specification language and how to write specifications. I've excluded support
-for the old TodoMVC markup to keep the specification as simple as possible.
+Before looking at the tests results, you might want to have a look at the
+WebCheck specification that I've published as a gist:
+
+[TodoMVC.spec.purs]( https://gist.github.com/owickstrom/1a0698ef6a47df07dfc1fe59eda12983)
+
+The gist includes a brief introduction to the WebCheck specification language
+and how to write specifications. I'll write proper documentation for the
+specification language eventually, but this can give you a taste of how it
+works, at least. I've excluded support for the old TodoMVC markup to keep the
+specification as simple as possible.
 
 The specification doesn't cover all features of TodoMVC yet. Most notably, it
 leaves out the [editing
@@ -261,7 +265,7 @@ further down.
         <tr>
             <td>&ndash;</td>
             <td>Humble + GopherJS</td>
-            <td><ul><li>404 Not Found</li></ul></td>
+            <td><ul><li>Missing/broken link</li></ul></td>
         </tr>
         <tr class="divider"><td colspan="3">Under evaluation by TodoMVC</td></tr>
         <tr>
@@ -321,7 +325,7 @@ further down.
             <td>soma.js</td>
             <td>
                 <ul>
-                    <li>404 Not Found</li>
+                    <li>Missing/broken link</li>
                 </ul>
             </td>
         </tr>
@@ -427,7 +431,7 @@ further down.
             <td>Express + gcloud-node</td>
             <td>
                 <ul>
-                    <li>404 Not Found</li>
+                    <li>Missing/broken link</li>
                 </ul>
             </td>
         </tr>
@@ -521,7 +525,11 @@ SUT must be stateless, with respect to a new private browser window. In
 future versions of WebCheck, I'll add hooks to let the tester clear
 the system state before each test is run.
 
-Note that I can't classify any of these problems as _bugs_. That's up to the
+Missing/broken link
+
+: The listed implementation seems to be moved or decommissioned.
+
+Note that I can't decide which of these problems are _bugs_. That's up to the
 TodoMVC project maintainers. I see them as problems, or disagreements,
 between the implementations and my specification. A good chunk of humility is
 in order when testing systems designed and built by others.
@@ -550,4 +558,7 @@ threads:
 - ...
 
 _Thanks to [Hillel Wayne](https://www.hillelwayne.com/), [Felix
-Holmgren](https://twitter.com/felixhgren), and [Martin Clausen](https://twitter.com/MartinClausen8) for reviewing drafts of this post._
+Holmgren](https://twitter.com/felixhgren), [Martin
+Janiczek](https://twitter.com/janiczek), [Tom Harding](https://twitter.com/am_i_tom), and [Martin
+Clausen](https://twitter.com/MartinClausen8) for reviewing drafts of this
+post._
