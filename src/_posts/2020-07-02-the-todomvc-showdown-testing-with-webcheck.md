@@ -73,9 +73,9 @@ submitted [an issue](https://github.com/tastejs/todomvc/issues/2116) in the
 TodoMVC issue tracker. Invigorated by the initial success, I decided to check
 the remaining examples and gradually improve my specification.
 
-I've generalized the specification to work on nearly all of the examples
-listed on the TodoMVC website. Some of them use the old markup, which uses
-IDs instead of classes for most elements, so I had to support both variants.
+I've generalized the specification to work on nearly all the examples listed
+on the TodoMVC website. Some of them use the old markup, which uses IDs
+instead of classes for most elements, so I had to support both variants.
 
 ## The Specification
 
@@ -86,19 +86,23 @@ scroll down! The Gist includes a brief introduction to the WebCheck
 specification language and how to write specifications. I've excluded support
 for the old TodoMVC markup to keep the specification as simple as possible.
 
-The specification doesn't cover all of the TodoMVC behavior yet. Most
-notably, it leaves out the [editing
+The specification doesn't cover all features of TodoMVC yet. Most notably, it
+leaves out the [editing
 mode](https://github.com/tastejs/todomvc/blob/master/app-spec.md#editing)
-entirely. I might add it later, but I think I've found enough to motivate
-using WebCheck on TodoMVC applications. Further, this is likely how WebCheck
-would be used in other projects. You specify some things and you leave out
-others.
+entirely. Further, it doesn't cover the examples' usage of local storage, and
+local storage is disabled in WebCheck for now.
 
-The astute reader might have noticed that it looks like PureScript. And it
-pretty much is PureScript, with some WebCheck-specific additions for temporal
-modalities and DOM queries. I decided not to write a custom DSL, and instead
-write a PureScript interpreter. That way, specification authors can use the
-tools and packages from the PureScript ecosystem.
+I might refine the specification later, but I think I've found enough to
+motivate using WebCheck on TodoMVC applications. Further, this is likely how
+WebCheck would be used in other projects. You specify some things and you
+leave out others.
+
+The astute reader might have noticed that the specification language looks
+like PureScript. And it pretty much is PureScript, with some
+WebCheck-specific additions for temporal modalities and DOM queries. I
+decided not to write a custom DSL, and instead write a PureScript
+interpreter. That way, specification authors can use the tools and packages
+from the PureScript ecosystem. It works great so far!
 
 As for how WebCheck itself works, that's for a future post.
 
@@ -473,6 +477,7 @@ TodoMVC it's not the end of the world, but I suspect there are real systems
 where you do not want this to happen.
 
 Inconsistent first render
+
 : The application briefly shows an inconsistent view, then renders the valid initial state. _KnockoutJS + RequireJS_ shows an empty list items and "0 left" in the bottom, even though the footer [should be hidden when there are no items](https://github.com/tastejs/todomvc/blob/master/app-spec.md#no-todos).
 
 Needs a custom `readyWhen` condition
@@ -486,7 +491,7 @@ bug, just an inconvenience in testing the implementation using WebCheck.
 No input field
 
 : There's no input field to enter TODO items in. I'd argue this defeats the
-purpose of a TODO list application, and it's [indeed specified in the offical
+purpose of a TODO list application, and it's [indeed specified in the official
 documentation](https://github.com/tastejs/todomvc/blob/master/app-spec.md#new-todo).
 
 Adds pending item on other iteraction
@@ -508,7 +513,7 @@ State cannot be cleared
 implementation makes it hard to perform repeated isolated testing. State
 cannot (to my knowledge) be cleared between tests, and so isolation is
 broken. This points to a key requirement currently placed by WebCheck: the
-SUT is must be stateless, with respect to a new private browser window. In
+SUT must be stateless, with respect to a new private browser window. In
 future versions of WebCheck, hooks should be added where the tester can clear
 the system state before tests are run.
 
