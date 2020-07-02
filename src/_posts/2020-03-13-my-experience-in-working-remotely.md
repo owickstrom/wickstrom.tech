@@ -5,6 +5,12 @@ author: Oskar Wickström
 date: 2020-03-13
 categories: general
 tags: ["remote", "work", "technology"]
+excerpt: |
+  As I'm writing this, COVID-19 is spreading across the globe. Companies
+  partly or fully shut down their offices, and have people work from
+  their homes. Others might self-isolate by choice. In any case, you
+  might now find yourself in a situation where your team is suddenly a
+  remote-working team.
 ---
 
 As I'm writing this, COVID-19 is spreading across the globe. Companies
