@@ -471,8 +471,8 @@ Race condition during initialization
 rendered. Although unlikely, if you're quick enough you can focus the input,
 press <kbd>Return</kbd>, and post the form. This will navigate the user agent
 to the same page but with a query paremeter, e.g. `index.html?text=`. In
-TodoMVC it's not the end of the world, but I suspect there are real systems
-where you do not want this to happen.
+TodoMVC it's not the end of the world, but there are systems where you do not
+want this to happen.
 
 Inconsistent first render
 
