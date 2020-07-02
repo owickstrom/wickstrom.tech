@@ -554,8 +554,8 @@ Twitter](https://twitter.com/owickstrom).
 If you have any comments or questions, please reply to any of the following
 threads:
 
-- ...
-- ...
+- [Twitter](https://twitter.com/owickstrom/status/1278645144166825984)
+- [Lobste.rs](https://lobste.rs/s/pqo6ou/todomvc_showdown_testing_with_webcheck)
 
 _Thanks to [Hillel Wayne](https://www.hillelwayne.com/), [Felix
 Holmgren](https://twitter.com/felixhgren), [Martin
