@@ -104,8 +104,6 @@ decided not to write a custom DSL, and instead write a PureScript
 interpreter. That way, specification authors can use the tools and packages
 from the PureScript ecosystem. It works great so far!
 
-As for how WebCheck itself works, that's for a future post.
-
 ## Test Results
 
 Below are the test results from running WebCheck and my TodoMVC specification
