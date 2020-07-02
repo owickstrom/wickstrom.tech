@@ -441,7 +441,7 @@ further down.
             <td>VanillaJS</td>
             <td>
                 <ul>
-                    <li>Adds pending item on other iteraction</li>
+                    <li>Adds pending item on other interaction</li>
                 </ul>
             </td>
         </tr>
@@ -450,7 +450,7 @@ further down.
             <td>VanillaJS ES6</td>
             <td>
                 <ul>
-                    <li>Adds pending item on other iteraction</li>
+                    <li>Adds pending item on other interaction</li>
                     <li><code>.todo-count strong</code> is missing</li>
                 </ul>
             </td>
@@ -480,7 +480,7 @@ Race condition during initialization
 : The event listeners are attached some time after the `.new-todo` form is
 rendered. Although unlikely, if you're quick enough you can focus the input,
 press <kbd>Return</kbd>, and post the form. This will navigate the user agent
-to the same page but with a query paremeter, e.g. `index.html?text=`. In
+to the same page but with a query parameter, e.g. `index.html?text=`. In
 TodoMVC it's not the end of the world, but there are systems where you do not
 want this to happen.
 
@@ -502,7 +502,7 @@ No input field
 purpose of a TODO list application, and it's [indeed specified in the official
 documentation](https://github.com/tastejs/todomvc/blob/master/app-spec.md#new-todo).
 
-Adds pending item on other iteraction
+Adds pending item on other interaction
 
 : When there's a pending item in the input field, and another action is taken
 (toggle all, change filter, etc), the pending item is submitted
