@@ -528,8 +528,8 @@ I'm happy with how effective WebCheck has been so far, after only a few
 months of spare-time prototyping. Hopefully, I'll have something more
 polished that I can make available soon. An open source tool that you can run
 yourself, a SaaS version with a subscription model, or maybe both. When that
-time comes, maybe WebCheck can be part of the TodoMVC project's testing? I'd
-be very happy about that, at least.
+time comes, maybe WebCheck can be part of the TodoMVC project's testing. And
+perhaps in your project?
 
 If you're interested in WebCheck, please [sign up for the
 newsletter](https://buttondown.email/webcheck). I'll post regular project
@@ -538,7 +538,8 @@ Twitter](https://twitter.com/owickstrom).
 
 ## Comments
 
-If you have any comments, please reply to any of the following threads:
+If you have any comments or questions, please reply to any of the following
+threads:
 
 - ...
 - ...
