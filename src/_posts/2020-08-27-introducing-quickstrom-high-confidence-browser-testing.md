@@ -58,5 +58,5 @@ significantly improved soon.
 If you have any comments or questions, please reply to any of the following
 threads:
 
-- [Twitter]()
-- [Lobste.rs]()
+- [Twitter](https://twitter.com/owickstrom/status/1299064145736798208)
+- [Lobste.rs](https://lobste.rs/s/zrusmd/introducing_quickstrom_high_confidence)
