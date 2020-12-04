@@ -14,15 +14,10 @@ Counter Strike, at countless LAN parties. I will, however, nod and smile
 politely while you tell your tales from the Amiga and Commodore 64 days.
 
 I still live in Sweden. In my free time I hack on [various programming
-projects](/projects.html), play the bass, and hang out with my wife
-and friends. Every now and then I speak at conferences and meetups.
+projects](/projects.html), play drums, and hang out with my family,
+friends, and mother nature. Every now and then I speak at conferences
+and meetups.
 
-## Contact
-
-If you manage to dig out my email address from git logs, the [public
-key on Keybase](https://keybase.io/owickstrom) can be used to send
-encrypted email. You'll find me on Mastodon as [\@owi\@mastodon.social](https://mastodon.social/@owi).
-
-## Public Key
-
-Find me and my public keys at [https://keybase.io/owickstrom](https://keybase.io/owickstrom).
+To contact me by email, use my first name and this domain
+name. Otherwise I'm on [Twitter](https://twitter.com/owickstrom) at
+times.
