@@ -1,6 +1,5 @@
 CLOUDFRONT_DISTRIBUTION_ID=E372HNY0DNX3PN
 TOOLS=src/tools
-PLANTUML=deps/plantuml.jar
 
 UNICODE_NUMBERS_DIR=$(shell find $(PWD)/dist* -wholename '*build/unicode-numbers' -type d)
 
@@ -20,14 +19,14 @@ PANDOC_DRAFT_PDF_OPTS = -H src/draft-header.tex \
 												-V geometry:paperheight=9.25in \
 												-V geometry:margin=.25in
 
-build: $(PLANTUML) $(UMLS)
+all: build
+
+build: $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
-	cabal new-build
 	cd src && PATH="$(UNICODE_NUMBERS_DIR):$(PATH)" bundle exec jekyll build --destination ../target/html
 
-serve: $(PLANTUML) $(UMLS)
+serve: $(UMLS)
 	make -C src/_posts/pandoc-beamer-examples all
-	cabal new-build
 	(cd src && PATH="$(UNICODE_NUMBERS_DIR):$(PATH)" bundle exec jekyll serve --host '0.0.0.0' --drafts --destination ../target/html --unpublished --config=_config.yml,_local_config.yml)
 
 target/drafts/%.pdf: src/_drafts/%.md src/draft-header.tex
@@ -64,13 +63,9 @@ generate-music-symbols:
 	$(TOOLS)/render-musical-symbol.sh '\key d \minor' flat
 	SHOW_TIME_SIGN=1 $(TOOLS)/render-musical-symbol.sh '' common-time
 
-$(PLANTUML):
-	mkdir -p deps
-	wget http://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O $@
-
 src/generated/uml/%.svg: src/_uml/%.uml.txt src/_uml/styles.iuml $(PLANTUML)
 	mkdir -p $(shell dirname $@)
-	cat $< | java -jar $(PLANTUML) -tsvg -pipe > $@
+	cat $< | plantuml -tsvg -pipe > $@
 
 
 ###############################################################
