@@ -8,7 +8,7 @@ import qualified Data.Text.Read        as Text
 import           Text.Pandoc.JSON
 import           Text.Regex.PCRE.Heavy
 
-import Debug.Trace
+import           Debug.Trace
 
 main = toJSONFilter unicodeNumbersBlock
 
@@ -19,11 +19,9 @@ unicodeNumbersBlock (Just format) (CodeBlock attrs@(_, classes, _) code)
   | validFormat format && "numbers" `elem` classes =
   let replacer = if "haskell" `elem` classes then replaceWithUnicode else replaceWithNothing
   in code
-      & Text.pack
       & Text.lines
       & map (sub [re|\-\-\ (\d+)|] replacer)
       & Text.unlines
-      & Text.unpack
       & CodeBlock attrs
 unicodeNumbersBlock (Just format) (Para inlines)
   | validFormat format = Para (map unicodeNumbersInline inlines)
@@ -34,9 +32,7 @@ unicodeNumbersBlock _ x = x
 unicodeNumbersInline :: Inline -> Inline
 unicodeNumbersInline (Str str) =
     str
-      & Text.pack
       & sub [re|\((\d+)\)|] replaceWithUnicode
-      & Text.unpack
       & Str
 unicodeNumbersInline x = x
 
