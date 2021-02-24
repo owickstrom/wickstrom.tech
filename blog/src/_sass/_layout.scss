@@ -44,6 +44,8 @@ body {
     text-align: center;
     margin: 0 0 $spacing-unit/2;
     font-size: 125%;
+    font-weight: 600;
+    line-height: 1.2;
   }
   .nav {
       text-align: center;
@@ -61,12 +63,14 @@ body {
       &:hover {
         text-decoration: none;
         background: #eee;
+        border-bottom: 2px solid #ccc;
       }
     }
   }
 
   li.current a {
-      border-bottom: 2px solid $text-color;
+      border-bottom: 2px solid $link-color;
+      color: $link-color;
   }
 }
 
@@ -193,16 +197,15 @@ body {
  */
 
 .page-header {
-  margin: 0 0 $spacing-unit*1.5;
+  margin: 0 0 $spacing-unit;
   padding-bottom: $spacing-unit/2;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ddd;
 }
 
 .page-title {
-  font-size: 225%;
+  font-size: 175%;
   line-height: 1.2;
   margin: 0;
-  font-weight: normal;
 
   @include media-query($on-laptop) {
   }
@@ -287,7 +290,7 @@ div.sourceCode {
     margin-left: -1rem;
     margin-right: -1rem;
     padding: 0;
-    background: #fffbe7;
+    background: #eee;
   }
 }
 

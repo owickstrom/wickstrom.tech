@@ -109,17 +109,17 @@ li {
  */
 h1, h2, h3, h4, h5, h6 {
   line-height: inherit;
-  margin: 1.5em 0 .75em;
-  font-weight: normal;
+  margin: 1.5em 0 .5em;
+  font-weight: 600;
   font-family: $secondary-font-family;
 }
 
 h2 {
-  font-size: 150%;
+  font-size: 125%;
 }
 
 h3 {
-  font-size: 120%;
+  font-size: 100%;
 }
 
 h4, h5, h6 {

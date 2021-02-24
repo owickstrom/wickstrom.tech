@@ -11,7 +11,7 @@ div.home {
 
   .site-title {
     font-family: $secondary-font-family;
-    font-size: 52px;
+    font-size: 175%;
     margin: 0 0 $spacing-unit/2;
   }
 
@@ -23,6 +23,7 @@ div.home {
     max-width: 20em;
     margin: 0 auto $spacing-unit*2;
     font-size: 150%;
+    font-family: $secondary-font-family;
   }
 
   .nav {
