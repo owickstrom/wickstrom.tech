@@ -237,15 +237,13 @@ body {
   }
 }
 
-.category-excerpt {
-  margin-bottom: $spacing-unit * 2;
-  text-align: left;
-  font-size: 125%;
-}
-
+.category-excerpt,
 .post-meta {
   margin: $spacing-unit/2 0 0;
   font-family: $secondary-font-family;
+}
+
+.post-meta {
   color: $grey-color;
 
   a {
