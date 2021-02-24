@@ -8,3 +8,4 @@ _site
 .stack-work
 .tmp
 .ruby-version
+/result
