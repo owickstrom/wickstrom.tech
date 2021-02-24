@@ -47,8 +47,7 @@ MARKUP
       unless File.exists?(out_file)
         height_param = @height.nil? ? "" : "-h #{@height * scale}"
         puts "Generating #{out_name}"
-        %x[cabal v2-build wickstrom-tech]
-        %x[cabal v2-exec --write-ghc-environment-files=never -- runhaskell #{in_f.path} -w #{@width * scale} #{height_param} -o #{out_file}]
+        %x[runhaskell #{in_f.path} -w #{@width * scale} #{height_param} -o #{out_file}]
         unless File.exists?(out_file)
           raise "Failed to generate diagram!"
         end

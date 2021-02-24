@@ -1,10 +1,26 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import ../nixpkgs.nix { config = { allowBroken = true; }; } }:
 let
   gems = pkgs.bundlerEnv {
     name = "wickstrom-tech-gems";
     ruby = pkgs.ruby;
     gemdir = ./src;
   };
+
+  fonts = with pkgs; [ libertine ];
+
+  haskellPackages = pkgs.haskell.packages.ghc884.override {
+    overrides = self: super: {
+      active =
+        pkgs.haskell.lib.doJailbreak (pkgs.haskell.lib.dontCheck super.active);
+      monoid-extras = pkgs.haskell.lib.doJailbreak super.monoid-extras;
+      dual-tree = pkgs.haskell.lib.doJailbreak super.dual-tree;
+    };
+  };
+
+  blog-diagrams = import ../diagrams { inherit pkgs haskellPackages; };
+
+  haskellEnv = (haskellPackages.ghcWithPackages
+    (p: [ p.diagrams-lib p.diagrams-cairo p.diagrams-svg blog-diagrams ]));
 
   filters = import ../filters { inherit pkgs; };
 
@@ -20,7 +36,7 @@ let
 
 in pkgs.stdenv.mkDerivation {
   name = "wickstrom-tech-blog";
-  src = ./.;
+  src = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
   buildInputs = [
     gems
     filters
@@ -30,6 +46,8 @@ in pkgs.stdenv.mkDerivation {
     pkgs.ruby
     pkgs.pandoc
     pkgs.plantuml
+
+    haskellEnv
   ];
 
   buildPhase = ''
@@ -40,4 +58,6 @@ in pkgs.stdenv.mkDerivation {
   installPhase = ''
     cp -r target/html $out
   '';
+
+  FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = fonts; };
 }

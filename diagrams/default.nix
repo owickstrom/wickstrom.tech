@@ -1,5 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import ../nixpkgs.nix { }, haskellPackages }:
 let
-  haskellPackages = pkgs.haskell.packages.ghc884;
   src = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
-in haskellPackages.callCabal2nix "filters" "${src}" { }
+in haskellPackages.callCabal2nix "diagrams" "${src}" { }
