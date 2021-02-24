@@ -9,7 +9,7 @@ body {
 .nav ul {
   list-style-type: none;
   margin-left: 0;
-  padding: 0 1rem;
+  padding: 0;
   font-weight: 400;
   font-size: 90%;
 
@@ -18,6 +18,8 @@ body {
     float: left;
   }
   a {
+    line-height: 1.2;
+    display: block;
     padding: 8px;
   }
 }
@@ -27,8 +29,8 @@ body {
   font-family: $secondary-font-family;
 
   .wrapper {
-      padding-top: $spacing-unit;
-      padding-bottom: $spacing-unit;
+      padding-top: $spacing-unit*1.5;
+      padding-bottom: $spacing-unit*1.5;
   }
   a {
     color: $text-color;
@@ -56,8 +58,7 @@ body {
 
     a {
       padding: 8px 16px;
-      height: 64px;
-      line-height: 48px;
+      border-bottom: 2px solid transparent;
 
       &:hover {
         text-decoration: none;
@@ -111,14 +112,20 @@ body {
 }
 
 .post-list {
+  li {
+    margin-bottom: $spacing-unit;
+  }
   .title {
     font-size: 125%;
     margin-top: 0;
+    a {
+      color: $text-color;
+    }
   }
-
-  time a {
-    text-decoration: none;
-  }
+}
+.post-list li .post-meta {
+  font-family: $secondary-font-family;
+  margin: $spacing-unit/4 0 $spacing-unit/2;
 }
 
 .tags {
@@ -187,10 +194,6 @@ body {
   color: #666;
 }
 
-.page-content {
-  padding: $spacing-unit 0;
-}
-
 /**
  * Page content
  */
@@ -220,8 +223,8 @@ body {
   }
 }
 
-.category-excerpt,
-.post-meta {
+.page-content .category-excerpt,
+.page-content .post-meta {
   margin: $spacing-unit/2 0 0;
   font-family: $secondary-font-family;
 }
@@ -247,8 +250,6 @@ body {
   margin-left: 0;
 
   li {
-    display: flex;
-    margin-bottom: 3.2rem;
   }
 
   .title-and-excerpt {
@@ -257,16 +258,6 @@ body {
   .title {
     margin-bottom: 0;
     font-family: $secondary-font-family;
-  }
-  time {
-    flex: 0 0 auto;
-    text-align: right;
-    padding-left: 2em;
-    font-family: $secondary-font-family;
-
-    a {
-        color: $text-color;
-    }
   }
   .day, .year {
     display: block;
