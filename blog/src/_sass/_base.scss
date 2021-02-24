@@ -110,7 +110,8 @@ li {
 h1, h2, h3, h4, h5, h6 {
   line-height: inherit;
   margin: 1.5em 0 .75em;
-  font-weight: 600;
+  font-weight: normal;
+  font-family: $secondary-font-family;
 }
 
 h2 {
@@ -130,10 +131,10 @@ h4, h5, h6 {
  * Links
  */
 a {
-  color: $brand-color;
+  color: $link-color;
 
   &:visited {
-    color: #777;
+    color: $link-visited-color;
   }
 }
 
@@ -181,12 +182,13 @@ p code, li code {
 }
 
 table {
-    border-spacing: 0;
-    border-collapse: separate;
-    margin: 1em 0 2em;
+  border-spacing: 0;
+  border-collapse: separate;
+  margin: 1em 0 2em;
 }
-table th {
-    border-bottom: 1px solid $text-color;
+table thead th {
+  border-bottom: 1px solid $text-color;
+  font-family: $secondary-font-family;
 }
 table td {
     border-bottom: 1px solid lighten($text-color, 65%);

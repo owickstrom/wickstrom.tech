@@ -18,43 +18,55 @@ body {
     float: left;
   }
   a {
-    color: $text-color;
     padding: 8px;
   }
 }
 
 
 .top-nav {
-  background: $brand-color;
-  box-shadow: 0px 1px 1px #aaa;
   font-family: $secondary-font-family;
+  background: linear-gradient(#eee, #fff);
 
   .wrapper {
-    height: 48px;
+      padding-top: $spacing-unit;
+      padding-bottom: $spacing-unit;
   }
   a {
+    color: $text-color;
     text-decoration: none;
+
     &:hover {
       text-decoration: underline;
     }
   }
   a.home {
     display: block;
-    float: left;
-    height: 64px;
-    line-height: 48px;
-    font-weight: bold;
-    color: #fff;
+    text-align: center;
+    margin: 0 0 $spacing-unit/2;
+    font-size: 125%;
+  }
+  .nav {
+      text-align: center;
   }
   .nav ul {
-    float: right;
-    padding-right: 0;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 0;
+
     a {
       padding: 8px 16px;
       height: 64px;
       line-height: 48px;
-      color: #fff;
+
+      &:hover {
+        text-decoration: none;
+        background: #eee;
+      }
     }
+  }
+
+  li.current a {
+      border-bottom: 2px solid $text-color;
   }
 }
 
@@ -192,7 +204,7 @@ body {
 }
 
 .page-content {
-  padding: $spacing-unit*2 0;
+  padding: $spacing-unit 0;
 }
 
 /**
@@ -200,14 +212,16 @@ body {
  */
 
 .page-header {
-  margin: 0 0 $spacing-unit*2;
-  text-align: center;
+  margin: 0 0 $spacing-unit*1.5;
+  padding-bottom: $spacing-unit/2;
+  border-bottom: 1px solid #ccc;
 }
 
 .page-title {
-  font-size: 250%;
-  margin: 0 0 $spacing-unit;
-  font-weight: 600;
+  font-size: 225%;
+  line-height: 1.2;
+  margin: 0;
+  font-weight: normal;
 
   @include media-query($on-laptop) {
   }
@@ -230,7 +244,8 @@ body {
 }
 
 .post-meta {
-  margin: $spacing-unit 0 ($spacing-unit * 2);
+  margin: $spacing-unit/2 0 0;
+  font-family: $secondary-font-family;
   color: $grey-color;
 
   a {
@@ -260,12 +275,13 @@ body {
   }
   .title {
     margin-bottom: 0;
-    font-weight: 600;
+    font-family: $secondary-font-family;
   }
   time {
     flex: 0 0 auto;
     text-align: right;
-    padding-left: 1em;
+    padding-left: 2em;
+    font-family: $secondary-font-family;
 
     a {
         color: $text-color;
@@ -276,11 +292,9 @@ body {
   }
   .day {
     font-size: 125%;
-    font-weight: 600;
   }
   .excerpt {
     margin: .8rem 0;
-    font-style: italic;
   }
 }
 

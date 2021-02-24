@@ -1,7 +1,5 @@
 div.home {
   min-height: 100%;
-  background: $brand-color;
-  color: #fff;
   text-align: center;
 
   .wrapper {
@@ -25,7 +23,6 @@ div.home {
     max-width: 20em;
     margin: 0 auto $spacing-unit*3;
     font-size: 150%;
-    color: #fff;
   }
 
   .nav {
@@ -39,7 +36,6 @@ div.home {
       line-height: 2;
 
       a {
-        color: #fff;
       }
     }
   }
