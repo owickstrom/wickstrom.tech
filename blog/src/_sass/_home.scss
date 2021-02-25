@@ -1,9 +1,13 @@
 div.home {
   min-height: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .wrapper {
     padding: $spacing-unit;
+    flex: 0 1 auto;
   }
 }
 .home .page {
