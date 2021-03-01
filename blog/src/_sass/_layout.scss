@@ -331,7 +331,7 @@ figcaption,
     font-style: italic;
     font-size: $small-font-size;
     margin: 1em auto 2em;
-    max-width: 400px;
+    max-width: 75%;
 }
 
 .caption-number {
@@ -370,6 +370,33 @@ figure.two-images {
   figcaption {
     clear: both;
   }
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    img {
+        flex: 0 0 48%;
+        width: 48%;
+    }
+    figcaption {
+        width: 100%;
+    }
+}
+.panorama {
+    .frame {
+        overflow: auto;
+    }
+    img {
+        width: auto;
+        max-width: initial;
+        max-height: 30rem;
+    }
+    p, img {
+        margin: 0 !important;
+    }
 }
 
 .takeaway {
