@@ -76,9 +76,9 @@ scoparius branches, creating what I can only describe as a jungle of
 barbed wire.
 
 These two have become my mortal enemies, the main targets of this
-operation. Blackberries is weed that is notoriusly hard to get rid of,
-and Cytisus scoparius is classified as invasive in some countries,
-though not in Sweden.
+operation. Blackberries, while tasty, is a weed that is notoriusly
+hard to get rid of. Cytisus scoparius is classified as invasive in
+some countries, though not in Sweden.
 
 I cleared out a very small portion, including some very promising
 oaklings. While scarred, my motivation was now on top. I ordered a
