@@ -54,7 +54,9 @@ our house.
 forest creating a dramatic contrast, is one of my favorite spots
 nearby.](/assets/clearing-weeds-planting-trees/fall-road.jpg)
 
-![Down by the sea the oak trees grow tall. This area is a protected walking area, one of the gems around here.](/assets/clearing-weeds-planting-trees/fall-road-2.jpg)
+![Down by the sea the oak trees grow tall. This is a protected walking
+area, one of the gems around
+here.](/assets/clearing-weeds-planting-trees/fall-road-2.jpg)
 
 ![Cows grace here by the summer, leaving large plains of grass framed
 by old stone walls and gnarly trees.](/assets/clearing-weeds-planting-trees/fall-field.jpg)
