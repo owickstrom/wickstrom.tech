@@ -80,7 +80,7 @@ operation. Blackberries, while tasty, is a weed that is notoriusly
 hard to get rid of. Cytisus scoparius is classified as invasive in
 some countries, though not in Sweden.
 
-I cleared out a very small portion, including some very promising
+I cleared out a small portion, including some promising
 oaklings. While scarred, my motivation was now on top. I ordered a
 clearing saw and a full set of protective gear.
 
