@@ -118,8 +118,12 @@ body {
   .title {
     font-size: 125%;
     margin-top: 0;
-    a {
-      color: $text-color;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

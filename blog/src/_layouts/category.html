@@ -21,8 +21,10 @@ layout: default
                 <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
             </h2>
             <div class="post-meta">
+              <a href="{{ post.url | prepend: site.baseurl }}">
                 <time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%B %-d, %Y" }}</time>
-                by <span itemprop="author" itemtype="http://schema.org/Person">{{post.author}}</span>
+              </a>
+              by <span itemprop="author" itemtype="http://schema.org/Person">{{post.author}}</span>
             </div>
             <p class="excerpt">{{ post.excerpt }}</p>
           </li>
