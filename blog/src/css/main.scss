@@ -6,12 +6,12 @@
 
 
 // Our variables
-$base-font-family: 'Linux Libertine', serif;
-$secondary-font-family: 'Linux Biolinum', sans-serif;
-$monospace-font-family: 'Iosevka Terminal', 'Ubuntu Mono', monospace;
-$base-font-size:   20px;
-$base-font-weight: 400;
-$small-font-size:  90%;
+$base-font-family: 'Crimson Pro', serif;
+$secondary-font-family: 'Pragati Narrow', sans-serif;
+$monospace-font-family: 'Inconsolata', 'Ubuntu Mono', monospace;
+$base-font-size:   22px;
+$base-font-weight: 500;
+$small-font-size:  19px;
 $base-line-height: 1.5;
 $code-background-color: #fff9de;
 
@@ -27,7 +27,7 @@ $grey-color-light: #f0f0f0;
 $grey-color-dark:  darken($grey-color, 25%);
 
 // Width of the content area
-$content-width:    $base-font-size * 45;
+$content-width:    $base-font-size * 40;
 
 $on-palm:             600px;
 $on-laptop:           800px;

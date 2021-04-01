@@ -98,9 +98,9 @@ code span.er { color: inherit; } /* Error */
 code span { color: inherit; } /* Normal */
 
 .hedgehog {
-  code span.wa { color: #aa6a27; font-weight: bold; } /* Warning */
-  code span.al { color: #2f7300; font-weight: bold; } /* Alert */
-  code span.er { color: #bd2222; font-weight: bold; } /* Error */
+  code span.wa { color: #aa6a27; } /* Warning */
+  code span.al { color: #2f7300; } /* Alert */
+  code span.er { color: #bd2222; } /* Error */
   code span.co { color: #999999; font-style: normal; } /* Comment */
 }
 .haskell {

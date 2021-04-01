@@ -14,8 +14,8 @@ div.home {
   margin: 0 auto;
 
   .site-title {
-    font-family: $secondary-font-family;
-    font-size: 175%;
+    font-family: $base-font-family;
+    font-size: 250%;
     margin: 0 0 $spacing-unit/2;
   }
 
@@ -27,14 +27,14 @@ div.home {
     max-width: 20em;
     margin: 0 auto $spacing-unit*2;
     font-size: 150%;
-    font-family: $secondary-font-family;
+    font-family: $base-font-family;
   }
 
   .nav {
     font-family: $secondary-font-family;
-    font-size: 125%;
   }
   .nav ul {
+    font-size: 125%;
     li {
       display: inline-block;
       float: none;
@@ -49,7 +49,7 @@ div.home {
   }
   @include media-query($on-palm) {
     .site-description {
-      font-size: 100%;
+      font-size: 125%;
     }
     .nav ul {
       li {

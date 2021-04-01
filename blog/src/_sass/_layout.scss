@@ -10,8 +10,7 @@ body {
   list-style-type: none;
   margin-left: 0;
   padding: 0;
-  font-weight: 400;
-  font-size: 90%;
+  font-size: $base-font-size * 0.9;
 
   li {
     display: block;
@@ -128,8 +127,7 @@ body {
   }
 }
 .post-list li .post-meta {
-  font-family: $secondary-font-family;
-  margin: $spacing-unit/4 0 $spacing-unit/2;
+  margin: 0;
 }
 
 .tags {
@@ -205,21 +203,20 @@ body {
 .page-header {
   margin: 0 0 $spacing-unit;
   padding-bottom: $spacing-unit/2;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #dfdfdf;
 }
 
 .page-title {
-  font-size: 175%;
-  line-height: 1.2;
   margin: 0;
-
-  @include media-query($on-laptop) {
-  }
-  @include media-query($on-palm) {
-    font-size: 175%;
-  }
+  position: absolute;
+  left: -9999px;
+  color: $background-color;
 }
 
+.post-title {
+   margin: 0;
+   line-height: 1.1;
+}
 .draft .title {
   a {
     color: red;
@@ -230,10 +227,13 @@ body {
 .page-content .category-excerpt,
 .page-content .post-meta {
   margin: $spacing-unit/2 0 0;
-  font-family: $secondary-font-family;
 }
 
 .post-meta {
+  font-family: $secondary-font-family;
+  font-weight: 700;
+  font-size: $base-font-size * 0.8;
+  text-transform: uppercase;
   color: $grey-color;
 
   a {
@@ -254,14 +254,12 @@ body {
   margin-left: 0;
 
   li {
+    margin: 0 0 3em 0;
   }
 
-  .title-and-excerpt {
-    flex: 1 1 auto;
-  }
   .title {
     margin-bottom: 0;
-    font-family: $secondary-font-family;
+    line-height: 1.1;
   }
   .day, .year {
     display: block;
@@ -270,7 +268,7 @@ body {
     font-size: 125%;
   }
   .excerpt {
-    margin: .8rem 0;
+    margin: 1em 0;
   }
 }
 

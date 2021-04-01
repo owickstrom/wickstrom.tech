@@ -110,16 +110,19 @@ li {
 h1, h2, h3, h4, h5, h6 {
   line-height: inherit;
   margin: 1.5em 0 .5em;
-  font-weight: 600;
-  font-family: $secondary-font-family;
+  font-weight: 900;
+}
+
+h1 {
+  font-size: 200%;
 }
 
 h2 {
-  font-size: 125%;
+  font-size: 150%;
 }
 
 h3 {
-  font-size: 100%;
+  font-size: 125%;
 }
 
 h4, h5, h6 {
@@ -170,7 +173,8 @@ strong {
 pre,
 code {
   font-family: $monospace-font-family;
-  font-size: 0.85rem;
+  font-weight: 600;
+  font-size: 0.9rem;
   line-height: 1.4;
 }
 

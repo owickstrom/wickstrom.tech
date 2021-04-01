@@ -9,10 +9,9 @@ layout: default
     <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
       <header class="page-header post-header">
-        <h1 class="page-title post-title" itemprop="name headline">{{ page.title }}</h1>
+        <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
         <p class="post-meta">
           <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%B %-d, %Y" }}</time>
-          by <span itemprop="author" itemtype="http://schema.org/Person">{{page.author}}</span>
           {% assign category = page.categories | first %}
           {% if category %}
           <span class="category">
