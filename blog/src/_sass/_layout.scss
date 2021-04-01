@@ -206,14 +206,14 @@ body {
   border-bottom: 1px solid #dfdfdf;
 }
 
-.page-title {
+.page-title.hidden {
   margin: 0;
   position: absolute;
   left: -9999px;
   color: $background-color;
 }
 
-.post-title {
+.page-title {
    margin: 0;
    line-height: 1.1;
 }
