@@ -25,7 +25,6 @@ body {
 
 
 .top-nav {
-  font-family: $secondary-font-family;
 
   .wrapper {
       padding-top: $spacing-unit*1.5;
@@ -48,7 +47,8 @@ body {
     line-height: 1.2;
   }
   .nav {
-      text-align: center;
+    text-align: center;
+    font-family: $secondary-font-family;
   }
   .nav ul {
     display: inline-block;
@@ -61,7 +61,6 @@ body {
 
       &:hover {
         text-decoration: none;
-        background: #eee;
         border-bottom: 2px solid #ccc;
       }
     }
@@ -234,6 +233,7 @@ body {
   font-weight: 700;
   font-size: $base-font-size * 0.8;
   text-transform: uppercase;
+  letter-spacing: -.015em;
   color: $grey-color;
 
   a {
@@ -241,10 +241,9 @@ body {
   }
 
   .category, .reading-time {
-    margin-bottom: .5rem;
-
     &:before {
-      content: ' \2014 ';
+      content: '\2014';
+      margin: 0 .2em;
     }
   }
 }
@@ -301,7 +300,6 @@ div.sourceCode {
   position: absolute;
   text-indent: -9999px;
 }
-
 
 /**
  * Posts

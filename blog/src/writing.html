@@ -15,7 +15,7 @@ layout: page
         </a>
         {% assign category = post.categories | first %}
         {% if category %}
-        in <a href="{{ site.baseurl }}/{{category }}/index.html">{{category | replace: '-', ' ' | capitalize_all }}</a>
+        <span class="category"><a href="{{ site.baseurl }}/{{ category }}/index.html">{{category | replace: '-', ' ' | capitalize_all }}</a></span>
         {% endif %}
     </div>
   </li>
