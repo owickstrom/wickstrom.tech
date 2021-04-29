@@ -57,11 +57,12 @@ so far do not deal with time. For that, we use temporal operators.
 The `next` operator takes a formula as an argument and evaluates it
 in the next state.
 
-Let's say we have a formula `gdprConsentIsOpen`. We check that the
-GDPR consent is open in the *current* and in the *next* state like so:
+Let's say we have a formula `gdprConsentIsVisible` which is true when
+the GDPR consent screen is visible. We specify that the screen should
+be visible in the *current* and in the *next* state like so:
 
 ```
-gdprConsentIsOpen && next gdprConsentIsOpen
+gdprConsentIsVisible && next gdprConsentIsVisible
 ```
 
 A pair of subsequent states is called a *step*. When specifying state
@@ -69,14 +70,14 @@ machines, we use the `next` operator to describe state transitions. A
 state transition formula is a logical predicate on a step.
 
 In the GDPR example above, we said that the consent screen should stay
-open in both states of the step. If we want to describe a state
-*change*, we say:
+visible in both states of the step. If we want to describe a state
+*change*, we can say:
 
 ```
-gdprConsentIsOpen && next (not gdprConsentIsOpen)
+gdprConsentIsVisible && next (not gdprConsentIsVisible)
 ```
 
-The formula describes a state transition from an open to a closed
+The formula describes a state transition from an visible to a hidden
 consent screen.
 
 ### Always
@@ -92,30 +93,50 @@ Consider the following, where we like to state that the GDPR consent
 screen should always be visible:
 
 ```
-gdprConsentIsOpen && next (gdprConsentIsOpen && next ...)
+gdprConsentIsVisible && next (gdprConsentIsVisible && next ...)
 ```
 
-For any state machines with cycles, this doesn't work, because we can
-only nest a finite number of `next` operators. We want state machine
+This doesn't work for state machines with cycles, because we can only
+nest a finite number of `next` operators. We want state machine
 specifications that describe any number of transitions.
 
 This is where we pick up the `always` operator. It takes a formula as
 an argument, and it's true if the given formula is true in the current
-and in all future states.
+state and in all future states.
 
 Let's revisit the always-visible consent screen specification. Now
-that we know about `always`, we instead say:
+that we know about the `always` operator, we instead say:
 
 ```
-always gdprConsentIsOpen
+always gdprConsentIsVisible
 ```
 
 Neat! (A website always showing a GDPR consent is perhaps not so neat,
 though.)
 
+Now, let's up our game. To model a state machine, we can combine
+transitions with `||` and the `always` operator. First, we define the
+individual transition formulae `open` and `close`:
+
+```
+let open = not gdprConsentIsVisible && next gdprConsentIsVisible;
+
+let close = gdprConsentIsVisible && next (not gdprConsentIsVisible);
+```
+
+Our state machine formula says that it always transitions as described
+by `open` or `close`:
+
+```
+always (open || close)
+```
+
+Note that this specification only allows for transitions where the
+visibility of the consent screen changes.
+
 So far we've only seen examples of *safety properties*. Those are
 properties that specify that "nothing bad happens". When talking only
-about a single state, they're often referred to as *invariants*.
+about a single state, they're often called *invariants*.
 
 But we also want to specify that systems somehow make progress. The
 following two temporal operators let us specify *liveness properties*,
@@ -123,7 +144,21 @@ i.e. "good things eventually happen".
 
 ### Eventually
 
-...
+We've used `next` to specify transitions, and `always` to specify
+invariants and state machines. But we might also want to use liveness
+properties in our specifications. In this case, we are not talking
+about specific steps, but rather *goals*.
+
+The temporal operator `eventually` takes a formula as an argument, and
+it's true if the given formula is true in the current or any future
+state.
+
+For instance, we could say that the consent screen should initially be
+visible and eventually be hidden:
+
+```
+gdprConsentIsVisible && next (not gdprConsentIsVisible)
+```
 
 ### Until
 
