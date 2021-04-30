@@ -32,7 +32,8 @@ We'll be using an LTL extended with three main components:
 * actions
  
 The language is essentially a sketch of the future specification
-language for Quickstrom.
+language for Quickstrom. In this first post we'll focus only on the
+LTL bits, and save the extensions for later posts.
 
 A formula is a logical expression. We have the constants:
 
@@ -65,7 +66,7 @@ For example, let's say we have two formulae, `P`{.specstrom} and
 
 It would be visualized as follows:
 
-```
+```specstrom
 P   ●───●───○───○───○
 Q   ○───●───○───○───○
 ```
@@ -75,7 +76,7 @@ Q   ○───●───○───○───○
 The `next`{.specstrom} operator takes a formula as an argument and evaluates it in
 the next state.
 
-```
+```specstrom
 P        ○───●───○───○───○
 next P   ●───○───○───○───○
 ```
@@ -84,7 +85,7 @@ The `next`{.specstrom} operator is relative to the current state, not the first
 state in the trace. This means that we can nest `next`{.specstrom}s to reach
 further into the future.
 
-```
+```specstrom
 P               ○───○───●───●───○
 next P          ○───●───●───○───○
 next (next P)   ●───●───○───○───○
@@ -142,7 +143,7 @@ This is where we pick up the `always`{.specstrom} operator. It takes a formula a
 an argument, and it's true if the given formula is true in the current
 state and in all future states.
 
-```
+```specstrom
 P          ●───●───●───●───●
 always P   ●───●───●───●───●
 Q          ●───○───●───●───●
@@ -208,40 +209,80 @@ The temporal operator `eventually`{.specstrom} takes a formula as an
 argument, and it's true if the given formula is true in the current or
 any future state.
 
+```specstrom
+P              ○───○───○───○───○
+eventually P   ○───○───○───○───○
+Q              ○───○───○───○───●
+eventually Q   ●───●───●───●───●
+```
+
 For instance, we could say that the consent screen should initially be
 visible and eventually be hidden:
 
 ```specstrom
-gdprConsentIsVisible && next (not gdprConsentIsVisible)
+gdprConsentIsVisible && eventually (not gdprConsentIsVisible)
 ```
+
+This doesn't say that it *stays* hidden. It may become visible again,
+and our specification would allow that. To specify that it should stay
+hidden, we use a combination of `eventually`{.specstrom} and
+`always`{.specstrom}:
+
+```specstrom
+gdprConsentIsVisible && eventually (always (not gdprConsentIsVisible))
+```
+
+Let's look at a diagram to understand this combination of temporal
+operators better:
+
+```specstrom
+P                       ○───○───●───●───○
+eventually (always P)   ○───○───○───○───○
+Q                       ○───○───●───●───●
+eventually (always Q)   ●───●───●───●───●
+```
+
+The formula `eventually (always P)`{.specstrom} is not true in any
+state, because `P` never starts being true forever. The other formula,
+`eventually (always Q)`{.specstrom}, is true in all states because `Q`
+becomes true forever in the third state.
 
 ### Until
 
-...
+The last temporal operator I want to discuss is `until`{.specstrom}:
 
-## Formulae
+```specstrom
+P           ●───●───○───○───○
+Q           ○───○───●───●───●
+P until Q   ●───●───●───●───●
+```
 
+
+It's more powerful than `always`{.specstrom} and
+`eventually`{.specstrom}, and they can both be defined using
+`until`{.specstrom}:
+
+```specstrom
+always P = P until false
+
+eventually P = true until P
+```
+
+<!--
+Future stuff:
+
+* Formulae
   * Atomic propositions
   * Implicit lifting
-
-## State-dependence
-
+* State-dependence
   * State selectors
   * Objects
-
-## Actions
-
+* Actions
   * Preconditions
-
-## Events 
-
+* Events 
   * They are actions
   * Postconditions
-
-## What happened?
-
+* What happened?
   * The `happened`{.specstrom} binding is a list of actions or events that happened between the last and the current state
 
-## Summary
-  * ...
-
+-->
