@@ -43,6 +43,7 @@ pandoc:
     - filter: pandoc-include-code
     - syntax-definition: _tools/hedgehog.xml
     - syntax-definition: _tools/haskell.xml
+    - syntax-definition: _tools/specstrom.xml
 
 plantuml:
   plantuml_jar: ../deps/plantuml.jar     # path to plantuml jar

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Based on
+     https://github.com/KDE/syntax-highlighting/blob/master/data/syntax/ocaml.xml
+     (MIT licence).
+-->
+
+<!DOCTYPE language SYSTEM "language.dtd"
+[
+<!-- Regular expresion constants: -->
+<!ENTITY LOWER  "a-z\300-\326\330-\337">         <!-- Lowercase Latin-1 letters. -->
+<!ENTITY UPPER  "A-Z\340-\366\370-\377">         <!-- Uppercase Latin-1 letters. -->
+<!ENTITY LETTER "&LOWER;&UPPER;">                <!-- All Latin-1 letters. -->
+<!ENTITY LIDENT "[&LOWER;_][&LETTER;0-9_']*">    <!-- Lowercase OCaml identifiers. -->
+<!ENTITY UIDENT "`?[&UPPER;][&LETTER;0-9_']*">   <!-- Uppercase OCaml identifiers. -->
+<!ENTITY IDENT  "`?[&LETTER;][&LETTER;0-9_']*">  <!-- All OCaml identifiers. -->
+<!ENTITY DEC    "[0-9][0-9_]*">                                     <!-- Decimal digits with underscores. -->
+]>
+<language name="Specstrom"
+          extensions="*.strom"
+          mimetype="text/x-specstrom"
+          section="Sources"
+          version="1"
+          priority="10"
+          kateversion="5.0"
+          author="Oskar Wickström"
+          license="MIT" >
+
+  <highlighting>
+    <list name="Constants">
+					<item>true</item>
+					<item>false</item>
+    </list>
+
+    <list name="Keywords">
+					<item>import</item>
+          <item>let</item>
+          <item>syntax</item>
+          <item>macro</item>
+          <item>if</item>
+          <item>else</item>
+          <item>when</item>
+          <item>action</item>
+          <item>check</item>
+          <item>with</item>
+          <item>for</item>
+          <item>forall</item>
+          <item>exists</item>
+          <item>in</item>
+          <item>match</item>
+          <item>case</item>
+    </list>
+
+    <list name="Temporal Operators">
+          <item>next</item>
+          <item>nextF</item>
+          <item>nextT</item>
+          <item>always</item>
+          <item>eventually</item>
+          <item>until</item>
+          <item>changed</item>
+          <item>unchanged</item>
+          <item>~&gt;</item>
+    </list>
+
+    <list name="Operators">
+					<item>not</item>
+          <item>==</item>
+          <item>!=</item>
+          <item>&lt;=</item>
+          <item>&gt;=</item>
+          <item>&lt;</item>
+          <item>&gt;</item>
+    </list>
+
+    <list name="Functions">
+      <item>abs</item>
+      <item>abs_float</item>
+      <item>acos</item>
+      <item>asin</item>
+      <item>at_exit</item>
+      <item>atan</item>
+      <item>atan2</item>
+      <item>bool_of_string</item>
+      <item>ceil</item>
+      <item>char_of_int</item>
+      <item>classify_float</item>
+      <item>close_in</item>
+      <item>close_in_noerr</item>
+      <item>close_out</item>
+      <item>close_out_noerr</item>
+      <item>compare</item>
+      <item>copysign</item>
+      <item>cos</item>
+      <item>cosh</item>
+      <item>decr</item>
+      <item>do_at_exit</item>
+      <item>epsilon_float</item>
+      <item>exp</item>
+      <item>expm1</item>
+      <item>float</item>
+      <item>float_of_int</item>
+      <item>float_of_string</item>
+      <item>floor</item>
+      <item>flush</item>
+      <item>flush_all</item>
+      <item>format_of_string</item>
+      <item>frexp</item>
+      <item>fst</item>
+      <item>hypot</item>
+      <item>ignore</item>
+      <item>in_channel_length</item>
+      <item>incr</item>
+      <item>infinity</item>
+      <item>input</item>
+      <item>input_binary_int</item>
+      <item>input_byte</item>
+      <item>input_char</item>
+      <item>input_line</item>
+      <item>input_value</item>
+      <item>int_of_char</item>
+      <item>int_of_float</item>
+      <item>int_of_string</item>
+      <item>ldexp</item>
+      <item>lnot</item>
+      <item>log</item>
+      <item>log10</item>
+      <item>log1p</item>
+      <item>max</item>
+      <item>max_float</item>
+      <item>max_int</item>
+      <item>min</item>
+      <item>min_float</item>
+      <item>min_int</item>
+      <item>mod_float</item>
+      <item>modf</item>
+      <item>nan</item>
+      <item>neg_infinity</item>
+      <item>not</item>
+      <item>open_in</item>
+      <item>open_in_bin</item>
+      <item>open_in_gen</item>
+      <item>open_out</item>
+      <item>open_out_bin</item>
+      <item>open_out_gen</item>
+      <item>out_channel_length</item>
+      <item>output</item>
+      <item>output_binary_int</item>
+      <item>output_byte</item>
+      <item>output_bytes</item>
+      <item>output_char</item>
+      <item>output_string</item>
+      <item>output_substring</item>
+      <item>output_value</item>
+      <item>pos_in</item>
+      <item>pos_out</item>
+      <item>pred</item>
+      <item>prerr_bytes</item>
+      <item>prerr_char</item>
+      <item>prerr_endline</item>
+      <item>prerr_float</item>
+      <item>prerr_int</item>
+      <item>prerr_newline</item>
+      <item>prerr_string</item>
+      <item>print_bytes</item>
+      <item>print_char</item>
+      <item>print_endline</item>
+      <item>print_float</item>
+      <item>print_int</item>
+      <item>print_newline</item>
+      <item>print_string</item>
+      <item>read_float</item>
+      <item>read_int</item>
+      <item>read_line</item>
+      <item>really_input</item>
+      <item>really_input_string</item>
+      <item>ref</item>
+      <item>seek_in</item>
+      <item>seek_out</item>
+      <item>set_binary_mode_in</item>
+      <item>set_binary_mode_out</item>
+      <item>sin</item>
+      <item>sinh</item>
+      <item>snd</item>
+      <item>sqrt</item>
+      <item>stderr</item>
+      <item>stdin</item>
+      <item>stdout</item>
+      <item>string_of_bool</item>
+      <item>string_of_float</item>
+      <item>string_of_format</item>
+      <item>string_of_int</item>
+      <item>succ</item>
+      <item>tan</item>
+      <item>tanh</item>
+      <item>truncate</item>
+      <item>unsafe_really_input</item>
+      <item>valid_float_lexem</item>
+    </list>
+
+    <list name="Standard Library Modules">
+      <item>Arg</item>
+      <item>Array</item>
+      <item>ArrayLabels</item>
+      <item>Buffer</item>
+      <item>Bytes</item>
+      <item>Callback</item>
+      <item>Char</item>
+      <item>Complex</item>
+      <item>Digest</item>
+      <item>Ephemeron</item>
+      <item>Filename</item>
+      <item>Format</item>
+      <item>Gc</item>
+      <item>Genlex</item>
+      <item>Hashtbl</item>
+      <item>Int32</item>
+      <item>Int64</item>
+      <item>Lazy</item>
+      <item>Lexing</item>
+      <item>List</item>
+      <item>ListLabels</item>
+      <item>Map</item>
+      <item>Marshal</item>
+      <item>MoreLabels</item>
+      <item>Nativeint</item>
+      <item>Oo</item>
+      <item>Parsing</item>
+      <item>Printexc</item>
+      <item>Printf</item>
+      <item>Queue</item>
+      <item>Random</item>
+      <item>Scanf</item>
+      <item>Set</item>
+      <item>Sort</item>
+      <item>Spacetime</item>
+      <item>Stack</item>
+      <item>StdLabels</item>
+      <item>Stream</item>
+      <item>String</item>
+      <item>StringLabels</item>
+      <item>Sys</item>
+      <item>Uchar</item>
+      <item>Weak</item>
+    </list>
+
+    <contexts>
+
+      <context name="Code" lineEndContext="#stay" attribute="Operator">
+
+        <!-- Comments. -->
+        <StringDetect String="//"      context="#stay"    attribute="Comment" />
+        <Detect2Chars char="/" char1="/" context="Comment"  attribute="Comment" beginRegion="comment" />
+
+        <!-- String. -->
+        <DetectChar char="&quot;" context="String" attribute="String" />
+
+        <!-- Identifiers and keywords. -->
+        <keyword String="Keywords"                 context="#stay" attribute="Keyword" />
+        <keyword String="Constants"                 context="#stay" attribute="Constant" />
+        <keyword String="Operators"                 context="#stay" attribute="Operator" />
+        <keyword String="Temporal Operators"                 context="#stay" attribute="Temporal Operator" />
+        <keyword String="Functions"      context="#stay" attribute="Functions" />
+        <keyword String="Standard Library Modules" context="#stay" attribute="Standard Library Modules" />
+        <RegExpr String="&LIDENT;"                 context="#stay" attribute="Lowercase Identifier" />
+        <RegExpr String="&UIDENT;"                 context="#stay" attribute="Uppercase Identifier" />
+
+        <!-- Numeric constants. -->
+        <!-- Note that they may contain underscores. -->
+        <RegExpr String="-?0[xX][0-9A-Fa-f_]+" context="#stay" attribute="Hexadecimal" />
+        <RegExpr String="-?0[oO][0-7_]+" context="#stay" attribute="Octal" />
+        <RegExpr String="-?0[bB][01_]+" context="#stay" attribute="Binary" />
+        <RegExpr String="-?&DEC;(\.&DEC;([eE][-+]?&DEC;)?|[eE][-+]?&DEC;)" context="#stay" attribute="Float" />
+        <RegExpr String="-?&DEC;" context="#stay" attribute="Decimal" />
+
+      </context>
+
+      <context name="Nested Code 1" lineEndContext="#stay" attribute="Operator">
+        <DetectChar char="]" context="#pop" attribute="Operator" />
+        <IncludeRules context="Code" includeAttrib="true" />
+      </context>
+
+      <context name="Nested Code 2" lineEndContext="#stay" attribute="Operator">
+        <DetectChar char="}" context="#pop" attribute="Operator" />
+        <IncludeRules context="Code" includeAttrib="true" />
+      </context>
+
+      <context name="String" lineEndContext="#stay" attribute="String">
+        <DetectChar char="&quot;" context="#pop" attribute="String" />
+      </context>
+
+      <context name="Comment" lineEndContext="#stay" attribute="Comment">
+        <Detect2Chars char="*" char1=")" context="#pop" attribute="Comment" endRegion="comment"  />
+        <!-- Support for nested comments: -->
+        <Detect2Chars char="(" char1="*" context="Comment" attribute="Comment" beginRegion="comment" />
+        <!-- Strings in Ocaml comments must be well-formed: -->
+        <DetectChar char="&quot;" context="String in Comment" attribute="String in Comment" />
+
+        <DetectSpaces />
+        <IncludeRules context="##Comments" />
+      </context>
+
+      <context name="String in Comment" lineEndContext="#stay" attribute="String in Comment">
+        <DetectChar char="&quot;" context="#pop" attribute="String in Comment" />
+        <IncludeRules context="String" />
+      </context>
+
+    </contexts>
+
+    <itemDatas>
+      <itemData name="Keyword"                 defStyleNum="dsKeyword"  />
+      <itemData name="Constant"                 defStyleNum="dsConstant"  />
+      <itemData name="Lowercase Identifier"    defStyleNum="dsNormal"   />
+      <itemData name="Uppercase Identifier"    defStyleNum="dsNormal"   italic="true" />
+      <itemData name="Operator"                defStyleNum="dsKeyword"   />
+      <itemData name="Temporal Operator"                defStyleNum="dsKeyword"   />
+
+      <itemData name="Functions"      defStyleNum="dsDataType" />
+      <itemData name="Standard Library Modules" defStyleNum="dsDataType" italic="true" />
+
+      <itemData name="Decimal"                 defStyleNum="dsDecVal"   />
+      <itemData name="Hexadecimal"             defStyleNum="dsBaseN"    />
+      <itemData name="Octal"                   defStyleNum="dsBaseN"    />
+      <itemData name="Binary"                  defStyleNum="dsBaseN"    />
+      <itemData name="Float"                   defStyleNum="dsFloat"    />
+
+      <itemData name="Character"               defStyleNum="dsChar"     />
+      <itemData name="String"                  defStyleNum="dsString"   />
+      <itemData name="Escaped Characters"      defStyleNum="dsChar"     />
+
+      <itemData name="Directive"               defStyleNum="dsOthers"   />
+
+      <itemData name="Comment"                 defStyleNum="dsComment"  />
+      <itemData name="String in Comment"       defStyleNum="dsComment"  bold="true" />
+      <itemData name="Mismatched Brackets"     defStyleNum="dsError"    />
+
+    </itemDatas>
+  </highlighting>
+
+  <general>
+    <keywords casesensitive="true" />
+    <comments>
+      <comment name="multiLine" start="(*" end="*)" region ="comment" />
+    </comments>
+  </general>
+</language>
+<!-- kate: space-indent on; indent-width 2; replace-tabs on; -->
