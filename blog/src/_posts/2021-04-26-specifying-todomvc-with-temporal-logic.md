@@ -23,10 +23,11 @@ how to specify real-world systems using LTL. That's why I'm sharing
 some of my learnings and ideas from the past year in the form of blog
 posts.
 
-This post focuses on how to use LTL to specify state machines. It's a
-brief overview that avoids going into too much detail. For more
-information on how to test web applications using such specifications,
-see [the Quickstrom documentation](https://docs.quickstrom.io).
+This post focuses on how to use LTL to specify systems in terms of
+state machines. It's a brief overview that avoids going into too much
+detail. For more information on how to test web applications using
+such specifications, see [the Quickstrom
+documentation](https://docs.quickstrom.io).
 
 ## Linear Temporal Logic
 
