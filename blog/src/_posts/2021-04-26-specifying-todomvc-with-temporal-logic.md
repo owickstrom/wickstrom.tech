@@ -8,28 +8,31 @@ categories: programming
 tags: []
 excerpt: |
     ...
+header-includes:
+ - \usepackage{csquotes}
+ - \usepackage{ebgaramond-maths}
+ - \usepackage[scale=0.8]{FiraMono}
 ---
-
-## Intro
 
 Quickstrom uses linear temporal logic (LTL) for specifying web
 applications. When explaining how it works, I've found that the basics
 of LTL are quite intuitive to newcomers. On the other hand, it's not
 so easy to see how to specify stateful systems using LTL. That's why
-I'm sharing some of my learnings and ideas from the past year.
+I'm sharing some of my learnings and ideas from the past year in the
+form of blog posts.
 
 This post focuses on how to use LTL to specify state machines. It's a
 brief overview that avoids going into too much detail. For more
-information on how to test web applicatoins using such specifications,
+information on how to test web applications using such specifications,
 see [the Quickstrom documentation](https://docs.quickstrom.io).
 
 ## An Extended LTL
 
-We'll be using an LTL extended with three main components:
+In these posts, we'll be using an LTL with a few extensions:
 
 * an expression language for atomic propositions
-* state
-* actions and events
+* actions
+* events
  
 The language is essentially a sketch of the future specification
 language for Quickstrom. In this first post we'll focus only on the
@@ -49,11 +52,11 @@ We combine formulae using the logical connectives, e.g:
 
 ## Temporal Operators
 
-At the core of our language we have the notion of state. And being a
+At the core of our language we have the notion of state. And with a
 temporal logic, we talk about state over time. The formulae we've seen
 so far do not deal with time. For that, we use temporal operators.
 
-To show how the temporal operators work, I'll use diagrams to
+To illustrate how the temporal operators work, I'll use diagrams to
 visualize traces (sequences of states). A black circle denotes a state
 in which the formula is true, and a white circle denotes a state where
 the formula is false.
@@ -94,7 +97,7 @@ P               ○───○───●───●───○
 ### Next for State Transitions
 
 All right, time for a more concrete example, something we'll evolve
-throughout this blog post. Let's say we have a formula
+throughout this post. Let's say we have a formula
 `gdprConsentIsVisible`{.specstrom} which is true when the GDPR consent
 screen is visible. We specify that the screen should be visible in the
 current and next state like so:
@@ -109,7 +112,7 @@ state transition formula is a logical predicate on a step.
 
 In the GDPR example above, we said that the consent screen should stay
 visible in both states of the step. If we want to describe a state
-*change*, we can say:
+change, we can say:
 
 ```specstrom
 gdprConsentIsVisible && next (not gdprConsentIsVisible)
@@ -288,7 +291,7 @@ and at that point the consent screen must be hidden.
 ### Until for Hierarchical State Machines
 
 A common technique to manage the complexity of state machines is
-modelling them as *hierarchical* state machines. This shows up when
+modeling them as *hierarchical* state machines. This shows up when
 writing specifications, too. We can use the `until`{.specstrom}
 operator to model entering and exiting a hierarchical state machine.
 
@@ -327,14 +330,12 @@ resulting in a closed consent screen.
 ## What's next?
 
 We've looked at a some of the temporal operators in LTL, and how to
-use them to specify state machines. This is geared towards Quickstrom
-specifications, although this particular LTL language is only a sketch
-at this point. I'm hoping this has given you some ideas and
-inspiration.
+use them to specify state machines. I'm hoping this post has given you
+some ideas and inspiration.
 
-I intend to write follow-up posts, covering atomic propositions,
-state, actions, and events. Let me know if you've found this useful in
-[this Twitter thread](#).
+I intend to write follow-ups, covering atomic propositions, state,
+actions, and events. Let me know if you found this one useful in [this
+Twitter thread](#).
 
 <!-- Future stuff:
 
