@@ -49,9 +49,10 @@ We combine formulae using the logical connectives, e.g:
 
 ## Temporal Operators
 
-At the core of our language we have the notion of state. And with a
-temporal logic, we talk about state over time. The formulae we've seen
-so far do not deal with time. For that, we use temporal operators.
+At the core of our language we have the notion of state. State changes
+over time and we'd like to be able to express that in our
+language. But the formulae we've seen so far do not deal with
+time. For that, we use temporal operators.
 
 To illustrate how the temporal operators work, I'll use diagrams to
 visualize traces (sequences of states). A black circle denotes a state
@@ -72,7 +73,8 @@ Q   ○───●───○───○───○
 ```
 
 Note that in these diagrams, we assume that the last state repeats
-forever.
+forever. This might seem a bit weird, but drawing an infinite number
+of states is problematic, so it'll have to do.
 
 ### Next
 
@@ -112,13 +114,13 @@ state transition formula is a logical predicate on a step.
 
 In the GDPR example above, we said that the consent screen should stay
 visible in both states of the step. If we want to describe a state
-change, we can say:
+change in the consent screen's visibility, we can say:
 
 ```specstrom
 gdprConsentIsVisible && next (not gdprConsentIsVisible)
 ```
 
-The formula describes a state transition from an visible to a hidden
+The formula describes a state transition from a visible to a hidden
 consent screen.
 
 ### Always
@@ -194,6 +196,14 @@ Cool, we have a state machine specification! Note that this
 specification only allows for transitions where the visibility of the
 consent screen changes back and forth.
 
+To avoid possible confusion, I want to point out that a state machine
+specification in this context is not the same as a model in TLA+ (or
+other model checkers.) We're not building a model to prove or check
+properties against.  Rather, we're defining properties in terms of
+state machine transitions, and the end goal is to test actual system
+behavior (e.g. web applications, desktop applications, APIs) using
+recorded traces and our specifications.
+
 So far we've only seen examples of *safety properties*. Those are
 properties that specify that "nothing bad happens". But we also want
 to specify that systems somehow make progress. The following two
@@ -215,8 +225,8 @@ any future state.
 ```specstrom
 eventually P   ○───○───○───○───○
 P              ○───○───○───○───○
-eventually Q   ●───●───●───●───●
-Q              ○───○───○───○───●
+eventually Q   ●───●───●───●───○
+Q              ○───○───○───●───○
 ```
 
 For instance, we could say that the consent screen should initially be
@@ -254,12 +264,12 @@ becomes true forever in the third state.
 
 The last temporal operator I want to discuss is `until`{.specstrom}.
 For `P until Q`{.specstrom} to be true, `P` must be true until `Q`
-becomes true.
+becomes true. `Q` doesn't have to stay true forever.
 
 ```specstrom
-P until Q   ●───●───●───●───●
+P until Q   ●───●───●───●───○
 P           ●───●───○───○───○
-Q           ○───○───●───●───●
+Q           ○───○───●───●───○
 ```
 
 It's more powerful than `always`{.specstrom} and
@@ -329,9 +339,9 @@ resulting in a closed consent screen.
 
 ## What's next?
 
-We've looked at a some of the temporal operators in LTL, and how to
-use them to specify state machines. I'm hoping this post has given you
-some ideas and inspiration.
+We've looked at some of the temporal operators in LTL, and how to use
+them to specify state machines. I'm hoping this post has given you
+some ideas and inspiration!
 
 I intend to write follow-ups, covering atomic propositions, state,
 actions, and events. Let me know if you found this one useful in [this
