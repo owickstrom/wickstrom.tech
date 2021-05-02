@@ -18,10 +18,10 @@ header-includes:
 
 Quickstrom uses linear temporal logic (LTL) for specifying web
 applications. When explaining how it works, I've found that the basics
-of LTL are quite intuitive to newcomers. On the other hand, it's not
-so easy to see how to specify stateful systems using LTL. That's why
-I'm sharing some of my learnings and ideas from the past year in the
-form of blog posts.
+of LTL are intuitive to newcomers. On the other hand, it's not obvious
+how to specify real-world systems using LTL. That's why I'm sharing
+some of my learnings and ideas from the past year in the form of blog
+posts.
 
 This post focuses on how to use LTL to specify state machines. It's a
 brief overview that avoids going into too much detail. For more
