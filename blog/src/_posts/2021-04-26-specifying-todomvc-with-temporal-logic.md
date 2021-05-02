@@ -16,12 +16,12 @@ header-includes:
  - \usepackage[scale=0.8]{FiraMono}
 ---
 
-Quickstrom uses linear temporal logic (LTL) for specifying web
-applications. When explaining how it works, I've found that the basics
-of LTL are intuitive to newcomers. On the other hand, it's not obvious
-how to specify real-world systems using LTL. That's why I'm sharing
-some of my learnings and ideas from the past year in the form of blog
-posts.
+[Quickstrom](https://quickstrom.io) uses linear temporal logic (LTL)
+for specifying web applications. When explaining how it works, I've
+found that the basics of LTL are intuitive to newcomers. On the other
+hand, it's not obvious how to specify real-world systems using
+LTL. That's why I'm sharing some of my learnings and ideas from the
+past year in the form of blog posts.
 
 This post focuses on how to use LTL to specify systems in terms of
 state machines. It's a brief overview that avoids going into too much
@@ -273,7 +273,7 @@ P           ●───●───○───○───○
 Q           ○───○───●───●───○
 ```
 
-The `until`{.specstrom} operator is more powerful than
+The `until`{.specstrom} operator is more expressive than
 `always`{.specstrom} and `eventually`{.specstrom}, and they can both
 be defined using `until`{.specstrom}.[^1]
 
@@ -331,9 +331,19 @@ We've looked at some of the temporal operators in LTL, and how to use
 them to specify state machines. I'm hoping this post has given you
 some ideas and inspiration!
 
-I intend to write follow-ups, covering atomic propositions, state and
-queries, actions, and events. Let me know if you found this one useful
-in [this Twitter thread](#).
+I intend to write follow-ups, covering atomic propositions, queries,
+actions, and events. If you found this one useful, let me know [on
+Twitter](#) or elsewhere.
+
+*Thank you Vitor Enes and Andrey Mokhov for reviewing drafts of this
+post.*
+
+## Footnotes
+
+[^1]: We can define `eventually P = true until P`{.specstrom}, and
+    perhaps a bit harder to grasp, `always P = not (true until not
+    P)`{.specstrom}. Or we could say `always P = not (eventually not
+    P)`{.specstrom}.
 
 <!-- Future stuff:
 
@@ -353,5 +363,4 @@ in [this Twitter thread](#).
 
 -->
 
-[^1]: We can define `eventually P = true until P`{.specstrom}, and perhaps a bit harder to grasp, `always P = not (true until not P)`{.specstrom}.
 
