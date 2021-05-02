@@ -309,7 +309,7 @@ let gdprConsentStateMachine =
          until (not gdprConsentIsVisible);
 ```
 
-That is, the state machine can transition between its states until it
+That is, the consent screen can transition between its states until it
 is closed. To specify that the final transition is `submit`, we could
 instead say:
 
