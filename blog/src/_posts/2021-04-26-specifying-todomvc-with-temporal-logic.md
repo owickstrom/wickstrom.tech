@@ -170,8 +170,8 @@ it must hold for every state in the trace.
 
 ### Always for State Machines
 
-Now, let's up our game. To model a state machine, we can combine
-transitions with disjunction (`||`{.specstrom}) and the
+Now, let's up our game. To specify the system as a state machine, we
+can combine transitions with disjunction (`||`{.specstrom}) and the
 `always`{.specstrom} operator. First, we define the individual
 transition formulae `open`{.specstrom} and `close`{.specstrom}:
 
@@ -206,7 +206,7 @@ We've used `next`{.specstrom} to specify transitions, and
 `always`{.specstrom} to specify invariants and state machines. But we
 might also want to use liveness properties in our specifications. In
 this case, we are not talking about specific steps, but rather
-*goals*.
+goals.
 
 The temporal operator `eventually`{.specstrom} takes a formula as an
 argument, and it's true if the given formula is true in the current or
