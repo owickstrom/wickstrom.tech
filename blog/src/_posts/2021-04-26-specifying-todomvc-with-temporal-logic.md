@@ -77,8 +77,8 @@ The `next`{.specstrom} operator takes a formula as an argument and evaluates it 
 the next state.
 
 ```specstrom
-P        ○───●───○───○───○
 next P   ●───○───○───○───○
+P        ○───●───○───○───○
 ```
 
 The `next`{.specstrom} operator is relative to the current state, not the first
@@ -86,9 +86,9 @@ state in the trace. This means that we can nest `next`{.specstrom}s to reach
 further into the future.
 
 ```specstrom
-P               ○───○───●───●───○
-next P          ○───●───●───○───○
 next (next P)   ●───●───○───○───○
+next P          ○───●───●───○───○
+P               ○───○───●───●───○
 ```
 
 ### Next for State Transitions
@@ -144,10 +144,10 @@ an argument, and it's true if the given formula is true in the current
 state and in all future states.
 
 ```specstrom
-P          ●───●───●───●───●
 always P   ●───●───●───●───●
-Q          ●───○───●───●───●
+P          ●───●───●───●───●
 always Q   ○───○───●───●───●
+Q          ●───○───●───●───●
 ```
 
 Note how `always Q`{.specstrom} is true in the third state and onwards, because
@@ -210,10 +210,10 @@ argument, and it's true if the given formula is true in the current or
 any future state.
 
 ```specstrom
-P              ○───○───○───○───○
 eventually P   ○───○───○───○───○
-Q              ○───○───○───○───●
+P              ○───○───○───○───○
 eventually Q   ●───●───●───●───●
+Q              ○───○───○───○───●
 ```
 
 For instance, we could say that the consent screen should initially be
@@ -236,10 +236,10 @@ Let's look at a diagram to understand this combination of temporal
 operators better:
 
 ```specstrom
-P                       ○───○───●───●───○
 eventually (always P)   ○───○───○───○───○
-Q                       ○───○───●───●───●
+P                       ○───○───●───●───○
 eventually (always Q)   ●───●───●───●───●
+Q                       ○───○───●───●───●
 ```
 
 The formula `eventually (always P)`{.specstrom} is not true in any
@@ -254,21 +254,14 @@ For `P until Q`{.specstrom} to be true, `P` must be true until `Q`
 becomes true.
 
 ```specstrom
+P until Q   ●───●───●───●───●
 P           ●───●───○───○───○
 Q           ○───○───●───●───●
-P until Q   ●───●───●───●───●
 ```
-
 
 It's more powerful than `always`{.specstrom} and
 `eventually`{.specstrom}, and they can both be defined using
-`until`{.specstrom}:
-
-```specstrom
-always P = not (true until not P)
-
-eventually P = true until P
-```
+`until`{.specstrom}.[^1]
 
 Anyway, let's get back to our running example. Suppose we have another
 formula `supportChatVisible`, that is true when the support chat
@@ -300,8 +293,8 @@ writing specifications, too. We can use the `until`{.specstrom}
 operator to model entering and exiting a hierarchical state machine.
 
 Let's say we wanted to specify the GDPR consent screen more
-rigorously. Suppose we already have the possible state transitions
-defined:
+rigorously. Suppose we already have the possible state transition
+formulae defined:
 
 * `allowCollectedData`
 * `disallowCollectedData`
@@ -360,3 +353,6 @@ state, actions, and events. Let me know if you've found this useful in
   * The `happened`{.specstrom} binding is a list of actions or events that happened between the last and the current state
 
 -->
+
+[^1]: We can define `eventually P = true until P`{.specstrom}, and perhaps a bit harder to grasp, `always P = not (true until not P)`{.specstrom}.
+
