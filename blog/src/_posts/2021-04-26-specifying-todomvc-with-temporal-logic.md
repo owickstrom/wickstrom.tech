@@ -103,7 +103,7 @@ current and next state like so:
 gdprConsentIsVisible && next gdprConsentIsVisible
 ```
 
-A pair of subsequent states is called a *step*. When specifying state
+A pair of consecutive states is called a *step*. When specifying state
 machines, we use the `next`{.specstrom} operator to describe state transitions. A
 state transition formula is a logical predicate on a step.
 
