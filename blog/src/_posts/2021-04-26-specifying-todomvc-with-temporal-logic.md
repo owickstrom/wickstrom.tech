@@ -20,16 +20,16 @@ I'm sharing some of my learnings and ideas from the past year.
 
 This post focuses on how to use LTL to specify state machines. It's a
 brief overview that avoids going into too much detail. For more
-information on how to test using such specifications, see the
-Quickstrom documentation.
+information on how to test web applicatoins using such specifications,
+see [the Quickstrom documentation](https://docs.quickstrom.io).
 
 ## An Extended LTL
 
 We'll be using an LTL extended with three main components:
 
 * an expression language for atomic propositions
-* state selectors
-* actions
+* state
+* actions and events
  
 The language is essentially a sketch of the future specification
 language for Quickstrom. In this first post we'll focus only on the
@@ -249,7 +249,9 @@ becomes true forever in the third state.
 
 ### Until
 
-The last temporal operator I want to discuss is `until`{.specstrom}:
+The last temporal operator I want to discuss is `until`{.specstrom}.
+For `P until Q`{.specstrom} to be true, `P` must be true until `Q`
+becomes true.
 
 ```specstrom
 P           ●───●───○───○───○
@@ -263,13 +265,85 @@ It's more powerful than `always`{.specstrom} and
 `until`{.specstrom}:
 
 ```specstrom
-always P = P until false
+always P = not (true until not P)
 
 eventually P = true until P
 ```
 
-<!--
-Future stuff:
+Anyway, let's get back to our running example. Suppose we have another
+formula `supportChatVisible`, that is true when the support chat
+button is shown. We want to make sure it doesn't show up until after
+the GDPR consent screen is closed:
+
+```specstrom
+not supportChatVisible until not gdprConsentIsVisible
+```
+
+The negations make it a bit harder to read, but it's equivalent to the
+the informal statement: "the support chat button is hidden at least
+until the GDPR consent screen is hidden." It doesn't demand that the
+support chat button is ever visible, though. For that, we instead say:
+
+```specstrom
+gdprConsentIsVisible 
+  until (supportChatVisible && not gdprConsentIsVisible)
+```
+
+In this formula, `supportChatVisible` has to become true eventually,
+and at that point the consent screen must be hidden.
+
+### Until for Hierarchical State Machines
+
+A common technique to manage the complexity of state machines is
+modelling them as *hierarchical* state machines. This shows up when
+writing specifications, too. We can use the `until`{.specstrom}
+operator to model entering and exiting a hierarchical state machine.
+
+Let's say we wanted to specify the GDPR consent screen more
+rigorously. Suppose we already have the possible state transitions
+defined:
+
+* `allowCollectedData`
+* `disallowCollectedData`
+* `submit`
+
+We can then put together the hierarchical state machine:
+
+```specstrom
+let gdprConsentStateMachine = 
+  gdprConsentIsVisible 
+    && (allowCollectedData || disallowCollectedData || submit)
+         until (not gdprConsentIsVisible);
+```
+
+That is, the state machine can transition between its states until it
+is closed. To specify that the final transition is `submit`, we could
+instead say:
+
+```specstrom
+let gdprConsentStateMachine = 
+  gdprConsentIsVisible 
+    && (allowCollectedData || disallowCollectedData) 
+         until (submit && next (not gdprConsentIsVisible));
+``` 
+
+In this formula we allow any number of `allowCollectedData` or
+`disallowCollectedData` transitions, until the final `submit`
+resulting in a closed consent screen.
+
+## What's next?
+
+We've looked at a some of the temporal operators in LTL, and how to
+use them to specify state machines. This is geared towards Quickstrom
+specifications, although this particular LTL language is only a sketch
+at this point. I'm hoping this has given you some ideas and
+inspiration.
+
+I intend to write follow-up posts, covering atomic propositions,
+state, actions, and events. Let me know if you've found this useful in
+[this Twitter thread](#).
+
+<!-- Future stuff:
 
 * Formulae
   * Atomic propositions
