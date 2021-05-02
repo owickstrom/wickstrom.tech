@@ -29,6 +29,14 @@ detail. For more information on how to test web applications using
 such specifications, see [the Quickstrom
 documentation](https://docs.quickstrom.io).
 
+To avoid possible confusion, I want to start by pointing out that a
+state machine specification in this context is not the same as a model
+in TLA+ (or similar modeling languages.) We're not building a model to
+prove or check properties against.  Rather, we're defining properties
+in terms of state machine transitions, and the end goal is to test
+actual system behavior (e.g. web applications, desktop applications,
+APIs) by checking that recorded traces match our specification.
+
 ## Linear Temporal Logic
 
 In this post, we'll be using an LTL language. It's a sketch of a
@@ -192,23 +200,15 @@ by `open`{.specstrom} or `close`:
 always (open || close)
 ```
 
-Cool, we have a state machine specification! Note that this
-specification only allows for transitions where the visibility of the
-consent screen changes back and forth.
-
-To avoid possible confusion, I want to point out that a state machine
-specification in this context is not the same as a model in TLA+ (or
-other model checkers.) We're not building a model to prove or check
-properties against.  Rather, we're defining properties in terms of
-state machine transitions, and the end goal is to test actual system
-behavior (e.g. web applications, desktop applications, APIs) using
-recorded traces and our specifications.
+We have a state machine specification! Note that this specification
+only allows for transitions where the visibility of the consent screen
+changes back and forth.
 
 So far we've only seen examples of *safety properties*. Those are
-properties that specify that "nothing bad happens". But we also want
+properties that specify that "nothing bad happens." But we also want
 to specify that systems somehow make progress. The following two
 temporal operators let us specify *liveness properties*, i.e. "good
-things eventually happen".
+things eventually happen."
 
 ### Eventually
 
@@ -264,7 +264,8 @@ becomes true forever in the third state.
 
 The last temporal operator I want to discuss is `until`{.specstrom}.
 For `P until Q`{.specstrom} to be true, `P` must be true until `Q`
-becomes true. `Q` doesn't have to stay true forever.
+becomes true. Just as with the `eventually`{.specstrom} operator, the
+stop condition (`Q`) doesn't have to stay true forever.
 
 ```specstrom
 P until Q   ●───●───●───●───○
@@ -272,14 +273,14 @@ P           ●───●───○───○───○
 Q           ○───○───●───●───○
 ```
 
-It's more powerful than `always`{.specstrom} and
-`eventually`{.specstrom}, and they can both be defined using
-`until`{.specstrom}.[^1]
+The `until`{.specstrom} operator is more powerful than
+`always`{.specstrom} and `eventually`{.specstrom}, and they can both
+be defined using `until`{.specstrom}.[^1]
 
 Anyway, let's get back to our running example. Suppose we have another
-formula `supportChatVisible`, that is true when the support chat
-button is shown. We want to make sure it doesn't show up until after
-the GDPR consent screen is closed:
+formula `supportChatVisible` that is true when the support chat button
+is shown. We want to make sure it doesn't show up until after the GDPR
+consent screen is closed:
 
 ```specstrom
 not supportChatVisible until not gdprConsentIsVisible
@@ -298,14 +299,12 @@ gdprConsentIsVisible
 In this formula, `supportChatVisible` has to become true eventually,
 and at that point the consent screen must be hidden.
 
-### Until for Hierarchical State Machines
+### Until for State Machines
 
-A common technique to manage the complexity of state machines is
-modeling them as *hierarchical* state machines. This shows up when
-writing specifications, too. We can use the `until`{.specstrom}
-operator to model entering and exiting a hierarchical state machine.
+We can use the `until`{.specstrom} operator to define a state machine
+formula where the final transition is more explicit.
 
-Let's say we wanted to specify the GDPR consent screen more
+Let's say we want to specify the GDPR consent screen more
 rigorously. Suppose we already have the possible state transition
 formulae defined:
 
@@ -313,18 +312,7 @@ formulae defined:
 * `disallowCollectedData`
 * `submit`
 
-We can then put together the hierarchical state machine:
-
-```specstrom
-let gdprConsentStateMachine = 
-  gdprConsentIsVisible 
-    && (allowCollectedData || disallowCollectedData || submit)
-         until (not gdprConsentIsVisible);
-```
-
-That is, the consent screen can transition between its states until it
-is closed. To specify that the final transition is `submit`, we could
-instead say:
+We can then put together the state machine formula:
 
 ```specstrom
 let gdprConsentStateMachine = 
@@ -343,9 +331,9 @@ We've looked at some of the temporal operators in LTL, and how to use
 them to specify state machines. I'm hoping this post has given you
 some ideas and inspiration!
 
-I intend to write follow-ups, covering atomic propositions, state,
-actions, and events. Let me know if you found this one useful in [this
-Twitter thread](#).
+I intend to write follow-ups, covering atomic propositions, state and
+queries, actions, and events. Let me know if you found this one useful
+in [this Twitter thread](#).
 
 <!-- Future stuff:
 
