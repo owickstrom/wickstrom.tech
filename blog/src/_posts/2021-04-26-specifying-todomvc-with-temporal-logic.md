@@ -26,27 +26,21 @@ brief overview that avoids going into too much detail. For more
 information on how to test web applications using such specifications,
 see [the Quickstrom documentation](https://docs.quickstrom.io).
 
-## An Extended LTL
+## Linear Temporal Logic
 
-In these posts, we'll be using an LTL with a few extensions:
+In this post, we'll be using an LTL language. It's a sketch of a
+future specification language for Quickstrom.
 
-* an expression language for atomic propositions
-* actions
-* events
- 
-The language is essentially a sketch of the future specification
-language for Quickstrom. In this first post we'll focus only on the
-LTL bits, and save the extensions for later posts.
-
-A formula is a logical expression. We have the constants:
+A *formula* (plural *formulae*) is a logical expression that evaluates
+to true or false. We have the constants:
 
 * `true`{.specstrom} (top)
 * `false`{.specstrom} (bottom)
 
 We combine formulae using the logical connectives, e.g:
 
-* `&&`{.specstrom} (and)
-* `||`{.specstrom} (or)
+* `&&`{.specstrom} (conjunction)
+* `||`{.specstrom} (disjunction)
 * `not`{.specstrom} (negation)
 * `==>`{.specstrom} (implication)
 
@@ -67,12 +61,15 @@ For example, let's say we have two formulae, `P`{.specstrom} and
 * `P`{.specstrom} is true in the first and second state
 * `Q`{.specstrom} is true only in the second state
 
-It would be visualized as follows:
+The formulae and trace would be visualized as follows:
 
 ```specstrom
 P   ●───●───○───○───○
 Q   ○───●───○───○───○
 ```
+
+Note that in these diagrams, we assume that the last state repeats
+forever.
 
 ### Next
 
