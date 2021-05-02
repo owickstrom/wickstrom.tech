@@ -8,6 +8,8 @@ categories: programming
 tags: []
 excerpt: |
     ...
+documentclass: scrartcl
+papersize: a5
 header-includes:
  - \usepackage{csquotes}
  - \usepackage{ebgaramond-maths}
@@ -123,9 +125,9 @@ consent screen.
 But interesting state machines usually have more than one possible
 transition, and interesting behaviors likely contain multiple steps.
 
-While we could nest formulae containing the `next`{.specstrom} operator, we'd be
-stuck with specifications only describing a constant and finite number
-of transitions.
+While we could nest formulae containing the `next`{.specstrom}
+operator, we'd be stuck with specifications only describing a finite
+number of transitions.
 
 Consider the following, where we like to state that the GDPR consent
 screen should always be visible:
