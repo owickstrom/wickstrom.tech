@@ -68,21 +68,22 @@ in which the formula is true, and a white circle denotes a state where
 the formula is false.
 
 For example, let's say we have two formulae, `P`{.specstrom} and
-`Q`{.specstrom}, and a five-state trace, where:
+`Q`{.specstrom}, where:
 
 * `P`{.specstrom} is true in the first and second state
-* `Q`{.specstrom} is true only in the second state
+* `Q`{.specstrom} is true in the second state
 
-The formulae and trace would be visualized as follows:
+Both formulae are false in all other states. The formulae and trace
+would be visualized as follows:
 
 ```specstrom
-P   ●───●───○───○───○
-Q   ○───●───○───○───○
+P   ●───●───○
+Q   ○───●───○
 ```
 
 Note that in these diagrams, we assume that the last state repeats
 forever. This might seem a bit weird, but drawing an infinite number
-of states is problematic, so it'll have to do.
+of states is problematic.
 
 ### Next
 
@@ -90,8 +91,8 @@ The `next`{.specstrom} operator takes a formula as an argument and evaluates it 
 the next state.
 
 ```specstrom
-next P   ●───○───○───○───○
-P        ○───●───○───○───○
+next P   ●───○───○
+P        ○───●───○
 ```
 
 The `next`{.specstrom} operator is relative to the current state, not the first
@@ -210,6 +211,9 @@ to specify that systems somehow make progress. The following two
 temporal operators let us specify *liveness properties*, i.e. "good
 things eventually happen."
 
+The current version of Quickstrom doesn't support liveness properties,
+but an upcoming version will.
+
 ### Eventually
 
 We've used `next`{.specstrom} to specify transitions, and
@@ -264,14 +268,17 @@ becomes true forever in the third state.
 
 The last temporal operator I want to discuss is `until`{.specstrom}.
 For `P until Q`{.specstrom} to be true, `P` must be true until `Q`
-becomes true. Just as with the `eventually`{.specstrom} operator, the
-stop condition (`Q`) doesn't have to stay true forever.
+becomes true.
 
 ```specstrom
 P until Q   ●───●───●───●───○
 P           ●───●───○───○───○
 Q           ○───○───●───●───○
 ```
+
+Just as with the `eventually`{.specstrom} operator, the stop condition
+(`Q`) doesn't have to stay true forever, but it has to be true at
+least once.
 
 The `until`{.specstrom} operator is more expressive than
 `always`{.specstrom} and `eventually`{.specstrom}, and they can both
@@ -335,7 +342,9 @@ I intend to write follow-ups, covering atomic propositions, queries,
 actions, and events. If you found this one useful, let me know [on
 Twitter](#) or elsewhere.
 
-*Thank you Vitor Enes and Andrey Mokhov for reviewing drafts of this
+*Thank you [Vitor Enes](https://twitter.com/vitorenesduarte), [Andrey
+Mokhov](https://twitter.com/andreymokhov), and [Liam
+O'Connor](https://twitter.com/kamatsu8) for reviewing drafts of this
 post.*
 
 ## Footnotes
