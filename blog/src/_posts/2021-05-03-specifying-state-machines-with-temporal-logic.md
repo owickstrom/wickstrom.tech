@@ -3,11 +3,13 @@ layout: post
 draft: true
 title:  "Specifying State Machines with Temporal Logic"
 author: Oskar Wickström
-date: 2021-04-26
+date: 2021-05-03
 categories: programming
 tags: []
 excerpt: |
-    ...
+    When explaining how Quickstrom works, I've found that it's not 
+    obvious how to specify real-world systems using LTL. In this
+    post I'm sharing some of my learnings and ideasj
 documentclass: scrartcl
 papersize: a5
 header-includes:
