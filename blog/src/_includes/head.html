@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>{% if page.title %}{{ page.title | escape }} | {{ site.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
-  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html }}{% else %}{{ site.description }}{% endif %}">
 
   <link rel="icon" type="image/png" href="{{ "/assets/icon.png" | prepend: site.baseurl }}">
 
@@ -20,7 +20,7 @@
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:creator" content="owickstrom">
+  <meta name="twitter:creator" content="@owickstrom">
   {% if page.title %}
   <meta name="twitter:title" content="{{ page.title }}">
   {% else %}
@@ -29,7 +29,9 @@
   {% if page.url %}
   <meta name="twitter:url" content="{{ site.url }}{{ page.url }}">
   {% endif %}
-  {% if page.description %}
+  {% if page.excerpt %}
+  <meta name="twitter:description" content="{{ page.excerpt | strip_html }}">
+  {% elsif page.description %}
   <meta name="twitter:description" content="{{ page.description }}">
   {% else %}
   <meta name="twitter:description" content="{{ site.description }}">
