@@ -61,9 +61,9 @@ propositional logic, but we need a few more things.
 
 ## Temporal Operators
 
-At the core of our language we have the notion of state. State changes
-over time and we'd like to be able to express that in our
-language. But the formulae we've seen so far do not deal with
+At the core of our language we have the notion of state. Systems
+change state over time, and we'd like to express that in our
+specifications. But the formulae we've seen so far do not deal with
 time. For that, we use temporal operators.
 
 To illustrate how the temporal operators work, I'll use diagrams to
@@ -297,9 +297,9 @@ not supportChatVisible until not gdprConsentIsVisible
 ```
 
 The negations make it a bit harder to read, but it's equivalent to the
-the informal statement: "the support chat button is hidden at least
-until the GDPR consent screen is hidden." It doesn't demand that the
-support chat button is ever visible, though. For that, we instead say:
+informal statement: "the support chat button is hidden at least until
+the GDPR consent screen is hidden." It doesn't demand that the support
+chat button is ever visible, though. For that, we instead say:
 
 ```specstrom
 gdprConsentIsVisible 
@@ -337,9 +337,9 @@ resulting in a closed consent screen.
 
 ## What's next?
 
-We've looked at some of the temporal operators in LTL, and how to use
-them to specify state machines. I'm hoping this post has given you
-some ideas and inspiration!
+We've looked at some temporal operators in LTL, and how to use them to
+specify state machines. I'm hoping this post has given you some ideas
+and inspiration!
 
 Another blog post worth checking out is [TLA+ Action
 Properties](https://hillelwayne.com/post/action-properties/) by Hillel
@@ -348,7 +348,7 @@ are applicable to LTL and Quickstrom-style specifications.
 
 I intend to write follow-ups, covering atomic propositions, queries,
 actions, and events. If you want to comment, there are threads on
-[Twitter](#) and on [Lobste.rs](#). You may also want to [sponsor my
+[Twitter](#) and on [Lobsters](#). You may also want to [sponsor my
 work](https://github.com/sponsors/owickstrom).
 
 *Thank you [Vitor Enes](https://twitter.com/vitorenesduarte), [Andrey
