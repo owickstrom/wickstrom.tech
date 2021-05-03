@@ -175,7 +175,7 @@ Let's revisit the always-visible consent screen specification. Instead
 of trying to nest an infinite amount of `next`{.specstrom} formulae, we instead
 say:
 
-```.specstrom
+```specstrom
 always gdprConsentIsVisible
 ```
 
@@ -354,7 +354,8 @@ may also want to [sponsor my
 work](https://github.com/sponsors/owickstrom).
 
 *Thank you [Vitor Enes](https://twitter.com/vitorenesduarte), [Andrey
-Mokhov](https://twitter.com/andreymokhov), and [Liam
+Mokhov](https://twitter.com/andreymokhov), [Pascal Poizat
+](https://twitter.com/pascalpoizat), and [Liam
 O'Connor](https://twitter.com/kamatsu8) for reviewing drafts of this
 post.*
 
