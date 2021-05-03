@@ -35,7 +35,7 @@ in TLA+ (or similar modeling languages.) We're not building a model to
 prove or check properties against.  Rather, we're defining properties
 in terms of state machine transitions, and the end goal is to test
 actual system behavior (e.g. web applications, desktop applications,
-APIs) by checking that recorded traces match our specification.
+APIs) by checking that recorded traces match our specifications.
 
 ## Linear Temporal Logic
 
@@ -45,15 +45,18 @@ future specification language for Quickstrom.
 A *formula* (plural *formulae*) is a logical expression that evaluates
 to true or false. We have the constants:
 
-* `true`{.specstrom} (top)
-* `false`{.specstrom} (bottom)
+* `true`{.specstrom}
+* `false`{.specstrom}
 
 We combine formulae using the logical connectives, e.g:
 
-* `&&`{.specstrom} (conjunction)
-* `||`{.specstrom} (disjunction)
-* `not`{.specstrom} (negation)
-* `==>`{.specstrom} (implication)
+* `&&`{.specstrom}
+* `||`{.specstrom}
+* `not`{.specstrom}
+* `==>`{.specstrom}
+
+The `==>`{.specstrom} operator is *implication*. So far we have
+propositional logic, but we need a few more things.
 
 ## Temporal Operators
 
@@ -63,9 +66,9 @@ language. But the formulae we've seen so far do not deal with
 time. For that, we use temporal operators.
 
 To illustrate how the temporal operators work, I'll use diagrams to
-visualize traces (sequences of states). A black circle denotes a state
-in which the formula is true, and a white circle denotes a state where
-the formula is false.
+visualize *traces* (sequences of states). A black circle denotes a
+state in which the formula is true, and a white circle denotes a state
+where the formula is false.
 
 For example, let's say we have two formulae, `P`{.specstrom} and
 `Q`{.specstrom}, where:
@@ -211,8 +214,7 @@ to specify that systems somehow make progress. The following two
 temporal operators let us specify *liveness properties*, i.e. "good
 things eventually happen."
 
-The current version of Quickstrom doesn't support liveness properties,
-but an upcoming version will.
+Quickstrom does not support liveness properties yet.[^1]
 
 ### Eventually
 
@@ -282,7 +284,7 @@ least once.
 
 The `until`{.specstrom} operator is more expressive than
 `always`{.specstrom} and `eventually`{.specstrom}, and they can both
-be defined using `until`{.specstrom}.[^1]
+be defined using `until`{.specstrom}.[^2]
 
 Anyway, let's get back to our running example. Suppose we have another
 formula `supportChatVisible` that is true when the support chat button
@@ -338,9 +340,15 @@ We've looked at some of the temporal operators in LTL, and how to use
 them to specify state machines. I'm hoping this post has given you
 some ideas and inspiration!
 
+Another blog post worth checking out is [TLA+ Action
+Properties](https://hillelwayne.com/post/action-properties/) by Hillel
+Wayne. It's written specifically for TLA+, but most of the concepts
+are applicable to LTL and Quickstrom-style specifications.
+
 I intend to write follow-ups, covering atomic propositions, queries,
-actions, and events. If you found this one useful, let me know [on
-Twitter](#) or elsewhere.
+actions, and events. If you found this post useful or if you have
+comments, get in touch [on Twitter](#), [on Lobsters](#), or
+elsewhere.
 
 *Thank you [Vitor Enes](https://twitter.com/vitorenesduarte), [Andrey
 Mokhov](https://twitter.com/andreymokhov), and [Liam
@@ -349,7 +357,10 @@ post.*
 
 ## Footnotes
 
-[^1]: We can define `eventually P = true until P`{.specstrom}, and
+[^1]: A future version of Quickstrom will use a different flavor of
+    LTL tailored for testing, and that way support liveness
+    properties.
+[^2]: We can define `eventually P = true until P`{.specstrom}, and
     perhaps a bit harder to grasp, `always P = not (true until not
     P)`{.specstrom}. Or we could say `always P = not (eventually not
     P)`{.specstrom}.
