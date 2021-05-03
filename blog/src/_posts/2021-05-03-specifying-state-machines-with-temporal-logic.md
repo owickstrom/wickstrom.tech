@@ -349,7 +349,7 @@ are applicable to LTL and Quickstrom-style specifications.
 I intend to write follow-ups, covering atomic propositions, queries,
 actions, and events. If you want to comment, there are threads on
 [GitHub](https://github.com/quickstrom/quickstrom/discussions/101),
-[Twitter](https://twitter.com/owickstrom/status/13891582598152355840),
+[Twitter](https://twitter.com/owickstrom/status/1389158259815235584),
 and on
 [Lobsters](https://lobste.rs/s/uifucu/specifying_state_machines_with_temporal). You
 may also want to [sponsor my
