@@ -347,9 +347,9 @@ Wayne. It's written specifically for TLA+, but most of the concepts
 are applicable to LTL and Quickstrom-style specifications.
 
 I intend to write follow-ups, covering atomic propositions, queries,
-actions, and events. If you found this post useful or if you have
-comments, get in touch [on Twitter](#), [on Lobsters](#), or
-elsewhere.
+actions, and events. If you want to comment, there are threads on
+[Twitter](#) and on [Lobste.rs](#). You may also want to [sponsor my
+work](https://github.com/sponsors/owickstrom).
 
 *Thank you [Vitor Enes](https://twitter.com/vitorenesduarte), [Andrey
 Mokhov](https://twitter.com/andreymokhov), and [Liam
