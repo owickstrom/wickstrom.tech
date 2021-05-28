@@ -80,7 +80,7 @@ For example, let's say we have two formulae, `P`{.specstrom} and
 Both formulae are false in all other states. The formulae and trace
 would be visualized as follows:
 
-```specstrom
+```.specstrom
 P   ●───●───○
 Q   ○───●───○
 ```
@@ -89,25 +89,40 @@ Note that in these diagrams, we assume that the last state repeats
 forever. This might seem a bit weird, but drawing an infinite number
 of states is problematic.
 
+All of the examples explaining operators have links to the [Linear Temporal
+Logic Visualizer](https://quickstrom.github.io/ltl-visualizer/), in which you
+can interactively experiment with the formulae. The syntax is not the same as in
+the article, but hopefully that's not a problem.
+
 ### Next
 
 The `next`{.specstrom} operator takes a formula as an argument and evaluates it in
 the next state.
 
-```specstrom
+<figure>
+```{.specstrom}
 next P   ●───○───○
 P        ○───●───○
 ```
+<figcaption>
+[Open in LTL Visualizer](https://quickstrom.github.io/ltl-visualizer/?formulae=next%28P%29&trace=%7CP%7C%7C){target=_blank}
+</figcaption>
+</figure>
 
 The `next`{.specstrom} operator is relative to the current state, not the first
 state in the trace. This means that we can nest `next`{.specstrom}s to reach
 further into the future.
 
-```specstrom
+<figure>
+```{.specstrom}
 next (next P)   ●───●───○───○───○
 next P          ○───●───●───○───○
 P               ○───○───●───●───○
 ```
+<figcaption>
+[Open in LTL Visualizer](https://quickstrom.github.io/ltl-visualizer/?formulae=next%28P%29%7Cnext%28next%28P%29%29&trace=%7C%7CP%7CP%7C){target=_blank}
+</figcaption>
+</figure>
 
 ### Next for State Transitions
 
@@ -161,12 +176,17 @@ This is where we pick up the `always`{.specstrom} operator. It takes a formula a
 an argument, and it's true if the given formula is true in the current
 state and in all future states.
 
-```specstrom
+<figure>
+```{.specstrom}
 always P   ●───●───●───●───●
 P          ●───●───●───●───●
 always Q   ○───○───●───●───●
 Q          ●───○───●───●───●
 ```
+<figcaption>
+[Open in LTL Visualizer](https://quickstrom.github.io/ltl-visualizer/?formulae=always%28P%29%7Calways%28Q%29&trace=PQ%7CP%7CPQ%7CPQ%7CPQ){target=_blank}
+</figcaption>
+</figure>
 
 Note how `always Q`{.specstrom} is true in the third state and onwards, because
 that's when `Q`{.specstrom} becomes true in the current and all future states.
@@ -229,12 +249,17 @@ The temporal operator `eventually`{.specstrom} takes a formula as an
 argument, and it's true if the given formula is true in the current or
 any future state.
 
-```specstrom
+<figure>
+```{.specstrom}
 eventually P   ○───○───○───○───○
 P              ○───○───○───○───○
 eventually Q   ●───●───●───●───○
 Q              ○───○───○───●───○
 ```
+<figcaption>
+[Open in LTL Visualizer](https://quickstrom.github.io/ltl-visualizer/?formulae=eventually%28P%29%7Ceventually%28Q%29&trace=%7C%7C%7CQ%7C){target=_blank}
+</figcaption>
+</figure>
 
 For instance, we could say that the consent screen should initially be
 visible and eventually be hidden:
@@ -255,12 +280,17 @@ gdprConsentIsVisible && eventually (always (not gdprConsentIsVisible))
 Let's look at a diagram to understand this combination of temporal
 operators better:
 
-```specstrom
+<figure>
+```{.specstrom}
 eventually (always P)   ○───○───○───○───○
 P                       ○───○───●───●───○
 eventually (always Q)   ●───●───●───●───●
 Q                       ○───○───●───●───●
 ```
+<figcaption>
+[Open in LTL Visualizer](https://quickstrom.github.io/ltl-visualizer/?formulae=eventually%28always%28P%29%29%7Ceventually%28always%28Q%29%29&trace=%7C%7CPQ%7CPQ%7CQ){target=_blank}
+</figcaption>
+</figure>
 
 The formula `eventually (always P)`{.specstrom} is not true in any
 state, because `P` never starts being true forever. The other formula,
@@ -273,11 +303,16 @@ The last temporal operator I want to discuss is `until`{.specstrom}.
 For `P until Q`{.specstrom} to be true, `P` must be true until `Q`
 becomes true.
 
-```specstrom
+<figure>
+```{.specstrom}
 P until Q   ●───●───●───●───○
 P           ●───●───○───○───○
 Q           ○───○───●───●───○
 ```
+<figcaption>
+[Open in LTL Visualizer](https://quickstrom.github.io/ltl-visualizer/?formulae=until%28P%2C+Q%29&trace=P%7CP%7CQ%7CQ%7C){target=_blank}
+</figcaption>
+</figure>
 
 Just as with the `eventually`{.specstrom} operator, the stop condition
 (`Q`) doesn't have to stay true forever, but it has to be true at
@@ -360,6 +395,10 @@ Mokhov](https://twitter.com/andreymokhov), [Pascal Poizat
 ](https://twitter.com/pascalpoizat), and [Liam
 O'Connor](https://twitter.com/kamatsu8) for reviewing drafts of this
 post.*
+
+## Edits
+
+- **2021-05-28**: Added links to the [Linear Temporal Logic Visualizer](https://quickstrom.github.io/ltl-visualizer/) matching the relevant examples. Note that the syntax is different in the visualizer.
 
 ## Footnotes
 
