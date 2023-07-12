@@ -14,5 +14,5 @@ href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons
 Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. This
 does not include the Jekyll site source code.
 
-The Jekyll code and configuration, CSS, Javascript, and other build-related
+The code and configuration, CSS, Javascript, and other build-related
 code, is licensed under [The Unlicense](LICENSE).

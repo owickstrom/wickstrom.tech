@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;800&display=swap');
+
+html {
+    font-family: 'EB Garamond', serif;
+    font-size: 24px;
+    line-height: 1.5;
+    background: #fff;
+    color: #111;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+h2 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+}
+h3 {
+    font-size: 1.25rem;
+    margin: 2rem 0 1rem;
+}
+
+ul, ol, p {
+    margin: 1rem 0;
+}
+figure {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+figcaption {
+    margin-top: .5rem;
+    text-align: center;
+    font-style: italic;
+}
+
+th, td {
+    padding: .5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+tr.divider td {
+    text-align: center;
+    font-style: italic;
+}
+
+dl {
+    margin: 1rem 0;
+}
+dt {
+    font-weight: 600;
+}
+dd {
+    margin-left: 1rem;
+}
+
+pre, code {
+    font-family: 'Inconsolata', monospace;
+    font-weight: 400;
+    font-size: .925rem;
+}
+
+pre {
+    padding: 1rem;
+}
+
+body {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+body > .sourceCode,
+body > pre {
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+@media screen and (max-width: 800px) {
+    body > .sourceCode,
+    body > pre {
+        margin: 1rem -1rem;
+    }
+}
+
+/*
+ * Post
+ */
+
+#title-block-header {
+    display: flex;
+    margin: 2.5rem 0;
+    flex-wrap: wrap;
+}
+#title-block-header h1 {
+    flex: 1 1 100%;
+    margin: 0 0 1rem;
+}
+#title-block-header .author,
+#title-block-header .date {
+    margin: 0;
+}
+#title-block-header .date:before {
+    content: '\2014';
+    margin: 0 .25em;
+}
+.post-nav {
+    color: #666;
+}
+.post-nav.before {
+    margin: 0;
+}
+.post-nav.after {
+    margin: 2rem 0 0;
+}
+.post-nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    gap: 1rem;
+}
+.post-nav a {
+    color: inherit;
+}
+
+/*
+ * Index
+ */
+ .index-page header {
+    padding: 4rem 0 2rem 0;
+ }
+ .index {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+ }
+ .index li {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+ }
+ .index li a {
+ }
+ .index .title {
+ }
+
+@media (prefers-color-scheme: dark) {
+    html {
+        background: #111;
+        color: #ddd;
+    }
+
+    a:link {
+        color: rgb(120, 138, 255);
+    }
+    a:visited {
+        color: rgb(130, 130, 130);
+    }
+}
+
+/* Syntax highlighting overrides */
+code span.dt {
+    text-decoration: none;
+    font-style: italic;
+}
+code span.co {
+    color: #888;
+}
