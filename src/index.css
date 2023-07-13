@@ -85,9 +85,17 @@ body > pre {
 }
 
 @media screen and (max-width: 800px) {
+    html {
+        font-size: 22px;
+    }
     body > .sourceCode,
     body > pre {
         margin: 1rem -1rem;
+    }
+}
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 20px;
     }
 }
 
