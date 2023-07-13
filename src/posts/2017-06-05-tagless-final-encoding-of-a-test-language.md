@@ -7,7 +7,7 @@ author: Oskar Wickström
 I have experimented with a test language encoded in tagless final style,
 instead of algebraic data types, to support the typed combinators
 *beforeEach* and *beforeAll*. Although the intended use is for
-[PureScript Spec](http://purescript-spec.wickstrom.tech/), I want to
+[PureScript Spec](https://purescript-spec.github.io/purescript-spec/), I want to
 share the Haskell prototype I ended up with, and explain how I got
 there.
 
@@ -96,9 +96,7 @@ Applicative would solve it elegantly. The following design is the result
 of my own explorations after the meetup, and will hopefully be of use
 for the real implementation in PureScript Spec in the future.
 
-As this article is [a runnable program in Literate Haskell
-form](https://github.com/owickstrom/func-da-world/blob/master/src/_posts/2017-06-05-tagless-final-encoding-of-a-test-language.lhs),
-we begin by declaring a bunch of language extensions, the module, and
+We begin by declaring a bunch of language extensions, the module, and
 our imports.
 
 ``` {.haskell .literate}

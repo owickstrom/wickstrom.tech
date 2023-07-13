@@ -198,13 +198,12 @@ payment provider when placing the order.
 
 ## Reaching for IO
 
-Some systems built around the concept of a state reducer function, such
-as [The Elm
-Architecture](https://guide.elm-lang.org/architecture/effects/) or
-[Pux](http://purescript-pux.org/docs/events/#Effectful_computations),
-support a way of specifying the side effects together with the next
-state. A starting point to achieve this in Haskell, for our checkout
-state machine, is the following type signature:
+Some systems built around the concept of a state reducer function, such as [The
+Elm Architecture](https://guide.elm-lang.org/architecture/) or
+[Pux](https://github.com/alexmingoia/purescript-pux), support a
+way of specifying the side effects together with the next state. A starting
+point to achieve this in Haskell, for our checkout state machine, is the
+following type signature:
 
 ``` haskell
 checkout

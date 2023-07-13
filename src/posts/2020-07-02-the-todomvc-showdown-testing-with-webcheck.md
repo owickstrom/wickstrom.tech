@@ -12,9 +12,8 @@ project.
 
 ## WebCheck
 
-During the last three months I've used my spare time to build
-[WebCheck](https://webcheck.tools). It's a browser testing framework
-combining ideas from:
+During the last three months I've used my spare time to build WebCheck. It's a
+browser testing framework combining ideas from:
 
 - property-based testing (PBT)
 - TLA+ and linear temporal logic
@@ -532,7 +531,7 @@ time comes, maybe WebCheck can be part of the TodoMVC project's testing. And
 perhaps in your project?
 
 If you're interested in WebCheck, please [sign up for the
-newsletter](https://buttondown.email/webcheck). I'll post regular project
+newsletter](https://buttondown.email/quickstrom). I'll post regular project
 updates, and definitely no spam. You can also follow me [on
 Twitter](https://twitter.com/owickstrom).
 

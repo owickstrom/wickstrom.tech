@@ -42,9 +42,9 @@ this approach.
 
 ## Writing Slides with Pandoc Markdown
 
-One of my favorite tools in technical writing is [Pandoc][]. I use it
-for documentation, talks, Markdown preview, this article[^1],
-and for converting existing documents to more desirable formats[^2].
+One of my favorite tools in technical writing is [Pandoc][]. I use it for
+documentation, talks, Markdown preview, this website, and for converting
+existing documents to more desirable formats[^1].
 
 A very nice feature of Pandoc is slideshow output formats. You can
 write your slides in Markdown using regular headings, with the
@@ -310,11 +310,7 @@ Now go on and write some cool tech talks!
 
 ## Footnotes
 
-[^1]: The [source
-code](https://raw.githubusercontent.com/owickstrom/func-da-world/master/src/_posts/2017-09-24-pandoc-beamer-graphviz.md)
-for this article uses some of the techniques it describes. Warning,
-there's nested fenced code blocks; not something for the weak-hearted.
-[^2]: I once needed to convert a technical manual from ODF to
+[^1]: I once needed to convert a technical manual from ODF to
     reStructuredText. A single Pandoc command later, and I had the
     sources for a proper Sphinx build.
 

@@ -78,7 +78,7 @@ Enough imports, let's go build our state machine!
 ## The State Machine Protocol
 
 In contrast to the transition function in [the previous
-post](/finite-state-machines/2017/11/10/finite-state-machines-part-1-modeling-with-haskell.html#finite-state-machines),
+post](/2017-11-10-finite-state-machines-part-1-modeling-with-haskell.html#finite-state-machines),
 where a single function had the responsibility of deciding which state
 transitions were legal, performing associated side effects on
 transitions, and transitioning to the next state, we will now separate

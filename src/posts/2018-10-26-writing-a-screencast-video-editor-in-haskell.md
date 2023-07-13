@@ -262,7 +262,7 @@ Komposition, using it more effectively for managing windows and modals in GTK+,
 and I think this warrants the use of Motor more clearly. Otherwise, it might be
 worth falling back to a less advanced encoding, like the one I described in
 [Finite-State Machines, Part 2: Explicit Typed State
-Transitions](/finite-state-machines/2017/11/19/finite-state-machines-part-2.html).
+Transitions](/2017-11-19-finite-state-machines-part-2.html).
 
 ### Singleton Pattern
 

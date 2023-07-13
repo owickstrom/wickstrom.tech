@@ -2,8 +2,8 @@
 
 set -e
 
-make -j$(nproc) clean all
+make clean all
 parallel -j4 <<EOF
   python3 -m http.server --directory target
-  fswatch -o . --exclude target | xargs -n1 -I{} make -j$(nproc) all
+  fswatch -o . --exclude target | xargs -n1 -I{} make all
 EOF

@@ -101,7 +101,7 @@ system. You don't have to know Haskell to follow this series, as
 I'll explain the techniques primarily without code. But if you are
 interested in the Haskell specifics and in Hedgehog, check out
 ["Property testing with
-Hedgehog"](https://teh.id.au/posts/2017/04/23/property-testing-with-hedgehog/)
+Hedgehog"](https://teh.id.au/#/posts/2017/04/23/property-testing-with-hedgehog/)
 by Tim Humphries.
 
 ## Properties of the Ugly Parts

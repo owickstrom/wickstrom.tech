@@ -95,7 +95,7 @@ type Middleware m c c' = c -> m c'
 ```
 
 As middleware are monadic functions, just as the computations used with
-[Bind][bind], they compose using [Kleisli composition][kleisli-composition].
+Bind, they compose using Kleisli composition.
 
 ```{.haskell .purescript}
 -- Compose three middleware functions sequentially,
@@ -211,14 +211,7 @@ We have looked at the core design of Hyper, and the motivation behind the
 project, but merely scratched the surface. The [documentation][documentation]
 describes in much greater detail the implementation and current components of
 Hyper. I hope, however, that I have caught your interest. If so, please go
-ahead and check out some of the provided examples at GitHub:
-
-* [Hello Hyper][hello-hyper]
-* [Form Parser][form-parser]
-* [File Server][file-server]
-* [Authentication][authentication]
-* [Authentication and Authorization][authentication-and-authorization]
-* [Type-safe Resource Routing][routing]
+ahead and check out some of the [provided examples at GitHub](https://github.com/purescript-hyper/hyper/tree/master/examples).
 
 Also, note that the project is highly experimental, not nearly ready for any
 production use. But it could be! If you are interested in contributing, do not
@@ -240,11 +233,3 @@ up-to-date, so please have a look there as well._
 
 [documentation]: http://hyper.wickstrom.tech
 [repository]: https://github.com/owickstrom/hyper
-[bind]: https://pursuit.purescript.org/packages/purescript-prelude/2.1.0/docs/Control.Bind#v:(%3E=%3E)
-[kleisli-composition]: https://pursuit.purescript.org/packages/purescript-prelude/2.1.0/docs/Control.Bind#v:(%3E=%3E)
-[hello-hyper]: https://github.com/owickstrom/hyper/blob/master/examples/hello-hyper/Main.purs
-[form-parser]: https://github.com/owickstrom/hyper/blob/master/examples/form-parser/Main.purs
-[file-server]: https://github.com/owickstrom/hyper/blob/master/examples/file-server/Main.purs
-[authentication]: https://github.com/owickstrom/hyper/blob/master/examples/authentication/Main.purs
-[authentication-and-authorization]: https://github.com/owickstrom/hyper/blob/master/examples/authentication-and-authorization/Main.purs
-[routing]: https://github.com/owickstrom/hyper/blob/master/examples/routing/Main.purs

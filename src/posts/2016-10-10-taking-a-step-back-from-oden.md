@@ -9,7 +9,7 @@ I have decided to stop working on Oden.
 Why? Building a programming language, even a small one as Oden where I can
 piggy-back on the success and engineering efforts of Go, takes a lot of time.
 *A lot of time.* I currently work professionally at a startup called
-[Empear](http://www.empear.com/) where we develop products for analyzing and
+[Empear](https://codescene.com/) where we develop products for analyzing and
 understanding large software projects based on their history. The work is a lot
 of fun, but also takes much of my time and energy. Working with something as
 demanding as Oden on nights and weekends, at least in the long run, is

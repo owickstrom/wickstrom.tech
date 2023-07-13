@@ -4,10 +4,10 @@ author: Oskar Wickström
 date: October 27, 2017
 ---
 
-While writing my talk ["Finite-state machines? Your compiler wants
-in!"](https://wickstrom.tech/talks.html), I have worked on porting the Idris
-[ST](http:/docs.idris-lang.org/en/latest/st/state.html) library to Haskell.
-I call it *Motor*.
+While writing my talk "Finite-state machines? Your compiler wants in!", I have
+worked on porting the Idris
+[ST](http:/docs.idris-lang.org/en/latest/st/state.html) library to Haskell.  I
+call it *Motor*.
 
 Motor is an *experimental* Haskell library for building finite-state
 machines with type-safe transitions and effects. I have just
@@ -218,7 +218,7 @@ might be added as they are needed.
 ## Examples
 
 There is only [one small Door
-example](https://github.com/owickstrom/motor/tree/master/examples/Door.hs) in
+example](https://github.com/owickstrom/motor/blob/master/motor/examples/Door.hs) in
 the repository, along with some test programs. I haven't had much time to write
 examples, but hopefully I will soon. The door example does feature most of the
 relevant concepts, though.
