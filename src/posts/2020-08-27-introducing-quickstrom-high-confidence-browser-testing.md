@@ -5,7 +5,7 @@ date: August 27, 2020
 ---
 
 In [the last
-post](https://wickstrom.tech/programming/2020/07/02/the-todomvc-showdown-testing-with-webcheck.html)
+post](https://wickstrom.tech/2020-07-02-the-todomvc-showdown-testing-with-webcheck.html)
 I shared the results from testing TodoMVC implementations using WebCheck. The
 project has since been renamed _Quickstrom_ (thank you, [Tom](https://twitter.com/am_i_tom/)) and is now released as open
 source.
