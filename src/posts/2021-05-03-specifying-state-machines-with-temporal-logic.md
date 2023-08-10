@@ -54,9 +54,9 @@ specifications. But the formulae we've seen so far do not deal with
 time. For that, we use temporal operators.
 
 To illustrate how the temporal operators work, I'll use diagrams to
-visualize *traces* (sequences of states). A black circle denotes a
-state in which the formula is true, and a white circle denotes a state
-where the formula is false.
+visualize *traces* (sequences of states). A filled circle (●) denotes 
+a state in which the formula is true, and an empty circle (○) denotes 
+a state where the formula is false.
 
 For example, let's say we have two formulae, `P`{.specstrom} and
 `Q`{.specstrom}, where:
@@ -414,5 +414,3 @@ post.*
   * The `happened`{.specstrom} binding is a list of actions or events that happened between the last and the current state
 
 -->
-
-
