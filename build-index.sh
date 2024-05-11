@@ -8,6 +8,8 @@ set -e
 # Source files to build index for
 FILES=$@
 
+HEAD=$(cat $(dirname $0)/src/head.html)
+
 # Build the index
 cat <<EOF
 <!DOCTYPE html>
@@ -17,7 +19,7 @@ cat <<EOF
   <title>Oskar Wickström</title>
   <link rel="stylesheet" href="reset.css">
   <link rel="stylesheet" href="index.css">
-  <link rel="icon" type="image/png" href="/assets/icon.png">
+  ${HEAD}
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 </head>
 <body class="index-page">
@@ -29,12 +31,12 @@ cat <<EOF
   <ul class="index">
 EOF
 for f in $FILES; do
-  if [[ "$f" != "index.html" ]]; then
-    title=$(yq --front-matter=extract '.title' $f)
-    date=$(yq --front-matter=extract '.date' $f)
-    target=$(echo $f | sed 's/src\/posts\///' | sed 's/\.md$/.html/')
-    echo "    <li><a href=\"$target\"><span class=\"title\">$title</span></a><time>$date</time></li>"
-  fi
+	if [[ "$f" != "index.html" ]]; then
+		title=$(yq --front-matter=extract '.title' $f)
+		date=$(yq --front-matter=extract '.date' $f)
+		target=$(echo $f | sed 's/src\/posts\///' | sed 's/\.md$/.html/')
+		echo "    <li><a href=\"$target\"><span class=\"title\">$title</span></a><time>$date</time></li>"
+	fi
 done
 cat <<EOF
   </ul>
