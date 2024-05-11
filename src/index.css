@@ -198,10 +198,6 @@ body>pre {
   margin: 1.5rem 0;
 }
 
-.index li a {
-  font-weight: 600;
-}
-
 @media screen and (max-width: 800px) {
   h1 {
     font-size: 2rem;
