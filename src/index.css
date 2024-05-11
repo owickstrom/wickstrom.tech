@@ -214,7 +214,7 @@ body>pre {
 
 @media (prefers-color-scheme: dark) {
   html {
-    background: #222;
+    background: #111;
     color: #fff;
   }
 
