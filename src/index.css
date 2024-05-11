@@ -180,6 +180,12 @@ body>pre {
   padding: 4rem 0 2rem 0;
 }
 
+.index-page h1 {}
+
+.index-page p {
+  font-size: 1.25rem;
+}
+
 .index {
   margin: 0;
   padding: 0;
@@ -189,7 +195,11 @@ body>pre {
 .index li {
   display: flex;
   flex-direction: column;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
+}
+
+.index li a {
+  font-weight: 600;
 }
 
 @media screen and (max-width: 800px) {
