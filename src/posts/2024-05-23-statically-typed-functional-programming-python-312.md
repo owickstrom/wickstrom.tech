@@ -1,6 +1,6 @@
 ---
 title:  "Statically Typed Functional Programming with Python 3.12"
-date: May 18, 2024
+date: May 23, 2024
 author: Oskar Wickström
 ---
 
@@ -29,6 +29,7 @@ interpret that data and manage effects (IO, non-determinism, etc)
 This list is not exhaustive, but I'm trying to keep this focused.
 Also, I'm intentionally not taking this in the direction of Haskell, with typeclass hierarchies, higher-kinded types, and so on.
 I don't believe cramming such constructs in would benefit Python programs in practice.
+Finally, I won't be talking about effects and hexagonal architecture in this post.
 
 The examples are all type-annotated and checked with Pyright. You could do all of this without
 static type-checking, as far as I know.
@@ -335,5 +336,7 @@ Pretty neat!
 That's all I have for now.
 Maybe more Python hacking and blog posts will pop up if there's interest.
 I'm positive to the evolution of Python and functional programming, as it's something I use quite regularly.
+
+_Thank you [@tusharisanerd](https://x.com/tusharisanerd) for reviewing a draft of this post._
 
 [^1]: See [On Recursion, Continuations and Trampolines](https://eli.thegreenplace.net/2017/on-recursion-continuations-and-trampolines/) for more in-depth explanations of various solutions to recursive functions and the stack.
