@@ -91,6 +91,10 @@ tr.divider td {
   text-align: center;
   font-style: italic;
 }
+sup {
+  font-size: .75em;
+  line-height: 1;
+}
 
 dl {
   margin: 2rem 0;
@@ -98,6 +102,7 @@ dl {
 
 dt {
   font-weight: 600;
+  margin-top: .5rem;
 }
 
 dd {
@@ -129,7 +134,6 @@ body>pre {
 body>.sourceCode,
 body>pre {
   margin: 1rem -1rem;
-
 }
 
 /*
@@ -241,6 +245,15 @@ body>pre {
   #title-block-header .date {
     color: #aaa;
   }
+}
+.footnote-ref {
+  text-decoration: none !important;
+}
+.footnote-ref sup:before {
+  content: '[';
+}
+.footnote-ref sup:after {
+  content: ']';
 }
 
 /* Syntax highlighting overrides */
