@@ -6,21 +6,21 @@ author: Oskar Wickström
 
 Lately I've been messing around with Python 3.12, discovering new features around typing and pattern matching.
 Combined with dataclasses, they provide support for a style of programming that I've employed in Kotlin and Typescript at work.
-That style is in turn is based on what I'd do in OCaml or Haskell, like modelling data with algebraic data types.
-However, the more advanced concepts from Haskell --- and OCaml too, I guess --- don't transfer that well to such mainstream languages.
+That style in turn is based on what I'd do in OCaml or Haskell, like modelling data with algebraic data types.
+However, the more advanced concepts from Haskell --- and OCaml too, I guess --- don't transfer that well to mainstream languages.
 
-What I'm describing in this post is a useful trade-off that I find comfortable to use in Python, especially with the new features that I'll describe. 
+What I'm describing in this post is a trade-off that I find comfortable to use in Python, especially with the new features that I'll describe. 
 Much of this works nicely in Kotlin and Typescript, too, with minor adaptions.
 The principles I try to use are:
 
 Declarative rather than imperative operations on data
-: Transform or fold data using `map`, `reduce`, or for-comprehensions instead of for-loop
+: Transform or fold data using `map`, `reduce`, or for-comprehensions instead of for-loops
 
 Functions with destructuring pattern-matching to dispatch based on data
 : Use `when` statements rather than `if instanceof(...)` or inheritance and dynamic dispatch
 
 Programs structured mainly around data and functions
-: Programs are trees of function invocations on data, rather than class hierarchies, dependency injection, and exceptions
+: Programs are trees of function invocations on data, rather than class hierarchies, dependency injection, and overuse of exceptions
 
 Effects pushed to the outer layers of the program (hexagonal architecture)
 : Within reasonable bounds, functions in the guts of programs are _pure_ and return data, whereas the outer layers
@@ -29,10 +29,9 @@ interpret that data and manage effects (IO, non-determinism, etc)
 This list is not exhaustive, but I'm trying to keep this focused.
 Also, I'm intentionally not taking this in the direction of Haskell, with typeclass hierarchies, higher-kinded types, and so on.
 I don't believe cramming such constructs in would benefit Python programs in practice.
-Finally, I won't be talking about effects and hexagonal architecture in this post.
+Furthermore, I won't be talking about effects and hexagonal architecture in this post.
 
-The examples are all type-annotated and checked with Pyright. You could do all of this without
-static type-checking, as far as I know.
+The examples are all type-annotated and checked with Pyright. You could do all of this without static type-checking, as far as I know.
 
 Finally, note that I consider myself a Python rookie, as I mostly use it for small tools and scripts.
 The largest program I've written in Python is [Quickstrom](https://github.com/quickstrom/quickstrom).
@@ -336,6 +335,8 @@ Pretty neat!
 That's all I have for now.
 Maybe more Python hacking and blog posts will pop up if there's interest.
 I'm positive to the evolution of Python and functional programming, as it's something I use quite regularly.
+
+Join the discussion on [Twitter](https://x.com/owickstrom/status/1793749093900284059), [Hacker News](https://news.ycombinator.com/item?id=40459944), or [Lobsters](https://lobste.rs/s/hphovk/statically_typed_functional).
 
 _Thank you [@tusharisanerd](https://x.com/tusharisanerd) for reviewing a draft of this post._
 
