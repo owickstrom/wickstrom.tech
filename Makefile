@@ -27,13 +27,17 @@ $(TARGET_DIR)/index.html: $(SOURCES) build-index.sh
 	mkdir -p $(dir $@)
 	./build-index.sh $(SOURCES) > $@
 
+$(TARGET_DIR)/feed.xml: $(SOURCES) build-feed.sh
+	mkdir -p $(dir $@)
+	./build-feed.sh $(SOURCES) > $@
+
 $(TARGET_DIR)/%.css: src/%.css
 	mkdir -p $(dir $@)
 	cp $< $@
 
 $(TARGET_DIR)/assets/%: src/assets/%
 	mkdir -p $(dir $@)
-	cp $< $@
+	cp -f $< $@
 
 $(TARGET_DIR)/%: src/redirects/%
 	mkdir -p $(dir $@)
@@ -42,7 +46,7 @@ $(TARGET_DIR)/%: src/redirects/%
 clean:
 	rm -rf $(TARGET_DIR)
 
-all: $(TARGETS) $(ASSET_TARGETS) $(REDIRECT_TARGETS) $(TARGET_DIR)/reset.css $(TARGET_DIR)/index.css $(TARGET_DIR)/index.html Makefile
+all: $(TARGETS) $(ASSET_TARGETS) $(REDIRECT_TARGETS) $(TARGET_DIR)/reset.css $(TARGET_DIR)/index.css $(TARGET_DIR)/index.html $(TARGET_DIR)/feed.xml Makefile
 
 ###############################################################
 # DEPLOYMENT

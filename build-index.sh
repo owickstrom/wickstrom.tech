@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+DIR=$(dirname $0)
+
 # This script builds the index for the static HTML blog.
 
 # Exit on error
@@ -38,8 +40,4 @@ for f in $FILES; do
 		echo "    <li><a href=\"$target\"><span class=\"title\">$title</span></a><time>$date</time></li>"
 	fi
 done
-cat <<EOF
-  </ul>
-</body>
-</html>
-EOF
+cat $DIR/src/post-nav-after.html
