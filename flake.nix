@@ -29,6 +29,7 @@
               coreutils
               parallel
               goaccess
+              libarchive
               nodePackages.live-server
             ];
           };
