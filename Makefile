@@ -37,7 +37,7 @@ $(TARGET_DIR)/%.css: src/%.css
 
 $(TARGET_DIR)/assets/%: src/assets/%
 	mkdir -p $(dir $@)
-	cp -f $< $@
+	cp $< $@
 
 $(TARGET_DIR)/%: src/redirects/%
 	mkdir -p $(dir $@)

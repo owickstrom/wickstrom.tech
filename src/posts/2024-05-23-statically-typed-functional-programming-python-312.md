@@ -11,6 +11,7 @@ However, the more advanced concepts from Haskell --- and OCaml too, I guess --- 
 
 What I'm describing in this post is a trade-off that I find comfortable to use in Python, especially with the new features that I'll describe. 
 Much of this works nicely in Kotlin and Typescript, too, with minor adaptions.
+
 The principles I try to use are:
 
 Declarative rather than imperative operations on data
