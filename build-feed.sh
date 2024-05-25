@@ -29,8 +29,9 @@ for f in $FILES; do
 		title=$(yq --front-matter=extract '.title' $f)
 		date=$(yq --front-matter=extract '.date' $f)
 		rfc_date=$(date -d "$date" --iso-8601=seconds)
+		intro=$(pandoc -f markdown -t plain -i $f | awk -v RS= '/./ { print; exit }')
 		target=$(echo $f | sed 's/src\/posts\///' | sed 's/\.md$/.html/')
-		echo "<entry><id>https://wickstrom.tech/${target}</id><title>${title}</title><link href=\"${target}\"/><updated>${rfc_date}</updated></entry>"
+		echo "<entry><id>https://wickstrom.tech/${target}</id><title>${title}</title><link href=\"${target}\"/><updated>${rfc_date}</updated><summary>${intro}</summary></entry>"
 	fi
 done
 cat <<EOF
