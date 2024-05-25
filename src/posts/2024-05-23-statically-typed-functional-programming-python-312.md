@@ -58,7 +58,7 @@ You might not want to use wildcard imports in more serious programs, but it's ac
 
 Let's start with a classic example from the functional programming world: an evaluator for a simple expression-based language.
 It only supports a few operations in order to keep it simple.
-First, I model the different types of expressions there are using dataclasses and a union type:
+First, we the different types of expressions there are using dataclasses and a union type:
 
 
 ```python
@@ -91,7 +91,7 @@ You could create type aliases before using regular top-level bindings, but mutua
 Otherwise, Python would complain that the second type (e.g. `BinOp` in the code above) wasn't defined.
 It's a bit cleaner now.
 
-Note that I use existing primitive types from Python (`int`, `bool`, and `str`), combined with dataclasses for complex expressions.
+Note that we existing primitive types from Python (`int`, `bool`, and `str`), combined with dataclasses for complex expressions.
 The `str` is interpreted as a reference to a name bound in the lexical scope, not as a string literal, as we'll see in the following snippet.
 
 The evaluator tracks bindings in the `Env`.
@@ -104,8 +104,8 @@ type Value = int | bool
 ```
 
 Now, let's look at the `eval` function.
-Here I pattern-match on the expression, which is a union.
-For literals, I just return the value:
+Here we pattern-match on the expression, which is a union.
+For literals, we just return the value:
 
 ```python
 def eval(env: Env, expr: Expr) -> Value:
@@ -287,7 +287,7 @@ class Reset[Time]:
         return "Reset counter"
 ```
 
-I made them generic just to showcase the combination of protocols and generics.
+We made them generic just to showcase the combination of protocols and generics.
 The `Time` type parameter isn't instantiated in any other way than `datetime` in this example.
 
 In another module B --- that doesn't depend on A, and isn't depended upon by A --- the protocol is defined, 
@@ -313,7 +313,7 @@ log_event(
 )
 ```
 
-If I annotate the `Event` protocol with `@runtime_checkable`, I can check
+If we annotate the `Event` protocol with `@runtime_checkable`, we can check
 it with `isinstance` and use it in match cases:
 
 
