@@ -19,6 +19,8 @@ ASSET_TARGETS=$(patsubst $(SRC_DIR)/%,$(TARGET_DIR)/%,$(ASSET_SOURCES))
 REDIRECT_SOURCES=$(shell find $(SRC_DIR)/redirects -type f)
 REDIRECT_TARGETS=$(patsubst $(SRC_DIR)/redirects/%,$(TARGET_DIR)/%,$(REDIRECT_SOURCES))
 
+all: $(TARGETS) $(ASSET_TARGETS) $(REDIRECT_TARGETS) $(TARGET_DIR)/reset.css $(TARGET_DIR)/index.css $(TARGET_DIR)/index.html $(TARGET_DIR)/feed.xml Makefile
+
 $(TARGET_DIR)/%.html: $(SRC_DIR)/posts/%.md src/head.html src/post-nav-before.html src/post-nav-after.html
 	mkdir -p $(dir $@)
 	pandoc -s -f markdown -t html5 --mathjax --highlight-style=monochrome --css=reset.css --css=index.css --include-in-header=src/head.html --include-before-body=src/post-nav-before.html --include-after-body=src/post-nav-after.html -o $@ $<
@@ -45,8 +47,6 @@ $(TARGET_DIR)/%: src/redirects/%
 
 clean:
 	rm -rf $(TARGET_DIR)
-
-all: $(TARGETS) $(ASSET_TARGETS) $(REDIRECT_TARGETS) $(TARGET_DIR)/reset.css $(TARGET_DIR)/index.css $(TARGET_DIR)/index.html $(TARGET_DIR)/feed.xml Makefile
 
 ###############################################################
 # DEPLOYMENT
