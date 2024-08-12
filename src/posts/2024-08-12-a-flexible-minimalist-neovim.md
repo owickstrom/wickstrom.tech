@@ -35,12 +35,12 @@ Maybe I'll revisit it later.
 ## Returning to Neovim
 
 Yeah, so I'm back in Neovim.
-I actually started with the LazyVim distribution based on recommendation.
+I actually started with the [LazyVim](http://www.lazyvim.org/) distribution based on recommendation.
 On the positive side, it got me motivated to use Neovim again.
 But I had some frustrations with the distribution.
 
 The start-up time wasn't great.
-I guess it did some lazy loading of plugins, but the experience was still that of an IDE taking its time to get going.
+I guess it did some lazy loading of plugins to speed things up, but the experience was still that of an IDE taking its time to get ready.
 Not the Neovim experience I was hoping for.
 
 More importantly, it was full of distractions; popups, status messages, news, and plugins I didn't need.
@@ -51,7 +51,7 @@ Supposedly I could strip things out, but instead I decided to start from scratch
 One that I understand.
 Joran Dirk Greef talks about two different types of artists, [sculptors and painters](https://www.youtube.com/watch?v=w3WYdYyjek4&ab_channel=TigerBeetle), and this is an exercise in painting.
 
-More concretly, my main goals are:
+More concretely, my main goals are:
 
 Plugins
 
@@ -77,7 +77,7 @@ Start-up time
 I manage dotfiles and other personal configuration using Nix and home-manager.
 The Neovim configuration is no exception, so I'll include some of the Nix bits as well.
 
-The `vim.nix` module declares the `neovim` 
+The `vim.nix` module declares that I want Neovim installed and exposed as `vim`:
 
 ```nix
 programs.neovim = {
@@ -116,12 +116,12 @@ plugins = with pkgs.vimPlugins; [
 Basically it's five plugins, not counting the various treesitter parsers:
 
 nvim-lspconfig
-: LSP is nowadays built into Neovim, but it doesn't know about specific language servers.
-  The `lspconfig` plugins helps with configuring Neovim for use with various language servers.
+: LSP is included in Neovim nowadays, but it doesn't know about specific language servers.
+  The `lspconfig` plugins helps with configuring Neovim for use with various servers.
 
 nvim-treesitter
 : This provides better highlighting for Neovim. I've only included the languages I use right now.
-  No nice-to-haves.
+  No nice-to-haves. I could probably remove this plugin, but I haven't tried yet.
 
 conform-nvim
 : Auto-formatting is useful and I don't want to think about it.
@@ -136,7 +136,7 @@ fzf-vim
 : A wrapper around the awesome [fzf](https://github.com/junegunn/fzf) fuzzy finder.
   I use `:Files` and `:GFiles`, as quick jump-to-file commands (think `C-p` in VS Code or Zed).
   They are bound to `<Leader>ff` and `<Leader>gf`, respectively.
-  This is perhaps the one plugin I could do without, writing a small helper around `fzf`, or just making do with `:find`.
+  This might be another plugin I could do without, writing a small helper around `fzf`, or just making do with `:find` and `**/` wildcards.
   On the other hand, I'm trying out `:Buffers` instead of stumbling around with `:bnext` and `:bprev`.
 
 One great thing with the Nix setup is I don't need a package manager in Neovim itself.
@@ -158,7 +158,6 @@ Snippets might make more sense for things like HTML, but I don't write HTML ofte
 
 You can get great mileage from learning how to use the Quickfix list.
 I'm no expert, but I prefer investing in composable primitives that I can reuse in different ways.
-
 Project-wide search-and-replace is such an example:
 
 ```vim
@@ -168,6 +167,8 @@ Project-wide search-and-replace is such an example:
 ```
 
 Here we search (`:grep`, which I've configured to use `rg`), substitute and save each file, and delete those buffers afterwards.
+
+I also use `:make` and `:compiler` a lot. Neovim is cool.
 
 ## Life in Monochrome
 
@@ -184,7 +185,7 @@ highlight Constant guifg=#999999
 highlight NormalFloat guibg=#333333
 ```
 
-It's black-and-white, but keywords are bold, comments are darker and italic, and literals are slightly darker. 
+It's black-and-white, but keywords are bold, comments are darker and italic, and literals are light gray. 
 Here's how it looks with some Zig code:
 
 ![](/assets/nvim-monochrome.png)
@@ -197,7 +198,7 @@ Being comfortable with a monochrome colorscheme should come in handy.
 ## The Full Configuration
 
 My config uses a Vimscript entrypoint (`extraConfig` in the Nix code).
-This part is based on my near-immortal config from the good ol' Vim days.
+This part is based on my near-immortal config from the good old Vim days.
 Early on, it calls `vim.loader.enable()` to improve startup time.
 I use Lua scripts for configuring the plugins and related keymap bindings.
 Maybe everything could be Lua, but I haven't gotten that far yet.
