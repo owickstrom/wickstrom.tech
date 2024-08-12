@@ -212,3 +212,7 @@ I'm really happy with how fast and minimalistic it is.
 It starts in just above 100ms.
 And I can understand all of my configuration (even if I don't understand all of Neovim.)
 Perhaps I've [spent more time on it than I've saved](https://xkcd.com/1205/), but at least I'm happy so far.
+
+
+I'm writing and publishing this on my birthday.
+What a treat to find time to blog on such an occasion!
