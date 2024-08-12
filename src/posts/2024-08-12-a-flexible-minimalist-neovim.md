@@ -71,6 +71,7 @@ Start-up time
 : With the way I use Neovim, it needs to start fast.
   I quit and start it all the time, jumping between directories, working on different parts of the system or a project.
   Often I put it in the background with <kbd>C-z</kbd>, but not always.
+  Making it faster seems to be mainly an exercise in minimizing plugins.
 
 ## I have to mention Nix, you know?
 
@@ -208,5 +209,6 @@ You'll find the full configuration in [nix.vim](https://github.com/owickstrom/ho
 
 That's about it!
 I'm really happy with how fast and minimalistic it is.
+It starts in just above 100ms.
 And I can understand all of my configuration (even if I don't understand all of Neovim.)
 Perhaps I've [spent more time on it than I've saved](https://xkcd.com/1205/), but at least I'm happy so far.
