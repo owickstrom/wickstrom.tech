@@ -1,6 +1,6 @@
 :root {
-  font-family: "IBM Plex Serif", serif;
-  font-weight: 400;
+  font-family: "EB Garamond", serif;
+  font-weight: 450;
 }
 
 html {
@@ -11,7 +11,7 @@ html {
 html,
 body {
   line-height: 1.5;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 
@@ -21,7 +21,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 700;
+  font-weight: 750;
   line-height: 1.2;
 }
 
@@ -47,6 +47,10 @@ a:link {
 
 a:visited {
   color: #888;
+}
+
+strong {
+  font-weight: 600;
 }
 
 ul,
@@ -99,7 +103,8 @@ dl {
 }
 
 dt {
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 650;
   margin-top: .5rem;
 }
 
@@ -109,9 +114,9 @@ dd {
 
 pre,
 code {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 1rem;
-  font-weight: 400;
+  font-family: "Inconsolata", monospace;
+  font-size: .9rem;
+  font-weight: 450;
 }
 
 pre {
@@ -119,11 +124,11 @@ pre {
 }
 
 math {
-  font-size: 1.125rem;
+  font-size: 1rem;
 }
 
 body {
-  max-width: 800px;
+  max-width: 90ch;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -261,8 +266,9 @@ body>pre {
 
 /* Syntax highlighting overrides */
 
+code span.kw,
 code span.im {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 code span.at,
