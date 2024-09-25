@@ -4,7 +4,10 @@ date: Aug 12, 2024
 author: Oskar Wickström
 ---
 
-![](/assets/nvim.png)
+<picture>
+    <source type="image/webp" srcset="/assets/nvim.webp">
+    <img src="/assets/nvim.png" alt="Neovim welcome screen">
+</picture>
 
 In the eternal search of a better text editor, I've recently gone back to Neovim.
 I've taken the time to configure it myself, with as few plugins and other cruft as possible.
@@ -189,7 +192,10 @@ highlight NormalFloat guibg=#333333
 It's black-and-white, but keywords are bold, comments are darker and italic, and literals are light gray. 
 Here's how it looks with some Zig code:
 
-![](/assets/nvim-monochrome.png)
+<picture>
+    <source type="image/webp" srcset="/assets/nvim-monochrome.webp">
+    <img src="/assets/nvim-monochrome.png" alt="Neovim in monochrome with the quiet colorscheme">
+</picture>
 
 Maybe I'm coming off as nostalgic or conservative, but I _do_ find it more readable this way.
 

@@ -31,6 +31,7 @@
               goaccess
               libarchive
               nodePackages.live-server
+              graphicsmagick
             ];
           };
         };
