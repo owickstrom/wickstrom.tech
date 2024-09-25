@@ -1,11 +1,6 @@
 :root {
-  font-family: 'Inter', sans-serif;
-}
-
-@supports (font-variation-settings: normal) {
-  :root {
-    font-family: 'Inter var', sans-serif;
-  }
+  font-family: serif;
+  font-weight: 400;
 }
 
 html {
@@ -16,7 +11,7 @@ html {
 html,
 body {
   line-height: 1.5;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 
@@ -58,6 +53,9 @@ ul,
 ol,
 p {
   margin: 1rem 0;
+  word-break: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 li > ul, li > ol {
@@ -111,12 +109,17 @@ dd {
 
 pre,
 code {
-  font-family: "Jetbrains Mono", monospace;
+  font-family: monospace;
+  font-size: 1rem;
   font-weight: 400;
 }
 
 pre {
   padding: 1rem;
+}
+
+math {
+  font-size: 1.125rem;
 }
 
 body {
