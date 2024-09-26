@@ -53,6 +53,11 @@ strong {
   font-weight: 600;
 }
 
+blockquote {
+  padding: 0 2rem;
+  font-style: italic;
+}
+
 ul,
 ol,
 p {
@@ -115,8 +120,12 @@ dd {
 pre,
 code {
   font-family: "Inconsolata", monospace;
-  font-size: .9rem;
+  font-size: .86rem;
   font-weight: 450;
+}
+
+img {
+  max-width: 100%;
 }
 
 pre {
