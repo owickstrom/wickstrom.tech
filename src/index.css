@@ -1,5 +1,5 @@
 :root {
-  font-family: "EB Garamond", serif;
+  font-family: "IBM Plex Serif", serif;
   font-weight: 450;
 }
 
@@ -11,7 +11,7 @@ html {
 html,
 body {
   line-height: 1.5;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 
@@ -62,9 +62,6 @@ ul,
 ol,
 p {
   margin: 1rem 0;
-  word-break: break-word;
-  word-wrap: break-word;
-  hyphens: auto;
 }
 
 li > ul, li > ol {
@@ -119,9 +116,7 @@ dd {
 
 pre,
 code {
-  font-family: "Inconsolata", monospace;
-  font-size: .86rem;
-  font-weight: 450;
+  font-family: "IBM Plex Mono", monospace;
 }
 
 img {
@@ -230,7 +225,7 @@ body>pre {
   margin: 1.5rem 0;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 90ch) {
   h1 {
     font-size: 2rem;
   }
