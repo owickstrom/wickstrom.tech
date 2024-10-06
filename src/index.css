@@ -62,6 +62,9 @@ ul,
 ol,
 p {
   margin: 1rem 0;
+  hyphens: auto;
+  word-break: break-word;
+  word-wrap: break-word;
 }
 
 li > ul, li > ol {
