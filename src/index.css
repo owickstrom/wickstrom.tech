@@ -1,5 +1,5 @@
 :root {
-  font-family: "IBM Plex Serif", serif;
+  font-family: "Bitstream Charter", "URW Palladio L", Palatino, "Palatino Linotype", "Book Antiqua", serif;
   font-weight: 450;
 }
 
@@ -11,7 +11,17 @@ html {
 html,
 body {
   line-height: 1.5;
-  font-size: 15px;
+  font-size: 18px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+dt {
+  font-family: "Liberation Sans", "Nimbus Sans L", "FreeSans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 
@@ -119,7 +129,8 @@ dd {
 
 pre,
 code {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Liberation Mono", "Nimbus Mono L", "FreeMono", "DejaVu Mono", "Bitstream Vera Mono", "Lucida Console", "Andale Mono", "Courier New", monospace;
+  font-size: .9rem;
 }
 
 img {
@@ -229,6 +240,11 @@ body>pre {
 }
 
 @media screen and (max-width: 90ch) {
+  html,
+  body {
+    font-size: 16px;
+  }
+
   h1 {
     font-size: 2rem;
   }
