@@ -4,8 +4,8 @@
 }
 
 html {
-  background: #fff;
-  color: #000;
+  background: #f0edec;
+  color: #2c363c;
 }
 
 html,
@@ -137,12 +137,11 @@ img {
   max-width: 100%;
 }
 
+.sourceCode {
+  background: #e9e4e2;
+}
 pre {
   padding: 1rem;
-  background: #f8f4ea;
-}
-pre.specstrom {
-  background-color: none !important;
 }
 
 math {
@@ -265,7 +264,7 @@ body>pre {
 @media (prefers-color-scheme: dark) {
   html {
     background: #1c1917;
-    color: #fff;
+    color: #b4bdc3;
   }
 
   a:link {
@@ -281,9 +280,11 @@ body>pre {
     color: #aaa;
   }
 
+  .sourceCode {
+    background: #25211f;
+  }
   pre {
     padding: 1rem;
-    background: #25211f;
   }
 }
 .footnote-ref {
@@ -307,6 +308,7 @@ code span.at,
 code span.dt {
   text-decoration: none;
   font-style: italic;
+  color: #6a5549;
 }
 
 code span.co {
@@ -314,11 +316,19 @@ code span.co {
 }
 
 code span.st, code span.ss {
-  color: #444;
+  color: #556570;
 }
 
 @media (prefers-color-scheme: dark) {
+  code span.kw,
+  code span.im {
+    font-weight: 600;
+  }
+  code span.at,
+  code span.dt {
+    color: #a1938c;
+  }
   code span.st, code span.ss {
-    color: #ccc;
+    color: #868c91;
   }
 }
