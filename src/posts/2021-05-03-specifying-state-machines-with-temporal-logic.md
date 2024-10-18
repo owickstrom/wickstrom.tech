@@ -67,7 +67,7 @@ For example, let's say we have two formulae, `P`{.specstrom} and
 Both formulae are false in all other states. The formulae and trace
 would be visualized as follows:
 
-```.specstrom
+```{.specstrom}
 P   ●───●───○
 Q   ○───●───○
 ```

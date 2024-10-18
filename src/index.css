@@ -31,17 +31,17 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 750;
+  font-weight: 800;
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-weight: 800;
   font-size: 2.5rem;
 }
 
 h2 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin: 2.5rem 0 1.5rem;
 }
 
@@ -139,6 +139,10 @@ img {
 
 pre {
   padding: 1rem;
+  background: #f8f4ea;
+}
+pre.specstrom {
+  background-color: none !important;
 }
 
 math {
@@ -155,11 +159,6 @@ body>.sourceCode,
 body>pre {
   margin: 1rem 0;
   overflow-x: auto;
-}
-
-body>.sourceCode,
-body>pre {
-  margin: 1rem -1rem;
 }
 
 /*
@@ -256,11 +255,16 @@ body>pre {
   h3 {
     font-size: 1.25rem;
   }
+
+  body>.sourceCode,
+  body>pre {
+    margin: 1rem -1rem;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   html {
-    background: #111;
+    background: #1c1917;
     color: #fff;
   }
 
@@ -275,6 +279,11 @@ body>pre {
   #title-block-header .author,
   #title-block-header .date {
     color: #aaa;
+  }
+
+  pre {
+    padding: 1rem;
+    background: #25211f;
   }
 }
 .footnote-ref {
