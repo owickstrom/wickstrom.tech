@@ -1,17 +1,21 @@
 :root {
   font-family: "Bitstream Charter", "URW Palladio L", Palatino, "Palatino Linotype", "Book Antiqua", serif;
   font-weight: 450;
+  font-size: 18px;
 }
 
 html {
-  background: #f0edec;
+  background: #fff;
   color: #2c363c;
 }
 
 html,
 body {
   line-height: 1.5;
-  font-size: 18px;
+}
+
+p {
+  font-size: 18px !important;
 }
 
 h1,
@@ -138,7 +142,7 @@ img {
 }
 
 .sourceCode {
-  background: #e9e4e2;
+  background: inherit;
 }
 pre {
   padding: 1rem;
@@ -263,7 +267,7 @@ body>pre {
 
 @media (prefers-color-scheme: dark) {
   html {
-    background: #1c1917;
+    background: #000;
     color: #b4bdc3;
   }
 
@@ -278,13 +282,6 @@ body>pre {
   #title-block-header .author,
   #title-block-header .date {
     color: #aaa;
-  }
-
-  .sourceCode {
-    background: #25211f;
-  }
-  pre {
-    padding: 1rem;
   }
 }
 .footnote-ref {
