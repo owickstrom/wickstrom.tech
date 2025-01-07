@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
 :root {
-  font-family: "Bitstream Charter", "URW Palladio L", Palatino, "Palatino Linotype", "Book Antiqua", serif;
-  font-weight: 450;
-  font-size: 18px;
+  font-family: "Crimson Pro", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 20px;
 }
 
 html {
@@ -11,11 +14,11 @@ html {
 
 html,
 body {
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 p {
-  font-size: 18px !important;
+  font-size: inherit !important;
 }
 
 h1,
@@ -25,7 +28,6 @@ h4,
 h5,
 h6,
 dt {
-  font-family: "Liberation Sans", "Nimbus Sans L", "FreeSans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 
@@ -35,7 +37,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
@@ -133,7 +135,7 @@ dd {
 
 pre,
 code {
-  font-family: "Liberation Mono", "Nimbus Mono L", "FreeMono", "DejaVu Mono", "Bitstream Vera Mono", "Lucida Console", "Andale Mono", "Courier New", monospace;
+  font-family: "Courier Prime", monospace;
   font-size: .9rem;
 }
 
@@ -153,7 +155,7 @@ math {
 }
 
 body {
-  max-width: 90ch;
+  max-width: 80ch;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -242,9 +244,8 @@ body>pre {
 }
 
 @media screen and (max-width: 90ch) {
-  html,
-  body {
-    font-size: 16px;
+  :root {
+    font-size: 18px;
   }
 
   h1 {

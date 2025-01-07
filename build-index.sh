@@ -40,4 +40,6 @@ for f in $FILES; do
 		echo "    <li><a href=\"$target\"><span class=\"title\">$title</span></a><time>$date</time></li>"
 	fi
 done
+echo "  </ul>"
 cat $DIR/src/post-nav-after.html
+echo "</body>"
