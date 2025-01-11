@@ -29,17 +29,19 @@ cat <<EOF
     <h1>Oskar Wickström</h1>
     <p>Software design, testing, functional programming, and other delightful things.</p>
   </header>
-  <h2>Posts</h2>
-  <ul class="index">
+  <nav>
+    <h2>Posts</h2>
+    <ul class="index">
 EOF
 for f in $FILES; do
 	if [[ "$f" != "index.html" ]]; then
 		title=$(yq --front-matter=extract '.title' $f)
 		date=$(yq --front-matter=extract '.date' $f)
 		target=$(echo $f | sed 's/src\/posts\///' | sed 's/\.md$/.html/')
-		echo "    <li><a href=\"$target\"><span class=\"title\">$title</span></a><time>$date</time></li>"
+		echo "      <li><a href=\"$target\"><span class=\"title\">$title</span></a><time>$date</time></li>"
 	fi
 done
-echo "  </ul>"
+echo "    </ul>"
+echo "  </nav>"
 cat $DIR/src/post-nav-after.html
 echo "</body>"
