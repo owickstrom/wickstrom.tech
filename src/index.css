@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Fira+Code:wght@300..700&display=swap');
 
 :root {
-  font-family: "Crimson Pro", serif;
+  font-family: "Crimson Text", serif;
   font-optical-sizing: auto;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 html {
@@ -37,6 +37,7 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: "Alegreya Sans", sans-serif;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -125,7 +126,7 @@ dl {
 
 dt {
   font-size: 1rem;
-  font-weight: 650;
+  font-weight: 600;
   margin-top: .5rem;
 }
 
@@ -135,8 +136,9 @@ dd {
 
 pre,
 code {
-  font-family: "Courier Prime", monospace;
-  font-size: .9rem;
+  font-family: "Fira Code", monospace;
+  font-size: .8rem;
+  font-weight: 425;
 }
 
 img {
@@ -174,6 +176,7 @@ body>pre {
   display: flex;
   margin: 2rem 0 3rem 0;
   flex-wrap: wrap;
+  font-family: "Alegreya Sans", sans-serif;
 }
 
 #title-block-header h1 {
@@ -193,6 +196,7 @@ body>pre {
 }
 
 .post-nav {
+  font-family: "Alegreya Sans", sans-serif;
   color: #666;
 }
 
@@ -245,7 +249,7 @@ body>pre {
 
 @media screen and (max-width: 90ch) {
   :root {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   h1 {
@@ -298,6 +302,8 @@ body>pre {
 /* Syntax highlighting overrides */
 
 code span.kw,
+code span.cf,
+code span.pp,
 code span.im {
   font-weight: 600;
 }
@@ -306,7 +312,6 @@ code span.at,
 code span.dt {
   text-decoration: none;
   font-style: italic;
-  color: #6a5549;
 }
 
 code span.co {
