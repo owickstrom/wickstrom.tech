@@ -1,14 +1,13 @@
 ---
-title: "Machine Learning, Human Unlearning"
+title: "Machine: Learning; Human: Unlearning;"
 date: "Feb 11, 2025"
 author: "Oskar Wickström"
 ---
 
-This last month has been fascinating. First, my search for a new job has
-concluded, and I'm really excited for what's coming. Announcement will follow
-in a few weeks. Second, I guess LLMs have finally resonated with me on a deeper
-level. An ["oh fuck" moment](https://ghuntley.com/oh-fuck/)? Maybe not, but
-it's growing non-linearly on me. And it's forcing me to rewire my brain.
+This last month has been fascinating. I guess LLMs have finally resonated with
+me on a deeper level. It wasn't like I woke up and suddenly everything was
+different, but their impact is growing on me non-linearly, forcing me to rewire
+my brain.
 
 I know there are probably tons of blog posts by the newly converted. I'm not
 trying to offer any grand insights, I'm just documenting my process and current
@@ -28,11 +27,11 @@ the shadow workspaces, Tab, and the rule files. At the same time, a critical
 mass of friends and peers were building new products on top of these models;
 things I highly respect and can see massive value in.
 
-Since then I've actively been looking for how I can use these models, beyond
-the auto-complete and chat interaction modes. Beyond making me a slightly more
+Since then I've actively been looking for how I can use LLMs -- beyond the
+auto-complete and chat interaction modes, beyond making me a slightly more
 productive developer. Don't get me wrong, I love being alone coding for hours
-in a cozy room. It's great. But I'm also curious to see how far I can push
-this myself, and of course how far and where the industry goes.
+in a cozy room. It's great. But I'm also curious to see how far I can push this
+myself, and of course how far and where the industry goes.
 
 ## Taking on New Projects
 
@@ -41,7 +40,7 @@ It's a tool that converts entire web sites into EPUB and PDF books. Mostly
 because I want it for myself. I'd like to read online material, typeset
 minimalistically and beautifully, offline on my ebook reader. It turned out
 others want that too. There are great tools for converting single pages, but
-not entire sites.
+not for entire sites.
 
 My main problem is that the web is highly unstructured and diverse. To be
 frank, a lot of sites have really bad markup. No titles at all, identical
@@ -52,9 +51,8 @@ contents.
 A friend suggested using LLMs to extract the information, and I experimented
 with using screenshots as input to classify pages. Both Claude 3.5 Sonnet and
 Gemini 2.0 Flash performed well, but I haven't been able to generalize the
-approach enough to across many sites. There’s just too much variability in how
-websites are structured, and I’m not sure how to handle it. I'm open to
-suggestions!
+approach across many sites. There’s just too much variability in how websites
+are structured, and I’m not sure how to handle it. I'm open to suggestions!
 
 The other project, temporarily named _converge_, is a bit closer to what
 everyone else is doing: using LLMs for programming. It's an agent that, given
@@ -81,7 +79,7 @@ then generate new code based only on the description. Run the old and new code
 side-by-side, and see how they differ, functionally and non-functionally.
 
 I've only run _converge_ on toy examples and snippets so far. I'm sure there
-are major challenges ahead, applying it to larger code bases.
+are major challenges in applying it to larger code bases.
 
 ## Unlearning
 
@@ -96,11 +94,13 @@ ways of interacting with the environment (modifying source files, running
 tests, etc). It's not a revelation, but an example of how one might need to
 think differently.
 
-Even more down to earth, things like not asking "how do I do X?" in the chat,
-but rather "do X for me". Not asking for some chunk of code, but telling it to
-solve a problem for me. Cursor and Cody have both been great ways of changing
-my thinking.
+Even more down to earth, things like saying "do X for me" rather than asking
+"how do I do X?". Instead of asking for some chunk of code, I tell it to solve
+a problem for me. Of course, I still review the changes. Cursor and Cody have
+both been great ways of changing my thinking.
 
 What other habits and thought patterns might need to change? I don't know how
 programming will look in the future, but I'm actively working on keeping an
-open mind, and perhaps even shaping some corner of it.
+open mind and hopefully playing a small role in shaping it.
+
+_Comment on [Hacker News](TODO) and [Lobsters](TODO)._
