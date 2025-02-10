@@ -27,7 +27,7 @@ the shadow workspaces, Tab, and the rule files. At the same time, a critical
 mass of friends and peers were building new products on top of these models;
 things I highly respect and can see massive value in.
 
-Since then I've actively been looking for how I can use LLMs -- beyond the
+Since then I've actively been looking for how I can use LLMs --- beyond the
 auto-complete and chat interaction modes, beyond making me a slightly more
 productive developer. Don't get me wrong, I love being alone coding for hours
 in a cozy room. It's great. But I'm also curious to see how far I can push this
