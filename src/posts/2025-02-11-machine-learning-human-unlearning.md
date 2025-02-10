@@ -102,3 +102,5 @@ both been great ways of changing my thinking.
 What other habits and thought patterns might need to change? I don't know how
 programming will look in the future, but I'm actively working on keeping an
 open mind and hopefully playing a small role in shaping it.
+
+_Comment on [Hacker News](https://news.ycombinator.com/item?id=43006419) or [X](https://x.com/owickstrom/status/1889085500759187909)._
