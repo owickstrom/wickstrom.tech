@@ -85,53 +85,39 @@ Code](https://rosettacode.org/wiki/Achilles_numbers):
 
 ```
 » converge -input AchillesNumbers.java
-time=2025-02-11T08:40:24.649+01:00 level=INFO msg="test suite created"
-time=2025-02-11T08:40:25.110+01:00 level=WARN msg="tests failed" attempt=1
-time=2025-02-11T08:40:32.672+01:00 level=INFO msg="test suite modified"
-time=2025-02-11T08:40:33.113+01:00 level=WARN msg="tests failed" attempt=2
-time=2025-02-11T08:40:51.096+01:00 level=INFO msg="test suite modified"
-time=2025-02-11T08:40:51.611+01:00 level=INFO msg="tests passed"
-time=2025-02-11T08:40:55.720+01:00 level=INFO msg="increasing benchmark iterations" duration=0.037070710211992264 attempt=0
-time=2025-02-11T08:41:01.465+01:00 level=INFO msg="benchmark run"
-time=2025-02-11T08:41:08.892+01:00 level=INFO msg="code optimized" attempt=0
-optimization succeeded: 1.378729s -> 1.269365s (-7.93%)
+time=2025-02-11T09:35:44.877+01:00 level=INFO msg="test suite created"
+time=2025-02-11T09:35:45.271+01:00 level=WARN msg="tests failed" attempt=1
+time=2025-02-11T09:35:53.308+01:00 level=INFO msg="test suite modified"
+time=2025-02-11T09:35:53.709+01:00 level=WARN msg="tests failed" attempt=2
+time=2025-02-11T09:36:02.457+01:00 level=INFO msg="test suite modified"
+time=2025-02-11T09:36:02.885+01:00 level=INFO msg="tests passed"
+time=2025-02-11T09:36:09.508+01:00 level=INFO msg="increasing benchmark iterations" duration=0.038339998573064804 attempt=0
+time=2025-02-11T09:36:15.056+01:00 level=INFO msg="increasing benchmark iterations" duration=0.2295980006456375 attempt=1
+time=2025-02-11T09:36:21.225+01:00 level=INFO msg="increasing benchmark iterations" duration=0.5998150110244751 attempt=2
+time=2025-02-11T09:36:28.010+01:00 level=INFO msg="benchmark run"
+time=2025-02-11T09:36:35.737+01:00 level=INFO msg="code optimized" attempt=0
+time=2025-02-11T09:38:19.094+01:00 level=INFO msg="tests failed"
+...
+time=2025-02-11T09:38:33.798+01:00 level=INFO msg="code optimized" attempt=9
+optimization succeeded: 1.870953s -> 1.337585s (-28.51%)
 ```
 
-Aside from making it slightly faster, it also goes from `HashMap<Integer,
-Boolean>` to `HashSet<Integer>`, which seems very reasonable to me. Upon
-repeated optimization attempts, it seems to go for `BitSet` instead.
+That took about three minutes. It does all sorts of tricks to make it faster, but
+one that caught my eye was the conversion from `HashMap<Integer, Boolean>` to
+`HashSet<Integer>`, and finally to `BitSet`. Here's part of the diff:
 
 ```diff
 ...
  public class AchillesNumbers {
 -
 -    private Map<Integer, Boolean> pps = new HashMap<>();
--
-+    private Set<Integer> pps = new HashSet<>();
-
-     ...
-
-     public void getPerfectPowers(int maxExp) {
--        double upper = Math.pow(10, maxExp);
--        for (int i = 2; i <= Math.sqrt(upper); i++) {
--            double fi = i;
--            double p = fi;
--            while (true) {
--                p *= fi;
--                if (p >= upper) {
--                    break;
--                }
--                pps.put((int) p, true);
-+        int upper = (int)Math.pow(10, maxExp);
-+        int sqrt = (int)Math.sqrt(upper);
-+        for (int i = 2; i <= sqrt; i++) {
-+            long p = (long)i * i;
-+            while (p < upper) {
-+                pps.add((int)p);
-+                p *= i;
-             }
-         }
-     }
++    private final BitSet pps = new BitSet();
++    private final BitSet achillesCache = new BitSet();
++    private static final byte[] SMALL_PRIMES = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47};
++    private static final int[] POWERS_OF_TEN = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000};
++    private static final short[] SQUARES = new short[317];
++    private static final int[] CUBES = new int[47];
++    private static final short[] TOTIENTS = new short[1000];
 
      ...
  }
