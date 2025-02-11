@@ -79,7 +79,63 @@ then generate new code based only on the description. Run the old and new code
 side-by-side, and see how they differ, functionally and non-functionally.
 
 I've only run _converge_ on toy examples and snippets so far. I'm sure there
-are major challenges in applying it to larger code bases.
+are major challenges in applying it to larger code bases. Here's what it
+currently does to [Achilles numbers in Rosetta
+Code](https://rosettacode.org/wiki/Achilles_numbers):
+
+```
+» converge -input AchillesNumbers.java
+time=2025-02-11T08:40:24.649+01:00 level=INFO msg="test suite created"
+time=2025-02-11T08:40:25.110+01:00 level=WARN msg="tests failed" attempt=1
+time=2025-02-11T08:40:32.672+01:00 level=INFO msg="test suite modified"
+time=2025-02-11T08:40:33.113+01:00 level=WARN msg="tests failed" attempt=2
+time=2025-02-11T08:40:51.096+01:00 level=INFO msg="test suite modified"
+time=2025-02-11T08:40:51.611+01:00 level=INFO msg="tests passed"
+time=2025-02-11T08:40:55.720+01:00 level=INFO msg="increasing benchmark iterations" duration=0.037070710211992264 attempt=0
+time=2025-02-11T08:41:01.465+01:00 level=INFO msg="benchmark run"
+time=2025-02-11T08:41:08.892+01:00 level=INFO msg="code optimized" attempt=0
+optimization succeeded: 1.378729s -> 1.269365s (-7.93%)
+```
+
+Aside from making it slightly faster, it also goes from `HashMap<Integer,
+Boolean>` to `HashSet<Integer>`, which seems very reasonable to me. Upon
+repeated optimization attempts, it seems to go for `BitSet` instead.
+
+```diff
+...
+ public class AchillesNumbers {
+-
+-    private Map<Integer, Boolean> pps = new HashMap<>();
+-
++    private Set<Integer> pps = new HashSet<>();
+
+     ...
+
+     public void getPerfectPowers(int maxExp) {
+-        double upper = Math.pow(10, maxExp);
+-        for (int i = 2; i <= Math.sqrt(upper); i++) {
+-            double fi = i;
+-            double p = fi;
+-            while (true) {
+-                p *= fi;
+-                if (p >= upper) {
+-                    break;
+-                }
+-                pps.put((int) p, true);
++        int upper = (int)Math.pow(10, maxExp);
++        int sqrt = (int)Math.sqrt(upper);
++        for (int i = 2; i <= sqrt; i++) {
++            long p = (long)i * i;
++            while (p < upper) {
++                pps.add((int)p);
++                p *= i;
+             }
+         }
+     }
+
+     ...
+ }
+```
 
 ## Unlearning
 
