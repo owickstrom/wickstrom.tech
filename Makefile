@@ -23,7 +23,7 @@ all: $(TARGETS) $(ASSET_TARGETS) $(REDIRECT_TARGETS) $(TARGET_DIR)/reset.css $(T
 
 $(TARGET_DIR)/%.html: $(SRC_DIR)/posts/%.md src/head.html src/post-nav-before.html src/post-nav-after.html
 	mkdir -p $(dir $@)
-	pandoc -s -f markdown -t html5 -Vlang=en-US --mathml --highlight-style=monochrome --css=reset.css --css=index.css --include-in-header=src/head.html --include-before-body=src/post-nav-before.html --include-after-body=src/post-nav-after.html -o $@ $<
+	pandoc -s -f markdown -t html5 -Vlang=en-US --mathml --highlight-style=monochrome --css=reset.css --css=index.css --css=/assets/fonts/berkeley-mono/berkeley-mono.css --include-in-header=src/head.html --include-before-body=src/post-nav-before.html --include-after-body=src/post-nav-after.html -o $@ $<
 
 $(TARGET_DIR)/index.html: $(SOURCES) build-index.sh src/head.html src/post-nav-before.html src/post-nav-after.html
 	mkdir -p $(dir $@)

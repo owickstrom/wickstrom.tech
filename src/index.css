@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Fira+Code:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
 :root {
   font-family: "Crimson Text", serif;
@@ -136,9 +136,9 @@ dd {
 
 pre,
 code {
-  font-family: "Fira Code", monospace;
+  font-family: "BerkeleyMonoWeb", Arial, monospace;
   font-size: .8rem;
-  font-weight: 425;
+  font-weight: normal;
 }
 
 img {
@@ -305,7 +305,7 @@ code span.kw,
 code span.cf,
 code span.pp,
 code span.im {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 code span.at,
@@ -325,7 +325,7 @@ code span.st, code span.ss {
 @media (prefers-color-scheme: dark) {
   code span.kw,
   code span.im {
-    font-weight: 600;
+    font-weight: 700;
   }
   code span.at,
   code span.dt {

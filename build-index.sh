@@ -19,6 +19,7 @@ cat <<EOF
 <head>
   <meta charset="utf-8">
   <title>Oskar Wickström</title>
+  <link rel="stylesheet" href="/assets/fonts/berkeley-mono/berkeley-mono.css">
   <link rel="stylesheet" href="reset.css">
   <link rel="stylesheet" href="index.css">
   ${HEAD}

@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'BerkeleyMonoWeb';
+    src: 
+      url('/assets/fonts/berkeley-mono/BerkeleyMono-Regular.otf') format('opentype'),
+      url('/assets/fonts/berkeley-mono/BerkeleyMono-Regular.woff2') format('woff2');
+    font-stretch: normal;
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'BerkeleyMonoWeb';
+    src: 
+      url('/assets/fonts/berkeley-mono/BerkeleyMono-Bold.otf') format('opentype'),
+      url('/assets/fonts/berkeley-mono/BerkeleyMono-Bold.woff2') format('woff2');
+    font-stretch: normal;
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'BerkeleyMonoWeb';
+    src: 
+      url('/assets/fonts/berkeley-mono/BerkeleyMono-Oblique.otf') format('opentype'),
+      url('/assets/fonts/berkeley-mono/BerkeleyMono-Oblique.woff2') format('woff2');
+    font-stretch: normal;
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'BerkeleyMonoWeb';
+    src: 
+      url('/assets/fonts/berkeley-mono/BerkeleyMono-Bold-Oblique.otf') format('opentype'),
+      url('/assets/fonts/berkeley-mono/BerkeleyMono-Bold-Oblique.woff2') format('woff2');
+    font-stretch: normal;
+    font-weight: bold;
+    font-style: italic;
+}
