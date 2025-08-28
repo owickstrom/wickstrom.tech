@@ -41,8 +41,9 @@ entropy [`Buffer`](https://bun.com/docs/api/binary-data#buffer) with random
 contents, and track our position in that array with a cursor. Drawing a random
 byte _consumes_ the byte at the current position and increments the cursor. We
 don't know up-front how many bytes we need for a given fuzzer, so the entropy
-buffer grows dynamically when needed. This, together with a bunch of methods
-for drawing different types of values, is packaged up in an `Entropy` class:
+buffer grows dynamically when needed, appending more random bytes. This,
+together with a bunch of methods for drawing different types of values, is
+packaged up in an `Entropy` class:
 
 ```typescript
 class Entropy {
@@ -178,8 +179,8 @@ Now, let's dig into the findings!
 
 ## Results
 
-Given I've been working on this for about a week in total, I'm surprised by the
-outcome. Here are some issues the fuzzer found:
+Given I've been working on this for about a week in total, I'm very happy with
+the outcome. Here are some issues the fuzzer found:
 
 **Corrupted thread due to eagerly starting tool calls during streaming**
 
@@ -226,20 +227,20 @@ takes longer, around a minute normally. We run a short version of each
 fuzzer in every CI build, and longer runs on a nightly basis. This is
 up for a lot of tuning and experimentation.
 
-## Future Work
+## Why the Entropy Buffer?
 
-I've left you waiting for too long: why this entropy buffer instead of just a
-seed? Right, so the idea is to use that string to mutate the test input,
-instead of just bombarding with random data every time. If we can track which
-parts of the entropy was used where, we can make those slices "smaller" or
-"bigger." We can use something like gradient descent or simulated annealing to
-optimize inputs, maximizing some objective function set by the fuzzer. Finally,
-we might be able to minimize inputs by manipulating the entropy.
+So why the entropy buffer instead of a seeded PRNG? The idea is to use that
+buffer to mutate the test input, instead of just bombarding with random data
+every time. If we can track which parts of the entropy was used where, we can
+make those slices "smaller" or "bigger." We can use something like gradient
+descent or simulated annealing to optimize inputs, maximizing some objective
+function set by the fuzzer. Finally, we might be able to minimize inputs by
+manipulating the entropy.
 
 In case the JavaScript community gets some powerful fuzzing framework like
 AFL+, that could also just be plugged in. Who knows, but I find this an
-interesting approach that's worth exploring. I believe this is also similar to
-how Hypothesis works under the hood. Someone please correct me if that's not
-the case.
+interesting approach that's worth exploring. I believe the entropy buffer
+approach is also similar to how Hypothesis works under the hood. Someone please
+correct me if that's not the case.
 
 Anyhow, that's today's report from the generative testing mines. Cheers!
