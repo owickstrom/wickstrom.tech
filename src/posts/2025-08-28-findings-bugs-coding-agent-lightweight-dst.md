@@ -6,7 +6,7 @@ author: "Oskar Wickström"
 
 [Amp](https://ampcode.com/) is a coding agent which I've been working on the
 last six months at Sourcegraph. And in the last couple of weeks, I've been
-building on a testing rig inspired by [Determinstic Simulation
+building on a testing rig inspired by [Deterministic Simulation
 Testing](https://github.com/ivanyu/awesome-deterministic-simulation-testing)
 (DST) to test the most crucial parts of the system. DST is closely related to
 fuzzing and property-based testing.
@@ -17,8 +17,8 @@ corrupted [threads](https://ampcode.com/manual#threads), LLM API errors from
 invalid tool calls, and more vague issues like "it seems like it's spinning
 forever." Reproducing such problems manually is usually somewhere between
 impractical and impossible. I want to reproduce them deterministically, and in
-a way were we can debug and fix them. And beyond the known ones, I'd like to find
-the currently unknown ones before our users hit them.
+a way where we can debug and fix them. And beyond the known ones, I'd like to
+find the currently unknown ones before our users hit them.
 
 Generative testing to the rescue!
 
@@ -89,7 +89,7 @@ post!
 ## The ThreadWorker Fuzzer
 
 In the fuzzer for our `ThreadWorker`, we stub out all IO and other
-nondeterminstic components, and we install [fake
+nondeterministic components, and we install [fake
 timers](https://sinonjs.org/releases/latest/fake-timers/) to control when and
 how asynchronous code is run. In effect, we have _determinism_ and _simulation_
 to run tests in, so I guess it qualifies as DST.
@@ -110,7 +110,7 @@ a liveness property.
 After the liveness property, we check a bunch of safety properties:
 
 * all messages posted by the user are present in the thread
-* all messages pairs involving tools calls are valid according to Anthropic's API specification
+* all message pairs involving tools calls are valid according to Anthropic's API specification
 * all tool calls have settled in expected terminal states
 
 Some of these are targeted at specific known bugs, while some are more general
