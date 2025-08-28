@@ -27,18 +27,22 @@ Generative testing to the rescue!
 Amp is written in TypeScript, which is an ecosystem currently not drowning in
 fuzzing tools. My starting point was using
 [`jsfuzz`](https://www.npmjs.com/package/jsfuzz), which I hadn't used before
-but it looked promising. However, I had a bunch of problems getting it to
-run together with our Bun stack, so I decided to build something from scratch
-for our purposes.
+but it looked promising. However, I had a bunch of problems getting it to run
+together with our Bun stack. One could use fast-check, but as far as I can
+tell, the model-based testing they support doesn't fit with our needs. We don't
+have a model of the system, and we need to generate values in multiple places
+as the test runs. So, I decided to build something from scratch for our
+purposes.
 
-I borrowed an idea I got from [matklad](https://matklad.github.io/) last year:
-instead of passing a seeded PRNG to generate test input, we generate an entropy
-[`Buffer`](https://bun.com/docs/api/binary-data#buffer) with random contents,
-and track our position in that array with a cursor. Drawing a random byte
-_consumes_ the byte at the current position and increments the cursor. We don't
-know up-front how many bytes we need for a given fuzzer, so the entropy buffer
-grows dynamically when needed. This, together with a bunch of methods for
-drawing different types of values, is packaged up in an `Entropy` class:
+I borrowed an idea I got from
+[matklad](https://tigerbeetle.com/blog/2023-03-28-random-fuzzy-thoughts/) last
+year: instead of passing a seeded PRNG to generate test input, we generate an
+entropy [`Buffer`](https://bun.com/docs/api/binary-data#buffer) with random
+contents, and track our position in that array with a cursor. Drawing a random
+byte _consumes_ the byte at the current position and increments the cursor. We
+don't know up-front how many bytes we need for a given fuzzer, so the entropy
+buffer grows dynamically when needed. This, together with a bunch of methods
+for drawing different types of values, is packaged up in an `Entropy` class:
 
 ```typescript
 class Entropy {
@@ -174,9 +178,8 @@ Now, let's dig into the findings!
 
 ## Results
 
-Given I've been working on this for about a week in total, I'm surprised (as
-always with generative testing) by the outcome. Here are some issues the fuzzer
-found:
+Given I've been working on this for about a week in total, I'm surprised by the
+outcome. Here are some issues the fuzzer found:
 
 **Corrupted thread due to eagerly starting tool calls during streaming**
 
@@ -216,6 +219,12 @@ Furthermore, we were able to verify an older bug fix, where Anthropic's API
 would send an invalid message with an empty tool use block array. That used to
 get the agent into an infinite loop. With the fuzzer, we verified and improved
 the old fix which had missed another case.
+
+How about number of test runs and timeouts? Most of these bugs were found
+almost immediately, i.e. within a second. The last one in the list above
+takes longer, around a minute normally. We run a short version of each
+fuzzer in every CI build, and longer runs on a nightly basis. This is
+up for a lot of tuning and experimentation.
 
 ## Future Work
 
