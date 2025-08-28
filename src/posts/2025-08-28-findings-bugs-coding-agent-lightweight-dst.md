@@ -6,7 +6,7 @@ author: "Oskar Wickström"
 
 [Amp](https://ampcode.com/) is a coding agent which I've been working on the
 last six months at Sourcegraph. And in the last couple of weeks, I've been
-building on a testing rig inspired by [Deterministic Simulation
+building a testing rig inspired by [Deterministic Simulation
 Testing](https://github.com/ivanyu/awesome-deterministic-simulation-testing)
 (DST) to test the most crucial parts of the system. DST is closely related to
 fuzzing and property-based testing.
@@ -130,7 +130,6 @@ export async function fuzz(entropy: Entropy) {
     await clock.runAllAsync()
     await resumed
 
-    const actions: UserAction[] = []
     async function run() {
       for (let round = 0; round < entropy.randomRange(1, 50); round++) {
         const action = await generateNextAction(entropy, worker)
