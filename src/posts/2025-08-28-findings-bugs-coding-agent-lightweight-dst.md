@@ -8,7 +8,8 @@ author: "Oskar Wickström"
 last six months at Sourcegraph. And in the last couple of weeks, I've been
 building on a testing rig inspired by [Determinstic Simulation
 Testing](https://github.com/ivanyu/awesome-deterministic-simulation-testing)
-(DST) to test the most crucial parts of the system.
+(DST) to test the most crucial parts of the system. DST is closely related to
+fuzzing and property-based testing.
 
 The goal is to get one of Amp's most central pieces, the _ThreadWorker_, under
 heavy scrutiny. We've had a few perplexing bug reports, where users experienced
@@ -34,32 +35,29 @@ I borrowed an idea I got from [matklad](https://matklad.github.io/) last year:
 instead of passing a seeded PRNG to generate test input, we generate an entropy
 [`Buffer`](https://bun.com/docs/api/binary-data#buffer) with random contents,
 and track our position in that array with a cursor. Drawing a random byte
-"consumes" the byte at the current position and increments the cursor. We don't
+_consumes_ the byte at the current position and increments the cursor. We don't
 know up-front how many bytes we need for a given fuzzer, so the entropy buffer
 grows dynamically when needed. This, together with a bunch of methods for
 drawing different types of values, is packaged up in an `Entropy` class:
 
 ```typescript
 class Entropy {
-    random(count): UInt8Array { ... }
-    randomRange(minIncl: number, maxExcl: number): number { ... }
-    // ... lots of other stuff
+  random(count): UInt8Array { ... }
+  randomRange(minIncl: number, maxExcl: number): number { ... }
+  // ... lots of other stuff
 }
 ```
 
 A fuzzer is an ES module written in TypeScript, exporting a single function:
 
 ```typescript
-export async function fuzz(logger: Logger, entropy: Entropy) {
-
+export async function fuzz(entropy: Entropy) {
+  // test logic here
 }
 ```
 
-The `Logger` isn't important; it's an instance of the centralized logging
-system we use, and for the fuzzing framework to control log levels it has to be
-passed in. The `Entropy` is the class we just covered. Any exception thrown by
-`fuzz` is considered a test failure. We use the `node:assert` module for our
-test assertions.
+Any exception thrown by `fuzz` is considered a test failure. We use the
+`node:assert` module for our test assertions, but it could be anything.
 
 Another program, the fuzz runner, imports a built fuzzer module and runs as
 many tests it can before a given timeout. If it finds a failure, it prints out
@@ -70,14 +68,14 @@ Fuzzing example.fuzzer.js iteration 1000...
 Fuzzing example.fuzzer.js iteration 2000...
 
 Fuzzer failed: AssertionError [ERR_ASSERTION]: 3 != 4
-     at [...]
+  at [...]
 
 Reproduce with:
 
-    bun --console-depth=10 scripts/fuzz.ts \
-        dist/example.fuzzer.js \
-        --verbose \
-        --reproduce=1493a513f88d0fd9325534c33f774831
+  bun --console-depth=10 scripts/fuzz.ts \
+    dist/example.fuzzer.js \
+    --verbose \
+    --reproduce=1493a513f88d0fd9325534c33f774831
 ```
 
 Why use this `Entropy` rather than a seed? More about that at the end of the
@@ -111,7 +109,68 @@ After the liveness property, we check a bunch of safety properties:
 * all tool calls have settled in expected terminal states
 
 Some of these are targeted at specific known bugs, while some are more general
-but have found bugs we did not expect. Let's dig into the findings!
+but have found bugs we did not expect. 
+
+Here's a highly simplified version of the fuzzer:
+
+```typescript
+export async function fuzz(entropy: Entropy) {
+  const clock = sinon.useFakeTimers({
+    loopLimit: 1_000_000,
+  })
+  const worker = setup() // including stubbing IO, etc
+
+  try {
+    const resumed = worker.resume()
+    await clock.runAllAsync()
+    await resumed
+
+    const actions: UserAction[] = []
+    async function run() {
+      for (let round = 0; round < entropy.randomRange(1, 50); round++) {
+        const action = await generateNextAction(entropy, worker)
+        switch (action.type) {
+          case 'user-message':
+            await worker.handle({
+            ...action,
+            type: 'user:message',
+          })
+          break
+          case 'cancel':
+            await worker.cancel()
+          break
+          case 'resume':
+            await worker.resume()
+          break
+          case 'sleep':
+            await sleep(action.milliseconds)
+          break
+          case 'approve': {
+            await approveTool(action.threadID, action.toolUseID)
+            break
+          }
+        }
+      }
+
+      // Approve any remaining tool uses to ensure termination into an 
+      // idle thread state
+      const blockedTools = await blockedToolUses()
+      await Promise.all(blockedTools.map(approve))
+    }
+
+    const done = run()
+    await clock.runAllAsync()
+    await done
+
+    // check liveness and safety properties
+    // ...
+  } finally {
+    sinon.restore()
+  }
+}
+```
+
+Now, let's dig into the findings!
 
 ## Results
 
@@ -153,24 +212,25 @@ found:
     reproducible, so that's a start.
     
 
-Finally, we were able to verify an older bug fix, where Anthropic's API would
-send an invalid message with an empty tool use block array. That used to get
-the agent into an infinite loop. With the fuzzer, we verified and improved the
-old fix.
+Furthermore, we were able to verify an older bug fix, where Anthropic's API
+would send an invalid message with an empty tool use block array. That used to
+get the agent into an infinite loop. With the fuzzer, we verified and improved
+the old fix which had missed another case.
 
 ## Future Work
 
 I've left you waiting for too long: why this entropy buffer instead of just a
-seed? Right, so the idea is to use that string to mutate the inputs, instead
-of just bombarding with new random data every time. If we can track which parts
-of the entropy was used where, we can make those slices "smaller" or "bigger".
-We can use something like gradient descent or simulated annealing to optimize
-inputs, maximizing some objective function set by the fuzzer. Finally, we might
-be able to minimize inputs by manipulating the entropy.
+seed? Right, so the idea is to use that string to mutate the test input,
+instead of just bombarding with random data every time. If we can track which
+parts of the entropy was used where, we can make those slices "smaller" or
+"bigger." We can use something like gradient descent or simulated annealing to
+optimize inputs, maximizing some objective function set by the fuzzer. Finally,
+we might be able to minimize inputs by manipulating the entropy.
 
-In case the Javascript community gets some powerful fuzzing framework like
+In case the JavaScript community gets some powerful fuzzing framework like
 AFL+, that could also just be plugged in. Who knows, but I find this an
 interesting approach that's worth exploring. I believe this is also similar to
-how Hypothesis works? Someone please correct me if that's wrong.
+how Hypothesis works under the hood. Someone please correct me if that's not
+the case.
 
-Anyhow, that's today's report from the generative testing mines. See ya!
+Anyhow, that's today's report from the generative testing mines. Cheers!
