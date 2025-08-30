@@ -35,7 +35,7 @@ for f in $FILES; do
     echo "  <entry>"
     echo "    <id>https://wickstrom.tech/${target}</id>"
     echo "    <title>${title}</title>"
-    echo "    <link href=\"${target}\"/>"
+    echo "    <link href=\"https://wickstrom.tech/${target}\"/>"
     echo "    <published>${rfc_date}</published>"
     echo "    <updated>${rfc_date}</updated>"
     echo "    <summary>${summary}</summary>"
