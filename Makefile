@@ -29,9 +29,10 @@ $(TARGET_DIR)/index.html: $(SOURCES) build-index.sh src/head.html src/post-nav-b
 	mkdir -p $(dir $@)
 	./build-index.sh $(SOURCES) > $@
 
-$(TARGET_DIR)/feed.xml: $(SOURCES) build-feed.sh
+$(TARGET_DIR)/feed.xml: $(SOURCES) build-feed.sh src/atom.rng
 	mkdir -p $(dir $@)
 	./build-feed.sh $(SOURCES) > $@
+	xmllint --noout --relaxng src/atom.rng $@
 
 $(TARGET_DIR)/%.css: src/%.css
 	mkdir -p $(dir $@)

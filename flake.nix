@@ -32,6 +32,7 @@
               libarchive
               nodePackages.live-server
               graphicsmagick
+              libxml2
             ];
           };
         };
