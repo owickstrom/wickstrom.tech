@@ -21,6 +21,8 @@ REDIRECT_TARGETS=$(patsubst $(SRC_DIR)/redirects/%,$(TARGET_DIR)/%,$(REDIRECT_SO
 
 all: $(TARGETS) $(ASSET_TARGETS) $(REDIRECT_TARGETS) $(TARGET_DIR)/reset.css $(TARGET_DIR)/index.css $(TARGET_DIR)/index.html $(TARGET_DIR)/feed.xml Makefile
 
+html: $(TARGETS) $(ASSET_TARGETS) $(REDIRECT_TARGETS) $(TARGET_DIR)/reset.css $(TARGET_DIR)/index.css $(TARGET_DIR)/index.html Makefile
+
 $(TARGET_DIR)/%.html: $(SRC_DIR)/posts/%.md src/head.html src/post-nav-before.html src/post-nav-after.html
 	mkdir -p $(dir $@)
 	pandoc -s -f markdown -t html5 -Vlang=en-US --mathml --highlight-style=monochrome --css=reset.css --css=index.css --css=/assets/fonts/berkeley-mono/berkeley-mono.css --include-in-header=src/head.html --include-before-body=src/post-nav-before.html --include-after-body=src/post-nav-after.html -o $@ $<

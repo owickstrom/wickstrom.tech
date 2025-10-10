@@ -25,12 +25,12 @@
               git
               pandoc
               yq-go
-              fswatch
               coreutils
               parallel
               goaccess
               libarchive
               nodePackages.live-server
+              watchexec
               graphicsmagick
               libxml2
             ];
