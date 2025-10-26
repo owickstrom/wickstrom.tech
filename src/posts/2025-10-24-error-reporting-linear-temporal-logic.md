@@ -12,10 +12,11 @@ author: "Oskar Wickström"
 * Picostrom and error reporting
     * QuickLTL recap
     * Introduce picostrom-rs
+        * Learning Rust, be gentle
     * Motivating examples
 * Plain text only?
     * Maybe show some huge error with lots of parts, hard to parse
-    * Show the diagram example
+    * Show the diagram example (bottom)
     * Other wild ideas
 * Things left out
     * Implication; it'd be nice if you could trace _why_ some subformula is even relevant. A common pattern in state machine specs and other safety properties is:
@@ -24,7 +25,7 @@ author: "Oskar Wickström"
         \text{always}_n(A \implies (B \land \text{next}_t(C)))
         $$
 
-        If $B$ or $C$ are false, it'd be nice with an error also including the antecedent:
+        If $B$ or $C$ are false, it'd be useful with an error also including the antecedent:
 
         > [...] because A, B in state 0 and C in state 1 [...]
 
@@ -42,6 +43,9 @@ author: "Oskar Wickström"
     * I've focused on QuickLTL, which deals with finite traces. What about
       infinite temporal logics? I'm guessing this could be adapted but I
       haven't tried.
+
+
+## Diagrams
 
 Let's say we have a failing property like the following:
 
@@ -79,7 +83,7 @@ But we could also draw a diagram, using information from the collected states:
    ║       <span class="blue">╎</span>               <span class="red">╎</span>
    ║       <span class="blue">╎</span>               <span class="red">╎</span>
  0 ╚══════════════════════════════════════════ State
-   0   1   2   3   4   5   6   6   7   8   9
+   0   1   2   3   4   5   6   7   8   9
 </pre>
 
 Or for a liveness property like
@@ -94,9 +98,9 @@ give up after eight states:
  Value     <span class="red">╎</span>
            <span class="red">╎</span>
    ║       <span class="red">╎</span>
-15 ║       <span class="red">╎</span>               ┌──────────────── C
-   ║       <span class="red">╎</span>               │                  
-   ║       <span class="red">╎</span>             ┌─│──────────────── B
+15 ║       <span class="red">╎</span>               ┌───────────── C
+   ║       <span class="red">╎</span>               │               
+   ║       <span class="red">╎</span>             ┌─│───────────── B
    ║─────────────────────┘ │
    ║       <span class="red">╎</span>               │
 10 ║       <span class="red">╎</span>               │
@@ -108,7 +112,7 @@ give up after eight states:
    ║       <span class="red">╎</span>
    ║       <span class="red">╎</span>
    ║       <span class="red">╎</span>
-   ║       <span class="red">└╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴✗</span>
- 0 ╚══════════════════════════════════════════ State
-   0   1   2   3   4   5   6   6   7   8   9 
+   ║       <span class="red">└╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴✗</span>
+ 0 ╚═══════════════════════════════════════ State
+   0   1   2   3   4   5   6   7   8   9 
 </pre>

@@ -154,8 +154,7 @@ pre {
 }
 
 math {
-  font-size: 1rem;
-  font-family: "Crimson Text", serif;
+  font-size: .8rem;
 }
 math[display=block] {
   display: block;
