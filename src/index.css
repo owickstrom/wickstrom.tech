@@ -139,6 +139,7 @@ code {
   font-family: "BerkeleyMonoWeb", monospace;
   font-size: .8rem;
   font-weight: normal;
+  line-height: 1.2;
 }
 
 img {
@@ -154,6 +155,12 @@ pre {
 
 math {
   font-size: 1rem;
+  font-family: "Crimson Text", serif;
+}
+math[display=block] {
+  display: block;
+  text-align: left;
+  padding: 0 2rem;
 }
 
 body {
@@ -333,5 +340,22 @@ code span.st, code span.ss {
   }
   code span.st, code span.ss {
     color: #868c91;
+  }
+}
+
+/* Custom class, not part of highlighting */
+span.red {
+  color: #A8334C;
+}
+span.blue {
+  color: #286486;
+}
+
+@media (prefers-color-scheme: dark) {
+  span.red {
+    color: #DE6E7C;
+  }
+  span.blue {
+    color: #6099C0;
   }
 }
