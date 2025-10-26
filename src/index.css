@@ -181,7 +181,7 @@ body>pre {
 
 #title-block-header {
   display: flex;
-  margin: 2rem 0 3rem 0;
+  margin: 2rem 0 2rem 0;
   flex-wrap: wrap;
   font-family: "Alegreya Sans", sans-serif;
 }
@@ -231,7 +231,7 @@ body>pre {
  * Index
  */
 .index-page header {
-  padding: 4rem 0 2rem 0;
+  padding: 4rem 0 1rem 0;
 }
 
 .index-page h1 {

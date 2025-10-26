@@ -18,9 +18,27 @@ author: "Oskar Wickström"
     * Show the diagram example
     * Other wild ideas
 * Things left out
-    * Implication
-    * `next (always X)` only shows inner error when failed
+    * Implication; it'd be nice if you could trace _why_ some subformula is even relevant. A common pattern in state machine specs and other safety properties is:
 
+        $$
+        \text{always}_n(A \implies (B \land \text{next}_t(C)))
+        $$
+
+        If $B$ or $C$ are false, it'd be nice with an error also including the antecedent:
+
+        > [...] because A, B in state 0 and C in state 1 [...]
+
+
+    * `next (always X)` only shows inner error when failed
+    * Not exactly left out, but QuickLTL suffers from and infinite loop issue, where a formula like the following causes the evaluation loop to never terminate:
+
+        $$\text{always}_10(\text{eventually}_5(X))$$
+
+      This is because the outer _always_ consumes the extra states demanded by
+      the inner _eventually_, causing new _eventually_ chains to be spun off,
+      demanding yet more states, and so on. This is tricky to solve in the
+      logic itself, but could be possibly dealt with using a global limit on
+      the number of states.
 
 Let's say we have a failing property like the following:
 
