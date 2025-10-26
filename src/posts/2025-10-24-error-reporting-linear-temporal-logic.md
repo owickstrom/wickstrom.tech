@@ -39,10 +39,13 @@ author: "Oskar Wickström"
       demanding yet more states, and so on. This is tricky to solve in the
       logic itself, but could be possibly dealt with using a global limit on
       the number of states.
+    * I've focused on QuickLTL, which deals with finite traces. What about
+      infinite temporal logics? I'm guessing this could be adapted but I
+      haven't tried.
 
 Let's say we have a failing property like the following:
 
-$$\text{next}_d(\text{next}_d(\text{always}_10(\text{B} < \text{C})))$$
+$$\text{next}_d(\text{next}_d(\text{always}_8(B < C)))$$
 
 The textual error might be:
 
@@ -52,29 +55,60 @@ The textual error might be:
 But we could also draw a diagram, using information from the collected states:
 
 <pre>
-            <span class="blue">□ As of state 3, it must always be the case</span>
-            <span class="blue">╎ that B is greater than C.</span>
-            <span class="blue">╎</span>
-            <span class="blue">╎</span>               <span class="red">✗ In state 6, B (13) is not</span>
-            <span class="blue">╎</span>               <span class="red">╎ greater than C (15).</span>
-  Value     <span class="blue">╎</span>               <span class="red">╎</span> 
-            <span class="blue">╎</span>               <span class="red">╎</span> 
-    ║       <span class="blue">╎</span>               <span class="red">╎</span>                
-15  ║       <span class="blue">╎</span>               ┌──────────────── C
-    ║       <span class="blue">╎</span>               │                  
-    ║       <span class="blue">╎</span>             ┌─│──────────────── B
-    ║─────────────────────┘ │
-    ║       <span class="blue">╎</span>               │
-10  ║       <span class="blue">╎</span>               │
-    ║       <span class="blue">╎</span>               │ 
-    ║       ┌───────────────┘
-    ║───────┘               <span class="red">╎</span>
-    ║       <span class="blue">╎</span>               <span class="red">╎</span>
- 5  ║       <span class="blue">╎</span>               <span class="red">╎</span>
-    ║       <span class="blue">╎</span>               <span class="red">╎</span> 
-    ║       <span class="blue">╎</span>               <span class="red">╎</span>
-    ║       <span class="blue">╎</span>               <span class="red">╎</span>
-    ║       <span class="blue">╎</span>               <span class="red">╎</span>
- 0  ╚══════════════════════════════════════════ State
-    1   2   3   4   5   6   6   7   8   9   10
+           <span class="blue">□ As of state 3, it must always be the case</span>
+           <span class="blue">╎ that B is greater than C.</span>
+           <span class="blue">╎</span>
+           <span class="blue">╎</span>               <span class="red">✗ In state 6, B (13) is not</span>
+           <span class="blue">╎</span>               <span class="red">╎ greater than C (15).</span>
+ Value     <span class="blue">╎</span>               <span class="red">╎</span> 
+           <span class="blue">╎</span>               <span class="red">╎</span> 
+   ║       <span class="blue">╎</span>               <span class="red">╎</span>                
+15 ║       <span class="blue">╎</span>               ┌──────────────── C
+   ║       <span class="blue">╎</span>               │                  
+   ║       <span class="blue">╎</span>             ┌─│──────────────── B
+   ║─────────────────────┘ │
+   ║       <span class="blue">╎</span>               │
+10 ║       <span class="blue">╎</span>               │
+   ║       <span class="blue">╎</span>               │ 
+   ║       ┌───────────────┘
+   ║───────┘               <span class="red">╎</span>
+   ║       <span class="blue">╎</span>               <span class="red">╎</span>
+ 5 ║       <span class="blue">╎</span>               <span class="red">╎</span>
+   ║       <span class="blue">╎</span>               <span class="red">╎</span> 
+   ║       <span class="blue">╎</span>               <span class="red">╎</span>
+   ║       <span class="blue">╎</span>               <span class="red">╎</span>
+   ║       <span class="blue">╎</span>               <span class="red">╎</span>
+ 0 ╚══════════════════════════════════════════ State
+   0   1   2   3   4   5   6   6   7   8   9
+</pre>
+
+Or for a liveness property like
+$\text{next}_d(\text{next}_d(\text{eventually}_8(B = C)))$, where there is no
+counterexample at a particular state, we could draw a diagram showing how we
+give up after eight states:
+
+<pre>
+           <span class="red">◇ As of state 3, eventually B</span>
+           <span class="red">╎ must be equal to C.</span>
+           <span class="red">╎</span>
+ Value     <span class="red">╎</span>
+           <span class="red">╎</span>
+   ║       <span class="red">╎</span>
+15 ║       <span class="red">╎</span>               ┌──────────────── C
+   ║       <span class="red">╎</span>               │                  
+   ║       <span class="red">╎</span>             ┌─│──────────────── B
+   ║─────────────────────┘ │
+   ║       <span class="red">╎</span>               │
+10 ║       <span class="red">╎</span>               │
+   ║       <span class="red">╎</span>               │ 
+   ║       ┌───────────────┘
+   ║───────┘
+   ║       <span class="red">╎</span>
+ 5 ║       <span class="red">╎</span>
+   ║       <span class="red">╎</span>
+   ║       <span class="red">╎</span>
+   ║       <span class="red">╎</span>
+   ║       <span class="red">└╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴✗</span>
+ 0 ╚══════════════════════════════════════════ State
+   0   1   2   3   4   5   6   6   7   8   9 
 </pre>
