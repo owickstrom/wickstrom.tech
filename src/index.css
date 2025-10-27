@@ -142,7 +142,7 @@ code {
   line-height: 1.2;
 }
 
-img {
+img, object {
   max-width: 100%;
 }
 

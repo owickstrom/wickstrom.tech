@@ -59,29 +59,29 @@ The textual error might be:
 But we could also draw a diagram, using information from the collected states:
 
 <pre>
-           <span class="blue">□ As of state 3, it must always be the case</span>
-           <span class="blue">╎ that B is greater than C.</span>
-           <span class="blue">╎</span>
-           <span class="blue">╎</span>               <span class="red">✗ In state 6, B (13) is not</span>
-           <span class="blue">╎</span>               <span class="red">╎ greater than C (15).</span>
- Value     <span class="blue">╎</span>               <span class="red">╎</span> 
-           <span class="blue">╎</span>               <span class="red">╎</span> 
-   ║       <span class="blue">╎</span>               <span class="red">╎</span>                
-15 ║       <span class="blue">╎</span>               ┌──────────────── C
-   ║       <span class="blue">╎</span>               │                  
-   ║       <span class="blue">╎</span>             ┌─│──────────────── B
+           □ As of state 3, it must always be the case
+           ╎ that B is greater than C.
+           ╎
+           ╎               ✗ In state 6, B (13) is not
+           ╎               ╎ greater than C (15).
+ Value     ╎               ╎ 
+           ╎               ╎ 
+   ║       ╎               ╎                
+15 ║       ╎               ┌──────────────── C
+   ║       ╎               │                  
+   ║       ╎             ┌─│──────────────── B
    ║─────────────────────┘ │
-   ║       <span class="blue">╎</span>               │
-10 ║       <span class="blue">╎</span>               │
-   ║       <span class="blue">╎</span>               │ 
+   ║       ╎               │
+10 ║       ╎               │
+   ║       ╎               │ 
    ║       ┌───────────────┘
-   ║───────┘               <span class="red">╎</span>
-   ║       <span class="blue">╎</span>               <span class="red">╎</span>
- 5 ║       <span class="blue">╎</span>               <span class="red">╎</span>
-   ║       <span class="blue">╎</span>               <span class="red">╎</span> 
-   ║       <span class="blue">╎</span>               <span class="red">╎</span>
-   ║       <span class="blue">╎</span>               <span class="red">╎</span>
-   ║       <span class="blue">╎</span>               <span class="red">╎</span>
+   ║───────┘               ╎
+   ║       ╎               ╎
+ 5 ║       ╎               ╎
+   ║       ╎               ╎ 
+   ║       ╎               ╎
+   ║       ╎               ╎
+   ║       ╎               ╎
  0 ╚══════════════════════════════════════════ State
    0   1   2   3   4   5   6   7   8   9
 </pre>
@@ -91,7 +91,7 @@ $\text{next}_d(\text{next}_d(\text{eventually}_8(B = C)))$, where there is no
 counterexample at a particular state, we could draw a diagram showing how we
 give up after eight states:
 
-<pre>
+<pre><code>
            <span class="red">◇ As of state 3, eventually B</span>
            <span class="red">╎ must be equal to C.</span>
            <span class="red">╎</span>
@@ -115,4 +115,9 @@ give up after eight states:
    ║       <span class="red">└╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴✗</span>
  0 ╚═══════════════════════════════════════ State
    0   1   2   3   4   5   6   7   8   9 
-</pre>
+</code></pre>
+
+
+<object data="/assets/ltl-error-reporting/eventually.svg" type="image/svg+xml" width="600px">
+    <img src="/assets/ltl-error-reporting/eventually.svg" width="600px" />
+</object>
