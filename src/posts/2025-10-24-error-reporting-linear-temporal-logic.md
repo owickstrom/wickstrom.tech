@@ -53,71 +53,22 @@ $$\text{next}_d(\text{next}_d(\text{always}_8(B < C)))$$
 
 The textual error might be:
 
-> **Definitely false:** as of state 3, it must always be the case that B is greater
+> **Definitely false:** as of state 2, it must always be the case that B is greater
 > than C, but in state 6, B (13) is not greater than C (15)
 
 But we could also draw a diagram, using information from the collected states:
 
-<pre>
-           □ As of state 3, it must always be the case
-           ╎ that B is greater than C.
-           ╎
-           ╎               ✗ In state 6, B (13) is not
-           ╎               ╎ greater than C (15).
- Value     ╎               ╎ 
-           ╎               ╎ 
-   ║       ╎               ╎                
-15 ║       ╎               ┌──────────────── C
-   ║       ╎               │                  
-   ║       ╎             ┌─│──────────────── B
-   ║─────────────────────┘ │
-   ║       ╎               │
-10 ║       ╎               │
-   ║       ╎               │ 
-   ║       ┌───────────────┘
-   ║───────┘               ╎
-   ║       ╎               ╎
- 5 ║       ╎               ╎
-   ║       ╎               ╎ 
-   ║       ╎               ╎
-   ║       ╎               ╎
-   ║       ╎               ╎
- 0 ╚══════════════════════════════════════════ State
-   0   1   2   3   4   5   6   7   8   9
-</pre>
+<object data="/assets/ltl-error-reporting/always.svg" type="image/svg+xml" width="540px">
+    <img src="/assets/ltl-error-reporting/always.svg" width="540px" />
+</object>
 
 Or for a liveness property like
-$\text{next}_d(\text{next}_d(\text{eventually}_8(B = C)))$, where there is no
+$\text{next}_d(\text{next}_d(\text{eventually}_7(B = C)))$, where there is no
 counterexample at a particular state, we could draw a diagram showing how we
 give up after eight states:
 
-<pre><code>
-           <span class="red">◇ As of state 3, eventually B</span>
-           <span class="red">╎ must be equal to C.</span>
-           <span class="red">╎</span>
- Value     <span class="red">╎</span>
-           <span class="red">╎</span>
-   ║       <span class="red">╎</span>
-15 ║       <span class="red">╎</span>               ┌───────────── C
-   ║       <span class="red">╎</span>               │               
-   ║       <span class="red">╎</span>             ┌─│───────────── B
-   ║─────────────────────┘ │
-   ║       <span class="red">╎</span>               │
-10 ║       <span class="red">╎</span>               │
-   ║       <span class="red">╎</span>               │ 
-   ║       ┌───────────────┘
-   ║───────┘
-   ║       <span class="red">╎</span>
- 5 ║       <span class="red">╎</span>
-   ║       <span class="red">╎</span>
-   ║       <span class="red">╎</span>
-   ║       <span class="red">╎</span>
-   ║       <span class="red">└╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴✗</span>
- 0 ╚═══════════════════════════════════════ State
-   0   1   2   3   4   5   6   7   8   9 
-</code></pre>
-
-
-<object data="/assets/ltl-error-reporting/eventually.svg" type="image/svg+xml" width="600px">
-    <img src="/assets/ltl-error-reporting/eventually.svg" width="600px" />
+<object data="/assets/ltl-error-reporting/eventually.svg" type="image/svg+xml" width="540px">
+    <img src="/assets/ltl-error-reporting/eventually.svg" width="540px" />
 </object>
+
+
