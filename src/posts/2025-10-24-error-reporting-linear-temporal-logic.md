@@ -8,6 +8,7 @@ author: "Oskar Wickström"
     * Logic errors, unsat
     * Linear temporal logic, QuickLTL, and Quickstrom
     * Why error reporting matters
+    * Cite the 2022 survey (“A Systematic Literature Review on Counterexample Explanation in Model Checking”), which supports your claim that explanation quality is an unsolved problem?
     * Error Reporting Logic reference and summary
 * Picostrom and error reporting
     * QuickLTL recap
@@ -65,7 +66,7 @@ But we could also draw a diagram, using information from the collected states:
 Or for a liveness property like
 $\text{next}_d(\text{next}_d(\text{eventually}_7(B = C)))$, where there is no
 counterexample at a particular state, we could draw a diagram showing how we
-give up after eight states:
+give up after some time:
 
 <object data="/assets/ltl-error-reporting/eventually.svg" type="image/svg+xml" width="540px">
     <img src="/assets/ltl-error-reporting/eventually.svg" width="540px" />
