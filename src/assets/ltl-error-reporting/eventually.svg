@@ -3,9 +3,16 @@
      version="1.1" 
      max-width="100%"
      preserveAspectRatio="xMinYMin meet"
-     viewBox="0 0 950 650"
+     viewBox="0 0 950 750"
      >
      <defs>
+       <pattern id="diagonal-stripes" patternUnits="userSpaceOnUse" width="16" height="16">
+         <path d="M-1,1 l8,-8
+                  M0,16 l16,-16
+                  M12,20 l8,-8" 
+               stroke-width="4"
+               class="stripes" />
+       </pattern>
        <style type="text/css">@import url(http://fonts.googleapis.com/css?family=Alegreya+Sans:wght@400;700);</style>
        <style type="text/css">
          text {
@@ -17,7 +24,7 @@
          path {
            stroke: #2c363c;
          }
-         line {
+         rect, line {
            stroke: #2c363c;
          }
          path.red, rect.red {
@@ -32,6 +39,10 @@
          path.blue, rect.blue {
            stroke: #286486;
          }
+         .stripes {
+           stroke: #A8334C;
+           opacity: 0.15;
+         }
          @media (prefers-color-scheme: dark) {
            text {
              fill: #b4bdc3;
@@ -39,7 +50,7 @@
            path {
              stroke: #b4bdc3;
            }
-           line {
+           rect, line {
              stroke: #b4bdc3;
            }
            path.red, rect.red {
@@ -54,22 +65,26 @@
            text.blue {
              fill: #6099C0;
            }
+           .stripes {
+             stroke: #DE6E7C;
+             opacity: 0.3;
+           }
          }
        </style>
      </defs>
 
     <g stroke-width="2" stroke-linecap="square">
-      <line x1="50" y1="100" x2="50" y2="600" />
-      <line x1="50" y1="600" x2="850" y2="600" />
+      <line x1="50" y1="200" x2="50" y2="700" />
+      <line x1="50" y1="700" x2="850" y2="700" />
     </g>
 
-    <g font-size="28">
-      <text x="50" y="86" text-anchor="middle">Value</text>
-      <text x="864" y="600" text-anchor="start" dominant-baseline="middle">State</text>
+    <g font-size="24">
+      <text x="50" y="186" text-anchor="middle">Value</text>
+      <text x="864" y="700" text-anchor="start" dominant-baseline="middle">State</text>
     </g>
 
     <!-- Y ticks -->
-    <g transform="translate(0, 100)" font-size="24" text-anchor="end" dominant-baseline="central">
+    <g transform="translate(0, 200)" font-size="24" text-anchor="end" dominant-baseline="central">
       <text x="40" y="50">15</text>
       <text x="40" y="200">10</text>
       <text x="40" y="350">5</text>
@@ -77,7 +92,7 @@
     </g>
 
     <!-- X ticks -->
-    <g transform="translate(50, 610)" font-size="24" text-anchor="middle" dominant-baseline="hanging">
+    <g transform="translate(50, 710)" font-size="24" text-anchor="middle" dominant-baseline="hanging">
       <text x="0" y="0">0</text>
       <text x="85" y="0">1</text>
       <text x="170" y="0">2</text>
@@ -92,30 +107,36 @@
 
     <!-- Annotations -->
     <g transform="translate(50, 0)" font-size="28" text-anchor="start" dominant-baseline="central">
+      <rect x="170" y="200" width="595" height="500" fill="url(#diagonal-stripes)" stroke-width="0" />
       <g>
-        <g transform="translate(165, 15) rotate(45 5 5)">
-          <rect width="10" height="10" class="red" stroke-width="2" fill="none" />
-        </g>
-        <text x="188" y="20" class="red">As of state 2, eventually B must be equal to C.</text>
+        <rect x="164" y="14" width="12" height="12" stroke-width="2" fill="none" />
+        <text x="188" y="20">As of state 2, eventually B must be equal to C</text>
         <path d="
           M 170,32
-          L 170,570
-          L 753,570
-        " class="red" stroke-width="2" fill="none" stroke-dasharray="4 4" />
-          <g transform="translate(759, 564)" stroke-width="2" fill="none">
-            <path d="
-              M 0,0
-              L 12,12
-              M 0,12
-              L 12,0
-            " class="red" />
-          </g>
-          <text x="771" y="552" class="red" text-anchor="end" dominant-baseline="initial">Probably false after 8 states.</text>
+          L 170,700
+        "  stroke-width="3" fill="none" stroke-dasharray="4 4" />
+      </g>
+      <g>
+        <g transform="translate(759, 74)" stroke-width="2" fill="none">
+        <path d="
+          M 0,0
+          L 12,12
+          M 0,12
+          L 12,0
+        " class="red" />
+        </g>
+        <text x="751" y="80" class="red" text-anchor="end">
+          Probably false after 8 states
+        </text>
+        <path d="
+          M 765,92
+          L 765,700
+        " class="red" stroke-dasharray="4 4" stroke-width="3" />
       </g>
     </g>
 
     <!-- Lines -->
-    <g transform="translate(50, 100)" stroke-width="2" fill="none">
+    <g transform="translate(50, 200)" stroke-width="3" fill="none">
       <path d="
         M 0,140
         L 425,140
@@ -133,7 +154,7 @@
     </g>
 
     <!-- Labels -->
-    <g transform="translate(50, 100)" font-size="28" text-anchor="start" dominant-baseline="central">
+    <g transform="translate(50, 200)" font-size="24" font-weight="600" text-anchor="start" dominant-baseline="central">
       <text x="779" y="110">B</text>
       <text x="779" y="50">C</text>
     </g>

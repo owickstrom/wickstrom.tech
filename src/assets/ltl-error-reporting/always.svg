@@ -6,6 +6,13 @@
      viewBox="0 0 950 750"
      >
      <defs>
+       <pattern id="diagonal-stripes" patternUnits="userSpaceOnUse" width="16" height="16">
+         <path d="M-1,1 l8,-8
+                  M0,16 l16,-16
+                  M12,20 l8,-8" 
+               stroke-width="4"
+               class="stripes" />
+       </pattern>
        <style type="text/css">@import url(http://fonts.googleapis.com/css?family=Alegreya+Sans:wght@400;700);</style>
        <style type="text/css">
          text {
@@ -17,7 +24,7 @@
          path {
            stroke: #2c363c;
          }
-         line {
+         rect, line {
            stroke: #2c363c;
          }
          path.red, rect.red {
@@ -32,6 +39,10 @@
          path.blue, rect.blue {
            stroke: #286486;
          }
+         .stripes {
+           stroke: #4F6C31;
+           opacity: 0.15;
+         }
          @media (prefers-color-scheme: dark) {
            text {
              fill: #b4bdc3;
@@ -39,7 +50,7 @@
            path {
              stroke: #b4bdc3;
            }
-           line {
+           rect, line {
              stroke: #b4bdc3;
            }
            path.red, rect.red {
@@ -54,6 +65,10 @@
            text.blue {
              fill: #6099C0;
            }
+           .stripes {
+             stroke: #819B69;
+             opacity: 0.3;
+           }
          }
        </style>
      </defs>
@@ -63,7 +78,7 @@
       <line x1="50" y1="700" x2="850" y2="700" />
     </g>
 
-    <g font-size="28">
+    <g font-size="24">
       <text x="50" y="186" text-anchor="middle">Value</text>
       <text x="864" y="700" text-anchor="start" dominant-baseline="middle">State</text>
     </g>
@@ -92,13 +107,14 @@
 
     <!-- Annotations -->
     <g transform="translate(50, 0)" font-size="28" text-anchor="start" dominant-baseline="central">
+      <rect x="170" y="200" width="340" height="500" fill="url(#diagonal-stripes)" stroke-width="0" />
       <g>
-        <rect x="164" y="14" width="12" height="12" class="blue" stroke-width="2" fill="none" />
-        <text x="188" y="20" class="blue">As of state 2, it must always be the case that B is greater than C.</text>
+        <rect x="164" y="14" width="12" height="12" stroke-width="2" fill="none" />
+        <text x="188" y="20">As of state 2, it must always be the case that B is greater than C</text>
         <path d="
           M 170,32
           L 170,700
-        " class="blue" stroke-width="2" fill="none" stroke-dasharray="4 4" />
+        "  stroke-width="3" fill="none" stroke-dasharray="4 4" />
       </g>
       <g>
         <g transform="translate(504, 74)" stroke-width="2" fill="none">
@@ -111,17 +127,17 @@
         </g>
         <text transform="translate(528, 80)" class="red">
           <tspan x="0" dy="0">In state 6, B (13) is not greater</tspan>
-          <tspan x="0" dy="28">than C (15).</tspan>
+          <tspan x="0" dy="28">than C (15)</tspan>
         </text>
         <path d="
           M 510,92
           L 510,700
-        " class="red" stroke-dasharray="4 4" stroke-width="2" />
+        " class="red" stroke-dasharray="4 4" stroke-width="3" />
       </g>
     </g>
 
     <!-- Lines -->
-    <g transform="translate(50, 200)" stroke-width="2" fill="none">
+    <g transform="translate(50, 200)" stroke-width="3" fill="none">
       <path d="
         M 0,140
         L 425,140
@@ -139,7 +155,7 @@
     </g>
 
     <!-- Labels -->
-    <g transform="translate(50, 200)" font-size="28" text-anchor="start" dominant-baseline="central">
+    <g transform="translate(50, 200)" font-size="24" font-weight="600" text-anchor="start" dominant-baseline="central">
       <text x="779" y="110">B</text>
       <text x="779" y="50">C</text>
     </g>
