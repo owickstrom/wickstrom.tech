@@ -107,13 +107,13 @@
 
     <!-- Annotations -->
     <g transform="translate(50, 0)" font-size="28" text-anchor="start" dominant-baseline="central">
-      <rect x="170" y="200" width="340" height="500" fill="url(#diagonal-stripes)" stroke-width="0" />
+      <rect x="85" y="200" width="425" height="500" fill="url(#diagonal-stripes)" stroke-width="0" />
       <g>
-        <rect x="164" y="14" width="12" height="12" stroke-width="2" fill="none" />
-        <text x="188" y="20">As of state 2, it must always be the case that B is greater than C</text>
+        <rect x="79" y="14" width="12" height="12" stroke-width="2" fill="none" />
+        <text x="103" y="20">It must always be the case that B is greater than C</text>
         <path d="
-          M 170,32
-          L 170,700
+          M 85,32
+          L 86,700
         "  stroke-width="3" fill="none" stroke-dasharray="4 4" />
       </g>
       <g>

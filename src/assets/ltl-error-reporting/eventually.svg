@@ -107,13 +107,13 @@
 
     <!-- Annotations -->
     <g transform="translate(50, 0)" font-size="28" text-anchor="start" dominant-baseline="central">
-      <rect x="170" y="200" width="595" height="500" fill="url(#diagonal-stripes)" stroke-width="0" />
+      <rect x="85" y="200" width="680" height="500" fill="url(#diagonal-stripes)" stroke-width="0" />
       <g>
-        <rect x="164" y="14" width="12" height="12" stroke-width="2" fill="none" />
-        <text x="188" y="20">As of state 2, eventually B must be equal to C</text>
+        <rect x="79" y="14" width="12" height="12" stroke-width="2" fill="none" />
+        <text x="103" y="20">Eventually B must be equal to C</text>
         <path d="
-          M 170,32
-          L 170,700
+          M 85,32
+          L 85,700
         "  stroke-width="3" fill="none" stroke-dasharray="4 4" />
       </g>
       <g>
@@ -126,7 +126,7 @@
         " class="red" />
         </g>
         <text x="751" y="80" class="red" text-anchor="end">
-          Probably false after 8 states
+          Probably false after 9 states
         </text>
         <path d="
           M 765,92

@@ -9,7 +9,7 @@ author: "Oskar Wickström"
     * Linear temporal logic, QuickLTL, and Quickstrom
     * Why error reporting matters
     * Cite the 2022 survey (“A Systematic Literature Review on Counterexample Explanation in Model Checking”), which supports your claim that explanation quality is an unsolved problem?
-    * Error Reporting Logic reference and summary
+    * [Error Reporting Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf) reference and summary
 * Picostrom and error reporting
     * QuickLTL recap
     * Introduce picostrom-rs
@@ -31,7 +31,6 @@ author: "Oskar Wickström"
         > [...] because A, B in state 0 and C in state 1 [...]
 
 
-    * `next (always X)` only shows inner error when failed
     * Not exactly left out, but QuickLTL suffers from and infinite loop issue, where a formula like the following causes the evaluation loop to never terminate:
 
         $$\text{always}_10(\text{eventually}_5(X))$$
@@ -50,12 +49,12 @@ author: "Oskar Wickström"
 
 Let's say we have a failing property like the following:
 
-$$\text{next}_d(\text{next}_d(\text{always}_8(B < C)))$$
+$$\text{next}_d(\text{always}_8(B < C))$$
 
 The textual error might be:
 
-> **Definitely false:** as of state 2, it must always be the case that B is greater
-> than C, but in state 6, B (13) is not greater than C (15)
+> **Definitely false:** in the next state, it must always be the case that B is
+> greater than C, but B (13) is not greater than C (15) in state 6
 
 But we could also draw a diagram, using information from the collected states:
 
@@ -64,7 +63,7 @@ But we could also draw a diagram, using information from the collected states:
 </object>
 
 Or for a liveness property like
-$\text{next}_d(\text{next}_d(\text{eventually}_7(B = C)))$, where there is no
+$\text{next}_d(\text{eventually}_8(B = C))$, where there is no
 counterexample at a particular state, we could draw a diagram showing how we
 give up after some time:
 
