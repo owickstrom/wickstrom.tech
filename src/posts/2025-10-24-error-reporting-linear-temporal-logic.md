@@ -225,31 +225,96 @@ variants? Those are the definite cases.
 
 ## Rendering Problems
 
-* Picostrom and error reporting
-    * Introduce picostrom-rs
-        * Learning Rust, be gentle
-    * Motivating examples
-* Plain text only?
-    * Maybe show some huge error with lots of parts, hard to parse
-    * Show the diagram example (bottom)
-    * Other wild ideas
-* Short-circuiting behavior
-* Differences from ERL:
-    - no splitting/joining errors, instead a `Problem` AST
-    - no responsible objects, free variables
-* Things left out
-    * Not exactly left out, but QuickLTL suffers from and infinite loop issue, where a formula like the following causes the evaluation loop to never terminate:
+The `Problem` type is a tree structure, mirroring the structure of the
+evaluated formula, but only containing the parts of it that contributed to its
+falsity.
 
-        $$\text{always}_10(\text{eventually}_5(X))$$
+```rust
+enum Problem<'a, A: Atom> {
+    And {
+        left: Box<Problem<'a, A>>,
+        right: Box<Problem<'a, A>>,
+    },
+    Or {
+        left: Box<Problem<'a, A>>,
+        right: Box<Problem<'a, A>>,
+    },
+    Always {
+        state: Numbered<&'a A::State>,
+        problem: Box<Problem<'a, A>>,
+    },
+    Eventually {
+        state: Numbered<&'a A::State>,
+        formula: Box<Formula<A>>,
+    },
+    // A bunch of others...
+}
+```
 
-      This is because the outer _always_ consumes the extra states demanded by
-      the inner _eventually_, causing new _eventually_ chains to be spun off,
-      demanding yet more states, and so on. This is tricky to solve in the
-      logic itself, but could be possibly dealt with using a global limit on
-      the number of states.
-    * I've focused on QuickLTL, which deals with finite traces. What about
-      infinite temporal logics? I'm guessing this could be adapted but I
-      haven't tried.
+I've written a simple renderer that walks the `Problem` tree, constructing
+English error messages. When hitting the atoms, it uses some `Atom` trait
+methods I didn't show you before:
+
+```rust
+fn render(
+    &self, 
+    mode: TextMode, 
+    negated: bool,
+) -> String;
+
+fn render_actual(
+    &self, 
+    negated: bool, 
+    state: &Self::State,
+) -> String;
+```
+
+The `mode` is very much like in the ERL paper, i.e. whether it should be
+rendered in deontic (e.g. "x should equal 4") or indicative (e.g. "x equals
+4") form:
+
+```rust
+enum TextMode {
+    Deontic,
+    Indicative,
+}
+```
+
+The `render` method should render the atom according to the mode, and
+`render_actual` should render relevant parts of the atom in a given state, like
+its variable assignments.
+
+With all these pieces in places, we can finally render some error messages! Let's
+say we have this formula:
+
+$$
+\text{eventually}_10( B = 3 \land C = 4)
+$$
+
+If we run a test and never see such a state, the rendered error would be:
+
+> **Probably false:** eventually B must equal 3 and C must equal 4, but it was not observed starting at state 0
+
+Neat! This is the kind of error reporting I want for my stateful tests.
+
+## Implication
+
+You can trace _why_ some subformula is relevant by using implication. A
+common pattern in state machine specs and other safety properties is:
+
+$$
+\text{precondition} \implies \text{before} \land \text{next}_t(\text{after})
+$$
+
+So, let's say we have this property:
+
+$$
+\text{always}_N(A > 0 \implies (B > 5 \land \text{next}_t(C < 10)))
+$$
+
+If $B$ or $C$ are false, the error includes the antecedent:
+
+> **Definitely false:** B must be greater than 5 and in the next state, C must be less than 10 since A is greater than 0, [...]
 
 ## Small Errors, Short Tests
 
@@ -269,23 +334,10 @@ If only the second invariant ($B < C$) fails, we get a smaller error:
 
 > **Definitely false:** it must always be the case that B is greater than C, but B=0 and C=0 in state 0
 
-And, crucially, if one of the invariants fail before the other, we get a
-smaller error, ignoring the other invariant. While single-state conjuctions
+And, crucially, if one of the invariants fail before the other we also get a
+smaller error, ignoring the other invariant. While single-state conjunctions
 evaluate both sides, possibly creating composite errors, conjunctions over time
 short-circuit to reduce testing time.
-
-## Implication
-
-You can trace _why_ some subformula is relevant when using implication. A
-common pattern in state machine specs and other safety properties is:
-
-$$
-\text{always}_N(A > 0 \implies (B > 5 \land \text{next}_t(C < 10)))
-$$
-
-If $B$ or $C$ are false, the error includes the antecedent:
-
-> **Definitely false:** B must be greater than 5 and in the next state, C must be less than 10 since A is greater than 0, [...]
 
 ## Diagrams
 
@@ -298,7 +350,8 @@ The textual error might be:
 > **Definitely false:** in the next state, it must always be the case that B is
 > greater than C, but B=13 and C=15 in state 6
 
-But we could also draw a diagram, using information from the collected states:
+But with some tweaks we could also draw a diagram, using the `Problem` tree and
+the collected states:
 
 <object data="/assets/ltl-error-reporting/always.svg" type="image/svg+xml" width="540px">
     <img src="/assets/ltl-error-reporting/always.svg" width="540px" />
@@ -312,3 +365,19 @@ give up after some time:
 <object data="/assets/ltl-error-reporting/eventually.svg" type="image/svg+xml" width="540px">
     <img src="/assets/ltl-error-reporting/eventually.svg" width="540px" />
 </object>
+
+These are only sketches, but I think they show how the `Problem` data structure
+can be used in many interesting ways. What other visualizations would be
+possible? An interactive state space explorer could show how problems evolve as
+you navigate across time. You could generate spreadsheets or HTML documents, or
+maybe even annotate the relevant source code of some system-under-test? I think
+it depends a lot on the domain this is applied to.
+
+## No Loose Ends
+
+It's been great to finally finish this work! I've had a lot of fun working
+through the various head-scratchers in the evaluator, getting strange
+combinations of temporal operators to render readable error messages. I also
+enjoyed drawing the diagrams, and _almost_ nerd-sniped myself into automating
+that. Maybe another day. I hope this is interesting or even useful to someone
+out there. LTL is really cool and should be used more!
