@@ -1,36 +1,35 @@
 ---
-title: "Computer Says No: Error Reporting for Linear Temporal Logic" 
+title: "Computer Says No: Error Reporting for LTL" 
 date: "October 24, 2025"
 author: "Oskar Wickström"
 ---
 
 [Quickstrom](https://quickstrom.io/) uses
-[QuickLTL](https://arxiv.org/abs/2203.11532), a linear temporal logic with
-finite traces, to specify and test web applications. As with many other logic
-systems, when a formula evaluates to false --- like when a counterexample to a
-safety property is found or a liveness property cannot be shown to hold ---
-_the computer says no_. Hunting down complex bugs in stateful web applications
-then comes down to staring at the specification alongside a trace of states and
-screenshots, hoping that you somehow can pin down what went wrong. It's not
-great.
+[QuickLTL](https://arxiv.org/abs/2203.11532), a linear temporal logic (LTL)
+over finite traces, to specify and test web applications. As with many other
+logic systems, when a formula evaluates to false --- like when a counterexample
+to a safety property is found or a liveness property cannot be shown to hold
+--- the computer says no. Understanding complex bugs in stateful web
+applications then comes down to staring at the specification alongside a trace
+of states and screenshots, hoping that you somehow can pin down what went
+wrong. It's not great.
 
 Instead, we should have helpful error messages explaining _why_ a property does
 not hold; which parts of the specification failed and which concrete values
-from the trace were involved. I started exploring this space a few years ago
-when I worked actively on Quickstrom, but for some reason it went on the shelf
-half-finished. Time to tie up the loose ends!
+from the trace were involved. Not `false`, `unsat`, or even `assertion error: x
+!= y`. We should get the full story. I started exploring this space a few years
+ago when I worked actively on Quickstrom, but for some reason it went on the
+shelf half-finished. Time to tie up the loose ends!
 
 The starting point was _Picostrom_, a minimal Haskell version of the checker in
 Quickstrom, and [Error Reporting
-Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf), a paper
+Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf) (ERL), a paper
 introducing a way of rendering natural-language messages to explain
-propositional logic counterexamples.
-
-I've now ported it over to Rust, for _reasons_. Mostly because I wanted to see
-what it turned into. I'm still on the rookie side of the Rust scale, so be
-gentle. I've also extended it to handle nested temporal operators better, and
-added support for implication. The code is available [on
-Codeberg](https://codeberg.org/owi/picostrom-rs) under the MIT license.
+propositional logic counterexamples. I've now ported it over to Rust, for
+_reasons_. Mostly because I wanted to see what it turned into. I'm still on the
+rookie side of the Rust scale, so be gentle. The code is available at
+[codeberg.org/owi/picostrom-rs](https://codeberg.org/owi/picostrom-rs) under
+the MIT license.
 
 Between the start of my work and picking it back up now, [A Language for
 Explaining Counterexamples](https://doi.org/10.4230/OASIcs.SLATE.2024.11) was
@@ -41,10 +40,11 @@ Checking](https://arxiv.org/abs/2201.03061).
 
 All right, let's dive in!
 
-## QuickLTL
+## QuickLTL and Picostrom
 
-A quick recap on QuickLTL is in order. It's a four-valued logic, meaning that a
-formula evaluates to one of these values:
+A quick recap on QuickLTL is in order before we go into the Picostrom code.
+It's a four-valued logic, meaning that a formula evaluates to one of these
+values:
 
 * $\text{definitely true}$
 * $\text{definitely false}$
@@ -80,19 +80,152 @@ states, evaluating on all available states, and finally defaulting to
 $\text{probably true}$.
 
 You can think of $\text{eventually}_N(P)$ as unfolding into a sequence of $N$
-nested $\text{next}_D$ wrapping an infinite sequence of $\text{next}_F$,
+nested $\text{next}_D$, wrapping an infinite sequence of $\text{next}_F$,
 connected by $\lor$:
 
 $$
 P \lor \text{next}_D (P \lor \text{next}_D (\ \ \ldots\ \ P \lor \text{next}_F (\lor \text{next}_F (\ \ \ldots\ \ ))\ \ \ldots\ \ ))
 $$
 
-And similarly, $\text{always}_N(P)$ can be thought of as $N$ nested
-$\text{next}_D$ wrapping an infinite sequence of $\text{next}_T$, all connected
-by $\land$.
+Or even better, inductively:
+
+$$
+\begin{align}
+\text{eventually}_0(P) & = P \lor \text{next}_F(\text{eventually}_0(P)) \\
+\text{eventually}_(N + 1)(P) & = P \lor \text{next}_D(\text{eventually}_N(P)) \\
+\end{align}
+$$
+
+And similarly, $\text{always}_N(P)$ can be defined as:
+
+$$
+\begin{align}
+\text{always}_0(P) & = P \land \text{next}_T(\text{always}_0(P)) \\
+\text{always}_(N + 1)(P) & = P \land \text{next}_D(\text{always}_N(P)) \\
+\end{align}
+$$
+
+This is essentially how the evaluator expands these temporal operators, but for
+error reporting reasons, not exactly.
+
+Finally, there are _atoms_, which are domain-specific expressions embedded in
+the AST. evaluating to $\top$ or $\bot$. The AST is parameterized on the atom
+type, so you can plug in an atom expression language of choice. An atom type
+must implement the `Atom` trait, which in simplified form looks like this:
+
+```rust
+trait Atom {
+    type State;
+    fn eval(&self, state: &Self::State) -> bool;
+    // And some other stuff we'll get into later...
+}
+```
+
+For testing the
+checker, and for this blog post, I'm using the following atom type:
+
+```rust
+enum TestAtom {
+    Literal(u64),
+    Select(Identifier),
+    Equals(Box<TestAtom>, Box<TestAtom>),
+    LessThan(Box<TestAtom>, Box<TestAtom>),
+    GreaterThan(Box<TestAtom>, Box<TestAtom>),
+}
+
+enum Identifier {
+    A,
+    B,
+    C,
+}
+```
+
+
+## Evaluation
+
+The first step, like in ERL, is transforming the formula into [negation normal
+form](https://en.wikipedia.org/wiki/Negation_normal_form) (NNF), which means
+pushing down all negations into the _atoms_:
+
+```rust
+enum Formula<Atom> {
+    Atomic {
+        negated: bool,
+        atom: Atom,
+    },
+    // There's no `Not` variant here!
+    ...
+}
+```
+
+This makes it much easier to construct readable sentences, in additional to
+another important upside. The NNF representation is the one used by the
+evaluator internally. 
+
+Next, the `eval` function takes an `Atom::State` and a `Formula`, and produces a
+`Value`:
+
+```rust
+enum Value<'a, A: Atom> {
+    True,
+    False { problem: Problem<'a, A> },
+    Residual(Residual<'a, A>),
+}
+```
+
+A value is either an immediate $\top$ or $\bot$, meaning that we don't need to
+evaluate on additional states, or a _residual_, which is like a description of
+how to evaluate when given a next state. Also note how the `False` variant
+holds a `Problem`, which is what we'd report as $\text{definitely false}$. The
+`True` variant doesn't need any information, because due to NNF, it can't be
+negated and "turned into a problem."
+
+I won't go into all the different
+variants of the `Residual` type, but let's take one example:
+
+```rust
+
+pub enum Residual<'a, A: Atom> {
+    // ...
+    AndAlways {
+        start: Numbered<&'a A::State>,
+        left: Box<Residual<'a, A>>,
+        right: Box<Residual<'a, A>>,
+    },
+    // ...
+}
+```
+
+When such a value is returned, the evaluator checks if it's possible to stop at
+this point, i.e. if there are no _demanding_ operators in the residual. If not
+possible, it draws a new state, and calls `step` on the residual. The `step`
+function is analogous to `eval`, also returning a `Value`, but it operates on a
+`Residual` rather than a `Formula`.
+
+The `AndAlways` variant describes an ongoing evaluation of the $\text{always}$
+operator, where the `left` and `right` residuals are the operands of $\land$ in
+the inductive definition I described earlier. Similarly, it has variants for 
+$\lor$, $\land$, $\implies$, $\text{next}$, $\text{eventually}$,
+and a few others.
+
+When the `stop` function deems it possible to stop evaluating, we get back a
+value of this type:
+
+```rust
+enum Stop<'a, A: Atom> {
+    True,
+    False(Problem<'a, A>),
+}
+```
+
+Those variants correspond to $\text{probably true}$ and  $\text{probably
+false}$. In the false case, we get a `Problem` which we can render. Recall how
+the `Value` type returned by `eval` and `step` also had `True` and `False`
+variants? Those are the definite cases.
+
+## Rendering Problems
 
 * Picostrom and error reporting
-    * QuickLTL recap
     * Introduce picostrom-rs
         * Learning Rust, be gentle
     * Motivating examples
