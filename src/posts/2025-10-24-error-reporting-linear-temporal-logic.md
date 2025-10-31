@@ -43,6 +43,54 @@ All right, let's dive in!
 
 ## QuickLTL
 
+A quick recap on QuickLTL is in order. It's a four-valued logic, meaning that a
+formula evaluates to one of these values:
+
+* $\text{definitely true}$
+* $\text{definitely false}$
+* $\text{probably true}$
+* $\text{probably false}$
+
+It extends propositional logic with temporal operators, much like LTL:
+
+$\text{next}_d(P)$
+
+: $P$ must hold in the next state, demanding a next state is available.
+
+$\text{next}_f(P)$
+
+: $P$ must hold in the next state, defaulting to $\text{definitely false}$ if no next
+state is available.
+
+$\text{next}_t(P)$
+
+: $P$ must hold in the next state, defaulting to $\text{probably true}$ if no next state
+is available.
+
+$\text{eventually}_N(P)$
+
+: $P$ must hold in the current or a future state. It demands at least $N$
+states, evaluating on all available states, and finally defaulting to
+$\text{probably false}$.
+
+$\text{always}_N(P)$
+
+: $P$ must hold in the current and all future states. It demands at least $N$
+states, evaluating on all available states, and finally defaulting to
+$\text{probably true}$.
+
+You can think of $\text{eventually}_N(P)$ as unfolding into a sequence of $N$
+nested $\text{next}_D$ wrapping an infinite sequence of $\text{next}_F$,
+connected by $\lor$:
+
+$$
+P \lor \text{next}_D (P \lor \text{next}_D (\ \ \ldots\ \ P \lor \text{next}_F (\lor \text{next}_F (\ \ \ldots\ \ ))\ \ \ldots\ \ ))
+$$
+
+And similarly, $\text{always}_N(P)$ can be thought of as $N$ nested
+$\text{next}_D$ wrapping an infinite sequence of $\text{next}_T$, all connected
+by $\land$.
+
 * Picostrom and error reporting
     * QuickLTL recap
     * Introduce picostrom-rs
@@ -99,7 +147,7 @@ You can trace _why_ some subformula is relevant when using implication. A
 common pattern in state machine specs and other safety properties is:
 
 $$
-\text{always}_n(A > 0 \implies (B > 5 \land \text{next}_t(C < 10)))
+\text{always}_N(A > 0 \implies (B > 5 \land \text{next}_t(C < 10)))
 $$
 
 If $B$ or $C$ are false, the error includes the antecedent:

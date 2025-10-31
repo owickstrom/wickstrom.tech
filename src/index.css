@@ -85,11 +85,18 @@ p {
 }
 
 li > ul, li > ol {
-  margin: .75rem 0;
+  margin: .25rem 0;
 }
 
 li {
   margin: 0.25rem 0;
+}
+
+li > p {
+  margin: 0;
+}
+li > p+p {
+  margin: 1rem 0 0;
 }
 
 figure {
