@@ -28,7 +28,8 @@ Quickstrom, and [Error Reporting
 Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf) (ERL), a paper
 introducing a way of rendering natural-language messages to explain
 propositional logic counterexamples. I ported it to Rust mostly to see what it
-turned into. I'm still on the rookie side of the Rust scale, so be gentle. The
+turned into, and extended it with error reporting supporting temporal
+operators. I'm still on the rookie side of the Rust scale, so be gentle! The
 code is available at
 [codeberg.org/owi/picostrom-rs](https://codeberg.org/owi/picostrom-rs) under
 the MIT license.
@@ -124,7 +125,6 @@ trait Atom {
         mode: TextMode, 
         negated: bool,
     ) -> String;
-
     fn render_actual(
         &self, 
         negated: bool, 
