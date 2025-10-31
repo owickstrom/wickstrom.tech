@@ -1,16 +1,48 @@
 ---
-title: "Error Reporting in Linear Temporal Logic" 
+title: "Computer Says No: Error Reporting for Linear Temporal Logic" 
 date: "October 24, 2025"
 author: "Oskar Wickström"
 ---
 
-* Intro
-    * Logic errors, unsat
-    * Linear temporal logic, QuickLTL, and Quickstrom
-    * Why error reporting matters
-    * [Error Reporting Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf) reference and summary
-    * [A Systematic Literature Review on Counterexample Explanation in Model Checking](https://arxiv.org/abs/2201.03061)
-    * [A Language for Explaining Counterexamples](https://drops.dagstuhl.de/entities/document/10.4230/OASIcs.SLATE.2024.11)
+[Quickstrom](https://quickstrom.io/) uses
+[QuickLTL](https://arxiv.org/abs/2203.11532), a linear temporal logic with
+finite traces, to specify and test web applications. As with many other logic
+systems, when a formula evaluates to false --- like when a counterexample to a
+safety property is found or a liveness property cannot be shown to hold ---
+_the computer says no_. Hunting down complex bugs in stateful web applications
+then comes down to staring at the specification alongside a trace of states and
+screenshots, hoping that you somehow can pin down what went wrong. It's not
+great.
+
+Instead, we should have helpful error messages explaining _why_ a property does
+not hold; which parts of the specification failed and which concrete values
+from the trace were involved. I started exploring this space a few years ago
+when I worked actively on Quickstrom, but for some reason it went on the shelf
+half-finished. Time to tie up the loose ends!
+
+The starting point was _Picostrom_, a minimal Haskell version of the checker in
+Quickstrom, and [Error Reporting
+Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf), a paper
+introducing a way of rendering natural-language messages to explain
+propositional logic counterexamples.
+
+I've now ported it over to Rust, for _reasons_. Mostly because I wanted to see
+what it turned into. I'm still on the rookie side of the Rust scale, so be
+gentle. I've also extended it to handle nested temporal operators better, and
+added support for implication. The code is available [on
+Codeberg](https://codeberg.org/owi/picostrom-rs) under the MIT license.
+
+Between the start of my work and picking it back up now, [A Language for
+Explaining Counterexamples](https://doi.org/10.4230/OASIcs.SLATE.2024.11) was
+published, which looks closely related, but focused on model checking with LTL
+and CTL. If you're interested in other related work, check out [A Systematic
+Literature Review on Counterexample Explanation in Model
+Checking](https://arxiv.org/abs/2201.03061).
+
+All right, let's dive in!
+
+## QuickLTL
+
 * Picostrom and error reporting
     * QuickLTL recap
     * Introduce picostrom-rs
@@ -99,5 +131,3 @@ give up after some time:
 <object data="/assets/ltl-error-reporting/eventually.svg" type="image/svg+xml" width="540px">
     <img src="/assets/ltl-error-reporting/eventually.svg" width="540px" />
 </object>
-
-
