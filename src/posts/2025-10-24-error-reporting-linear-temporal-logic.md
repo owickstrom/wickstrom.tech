@@ -4,15 +4,17 @@ date: "October 24, 2025"
 author: "Oskar Wickström"
 ---
 
-[Quickstrom](https://quickstrom.io/) uses
-[QuickLTL](https://arxiv.org/abs/2203.11532), a linear temporal logic (LTL)
-over finite traces, to specify and test web applications. As with many other
-logic systems, when a formula evaluates to false --- like when a counterexample
-to a safety property is found or a liveness property cannot be shown to hold
---- the computer says no. Understanding complex bugs in stateful web
-applications then comes down to staring at the specification alongside a trace
-of states and screenshots, hoping that you somehow can pin down what went
-wrong. It's not great.
+
+[Quickstrom](https://quickstrom.io/) is a property-based testing tool for web
+applications, using [QuickLTL](https://arxiv.org/abs/2203.11532) for specifying
+the intended behavior. QuickLTL is a linear temporal logic (LTL) over finite
+traces, especially suited for testing. As with many other logic systems, when a
+formula evaluates to false --- like when a counterexample to a safety property
+is found or a liveness property cannot be shown to hold --- the computer says
+no. That is, you get "false" or "test failed", perhaps along with a trace.
+Understanding complex bugs in stateful systems then comes down to staring at
+the specification alongside the trace, hoping you can somehow pin down what
+went wrong. It's not great.
 
 Instead, we should have helpful error messages explaining _why_ a property does
 not hold; which parts of the specification failed and which concrete values
@@ -25,9 +27,9 @@ The starting point was _Picostrom_, a minimal Haskell version of the checker in
 Quickstrom, and [Error Reporting
 Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf) (ERL), a paper
 introducing a way of rendering natural-language messages to explain
-propositional logic counterexamples. I've now ported it over to Rust, for
-_reasons_. Mostly because I wanted to see what it turned into. I'm still on the
-rookie side of the Rust scale, so be gentle. The code is available at
+propositional logic counterexamples. I ported it to Rust mostly to see what it
+turned into. I'm still on the rookie side of the Rust scale, so be gentle. The
+code is available at
 [codeberg.org/owi/picostrom-rs](https://codeberg.org/owi/picostrom-rs) under
 the MIT license.
 
@@ -43,8 +45,8 @@ All right, let's dive in!
 ## QuickLTL and Picostrom
 
 A quick recap on QuickLTL is in order before we go into the Picostrom code.
-It's a four-valued logic, meaning that a formula evaluates to one of these
-values:
+QuickLTL operates on _finite_ traces, making it suitable for testing. It's a
+four-valued logic, meaning that a formula evaluates to one of these values:
 
 * $\text{definitely true}$
 * $\text{definitely false}$
@@ -110,14 +112,24 @@ error reporting reasons, not exactly.
 
 Finally, there are _atoms_, which are domain-specific expressions embedded in
 the AST. evaluating to $\top$ or $\bot$. The AST is parameterized on the atom
-type, so you can plug in an atom expression language of choice. An atom type
-must implement the `Atom` trait, which in simplified form looks like this:
+type, so you can plug in an atom language of choice. An atom type must
+implement the `Atom` trait, which in simplified form looks like this:
 
 ```rust
 trait Atom {
     type State;
     fn eval(&self, state: &Self::State) -> bool;
-    // And some other stuff we'll get into later...
+    fn render(
+        &self, 
+        mode: TextMode, 
+        negated: bool,
+    ) -> String;
+
+    fn render_actual(
+        &self, 
+        negated: bool, 
+        state: &Self::State,
+    ) -> String;
 }
 ```
 
@@ -158,7 +170,7 @@ enum Formula<Atom> {
 }
 ```
 
-This makes it much easier to construct readable sentences, in additional to
+This makes it much easier to construct readable sentences, in addition to
 another important upside. The NNF representation is the one used by the
 evaluator internally. 
 
@@ -175,13 +187,13 @@ enum Value<'a, A: Atom> {
 
 A value is either an immediate $\top$ or $\bot$, meaning that we don't need to
 evaluate on additional states, or a _residual_, which is like a description of
-how to evaluate when given a next state. Also note how the `False` variant
-holds a `Problem`, which is what we'd report as $\text{definitely false}$. The
-`True` variant doesn't need any information, because due to NNF, it can't be
-negated and "turned into a problem."
+how to continue evaluating a formula when given a next state. Also note how the
+`False` variant holds a `Problem`, which is what we'd report as
+$\text{definitely false}$. The `True` variant doesn't need to hold any such
+information, because due to NNF, it can't be negated and "turned into a
+problem."
 
-I won't go into all the different
-variants of the `Residual` type, but let's take one example:
+I won't cover every variants of the `Residual` type, but let's take one example:
 
 ```rust
 
@@ -198,7 +210,7 @@ pub enum Residual<'a, A: Atom> {
 
 When such a value is returned, the evaluator checks if it's possible to stop at
 this point, i.e. if there are no _demanding_ operators in the residual. If not
-possible, it draws a new state, and calls `step` on the residual. The `step`
+possible, it draws a new state and calls `step` on the residual. The `step`
 function is analogous to `eval`, also returning a `Value`, but it operates on a
 `Residual` rather than a `Formula`.
 
@@ -252,22 +264,8 @@ enum Problem<'a, A: Atom> {
 ```
 
 I've written a simple renderer that walks the `Problem` tree, constructing
-English error messages. When hitting the atoms, it uses some `Atom` trait
-methods I didn't show you before:
-
-```rust
-fn render(
-    &self, 
-    mode: TextMode, 
-    negated: bool,
-) -> String;
-
-fn render_actual(
-    &self, 
-    negated: bool, 
-    state: &Self::State,
-) -> String;
-```
+English error messages. When hitting the atoms, it uses the `render` and `render_actual` methods from the `Atom` trait
+ I showed you before.
 
 The `mode` is very much like in the ERL paper, i.e. whether it should be
 rendered in deontic (e.g. "x should equal 4") or indicative (e.g. "x equals
@@ -284,7 +282,7 @@ The `render` method should render the atom according to the mode, and
 `render_actual` should render relevant parts of the atom in a given state, like
 its variable assignments.
 
-With all these pieces in places, we can finally render some error messages! Let's
+With all these pieces in place, we can finally render some error messages! Let's
 say we have this formula:
 
 $$
@@ -306,10 +304,10 @@ $$
 \text{precondition} \implies \text{before} \land \text{next}_t(\text{after})
 $$
 
-So, let's say we have this property:
+So, let's say we have this formula:
 
 $$
-\text{always}_N(A > 0 \implies (B > 5 \land \text{next}_t(C < 10)))
+\text{always}_N((A > 0) \implies (B > 5 \land \text{next}_t(C < 10)))
 $$
 
 If $B$ or $C$ are false, the error includes the antecedent:
@@ -341,7 +339,7 @@ short-circuit to reduce testing time.
 
 ## Diagrams
 
-Let's say we have a failing property like the following:
+Let's say we have a failing safety property like the following:
 
 $$\text{next}_d(\text{always}_8(B < C))$$
 
@@ -381,3 +379,6 @@ combinations of temporal operators to render readable error messages. I also
 enjoyed drawing the diagrams, and _almost_ nerd-sniped myself into automating
 that. Maybe another day. I hope this is interesting or even useful to someone
 out there. LTL is really cool and should be used more!
+
+The code, including many rendering tests cases, is available at
+[codeberg.org/owi/picostrom-rs](https://codeberg.org/owi/picostrom-rs).
