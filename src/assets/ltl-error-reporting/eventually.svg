@@ -24,7 +24,7 @@
          path {
            stroke: #2c363c;
          }
-         rect, line {
+         rect, line, circle {
            stroke: #2c363c;
          }
          path.red, rect.red {
@@ -50,7 +50,7 @@
            path {
              stroke: #b4bdc3;
            }
-           rect, line {
+           rect, line, circle {
              stroke: #b4bdc3;
            }
            path.red, rect.red {
@@ -107,6 +107,11 @@
 
     <!-- Annotations -->
     <g transform="translate(50, 0)" font-size="28" text-anchor="start" dominant-baseline="central">
+      <circle cx="0" cy="20" r="6" stroke-width="2" fill="none" />
+      <path d="
+        M 6,32
+        A 30 10 0 0 0 79 32
+      "  stroke-width="3" fill="none" stroke-dasharray="4 4" />
       <rect x="85" y="200" width="680" height="500" fill="url(#diagonal-stripes)" stroke-width="0" />
       <g>
         <rect x="79" y="14" width="12" height="12" stroke-width="2" fill="none" />

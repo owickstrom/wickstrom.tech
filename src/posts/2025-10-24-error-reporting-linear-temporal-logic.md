@@ -8,8 +8,9 @@ author: "Oskar Wickström"
     * Logic errors, unsat
     * Linear temporal logic, QuickLTL, and Quickstrom
     * Why error reporting matters
-    * Cite the 2022 survey (“A Systematic Literature Review on Counterexample Explanation in Model Checking”), which supports your claim that explanation quality is an unsolved problem?
     * [Error Reporting Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf) reference and summary
+    * [A Systematic Literature Review on Counterexample Explanation in Model Checking](https://arxiv.org/abs/2201.03061)
+    * [A Language for Explaining Counterexamples](https://drops.dagstuhl.de/entities/document/10.4230/OASIcs.SLATE.2024.11)
 * Picostrom and error reporting
     * QuickLTL recap
     * Introduce picostrom-rs
@@ -19,18 +20,11 @@ author: "Oskar Wickström"
     * Maybe show some huge error with lots of parts, hard to parse
     * Show the diagram example (bottom)
     * Other wild ideas
+* Short-circuiting behavior
+* Differences from ERL:
+    - no splitting/joining errors, instead a `Problem` AST
+    - no responsible objects, free variables
 * Things left out
-    * Implication; it'd be nice if you could trace _why_ some subformula is even relevant. A common pattern in state machine specs and other safety properties is:
-
-        $$
-        \text{always}_n(A \implies (B \land \text{next}_t(C)))
-        $$
-
-        If $B$ or $C$ are false, it'd be useful with an error also including the antecedent:
-
-        > [...] because A, B in state 0 and C in state 1 [...]
-
-
     * Not exactly left out, but QuickLTL suffers from and infinite loop issue, where a formula like the following causes the evaluation loop to never terminate:
 
         $$\text{always}_10(\text{eventually}_5(X))$$
@@ -44,6 +38,41 @@ author: "Oskar Wickström"
       infinite temporal logics? I'm guessing this could be adapted but I
       haven't tried.
 
+## Small Errors, Short Tests
+
+Let's consider a conjunction of two invariants. We could of course combine the
+two atomic propositions with conjunction inside a single $\text{always}(...)$, but
+in this case we have the formula:
+
+$$\text{always}(A < 3) \land \text{always}(B < C)$$
+
+An error message, where both invariants fail, might look the following:
+
+> **Definitely false:**
+> it must always be the case that A is less than 3 and it must always be the case that B is greater than C, but
+> A=3 in state 3 and B=0 in state 3
+
+If only the second invariant ($B < C$) fails, we get a smaller error:
+
+> **Definitely false:** it must always be the case that B is greater than C, but B=0 and C=0 in state 0
+
+And, crucially, if one of the invariants fail before the other, we get a
+smaller error, ignoring the other invariant. While single-state conjuctions
+evaluate both sides, possibly creating composite errors, conjunctions over time
+short-circuit to reduce testing time.
+
+## Implication
+
+You can trace _why_ some subformula is relevant when using implication. A
+common pattern in state machine specs and other safety properties is:
+
+$$
+\text{always}_n(A > 0 \implies (B > 5 \land \text{next}_t(C < 10)))
+$$
+
+If $B$ or $C$ are false, the error includes the antecedent:
+
+> **Definitely false:** B must be greater than 5 and in the next state, C must be less than 10 since A is greater than 0, [...]
 
 ## Diagrams
 
@@ -54,7 +83,7 @@ $$\text{next}_d(\text{always}_8(B < C))$$
 The textual error might be:
 
 > **Definitely false:** in the next state, it must always be the case that B is
-> greater than C, but B (13) is not greater than C (15) in state 6
+> greater than C, but B=13 and C=15 in state 6
 
 But we could also draw a diagram, using information from the collected states:
 
