@@ -29,8 +29,7 @@ Logic](https://www.cs.cmu.edu/~cchristo/docs/jaspan-ASE08.pdf) (ERL), a paper
 introducing a way of rendering natural-language messages to explain
 propositional logic counterexamples. I ported it to Rust mostly to see what it
 turned into, and extended it with error reporting supporting temporal
-operators. I'm still on the rookie side of the Rust scale, so be gentle! The
-code is available at
+operators. The code is available at
 [codeberg.org/owi/picostrom-rs](https://codeberg.org/owi/picostrom-rs) under
 the MIT license.
 
@@ -74,13 +73,13 @@ is available.
 $\text{eventually}_N(P)$
 
 : $P$ must hold in the current or a future state. It demands at least $N$
-states, evaluating on all available states, and finally defaulting to
+states, evaluating on all available states, finally defaulting to
 $\text{probably false}$.
 
 $\text{always}_N(P)$
 
 : $P$ must hold in the current and all future states. It demands at least $N$
-states, evaluating on all available states, and finally defaulting to
+states, evaluating on all available states, finally defaulting to
 $\text{probably true}$.
 
 You can think of $\text{eventually}_N(P)$ as unfolding into a sequence of $N$
@@ -120,12 +119,15 @@ implement the `Atom` trait, which in simplified form looks like this:
 ```rust
 trait Atom {
     type State;
+
     fn eval(&self, state: &Self::State) -> bool;
+
     fn render(
         &self, 
         mode: TextMode, 
         negated: bool,
     ) -> String;
+
     fn render_actual(
         &self, 
         negated: bool, 
@@ -158,7 +160,7 @@ enum Identifier {
 
 The first step, like in ERL, is transforming the formula into [negation normal
 form](https://en.wikipedia.org/wiki/Negation_normal_form) (NNF), which means
-pushing down all negations into the _atoms_:
+pushing down all negations into the atoms:
 
 ```rust
 enum Formula<Atom> {
@@ -172,8 +174,8 @@ enum Formula<Atom> {
 ```
 
 This makes it much easier to construct readable sentences, in addition to
-another important upside. The NNF representation is the one used by the
-evaluator internally. 
+another important upside which I'll get to in a second. The NNF representation
+is the one used by the evaluator internally. 
 
 Next, the `eval` function takes an `Atom::State` and a `Formula`, and produces a
 `Value`:
@@ -186,15 +188,14 @@ enum Value<'a, A: Atom> {
 }
 ```
 
-A value is either an immediate $\top$ or $\bot$, meaning that we don't need to
-evaluate on additional states, or a _residual_, which is like a description of
-how to continue evaluating a formula when given a next state. Also note how the
-`False` variant holds a `Problem`, which is what we'd report as
-$\text{definitely false}$. The `True` variant doesn't need to hold any such
-information, because due to NNF, it can't be negated and "turned into a
-problem."
+A value is either immediately true or false, meaning that we don't need to
+evaluate on additional states, or a _residual_, which describes how to continue
+evaluating a formula when given a next state. Also note how the `False` variant
+holds a `Problem`, which is what we'd report as $\text{definitely false}$. The
+`True` variant doesn't need to hold any such information, because due to NNF,
+it can't be negated and "turned into a problem."
 
-I won't cover every variants of the `Residual` type, but let's take one example:
+I won't cover every variant of the `Residual` type, but let's take one example:
 
 ```rust
 
@@ -217,9 +218,10 @@ function is analogous to `eval`, also returning a `Value`, but it operates on a
 
 The `AndAlways` variant describes an ongoing evaluation of the $\text{always}$
 operator, where the `left` and `right` residuals are the operands of $\land$ in
-the inductive definition I described earlier. Similarly, it has variants for 
-$\lor$, $\land$, $\implies$, $\text{next}$, $\text{eventually}$,
-and a few others.
+the inductive definition I described earlier. The `start` field holds the
+starting state, which is used when rendering error messages. Similarly, the
+`Residual` enum has variants for $\lor$, $\land$, $\implies$, $\text{next}$,
+$\text{eventually}$, and a few others.
 
 When the `stop` function deems it possible to stop evaluating, we get back a
 value of this type:
@@ -336,7 +338,7 @@ If only the second invariant ($B < C$) fails, we get a smaller error:
 And, crucially, if one of the invariants fail before the other we also get a
 smaller error, ignoring the other invariant. While single-state conjunctions
 evaluate both sides, possibly creating composite errors, conjunctions over time
-short-circuit to reduce testing time.
+short-circuit in order to stop tests as soon as possible.
 
 ## Diagrams
 
