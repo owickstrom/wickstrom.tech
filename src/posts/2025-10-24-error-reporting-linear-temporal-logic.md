@@ -36,8 +36,8 @@ the MIT license.
 
 Between the start of my work and picking it back up now, [A Language for
 Explaining Counterexamples](https://doi.org/10.4230/OASIcs.SLATE.2024.11) was
-published, which looks closely related, but focused on model checking with LTL
-and CTL. If you're interested in other related work, check out [A Systematic
+published, which looks closely related, although it's focused on model checking
+with CTL. If you're interested in other related work, check out [A Systematic
 Literature Review on Counterexample Explanation in Model
 Checking](https://arxiv.org/abs/2201.03061).
 
@@ -58,7 +58,8 @@ It extends propositional logic with temporal operators, much like LTL:
 
 $\text{next}_d(P)$
 
-: $P$ must hold in the next state, demanding a next state is available.
+: $P$ must hold in the next state, demanding a next state is available. This
+_forces_ the evaluator to draw a next state.
 
 $\text{next}_f(P)$
 
@@ -83,14 +84,14 @@ states, evaluating on all available states, and finally defaulting to
 $\text{probably true}$.
 
 You can think of $\text{eventually}_N(P)$ as unfolding into a sequence of $N$
-nested $\text{next}_D$, wrapping an infinite sequence of $\text{next}_F$,
+nested $\text{next}_d$, wrapping an infinite sequence of $\text{next}_f$,
 connected by $\lor$:
 
 $$
-P \lor \text{next}_D (P \lor \text{next}_D (\ \ \ldots\ \ P \lor \text{next}_F (\lor \text{next}_F (\ \ \ldots\ \ ))\ \ \ldots\ \ ))
+P \lor \text{next}_D (P \lor \text{next}_D (\ \ \ldots\ \ P \lor \text{next}_F (P \lor \text{next}_F (\ \ \ldots\ \ ))\ \ \ldots\ \ ))
 $$
 
-Or even better, inductively:
+Or even better, let's define it inductively with a coinductive base case:
 
 $$
 \begin{align}
@@ -112,7 +113,7 @@ This is essentially how the evaluator expands these temporal operators, but for
 error reporting reasons, not exactly.
 
 Finally, there are _atoms_, which are domain-specific expressions embedded in
-the AST. evaluating to $\top$ or $\bot$. The AST is parameterized on the atom
+the AST, evaluating to $\top$ or $\bot$. The AST is parameterized on the atom
 type, so you can plug in an atom language of choice. An atom type must
 implement the `Atom` trait, which in simplified form looks like this:
 
@@ -382,3 +383,6 @@ out there. LTL is really cool and should be used more!
 
 The code, including many rendering tests cases, is available at
 [codeberg.org/owi/picostrom-rs](https://codeberg.org/owi/picostrom-rs).
+
+_A special thanks goes to [Divyanshu Ranjan](https://rdivyanshu.github.io/) for reviewing
+a draft of this post._
