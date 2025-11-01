@@ -1,6 +1,6 @@
 ---
 title: "Computer Says No: Error Reporting for LTL" 
-date: "October 24, 2025"
+date: "November 1, 2025"
 author: "Oskar Wickström"
 ---
 
