@@ -291,11 +291,11 @@ body>pre {
   }
 
   a:link {
-    color: #fff;
+    color: #888F94;
   }
 
   a:visited {
-    color: #ccc;
+    color: inherit;
   }
 
   #title-block-header .author,
