@@ -83,14 +83,9 @@ states, evaluating on all available states, finally defaulting to
 $\text{probably true}$.
 
 You can think of $\text{eventually}_N(P)$ as unfolding into a sequence of $N$
-nested $\text{next}_d$, wrapping an infinite sequence of $\text{next}_f$,
-connected by $\lor$:
-
-$$
-P \lor \text{next}_D (P \lor \text{next}_D (\ \ \ldots\ \ P \lor \text{next}_F (P \lor \text{next}_F (\ \ \ldots\ \ ))\ \ \ldots\ \ ))
-$$
-
-Or even better, let's define it inductively with a coinductive base case:
+nested $\text{next}_d$, wrapping an infinite sequence of $\text{next}_f$, all
+connected by $\lor$. Let's define that inductively with a coinductive base
+case:
 
 $$
 \begin{align}
