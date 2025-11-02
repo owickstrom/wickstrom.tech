@@ -194,7 +194,7 @@ I won't cover every variant of the `Residual` type, but let's take one example:
 
 ```rust
 
-pub enum Residual<'a, A: Atom> {
+enum Residual<'a, A: Atom> {
     // ...
     AndAlways {
         start: Numbered<&'a A::State>,
