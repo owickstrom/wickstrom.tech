@@ -60,14 +60,14 @@ were huge obstacles to adoption. Today, TypeScript is a widely adopted
 language among quality-minded web developers, and if you're not into that,
 Bombadil will work with plain JavaScript too.
 
-Bombadil is built in Rust, leveraging its excellent ecosystem to ship a single
-statically-linked executable --- download for your platform, point it at a
-Chromium-based browser, and off you go!
+We're writing Bombadil in Rust, leveraging its excellent ecosystem to ship a
+single statically-linked executable --- download for your platform, point it at
+a Chromium-based browser, and off you go!
 
 Bombadil is early but usable. Check it out on
 [GitHub](https://github.com/antithesishq/bombadil), try it on your projects,
 and let us know what breaks. Also let us know what *it* breaks in your systems!
-Join us on [Discord](https://discord.gg/antithesis) for help and discussion, or follow
-development on [Twitter/X](https://x.com/owickstrom). This is just the
+Join us on [Discord](https://discord.gg/antithesis) for help and discussion, or
+follow development on [Twitter/X](https://x.com/owickstrom). This is just the
 beginning --- we're actively seeking feedback and early adopters to help shape
 where this goes.
