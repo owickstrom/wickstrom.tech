@@ -1,6 +1,7 @@
 ---
 title: "There and Back Again: From Quickstrom to Bombadil"
 date: "January 28, 2026"
+author: "Oskar Wickström"
 ---
 
 Today I'm announcing and open-sourcing the
