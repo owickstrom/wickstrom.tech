@@ -15,6 +15,7 @@ html {
 html,
 body {
   line-height: 1.4;
+  font-size: 18px;
 }
 
 p {
@@ -364,5 +365,13 @@ span.blue {
   }
   span.blue {
     color: #6099C0;
+  }
+}
+
+@media print {
+  :root, html, body {
+  }
+  .post-nav.after {
+    display: none;
   }
 }
