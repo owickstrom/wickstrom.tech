@@ -306,7 +306,7 @@ failures, even if the name is too short. Does this mean our property is
 bad? Broken? Useless?
 
 In itself, this property doesn't give us strong confidence in the
-correctness of `validateSignup`. In conjuction with our other
+correctness of `validateSignup`. In conjunction with our other
 properties, however, it provides value. Together they make up a stronger
 test suite.
 
@@ -335,7 +335,7 @@ Remember how in [Negative Property Tests](#negative-property-tests) we
 noted that there's a problem? The issue is, we're not covering all
 validation rules in our tests. But the problem is not in our property
 definitions. It's in one of our *generators*, namely `genInvalidAge`.
-We're now in a perculiar situation: we need to test our tests.
+We're now in a peculiar situation: we need to test our tests.
 
 One way to test a generator is to define a property specifically testing
 the values it generates. For example, if we have a generator `positive`
@@ -361,7 +361,7 @@ values. In that sense, it's a *local* assertion.
 
 Instead, we'll find the generator problem by capturing statistics on
 the generated values and performing *global* assertions. Hedgehog, and
-a few other PBT frameworks, can measure the occurences of user-defined
+a few other PBT frameworks, can measure the occurrences of user-defined
 *labels*. A label in Hedgehog is a `Text` value, declared with an
 associated condition. When Hedgehog runs the tests, it records the
 percentage of tests in which the condition evaluates to `True`. After
@@ -369,7 +369,7 @@ the test run is complete, we're presented with a listing of
 percentages per label.
 
 We can even have Hedgehog fail the test unless a certain percentage is
-met. This way, we can declare mininum coverage requirements for the
+met. This way, we can declare minimum coverage requirements for the
 generators used in our property tests.
 
 ### Adding Coverage Checks
@@ -610,7 +610,7 @@ Alternatively, we might use `exponentialDay`:
 exponentialDay :: Day -> Day -> Range Day
 ```
 
-The `linearDay` and `exponentialDay` range functions are analoguous to
+The `linearDay` and `exponentialDay` range functions are analogous to
 Hedgehog's `linear` and `exponential` ranges for integral numbers.
 
 To use the generator functions from `Data.Time.Gen`, we first add an
@@ -982,7 +982,7 @@ Note that these generators return pairs of dates. For most of these
 generators, there's a strong relation between today's date and the birth
 date. For example, we can't first generate *any* today's date, pass that
 into a generator function, and expect it to always generate a leap day
-that occured 18 years ago. Such a generator would have to first generate
+that occurred 18 years ago. Such a generator would have to first generate
 the leap day and then today's date.
 
 Let's define the generators. The first one, `anyDayAndBirthDate`, picks

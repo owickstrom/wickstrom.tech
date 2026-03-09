@@ -240,7 +240,7 @@ When working on finding and fixing the fold bug, we can use the
 printed _size_ and _seed_ values to deterministically rerun the test
 with the exact same inputs.
 
-## Property: Clip Occurence
+## Property: Clip Occurrence
 
 Slightly more complicated than the duration equality property, the
 clip occurrence property checks that all clips from the hierarchical

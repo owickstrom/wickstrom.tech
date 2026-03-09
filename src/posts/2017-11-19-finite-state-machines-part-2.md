@@ -248,7 +248,7 @@ this style of state machine encoding.
 Similar to `select`, the `cancel` event is accepted from more than one
 state. In fact, it is accepted from *three* states: "NoCard",
 "CardSelected", and "CardConfirmed". Like with `select`, we use a union
-data type representating the ternary alternative.
+data type representing the ternary alternative.
 
 ``` {.haskell .literate}
   cancel

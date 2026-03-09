@@ -29,7 +29,7 @@ errors properly.
 After an inspiring talk by Edwin Brady on dependent types for state machines,
 I decided to try to improve this situation for web server middleware using
 *extensible records* and *row types* in PureScript, to see if I could provide
-similiar safety guarantees to those demonstrated in Idris. It turns out that
+similar safety guarantees to those demonstrated in Idris. It turns out that
 extensible records work really well for this case!
 
 Another thing circling around in my head, to the point of real concern, is

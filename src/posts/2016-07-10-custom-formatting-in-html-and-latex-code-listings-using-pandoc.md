@@ -4,7 +4,7 @@ date:   July 10, 2016
 author: Oskar Wickström
 ---
 
-I have worked intensively on the Oden User Guide lately, primarly on improving content, but also on providing high-quality PDF
+I have worked intensively on the Oden User Guide lately, primarily on improving content, but also on providing high-quality PDF
 and HTML output formats with detailed control over typesetting.
 
 For some code listings and syntax examples I want the typesetting to convey the

@@ -16,7 +16,7 @@ demanding as Oden on nights and weekends, at least in the long run, is
 unrealistic for me. I managed to keep a good pace during the spring of 2016,
 but since this summer the tempo has steadily declined into spurious efforts
 every other week or so. While that may be fine in many open-source projects, I
-think Oden needs a far better momentum if it is to be usable in any forseeable
+think Oden needs a far better momentum if it is to be usable in any foreseeable
 future.
 
 I have wrestled with these thoughts for some time now, trying to find ways not
