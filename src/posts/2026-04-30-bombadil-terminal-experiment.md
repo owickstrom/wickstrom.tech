@@ -65,4 +65,4 @@ subcommands for `browser` and `terminal` testing tools.
 
 All right, short post today --- I just wanted to share my excitement and early results.
 
-*A huge thanks to [Uzair Aftab](https://github.com/Uzaaft), maintainer of [libghostty-rs](https://github.com/Uzaaft/libghostty-rs), for helping me get libghossty-vt building under Nix!*
+*A huge thanks to [Uzair Aftab](https://github.com/Uzaaft), maintainer of [libghostty-rs](https://github.com/Uzaaft/libghostty-rs), for helping me get libghostty-vt building under Nix!*
