@@ -12,6 +12,8 @@ interfaces* (TUIs), and the hallway discussions gave me a nudge to get going. I
 started hacking on the flight back home, and a few days later that embryo of a
 TUI fuzzer started to emerge.
 
+![The fuzzer in action, finding a bug in vitetris. (CW: flashing!)](/assets/tetris-stuck.mp4)
+
 It's built on top of two key crates:
 
 1. [portable-pty](https://crates.io/crates/portable-pty), a pseudo-teletype in

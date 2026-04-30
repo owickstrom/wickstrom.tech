@@ -150,7 +150,7 @@ code {
   line-height: 1.2;
 }
 
-img, object {
+img, video, object {
   max-width: 100%;
 }
 
