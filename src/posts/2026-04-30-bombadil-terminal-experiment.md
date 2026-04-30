@@ -54,13 +54,16 @@ artifacts. On macOS you'll need to remove the quarantine bit to bypass GateKeepe
 Now, the work remains to make this a solid tool. Here are some future goals:
 
 * Integrate it with the specification framework in Bombadil, so that you can
-define custom properties and action generators.
+  define custom properties and action generators. It'd be neat to provide an
+  API akin to `querySelector` that could parse and traverse panels drawn with
+  box-drawing characters. You probably also want to validate that those borders
+  line up correctly.
 * Generate a lot more diverse input and terminal actions. For instance,
-generate sequences from the [Kitty keyboard
-protocol](https://sw.kovidgoyal.net/kitty/keyboard-protocol/).
+  generate sequences from the [Kitty keyboard
+  protocol](https://sw.kovidgoyal.net/kitty/keyboard-protocol/).
 * Make the test runner's user interface better. Perhaps a TUI?!
 * Make this part of the ordinary `bombadil` binary, I think. There could be
-subcommands for `browser` and `terminal` testing tools.
+  subcommands for `browser` and `terminal` testing tools.
 * Run it in Antithesis to see what that fuzzer can find.
 
 All right, short post today --- I just wanted to share my excitement and early results.
