@@ -52,7 +52,11 @@ enjoyed the stability and quality of the tools, but I still suffered from the
 repetitive workload of cutting and organizing the video and audio clips to
 form my screencasts.
 
+<div spellcheck="false">
+
 ![[Yak by travelwayoflife - Flickr, CC BY-SA 2.0](https://commons.wikimedia.org/w/index.php?curid=22106967)](/assets/writing-a-screencast-video-editor-in-haskell/yak.jpg)
+
+</div>
 
 What does a programmer do when faced with a repetitive task? *Spend way more
 time on automating it!* Thus, I started what came to be the greatest yak shave

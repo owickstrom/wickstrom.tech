@@ -339,6 +339,6 @@ I'm positive to the evolution of Python and functional programming, as it's some
 
 Join the discussion on [Twitter](https://x.com/owickstrom/status/1793749093900284059), [Hacker News](https://news.ycombinator.com/item?id=40459944), or [Lobsters](https://lobste.rs/s/hphovk/statically_typed_functional).
 
-_Thank you [@tusharisanerd](https://x.com/tusharisanerd) for reviewing a draft of this post._
+_Thank you [@tusharisanerd](https://x.com/tusharisanerd){spellcheck="false"} for reviewing a draft of this post._
 
 [^1]: See [On Recursion, Continuations and Trampolines](https://eli.thegreenplace.net/2017/on-recursion-continuations-and-trampolines/) for more in-depth explanations of various solutions to recursive functions and the stack.
