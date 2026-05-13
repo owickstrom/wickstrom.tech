@@ -33,8 +33,7 @@ The outer loop (triage):
         * Legitimate uncommon or very technical word: mark inline with
           `spellcheck="false"`
         * Extraction noise: add a unit test and fix the word extractor
-    4. Run Bombadil with a short time limit against each failing URL to confirm
-    the corrections.
+    4. Run Bombadil against each failing URL to confirm the corrections.
     5. Go to step 1.
 
     This is _slow_ and _loose_.
@@ -56,9 +55,9 @@ can do triage on your own.
 Why not spell-check the sources directly? Yes, that is often preferable, and I
 use `spell` in Neovim all the time. But it's not always practical. At least in
 my experience, the tooling trips up on syntax and templating in more
-complicated setups. Maybe your editor handles this better than I can manage
-with Neovim, or maybe you're fine with tools like
-[typos](https://crates.io/crates/typos-cli) and
+complicated setups. Maybe your editor handles this better than mine does, or
+maybe you're fine with tools like [typos](https://crates.io/crates/typos-cli)
+and
 [codespell](https://github.com/codespell-project/codespell){spellcheck=false},
 but I like the fact that this approach is external and checks the rendered
 output. Given that Bombadil interacts with web applications, you could even run
@@ -78,7 +77,7 @@ useful than I expected. In addition to `nspell`, I'm using
 [tlds](https://www.npmjs.com/package/tlds){spellcheck=false} to identify URLs.
 Bombadil is built for property-based testing of web applications, but with a
 specification language and package ecosystem at hand, its uses might be broader
-than what it was built for.
+than my original vision.
 
 If you're interested in setting up something like this on your own, you'll find
 the sources in [my Bombadil
