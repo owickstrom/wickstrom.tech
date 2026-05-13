@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
 :root {
   font-family: "Crimson Text", serif;
@@ -136,6 +136,7 @@ dt {
   font-size: 1rem;
   font-weight: 600;
   margin-top: .5rem;
+  font-family: "Alegreya Sans", sans-serif;
 }
 
 dd {
