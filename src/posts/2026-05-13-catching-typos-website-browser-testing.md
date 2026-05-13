@@ -6,11 +6,11 @@ author: "Oskar Wickström"
 
 One neat thing about [Bombadil's specification
 language](https://antithesishq.github.io/bombadil/3-specification-language.html#specification-language)
-is that it's TypeScript that can use external NPM packages. I've written a
-specification that spell-checks my website --- including the very blog post
-you're reading now --- and I want to share how that turned out.
+is that it's plain TypeScript, with access to external NPM packages. I've
+written a specification that spell-checks my website --- what you're reading
+now --- and I want to share how that turned out.
 
-The inner loop:
+The inner loop (spell-checking):
 
 : Bombadil randomly walks the website and collects misspelled words as property
 violations. The specification uses
@@ -19,13 +19,13 @@ British English
 dictionaries](https://github.com/wooorm/dictionaries/tree/main/dictionaries/en)
 and a personal word list in the repository. This is _fast_ and _strict_.
 
-The outer loop:
+The outer loop (triage):
 
-: Claude Code has a spell-checking skill, a loop that
+: I'm running Claude Code with a spell-checking skill, a triage loop that
     goes something like this:
 
-    1. Run Bombadil against the local development server for a fixed time
-       window and capture the output. If no violations, we're done.
+    1. Run Bombadil against the local development server for 5 minutes and
+       capture the output. If no words flagged, we're done.
     2. Collect each flagged word and the URL it appeared on.
     3. Triage each word into one of these buckets:
         * Real typo: fix the markdown source
@@ -39,25 +39,30 @@ The outer loop:
 
     This is _slow_ and _loose_.
 
-The hybrid model seems to work well; it has flagged words in almost all blog
-posts, fixing 13 real typos and adding 130+ words to my personal dictionary.
+The hybrid model seems to work well; it has flagged words in almost every blog
+post. It has fixed 13 real typos and added 130+ words to my personal
+dictionary. Example typos include "forseeable", "similiar", "perculiar",
+"occured". Some of these were 10 years old.
+
 Claude doesn't have to waste tokens spell-checking everything over and over.
 Right now I'm just running this locally, but you could imagine a more elaborate
 setup for large websites where the "inner loop" runs as a nightly job, invoking
 the "outer loop" only on violations. You could involve a human where needed,
 and build up a domain-specific dictionary over time.
 
-By the way, using an LLM is entirely optional. It just saves me some time.
+Note that using an LLM is entirely optional. It just saves me some time. You
+can do triage on your own.
 
-"But wait!" you exclaim. Why not spell-check the sources directly? Yes, that is
-often preferable, and I use `spell` in Neovim all the time. But it's not always
-practical. At least in my experience, the tooling trips up on syntax and
-templating in more complicated setups. Maybe your editor or IDE does this
-better than I can manage with Neovim, or maybe you're fine with tools like
+Why not spell-check the sources directly? Yes, that is often preferable, and I
+use `spell` in Neovim all the time. But it's not always practical. At least in
+my experience, the tooling trips up on syntax and templating in more
+complicated setups. Maybe your editor handles this better than I can manage
+with Neovim, or maybe you're fine with tools like
 [typos](https://crates.io/crates/typos-cli) and
 [codespell](https://github.com/codespell-project/codespell){spellcheck=false},
 but I like the fact that this approach is external and checks the rendered
-output.
+output. Given that Bombadil interacts with web applications, you could even run
+this against dynamic applications to spell-check states deep in the UI.
 
 Speaking of source-level checking: since the custom dictionary is a plain
 word list, I point Neovim's `spellfile` at it and use `zg` to add words while I
@@ -69,10 +74,14 @@ vim.opt.spelllang = "en"
 ```
 
 Being able to use NPM packages in specifications has turned out to be more
-useful than I expected. I'm also using a small utility package for [top-level
-domain names](https://www.npmjs.com/package/tlds). If you're interested in
-setting up something like this on your own, you'll find the sources in [my
-Bombadil
+useful than I expected. In addition to `nspell`, I'm using
+[tlds](https://www.npmjs.com/package/tlds){spellcheck=false} to identify URLs.
+Bombadil is built for property-based testing of web applications, but with a
+specification language and package ecosystem at hand, its uses might be broader
+than what it was built for.
+
+If you're interested in setting up something like this on your own, you'll find
+the sources in [my Bombadil
 playground](https://github.com/owickstrom/bombadil-playground/tree/master/wickstrom.tech).
 
 *Disclosure: I'm the original author and lead for the Bombadil project at Antithesis.*
