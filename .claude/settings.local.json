@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:antithesishq.github.io)",
+      "Bash(nix --extra-experimental-features 'nix-command flakes' develop:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(tail:*)",
+      "Bash(ps:*)",
+      "Bash(pkill:*)",
+      "Bash(pgrep:*)",
+      "Bash(kill:*)",
+      "Bash(rg:*)",
+      "Bash(npx vitest:*)",
+      "Bash(git -C /home/owi/projects/bombadil-playground log --oneline -10)",
+      "WebSearch",
+      "Bash(echo:*)",
+      "Bash(nix --extra-experimental-features 'nix-command flakes' flake show:*)",
+      "Bash(tsc:*)",
+      "Bash(bombadil test *)",
+      "Bash(npm test *)"
+    ]
+  }
+}
