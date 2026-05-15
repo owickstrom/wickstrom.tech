@@ -5,19 +5,47 @@ on:
   push:
 
 jobs:
-  tests:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  build:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: cachix/install-nix-action@v22
-    - uses: cachix/cachix-action@v12
+    - uses: cachix/install-nix-action@v27
+    - run: nix develop --command make all
+    - uses: actions/upload-artifact@v4
       with:
-        name: devenv
-    - name: Install devenv.sh
-      run: nix profile install github:cachix/devenv/latest
-      shell: sh
-    - run: devenv ci
-    - run: devenv shell make all
+        name: blog-target
+        path: target
+
+  spell-check:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/download-artifact@v4
+      with:
+        name: blog-target
+        path: target
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
+        cache-dependency-path: test/package-lock.json
+    - name: Install spell-check spec deps
+      run: npm ci
+      working-directory: test
+    - name: Serve built blog
+      run: python3 -m http.server 8080 --directory target &
+    - name: Wait for server
+      run: curl --retry 30 --retry-all-errors --retry-delay 2 --silent --fail http://localhost:8080 >/dev/null
+    - uses: antithesishq/bombadil-action@v1
+      with:
+        origin: http://localhost:8080
+        specification: ./test/spellcheck.ts
+        time-limit: 5m
+        exit-on-violation: true
+        output-path: bombadil-output
+    - if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: bombadil-output
+        path: bombadil-output
