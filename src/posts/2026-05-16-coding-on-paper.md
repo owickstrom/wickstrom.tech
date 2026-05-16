@@ -1,6 +1,6 @@
 ---
 title: "Coding on Paper"
-date: "May 17, 2026"
+date: "May 16, 2026"
 author: "Oskar Wickström"
 ---
 
