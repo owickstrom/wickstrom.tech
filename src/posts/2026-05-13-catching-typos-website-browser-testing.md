@@ -40,8 +40,8 @@ The outer loop (triage):
 
 The hybrid model seems to work well; it has flagged words in almost every blog
 post. It has fixed 13 real typos and added 130+ words to my personal
-dictionary. Example typos include "forseeable", "similiar", "perculiar",
-"occured". Some of these were 10 years old.
+dictionary. <span spellcheck=false>Example typos include "forseeable", "similiar", "perculiar",
+"occured". Some of these were 10 years old.</span>
 
 Claude doesn't have to waste tokens spell-checking everything over and over.
 Right now I'm just running this locally, but you could imagine a more elaborate
