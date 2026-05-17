@@ -6,7 +6,7 @@ date: October 27, 2017
 
 While writing my talk "Finite-state machines? Your compiler wants in!", I have
 worked on porting the Idris
-[ST](http:/docs.idris-lang.org/en/latest/st/state.html) library to Haskell.  I
+[ST](http://docs.idris-lang.org/en/latest/st/state.html) library to Haskell.  I
 call it *Motor*.
 
 Motor is an *experimental* Haskell library for building finite-state

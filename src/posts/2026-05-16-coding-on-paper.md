@@ -12,7 +12,7 @@ of a working, still mostly typing, programmer.
 
 This is *not* a sponsored post, and it is *not* a product review. I wrote a
 very similar post about the [Daylight
-DC-1](http://127.0.0.1:8080/2025-10-10-programming-in-the-sun-a-year-with-the-daylight-computer.html)
+DC-1](https://wickstrom.tech/2025-10-10-programming-in-the-sun-a-year-with-the-daylight-computer.html)
 last year.
 
 ![Neovim in the morning sunlight.](/assets/mira-pro-1.webp)
