@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Alegreya:ital,wght@0,400;0,600;1,400&display=swap');
 
 :root {
-  font-family: "Crimson Text", serif;
+  font-family: "Alegreya", serif;
   font-optical-sizing: auto;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 html {
@@ -15,7 +15,7 @@ html {
 html,
 body {
   line-height: 1.3;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 p {
@@ -134,7 +134,7 @@ dl {
 
 dt {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   margin-top: .5rem;
   font-family: "Alegreya Sans", sans-serif;
 }
@@ -146,9 +146,13 @@ dd {
 pre,
 code {
   font-family: "BerkeleyMonoWeb", monospace;
-  font-size: .775rem;
+  font-size: .875rem;
   font-weight: normal;
   line-height: 1.2;
+}
+
+p code {
+  line-height: 1;
 }
 
 img, video, object {
@@ -163,7 +167,7 @@ pre {
 }
 
 math {
-  font-family: "Crimson Text", serif;
+  font-family: "Alegreya", serif;
   font-size: 1em;
 }
 math[display=block] {
