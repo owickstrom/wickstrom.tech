@@ -127,8 +127,8 @@ triggers the bug is:
 2. Exception thrown on restored page, pausing the debugger and capturing a new
    state
 3. Runner picking a new action and passing it back to the browser state machine
-4. Confirmation of bfcache restore coming in, transition state machine to
-   `Running`
+4. Confirmation of bfcache restoration coming in, transitioning state machine
+   to `Running`
 5. State machine applying the `ActionAccepted` event, which, as we noted in the
    beginning of this excursion, is not valid when in `Running`
 
@@ -149,8 +149,8 @@ runner's action selection process, so that a stale action (as in step 5 above)
 can be safely ignored. Additionally, some transitions now increment the
 generation in cases where all existing timeouts or actions are stale.
 
-I've had bugs before of this kind, and understanding them from starting at
-logs, let alone reproducing them, has been painful. This, in contrast, feels a
-bit like cheating. Moreover, this extends to race conditions and complicated
-bugs in the webapps themselves, which makes me very excited about continued
-work on the Bombadil and Antithesis integration.
+I've had bugs of this kind before, and understanding them from staring at logs,
+let alone reproducing them, has been painful. This, in contrast, feels a bit
+like cheating. Moreover, it extends to race conditions and complicated bugs in
+the webapps themselves, which makes me very excited about continued work on the
+Bombadil and Antithesis integration.
