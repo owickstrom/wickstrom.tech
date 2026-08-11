@@ -313,7 +313,7 @@ further down.
         </tr>
         <tr>
             <td>&ndash;</td>
-            <td>soma.js</td>
+            <td spellcheck="false">soma.js</td>
             <td>
                 <ul>
                     <li>Missing/broken link</li>

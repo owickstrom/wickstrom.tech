@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@antithesishq/bombadil": "^0.3.2",
+    "@antithesishq/bombadil": "^0.7.0",
     "dictionary-en": "^4.0.0",
     "dictionary-en-gb": "^3.0.0",
     "nspell": "^2.1.5",

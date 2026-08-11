@@ -1,7 +1,7 @@
 import NSpell from "nspell";
-import { extract, always } from "@antithesishq/bombadil";
+import { extract } from "@antithesishq/bombadil/browser";
 import { getSpellCheckableWords } from "./wordExtractor.ts";
-export * from "@antithesishq/bombadil/defaults";
+export * from "@antithesishq/bombadil/browser/defaults";
 
 // @ts-ignore
 import affUs from "./node_modules/dictionary-en/index.aff" with { type: "text" };
@@ -13,6 +13,7 @@ import affGb from "./node_modules/dictionary-en-gb/index.aff" with { type: "text
 import dicGb from "./node_modules/dictionary-en-gb/index.dic" with { type: "text" };
 // @ts-ignore
 import customDic from "./custom.utf-8.add" with { type: "text" };
+import { always } from "@antithesishq/bombadil";
 
 const misspelled = extract(state => {
   const spell_us = new NSpell(affUs, dicUs).personal(customDic);
