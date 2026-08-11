@@ -73,7 +73,7 @@ scoparius branches, creating what I can only describe as a jungle of
 barbed wire.
 
 These two have become my mortal enemies, the main targets of this
-operation. Blackberries is weed that is notoriusly hard to get rid of,
+operation. Blackberries is weed that is notoriously hard to get rid of,
 and Cytisus scoparius is classified as invasive in some countries,
 though not in Sweden.
 
@@ -214,7 +214,7 @@ rope.
 Some of the larger trees had grown a bit sideways due to competition,
 so I bought heavy piles and used them for support.
 
-And that's where I am now, eagearly awaiting the warmth of spring and
+And that's where I am now, eagerly awaiting the warmth of spring and
 summer, and the blossoming of trees and flowers. We really don't know
 what might show up!
 

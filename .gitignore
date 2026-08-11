@@ -2,6 +2,7 @@
 # Devenv
 .devenv*
 devenv.local.nix
+*.spl
 
 /target
 .DS_Store

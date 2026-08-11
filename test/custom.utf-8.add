@@ -1,6 +1,7 @@
 à
 accessor
 applicative
+audiobook
 backend
 backends
 backlight
@@ -79,6 +80,7 @@ newtypes
 noteed
 nullary
 nvim
+oaklings
 ocaml
 ol
 outdate
@@ -103,11 +105,13 @@ reimplementing
 renderer
 rlwrap
 scala
+scoparius
 scratchers
 screencast
 screencasts
 scrollback
 signup
+smörgåsbord
 stateful
 subagents
 subcommands
@@ -132,3 +136,4 @@ webapps
 whitespace
 widget's
 workspaces
+Stenshuvud
