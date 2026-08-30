@@ -302,17 +302,6 @@ code span.st, code span.ss {
 }
 
 @media (prefers-color-scheme: dark) {
-  code span.kw,
-  code span.im {
-    font-weight: 700;
-  }
-  code span.at,
-  code span.dt {
-    color: #a1938c;
-  }
-  code span.st, code span.ss {
-    color: #868c91;
-  }
   code span.co {
     background: none;
     color: var(--color-comment);
@@ -353,7 +342,7 @@ span.blue {
 @media (prefers-color-scheme: dark) {
   :root { 
     --color-bg: #000;
-    --color-bg-code: #444;
+    --color-bg-code: #555;
     --color-fg: #fff;
     --color-fg-muted: #aaa;
   }
