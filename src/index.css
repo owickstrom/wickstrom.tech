@@ -287,7 +287,7 @@ code span.dt {
 }
 
 code span.co {
-  background: radial-gradient(color-mix(in hsl, #000 20%, var(--color-comment)) .5px,transparent 1px) 0 0/3px 3px, var(--color-comment);
+  background-color: var(--color-comment);
 }
 
 code span.st, code span.ss {
