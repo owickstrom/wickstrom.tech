@@ -215,10 +215,6 @@ p code {
   margin: 0 1ch;
 }
 
-.post-nav {
-  color: #666;
-}
-
 .post-nav.before {
   margin: 0;
 }
@@ -297,7 +293,7 @@ code span.dt {
 }
 
 code span.co {
-  background: #f5e87e;
+  background: radial-gradient(#d2c344 .5px,transparent 1px) 0 0/3px 3px, #f5e87e;
 }
 
 code span.st, code span.ss {
@@ -315,6 +311,10 @@ code span.st, code span.ss {
   }
   code span.st, code span.ss {
     color: #868c91;
+  }
+  code span.co {
+    background: none;
+    color: #f5e87e;
   }
 }
 
@@ -339,6 +339,9 @@ span.blue {
     padding: var(--line-height) 1ch;
   }
 
+
+  .post-nav.before:after,
+  .post-nav.after:before,
   body>.sourceCode,
   body>pre {
     margin: var(--line-height) -1ch;
