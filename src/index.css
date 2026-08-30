@@ -152,9 +152,6 @@ img, video, object {
 code.sourceCode span {
   line-height: 1;
 }
-pre {
-  padding: var(--line-height) 2ch;
-}
 
 math {
   font-family: inherit;
@@ -175,14 +172,10 @@ body {
 
 body>.sourceCode,
 body>pre {
+  position: relative;
   margin: var(--line-height) 0;
   overflow-x: auto;
-}
-
-p code,
-body>.sourceCode,
-body>pre {
-  background: radial-gradient(var(--color-bg-code) .5px,transparent 1px) 0 0/3px 3px, var(--color-bg);
+  padding: 0 2ch;
 }
 
 p code {
@@ -328,15 +321,6 @@ span.blue {
   body {
     padding: var(--line-height) 1ch;
   }
-
-
-  .post-nav.before:after,
-  .post-nav.after:before,
-  body>.sourceCode,
-  body>pre {
-    margin: var(--line-height) -1ch;
-  }
-
 }
 
 @media (prefers-color-scheme: dark) {
