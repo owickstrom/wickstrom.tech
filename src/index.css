@@ -4,11 +4,14 @@
   font-weight: 400;
   font-size: 16px;
   --line-height: 1.5rem;
-  --color-fg: #111;
+  --color-bg: #fff;
+  --color-bg-code: #ddd;
+  --color-fg: #000;
+  --color-fg-muted: #444;
 }
 
 html {
-  background: #fff;
+  background: var(--color-bg);
   color: var(--color-fg);
 }
 
@@ -46,13 +49,13 @@ h2 {
 }
 
 a:link {
-  color: blue;
+  color: var(--color-fg);
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
 }
 
 a:visited {
-  color: purple;
+  color: var(--color-fg);
 }
 
 strong {
@@ -178,7 +181,7 @@ body>pre {
 p code,
 body>.sourceCode,
 body>pre {
-  background: radial-gradient(#ddd .5px,transparent 1px) 0 0/3px 3px, #fff;
+  background: radial-gradient(var(--color-bg-code) .5px,transparent 1px) 0 0/3px 3px, var(--color-bg);
 }
 
 p code {
@@ -199,6 +202,7 @@ p code {
 
 #title-block-header h1 {
   flex: 1 1 100%;
+  margin: 0;
 }
 
 #title-block-header .author,
@@ -229,7 +233,7 @@ p code {
   height: calc(var(--line-height) / 2);
   padding: calc(var(--line-height) / 4) 0;
   margin: var(--line-height) 0;
-  background: radial-gradient(var(--color-fg) .5px,transparent 1px) 0 0/3px 3px, #fff;
+  background: radial-gradient(var(--color-fg) .5px,transparent 1px) 0 0/3px 3px, var(--color-bg);
 }
 
 .post-nav.after {
@@ -266,38 +270,6 @@ p code {
   display: flex;
   flex-direction: column;
   margin: 1.5rem 0;
-}
-
-@media screen and (max-width: 90ch) {
-  body {
-    padding: var(--line-height) 1ch;
-  }
-
-  body>.sourceCode,
-  body>pre {
-    margin: var(--line-height) -1ch;
-  }
-
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    background: #000;
-    color: #b4bdc3;
-  }
-
-  a:link {
-    color: #888F94;
-  }
-
-  a:visited {
-    color: inherit;
-  }
-
-  #title-block-header .author,
-  #title-block-header .date {
-    color: #aaa;
-  }
 }
 .footnote-ref {
   text-decoration: none !important;
@@ -354,7 +326,33 @@ span.blue {
   color: #286486;
 }
 
+@media print {
+  :root, html, body {
+  }
+  .post-nav.after {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 90ch) {
+  body {
+    padding: var(--line-height) 1ch;
+  }
+
+  body>.sourceCode,
+  body>pre {
+    margin: var(--line-height) -1ch;
+  }
+
+}
+
 @media (prefers-color-scheme: dark) {
+  :root { 
+    --color-bg: #000;
+    --color-bg-code: #444;
+    --color-fg: #fff;
+    --color-fg-muted: #aaa;
+  }
   span.red {
     color: #DE6E7C;
   }
@@ -363,10 +361,3 @@ span.blue {
   }
 }
 
-@media print {
-  :root, html, body {
-  }
-  .post-nav.after {
-    display: none;
-  }
-}
