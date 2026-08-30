@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
+
 :root {
-  font-family: "BerkeleyMonoWeb", monospace;
+  font-family: "Google Sans Flex", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-size: 16px;
@@ -33,15 +35,16 @@ h4,
 h5,
 h6 {
   font-family: inherit;
-  font-weight: 800;
+  font-weight: 700;
   line-height: var(--line-height);
   font-size: 1rem;
-  margin-bottom: var(--line-height);
+  margin: var(--line-height) 0;
+
 }
 
 h1 {
-  font-size: 1rem;
-  line-height: var(--line-height);
+  font-size: 2rem;
+  line-height: calc(var(--line-height) * 1.5);
   text-transform: uppercase;
 }
 
@@ -71,7 +74,7 @@ blockquote {
 ul,
 ol,
 p {
-  margin: var(--line-height) 0;
+  margin: calc(var(--line-height) / 2) 0;
   hyphens: auto;
   word-break: break-word;
   word-wrap: break-word;
@@ -100,11 +103,13 @@ figure {
   margin: 2rem 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 figcaption {
   margin: var(--line-height) 2ch 0;
   font-style: italic;
+  text-align: center;
 }
 
 th,
@@ -126,7 +131,7 @@ dl {
 }
 
 dt {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 dd {
@@ -190,7 +195,7 @@ p code {
 
 #title-block-header {
   display: flex;
-  margin: 2.4rem 0;
+  margin: var(--line-height) 0;
   flex-wrap: wrap;
 }
 
@@ -201,7 +206,7 @@ p code {
 
 #title-block-header .author,
 #title-block-header .date {
-  margin: 0;
+  margin: calc(var(--line-height) / 2) 0 0;
 }
 
 #title-block-header .date:before {
@@ -216,6 +221,7 @@ p code {
   text-decoration: none;
 }
 
+.index-page header:after,
 .post-nav.before:after,
 .post-nav.after:before {
   display: block;
@@ -247,13 +253,17 @@ p code {
  * Index
  */
 .index-page header {
-  padding: 2.4rem 0;
+  padding: 0;
 }
 
 .index {
   margin: 0;
   padding: 0;
   list-style-type: none;
+}
+
+.index-page h1 {
+  margin: 0;
 }
 
 .index li {
