@@ -169,7 +169,7 @@ math[display=block] {
 }
 
 body {
-  max-width: 90ch;
+  max-width: 70ch;
   margin: 0 auto;
   padding: var(--line-height) 2ch;
 }
@@ -327,9 +327,12 @@ span.blue {
   }
 }
 
-@media screen and (max-width: 90ch) {
+@media screen and (max-width: 70ch) {
   body {
     padding: var(--line-height) 1ch;
+  }
+  h1 {
+    font-size: 1.5rem;
   }
 }
 
