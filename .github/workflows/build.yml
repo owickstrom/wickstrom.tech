@@ -37,10 +37,10 @@ jobs:
       run: python3 -m http.server 8080 --directory target &
     - name: Wait for server
       run: curl --retry 30 --retry-all-errors --retry-delay 2 --silent --fail http://localhost:8080 >/dev/null
-    - uses: antithesishq/bombadil-action@v2
+    - uses: antithesishq/bombadil-action@v3
       with:
         driver: browser
-        version: 0.7.0
+        version: 0.7.3
         origin: http://localhost:8080
         specification: ./test/spellcheck.ts
         time-limit: 5m
