@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Variable:opsz,wght@6..144,1..1000&display=swap');
 
 :root {
-  font-family: "Google Sans Flex", sans-serif;
+  font-family: "Inter Variable", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-size: 16px;
   --line-height: 1.5rem;
   --color-bg: #fff;
   --color-bg-code: #ddd;
-  --color-fg: #000;
-  --color-fg-muted: #444;
+  --color-fg: #333;
+  --color-fg-muted: #666;
   --color-comment: #f5e87e;
 }
 
@@ -36,20 +36,19 @@ h5,
 h6 {
   font-family: inherit;
   font-weight: 700;
-  line-height: var(--line-height);
-  font-size: 1rem;
+  font-size: 1.25rem;
   margin: var(--line-height) 0;
+  line-height: 1.3;
 
 }
 
 h1 {
   font-size: 2rem;
-  line-height: calc(var(--line-height) * 1.5);
-  text-transform: uppercase;
+  font-weight: 800;
 }
 
 h2 {
-  text-transform: uppercase;
+  line-height: calc(var(--line-height) * 1.25);
 }
 
 a:link {
@@ -207,18 +206,12 @@ p code {
 #title-block-header .author,
 #title-block-header .date {
   margin: calc(var(--line-height) / 2) 0 0;
+  color: var(--color-fg-muted);
 }
 
 #title-block-header .date:before {
   content: '\2014';
   margin: 0 1ch;
-}
-
-.post-nav.before {
-  margin: 0;
-}
-.post-nav.before a {
-  text-decoration: none;
 }
 
 .index-page header:after,
@@ -229,11 +222,24 @@ p code {
   height: calc(var(--line-height) / 2);
   padding: calc(var(--line-height) / 4) 0;
   margin: var(--line-height) 0;
-  background: radial-gradient(var(--color-fg) .5px,transparent 1px) 0 0/3px 3px, var(--color-bg);
+  background: radial-gradient(var(--color-fg-muted) .5px,transparent 1px) 0 0/3px 3px, var(--color-bg);
+}
+
+.post-nav.before {
+  margin: 0;
 }
 
 .post-nav.after {
   margin: 2rem 0 0;
+}
+
+.post-nav.before a,
+.post-nav.after a {
+  color: var(--color-fg-muted);
+}
+
+.post-nav.before a {
+  text-decoration: none;
 }
 
 .post-nav ul {
@@ -340,7 +346,7 @@ span.blue {
   :root { 
     --color-bg: #000;
     --color-bg-code: #555;
-    --color-fg: #fff;
+    --color-fg: #eee;
     --color-fg-muted: #aaa;
   }
   span.red {
